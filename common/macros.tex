@@ -47,13 +47,40 @@
 % Common fields
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\N}{\mathbb{N}}
 
+% Common Operators
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+
+% Theorem-like environments
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{exercise}{Exercise}[section]
+
+% Support for individual Chinese characters using fontspec (for LuaLaTeX)
+\usepackage{fontspec}
+\newfontfamily\zhfont{SimSun} % Search system fonts by name
+\newcommand{\zhstr}[1]{{\zhfont #1}}
+
 % Solutions and proofs
-\newenvironment{solution}{
-\begin{proof}[解]}{
-\end{proof}}
+\AtBeginDocument{
+  \ifdefined\ctexset
+  \newenvironment{solution}{
+  \begin{proof}[解]}{
+  \end{proof}}
+  \else
+  \newenvironment{solution}{
+  \begin{proof}[Solution]}{
+  \end{proof}}
+  \fi
+}
 
 % Utility to get environment variables (requires lualatex)
 \newcommand{\getEnv}[2]{\directlua{tex.print(os.getenv("#1") or "#2")}}

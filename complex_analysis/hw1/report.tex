@@ -1,0 +1,758 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+% \usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{luacode}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+% Matplotlib PGF exports may emit \mathdefault in tick labels.
+\providecommand{\mathdefault}[1]{#1}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Complex Analysis}
+\newcommand{\hwNum}{1}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+\section{Textbook Exercise 2 on Page 24}
+
+Let $\langle \cdot, \cdot \rangle$ denote the usual inner product in
+$\mathbb{R}^2$. In other words, if $Z = (x_1, y_1)$ and $W = (x_2, y_2)$, then
+\[
+  \langle Z, W \rangle = x_1 x_2 + y_1 y_2.
+\]
+Similarly, we may define a Hermitian inner product $(\cdot, \cdot)$
+in $\mathbb{C}$ by
+\[
+  (z, w) = z \bar{w}.
+\]
+The term Hermitian is used to describe the fact that $(\cdot, \cdot)$
+is not symmetric, but rather satisfies the relation
+\[
+  (z, w) = \overline{(w, z)} \quad \text{for all } z, w \in \mathbb{C}.
+\]
+Show that
+\[
+  \langle z, w \rangle = \frac{1}{2} [(z, w) + (w, z)] = \text{Re}(z, w),
+\]
+where we use the usual identification $z = x + iy \in \mathbb{C}$
+with $(x, y) \in \mathbb{R}^2$.
+
+\begin{proof}
+  Let $z = x_1 + i y_1$ and $w = x_2 + i y_2$, where $x_1, y_1, x_2,
+  y_2 \in \R$.
+  Then $\bar{w} = x_2 - i y_2$, and we compute
+  \[
+    (z, w) = z\bar{w} = (x_1 + i y_1)(x_2 - i y_2)
+    = (x_1 x_2 + y_1 y_2) + i (y_1 x_2 - x_1 y_2).
+  \]
+  Taking the real part yields
+  \[
+    \Re(z, w) = x_1 x_2 + y_1 y_2 = \langle z, w \rangle,
+  \]
+  where we identify $z = (x_1, y_1)$ and $w = (x_2, y_2)$ with points in $\R^2$.
+
+  Moreover, note that
+  \[
+    \overline{(z, w)} = \overline{z\bar{w}} = \bar{z}w = w\bar{z} = (w, z).
+  \]
+  Since $\Re(z, w) = \frac{1}{2}\big[(z, w) + \overline{(z, w)}\big]$
+  for any complex number,
+  we obtain
+  \[
+    \langle z, w \rangle = \Re(z, w)
+    = \frac{1}{2}\big[(z, w) + (w, z)\big].
+  \]
+\end{proof}
+
+\section{Textbook Exercise 3 on Page 25}
+
+With $\omega = s e^{i\varphi}$, where $s \geq 0$ and $\varphi \in
+\mathbb{R}$, solve the equation $z^n = \omega$ in $\mathbb{C}$ where
+$n$ is a natural number. How many solutions are there?
+
+\begin{solution}
+  Since $s \ge 0$, there exists a unique nonnegative real number $r \ge 0$
+  such that $r^n = s$. Write $z$ in polar form as $z = r e^{i\theta}$.
+  Then
+  \[
+    z^n = (r e^{i\theta})^n = r^n e^{in\theta} = s e^{i\varphi} = \omega.
+  \]
+  Equating the moduli and arguments, we obtain $r^n = s$ (which holds by
+  construction) and
+  \[
+    n\theta = \varphi + 2k\pi, \quad k \in \mathbb{Z}.
+  \]
+  Thus
+  \[
+    \theta = \frac{\varphi + 2k\pi}{n}, \quad k = 0, 1, \dots, n-1.
+  \]
+  For $k = 0, 1, \dots, n-1$, we obtain $n$ distinct solutions:
+  \[
+    z_k = r e^{i(\varphi + 2k\pi)/n}, \quad k = 0, 1, \dots, n-1.
+  \]
+  There are exactly $n$ solutions in total.
+\end{solution}
+
+\section{Exercise 1.40*}
+
+\begin{definition}[Definition 1.32: Real Numbers]
+  Real numbers, denoted by $\mathbb{R}$, are equivalence classes that
+  partition the set of all Rational Cauchy Sequences (RCSs), i.e.,
+  \[
+    \mathbb{R} := \{ \{s_n\} : \{s_n\} \text{ is a RCS} \}.
+  \]
+\end{definition}
+
+\begin{theorem}[Theorem 1.39: Cauchy 1821]
+  A sequence of real numbers is convergent (with a real number as its
+  limit) if and only if it is a Cauchy sequence.
+\end{theorem}
+
+Prove Theorem 1.39 via the viewpoint of Definition 1.32.
+
+\begin{proof}
+  ($\Rightarrow$) Suppose $\{r_n\}$ converges to $r \in \R$. For any
+  $\varepsilon > 0$, there exists $N$ such that $|r_n - r| < \varepsilon/2$
+  for all $n > N$. Then for all $m, n > N$,
+  \[
+    |r_n - r_m| \le |r_n - r| + |r - r_m| < \varepsilon,
+  \]
+  so $\{r_n\}$ is a Cauchy sequence.
+
+  ($\Leftarrow$) Let $\{r_n\}$ be a Cauchy sequence in $\R$. Write each
+  real number $r_n$ as an equivalence class of rational Cauchy sequences
+  $r_n = [\{r_{n,k}\}]$, where $r_{n,k} \in \Q$ and $\{r_{n,k}\}_{k\ge1}$
+  is a rational Cauchy sequence. Define the rational sequence $y_n =
+  r_{n,n}$.
+
+  \textbf{Step 1: $\{y_n\}$ is a rational Cauchy sequence.} Since
+  $\{r_n\}$ is Cauchy in $\R$, for any $\varepsilon > 0$ there exists
+  $N_1 \in \N$ such that $|r_n - r_m| < \varepsilon$ for all $m, n > N_1$.
+  Fix $n, m > N_1$. For any $k \in \N$, the triangle inequality gives
+  \[
+    |r_{n,k} - r_{m,k}| \le |r_{n,k} - r_n| + |r_n - r_m| + |r_m - r_{m,k}|.
+  \]
+  Since each $\{r_{n,k}\}$ converges to $r_n$, there exists $K$ such that
+  $|r_{n,k} - r_n| < \varepsilon$ and $|r_{m,k} - r_m| < \varepsilon$ for
+  all $k > K$. Taking $k > \max\{K, N_1\}$, we obtain
+  \[
+    |r_{n,k} - r_{m,k}| < 3\varepsilon.
+  \]
+  Letting $k \to \infty$ and using the uniqueness of limits, we get
+  $|r_n - r_m| \le 3\varepsilon$. Hence $\{y_n\}$ is a rational Cauchy
+  sequence.
+
+  \textbf{Step 2: Let $y = [\{y_n\}] \in \R$. Then $r_n \to y$.} For any
+  $\varepsilon > 0$, since $\{r_n\}$ is Cauchy, there exists $N$ such that
+  $|r_n - r_m| < \varepsilon$ for all $n, m > N$. By the argument in Step
+  1, for sufficiently large $k$ we have
+  \[
+    |r_{n,k} - r_n| < \varepsilon \quad \text{for all } n > N.
+  \]
+  Thus for $n > N$,
+  \[
+    |r_n - y| = \lim_{k\to\infty} |r_{n,k} - y_k| \le \varepsilon.
+  \]
+  Therefore $r_n \to y$, so $\{r_n\}$ converges.
+\end{proof}
+
+\section{Exercise 1.56}
+
+\begin{corollary}[Corollary 1.55]
+  $\mathbb{R}$ is an ordered field while $\mathbb{C}$ is not.
+\end{corollary}
+
+Prove Corollary 1.55.
+
+\begin{solution}
+  \textbf{$\R$ is ordered.} Define $P = \{r \in \R : r > 0\}$, where
+  $r > 0$ means that $r$ is the equivalence class of a rational
+  Cauchy sequence $\{r_k\}$ such that $r_k > 0$ for sufficiently
+  large $k$. Then $P$ satisfies the required properties of a positive
+  cone.
+  \textbf{$\C$ is not ordered.} Suppose $\C$ is an ordered field. Then
+  either $i > 0$ or $-i > 0$. If $i > 0$, then $-1 = i \cdot i < 0$.
+  If $-i > 0$, then $-1 = (-i) \cdot (-i) < 0$. In either case, we
+  have a contradiction with ODF-1. Hence $\C$ is not ordered.
+\end{solution}
+
+\section{Exercise 1.60}
+
+\begin{remark}[Formula 1.59: Solving Generic Quartics]
+  The generic quartic equation $ax^4 + bx^3 + cx^2 + dx + e = 0$
+  (WLOG $a=1$) is solved by:
+  \begin{enumerate}
+    \item Moving terms to get $x^4 + bx^3 = -cx^2 - dx - e$.
+    \item Adding $(\frac{b}{2}x)^2$ to both sides to complete the
+      square on the LHS.
+    \item Introducing a parameter $y$ and adding $(x^2 +
+      \frac{b}{2}x)y + \frac{1}{4}y^2$ to both sides.
+    \item Choosing $y$ such that the RHS becomes a perfect square (by
+      solving its cubic discriminant).
+  \end{enumerate}
+\end{remark}
+
+Use Formula 1.59 to solve the equation
+\[
+  x^4 + 2x^3 + 2x + 1 = 0.
+\]
+
+\begin{solution}
+  Move the quadratic, linear, and constant terms to the RHS to get
+  \[
+    x^4 + 2x^3 = -2x - 1.
+  \]
+  Adding $(\frac{2}{2}x)^2 = x^2$ to both sides yields
+  \[
+    (x^2 + x)^2 = x^2 - 2x - 1.
+  \]
+  Introducing a parameter $y$ and adding $(x^2 + x)y +
+  \frac{1}{4}y^2$ to both sides gives
+  \[
+    (x^2 + x + \frac{y}{2})^2 = (x^2 - 2x - 1) + (x^2 + x)y + \frac{1}{4}y^2
+    = (y+1) x^2 + (y - 2)x + \frac{1}{4}y^2 - 1.
+  \]
+  We want to choose $y$ such that the RHS becomes a perfect square,
+  which means that:
+  \[
+    \begin{aligned}
+      &(y-2) = 2 \sqrt{(y+1)(\frac{1}{4}y^2-1)} \\
+      \Rightarrow& y^2 - 4y + 4 = 4(y+1)(\frac{1}{4}y^2-1) = y^3+y^2-4y-4. \\
+      \Rightarrow& y^3 - 8 = 0. \\
+      \Rightarrow& y = 2 \ \text{or} \pm 2\omega, \quad \text{where }
+      \omega = e^{2\pi i/3}.
+    \end{aligned}
+  \]
+
+  We take $y = 2$ to get
+  \[
+    (x^2 + x + 1)^2 = 3x^2.
+  \]
+  Thus, \[
+    (x^2 + 1)(x^2 + 2x + 1) = 0
+  \]
+  and the solutions are $x = \pm i$ and $x = -1$.
+
+  To check that these are indeed solutions, we can directly substitute them
+  into the original equation:
+  \begin{itemize}
+    \item For $x = i$, we have $i^4 + 2i^3 + 2i + 1 = 1 - 2i + 2i + 1 = 0$.
+    \item For $x = -i$, we have $(-i)^4 + 2(-i)^3 + 2(-i) + 1 = 1 +
+      2i - 2i + 1 = 0$.
+    \item For $x = -1$, we have $(-1)^4 + 2(-1)^3 + 2(-1) + 1 = 1 - 2
+      - 2 + 1 = 0$.
+  \end{itemize}
+
+\end{solution}
+
+\section{Exercise 1.67}
+Construct four squares for a quadrilateral, as shown in [a]. Prove
+that the line-segments joining the centers of opposite squares are
+perpendicular and of equal length; see [b].
+
+% The TikZ code is generated by *gemini-3-flash*.
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=1.2]
+    % [a] Version
+    \begin{scope}
+      \node at (-1.5, 3.5) {[a]};
+      % Define the quadrilateral vertices
+      \coordinate (O) at (0, 0);
+      \coordinate (B) at (1.5, 0.5);
+      \coordinate (C) at (1.75, 2.25);
+      \coordinate (D) at (-0.2, 1.8);
+
+      % Draw the main quadrilateral (filled)
+      \filldraw[fill=white!80, draw=black, thick] (O) -- (B) -- (C)
+      -- (D) -- cycle;
+
+      % Define helper for drawing squares and finding center
+      % Side OA (here O to D)
+      \coordinate (S1_1) at ($(O)!1!90:(D)$);
+      \coordinate (S1_2) at ($(D)!1!-90:(O)$);
+      \filldraw[fill=black!20!white!60, draw=black] (O) -- (D) --
+      (S1_2) -- (S1_1) -- cycle;
+      \coordinate (C1) at ($(O)!0.5!(S1_2)$);
+
+      % Side AB (here D to C)
+      \coordinate (S2_1) at ($(D)!1!90:(C)$);
+      \coordinate (S2_2) at ($(C)!1!-90:(D)$);
+      \filldraw[fill=black!20!white!60, draw=black] (D) -- (C) --
+      (S2_2) -- (S2_1) -- cycle;
+      \coordinate (C2) at ($(D)!0.5!(S2_2)$);
+
+      % Side BC (here C to B)
+      \coordinate (S3_1) at ($(C)!1!90:(B)$);
+      \coordinate (S3_2) at ($(B)!1!-90:(C)$);
+      \filldraw[fill=black!20!white!60, draw=black] (C) -- (B) --
+      (S3_2) -- (S3_1) -- cycle;
+      \coordinate (C3) at ($(C)!0.5!(S3_2)$);
+
+      % Side CO (here B to O)
+      \coordinate (S4_1) at ($(B)!1!90:(O)$);
+      \coordinate (S4_2) at ($(O)!1!-90:(B)$);
+      \filldraw[fill=black!20!white!60, draw=black] (B) -- (O) --
+      (S4_2) -- (S4_1) -- cycle;
+      \coordinate (C4) at ($(B)!0.5!(S4_2)$);
+
+      % Dots for vertices and labels
+      \filldraw[fill=black, draw=white] (O) circle (1pt) node[left,
+      black] {$0$};
+      \filldraw[fill=black, draw=white] (C1) circle (1.5pt)
+      node[above, black] {$p$};
+      \filldraw[fill=black, draw=white] (C2) circle (1.5pt)
+      node[right, black] {$q$};
+      \filldraw[fill=black, draw=white] (C3) circle (1.5pt)
+      node[below, black] {$r$};
+      \filldraw[fill=black, draw=white] (C4) circle (1.5pt)
+      node[left, black] {$s$};
+
+      % Lines and labels from image
+      \draw[black, thick] (C1) -- (C3);
+      \draw[black, thick] (C2) -- (C4);
+
+      % Right angle marker
+      \begin{scope}[shift={($(intersection of C1--C3 and C2--C4)$)}]
+        \draw[black] (0, 0.2) -- (0.2, 0.2) -- (0.2, 0);
+      \end{scope}
+
+      % Vectors/labels
+      \draw[->, >=stealth, black, thick] (O) -- ($(O)!0.5!(D)$)
+      node[midway, right] {$2a$};
+      \draw[->, >=stealth, black, thick] (D) -- ($(D)!0.5!(C)$)
+      node[midway, below] {$2b$};
+      \draw[->, >=stealth, black, thick] (C) -- ($(C)!0.5!(B)$)
+      node[midway, left] {$2c$};
+      \draw[->, >=stealth, black, thick] (B) -- ($(B)!0.5!(O)$)
+      node[midway, above] {$2d$};
+    \end{scope}
+
+    % [b] Version
+    \begin{scope}[xshift=6.5cm]
+      \node at (-1.5, 3.5) {[b]};
+      % Define the same vertices as [a]
+      \coordinate (O) at (0, 0);
+      \coordinate (B) at (1.5, 0.5);
+      \coordinate (C) at (1.75, 2.25);
+      \coordinate (D) at (-0.2, 1.8);
+
+      % Draw the two squares involved: square on OD and square on OB
+      % (or equivalent from [a])
+      \filldraw[fill=black!20!white!60, draw=black] (O) -- (D) --
+      ($(D)!1!-90:(O)$)-- ($(O)!1!90:(D)$) -- cycle;
+      \filldraw[fill=black!20!white!60, draw=black] (B) -- (O) --
+      ($(O)!1!-90:(B)$) -- ($(B)!1!90:(O)$) -- cycle;
+
+      % Get centers p and s
+      \coordinate (p) at ($(O)!0.5!($(D)!1!-90:(O)$)$);
+      \coordinate (s) at ($(B)!0.5!($(O)!1!-90:(B)$)$);
+
+      % Draw the relevant part of the quadrilateral
+      \draw[black, thick] (D) -- (O) -- (B);
+      \draw[black, thin] (D) -- (B);
+
+      % Midpoint m of DB (This is the pivot in the visual proof)
+      \coordinate (m) at ($(D)!0.5!(B)$);
+
+      % Draw dashed lines connecting centers to m
+      \draw[black, dashed, thick] (p) -- (m);
+      \draw[black, dashed, thick] (s) -- (m);
+
+      % Dots and labels
+      \filldraw[fill=black, draw=black] (p) circle (1.5pt) node[above
+      left, black] {$p$};
+      \filldraw[fill=black, draw=black] (s) circle (1.5pt) node[below
+      left, black] {$s$};
+      \filldraw[fill=black, draw=black] (m) circle (1.5pt)
+      node[right, black] {$m$};
+
+      % Right angle marker at m
+      \begin{scope}[shift={(m)}]
+        \path let \p1=($(p)-(m)$), \n1={atan2(\y1,\x1)} in
+        \pgfextra{\xdef\mAngle{\n1}};
+        \begin{scope}[rotate=\mAngle]
+          \draw[black] (0.2, 0) -- (0.2, 0.2) -- (0, 0.2);
+        \end{scope}
+      \end{scope}
+    \end{scope}
+  \end{tikzpicture}
+\end{figure}
+
+\begin{solution}
+  Let the four edges of the quadrilateral be $2a, 2b, 2c, 2d$ as
+  shown in the figure, and the four vertices be $O, D, C, B$ in
+  counterclockwise order. For convenience, we set $O = 0$.
+  Then we have:
+  \[
+    \begin{aligned}
+      p &= a + ia \\
+      q &= 2a + b + ib \\
+      r &= 2a + 2b + c + ic \\
+      s &= 2a + 2b + 2c + d + id \\
+      0 &= a+b+c+d
+    \end{aligned}
+  \]
+  Let $X = p - r$ and $Y = s - q$. Then we want to show that $X$ and
+  $Y$ are perpendicular and of equal length, i.e., $Y = iX$.
+  \[
+    \begin{aligned}
+      X &= p-r = -a - 2b - c + i(a - c) = -b+d+i(a-c) \\
+      Y &= s-q = b + 2c + d + i (d - b) = c-a+i(d-b)
+    \end{aligned}
+  \]
+  Thus \[
+    iX = i(-b+d+i(a-c)) = c-a + i(d-b) = Y.
+  \]
+  So $X$ and $Y$ are perpendicular and of equal length.
+
+\end{solution}
+
+\section{Exercise 1.91}
+
+\begin{lemma}[Lemma 1.90: Properties of the Exponential Function]
+  The exponential function satisfies:
+  \begin{itemize}
+    \item \textbf{(EXP-1):} Its restriction to $\mathbb{R}$ is
+      monotonically increasing and positive.
+    \item \textbf{(EXP-2):} There exists a positive number $\pi$ such
+      that $e^{\frac{\pi}{2} i} = i$ and $e^z = 1$ iff $z \in 2\pi i
+      \mathbb{Z}$.
+    \item \textbf{(EXP-3):} $\exp$ is periodic with period $2\pi i$.
+    \item \textbf{(EXP-4):} $\theta \mapsto e^{i\theta}$ maps
+      $\mathbb{R}$ onto the unit circle.
+    \item \textbf{(EXP-5):} $w \in \mathbb{C} \setminus \{0\}$
+      implies $w = e^z$ for some $z \in \mathbb{C}$.
+  \end{itemize}
+\end{lemma}
+
+Prove Lemma 1.90 using the power series definition
+$e^z = \sum_{n=0}^{\infty} \frac{z^n}{n!}$. \\
+\textit{Hint: define $\cos(\theta) := \text{Re}(e^{i\theta})$,
+  $\sin(\theta) := \text{Im}(e^{i\theta})$, and look for the zeros of
+these functions.}
+
+\begin{proof}
+  \textbf{(EXP-1):} For real $x \in \R$, all terms in the series are
+  positive for $x > 0$, so $e^x > 0$. For $x_1 < x_2$, we have
+  $e^{x_1} < e^{x_2}$ since each term in $e^{x_2} - e^{x_1}$ is positive.
+
+  \textbf{(EXP-2):} Define $\cos(\theta) = \Re(e^{i\theta})$ and
+  $\sin(\theta) = \Im(e^{i\theta})$. Substituting $z = i\theta$ into the
+  power series:
+  \[
+    e^{i\theta} = \sum_{n=0}^{\infty} \frac{(i\theta)^n}{n!}
+    = \sum_{k=0}^{\infty} \frac{(-1)^k \theta^{2k}}{(2k)!}
+    + i \sum_{k=0}^{\infty} \frac{(-1)^k \theta^{2k+1}}{(2k+1)!}
+    = \cos\theta + i\sin\theta.
+    \tag{1}
+  \]
+  From (1), we have $\cos^2\theta + \sin^2\theta = |e^{i\theta}|^2
+  = e^{i\theta}e^{-i\theta} = 1$. Using $e^{i(\theta+\phi)} =
+  e^{i\theta}e^{i\phi}$ and comparing real and imaginary parts yields
+  the addition formulas for cosine and sine.
+
+  To define $\pi$, we show that $\cos\theta$ has a unique positive zero.
+  From the power series, $\cos\theta = 1 - \frac{\theta^2}{2!} +
+  \frac{\theta^4}{4!} - \cdots$.
+  For $0 < \theta \le 1$, we have $\cos\theta \ge 1 -
+  \frac{\theta^2}{2} \ge \frac{1}{2}$.
+  For $\theta = 2$, the series alternates with decreasing terms starting
+  from $1 - 2^2/2! = -1$, so by the alternating series test, $\cos 2 < 0$.
+  Since $\cos$ is continuous on $[1, 2]$, there exists
+  $\pi_0 \in (2, 4)$ such that $\cos(\pi_0/2) = 0$. We define $\pi = \pi_0$.
+  Then $\sin(\pi/2) = \sqrt{1 - \cos^2(\pi/2)} = 1$, so $e^{i\pi/2} = i$.
+
+  Now we show $e^z = 1$ iff $z \in 2\pi i\mathbb{Z}$. First, from
+  $e^{i\pi/2} = i$
+  and $e^{z+w} = e^z e^w$, we have:
+  \[
+    e^{i\pi} = (e^{i\pi/2})^2 = i^2 = -1, \quad
+    e^{i2\pi} = (e^{i\pi})^2 = (-1)^2 = 1.
+  \]
+  Hence $e^{2k\pi i} = 1$ for all $k \in \mathbb{Z}$.
+
+  Conversely, suppose $e^z = 1$. Write $z = x + iy$ with $x, y \in \R$.
+  Then $e^z = e^x e^{iy} = 1$ implies $e^x = 1$, so $x = 0$. Thus $e^{iy} = 1$.
+  Let $y = 2k\pi + r$ with $k \in \mathbb{Z}$ and $r \in [0, 2\pi)$. Then
+  $e^{iy} = e^{i2k\pi} e^{ir} = e^{ir} = 1$. So it suffices to show that
+  the only solution to $e^{ir} = 1$ in $[0, 2\pi)$ is $r = 0$.
+
+  From the power series, $e^{i\theta}$ traces a continuous path on the
+  unit circle. We have shown $e^{i0} = 1$, $e^{i\pi/2} = i$, $e^{i\pi} = -1$,
+  $e^{i3\pi/2} = -i$, and $e^{i2\pi} = 1$. By continuity, the equation
+  $e^{ir} = 1$ can only hold at $r = 0$ within $[0, 2\pi)$. Thus $y = 2k\pi$.
+
+  \textbf{(EXP-3):} Since $e^{2\pi i} = 1$ from (EXP-2), we have
+  $e^{z + 2\pi i} = e^z e^{2\pi i} = e^z$. Conversely, if $e^{z_1} = e^{z_2}$,
+  then $e^{z_1 - z_2} = 1$, so $z_1 - z_2 = 2\pi i k$ for some $k \in \Z$.
+
+  \textbf{(EXP-4):} For any $\theta \in \R$, $|e^{i\theta}|^2 = 1$, so
+  $e^{i\theta}$ lies on the unit circle. Conversely, any $w$ on the unit
+  circle can be written as $w = e^{i\theta}$ for some $\theta \in \R$.
+
+  \textbf{(EXP-5):} For $w \in \C \setminus \{0\}$, write $w = re^{i\theta}$
+  with $r = |w| > 0$. Then $w = e^{\ln r + i\theta}$, where $\ln r$ is
+  the real logarithm of $r$.
+\end{proof}
+
+\section{Exercise 1.99}
+Prove $\tan(3\theta) = \frac{3T - T^3}{1 - 3T^2}$ where $T = \tan \theta$.
+
+\begin{proof}
+  First, we prove the addition formula for tangent. For any
+  $\alpha, \beta \in \R$ with $\cos\alpha\cos\beta \neq 0$, we have
+  \[
+    \tan(\alpha + \beta)
+    = \frac{\sin(\alpha + \beta)}{\cos(\alpha + \beta)}
+    = \frac{\sin\alpha\cos\beta + \cos\alpha\sin\beta}
+    {\cos\alpha\cos\beta - \sin\alpha\sin\beta}
+    = \frac{\tan\alpha + \tan\beta}{1 - \tan\alpha\tan\beta}.
+    \tag{1}
+  \]
+
+  Now compute $\tan(2\theta)$ using (1) with $\alpha = \beta = \theta$:
+  \[
+    \tan(2\theta) = \frac{2\tan\theta}{1 - \tan^2\theta}.
+    \tag{2}
+  \]
+
+  Next, compute $\tan(3\theta) = \tan(2\theta + \theta)$ using (1) again:
+  \[
+    \tan(3\theta)
+    = \frac{\tan(2\theta) + \tan\theta}{1 - \tan(2\theta)\tan\theta}.
+  \]
+
+  Substituting (2) into the above and letting $T = \tan\theta$:
+  \[
+    \begin{aligned}
+      \tan(3\theta)
+      &= \frac{\dfrac{2T}{1 - T^2} + T}{1 - \dfrac{2T}{1 - T^2} \cdot T} \\
+      &= \frac{\dfrac{2T + T(1 - T^2)}{1 - T^2}}
+      {\dfrac{1 - T^2 - 2T^2}{1 - T^2}} \\
+      &= \frac{2T + T - T^3}{1 - T^2 - 2T^2} \\
+      &= \frac{3T - T^3}{1 - 3T^2}.
+    \end{aligned}
+  \]
+  This completes the proof.
+\end{proof}
+
+\section{Exercise 1.105}
+
+\begin{corollary}[Corollary 1.101: Relations between Trigonometric
+  and Hyperbolic Functions]
+  Hyperbolic functions have period $2\pi i$ and satisfy:
+  \begin{align*}
+    \cosh(z+w)       & = \cosh z \cosh w + \sinh z \sinh w \\
+    \sinh(z+w)       & = \sinh z \cosh w + \cosh z \sinh w \\
+    \cosh z          & = \cos(iz), \quad \sinh z = -i \sin(iz) \\
+    \cos z           & = \cosh(iz), \quad \sin z = -i \sinh(iz) \\
+    \cosh^2 z - \sinh^2 z & = 1
+  \end{align*}
+\end{corollary}
+
+What are the shapes of images of straight lines $x = \text{const}$
+and $y = \text{const}$ under $z = x + iy \mapsto \cos(z)$? Draw a
+dual-plane plot similar to that in Example 1.85 to answer this
+question. (Hint: use Corollary 1.101)
+
+\begin{solution}
+  Using Corollary 1.101, we have
+  \[
+    \cos(z) = \cos(x + iy) = \cos x \cos(iy) - \sin x \sin(iy) = \cos x \cosh y - i \sin x \sinh y.
+  \]
+  Let $w = u + iv = \cos(z)$. Then:
+  \[
+    u = \cos x \cosh y, \quad v = -\sin x \sinh y.
+  \]
+  
+  \begin{enumerate}
+    \item \textbf{Vertical lines ($x = c$)}:
+    If $c \neq n\pi/2$, we have $\frac{u^2}{\cos^2 c} - \frac{v^2}{\sin^2 c} = \cosh^2 y - \sinh^2 y = 1$, which represents a family of \textbf{hyperbolas}.
+    \item \textbf{Horizontal lines ($y = d$)}:
+    If $d > 0$, we have $\frac{u^2}{\cosh^2 d} + \frac{v^2}{\sinh^2 d} = \cos^2 x + \sin^2 x = 1$, which represents a family of \textbf{ellipses}.
+  \end{enumerate}
+
+  The dual-plane plot below (Figure \ref{fig:mapping_cos}) visualizes these conformal mappings.
+
+  \begin{figure}[htbp]
+    \centering
+    \resizebox{0.9\textwidth}{!}{\input{mapping_cos.pgf}}
+    \caption{Mapping $z \mapsto \cos(z)$. Vertical lines $x=c$ map to hyperbolas (foci $\pm 1$), and horizontal lines $y=d$ map to ellipses (foci $\pm 1$).}
+    \label{fig:mapping_cos}
+  \end{figure}
+\end{solution}
+
+\section{Exercise 1.116}
+Calculate $i^i$.
+
+\begin{solution}
+  \[
+    i^i = (e^{\pi i / 2})^{i} = e^{\frac{1}{2} \pi (i \cdot i)} =
+    e^{-\frac{\pi}{2}}
+  \]
+\end{solution}
+
+\section{Exercise 1.117*}
+We have been augmenting sets of numbers: $\mathbb{N} \subset
+\mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R} \subset \mathbb{C}$.
+For $n \in \mathbb{Z}$ and $x, z \in X$ where $X$ is a set in the
+first column, is $X$ closed under the operations in the first row?
+\begin{center}
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    & $+/-$ & $\times/\div$ & $(\cdot)^n$ & $e^z, z^x$ \\ \hline
+    $\mathbb{N}$ & & & & \\ \hline
+    $\mathbb{Z}$ & & & & \\ \hline
+    $\mathbb{Q}$ & & & & \\ \hline
+    $\mathbb{R}$ & & & & \\ \hline
+    $\mathbb{C}$ & & & & \\ \hline
+  \end{tabular}
+\end{center}
+Use the above table to tell a story of marching from $\mathbb{N}$ to
+$\mathbb{C}$.
+
+\begin{solution}
+  We fill in the table as follows:
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      & $+/-$ & $\times/\div$ & $(\cdot)^n$ & $e^z, z^x$ \\ \hline
+      $\mathbb{N}$ & No & No & No & No \\ \hline
+      $\mathbb{Z}$ & Yes & No & No & No \\ \hline
+      $\mathbb{Q}$ & Yes & Yes & Yes & No \\ \hline
+      $\mathbb{R}$ & Yes & Yes & Yes & No \\ \hline
+      $\mathbb{C}$ & Yes & Yes & Yes & Yes \\ \hline
+    \end{tabular}
+  \end{center}
+
+  Firstly we construct $\N$ by von Neumann's construction based on
+  ZFC, where each
+  natural number is defined as the set of all smaller natural numbers:
+  \[
+    0 = \varnothing, n + 1 = n \cup \{n\}.
+  \]
+  Then we construct $\Z$ by taking formal differences of natural numbers:
+  \[
+    \Z = \{(a, b) : a, b \in \N\} / \sim, \quad (a, b) \sim (c, d)
+    \iff a + d = b + c.
+  \]
+  This makes $\Z$ an abelian group under addition, but it is not closed under
+  multiplication or exponentiation. Next, we construct $\Q$ by taking formal
+  quotients of integers:
+  \[
+    \Q = \{(a, b) : a \in \Z, b \in \Z \setminus \{0\}\} / \sim,
+    \quad (a, b) \sim (c, d) \iff ad = bc.
+  \]
+  This makes $\Q$ a field, but it is not closed under exponentiation.
+  Next, we construct $\R$ by taking equivalence classes of rational
+  Cauchy sequences, which makes $\R$ a complete ordered field, but it
+  is not closed under exponentiation. Finally, we construct $\C$ by
+  taking ordered pairs of real numbers with the usual addition and
+  multiplication, which makes $\C$ an algebraically closed field that is
+  closed under exponentiation.
+
+\end{solution}
+
+\section{Exercise 1.120}
+For an $\mathbb{R}$-linear map $A : \mathbb{C} \to \mathbb{C}$, the
+following statements are equivalent:
+\begin{enumerate}[(a)]
+  \item $\exists \ell \in \mathbb{C}$ s.t. $\forall z \in \mathbb{C},
+    A(z) = \ell z$.
+  \item $A$ is $\mathbb{C}$-linear.
+  \item $A(i) = iA(1)$.
+  \item The matrix of $A$ with respect to the canonical basis $1 =
+    (1, 0)$ and $i = (0, 1)$ has the special form
+    \[
+      \begin{bmatrix}
+        \alpha & -\beta \\
+        \beta & \alpha
+      \end{bmatrix}, \quad \alpha, \beta \in \mathbb{R}.
+    \]
+\end{enumerate}
+
+\begin{solution}
+  (a) $\Rightarrow$ (b): Suppose $A(z) = \ell z$ for some $\ell \in \C$.
+  To show $A$ is $\C$-linear, we need to verify that for any
+  $c \in \C$ and $z \in \C$, we have $A(cz) = c \cdot A(z)$.
+
+  Write $\ell = \alpha + i\beta$ with $\alpha, \beta \in \R$, and
+  write $c = a + ib$, $z = x + iy$ with $a, b, x, y \in \R$. Then
+  \[
+    cz = (a+ib)(x+iy) = (ax - by) + i(ay + bx).
+  \]
+  Applying $A$ to $cz$, we obtain
+  \[
+    \begin{aligned}
+      A(cz) &= \ell \cdot cz \\
+      &= (\alpha + i\beta)\big((ax - by) + i(ay + bx)\big) \\
+      &= \alpha(ax - by) - \beta(ay + bx)
+      + i\big(\beta(ax - by) + \alpha(ay + bx)\big) \\
+      &= (\alpha a - \beta b)x + (-\alpha b - \beta a)y
+      + i\big((\beta a + \alpha b)x + (-\beta b + \alpha a)y\big).
+    \end{aligned}
+  \]
+
+  On the other hand,
+  \[
+    \begin{aligned}
+      c \cdot A(z) &= (a + ib) \cdot (\ell z) \\
+      &= (a + ib) \cdot \big((\alpha + i\beta)(x + iy)\big) \\
+      &= (a + ib) \cdot \big((\alpha x - \beta y) + i(\beta x +
+      \alpha y)\big) \\
+      &= a(\alpha x - \beta y) - b(\beta x + \alpha y)
+      + i\big(b(\alpha x - \beta y) + a(\beta x + \alpha y)\big) \\
+      &= (\alpha a - \beta b)x + (-\alpha b - \beta a)y
+      + i\big((\beta a + \alpha b)x + (-\beta b + \alpha a)y\big).
+    \end{aligned}
+  \]
+
+  The two expressions are identical, so $A(cz) = c \cdot A(z)$.
+  Hence $A$ is $\C$-linear.
+
+  (b) $\Rightarrow$ (c): If $A$ is $\C$-linear, then $A(i) = A(i \cdot 1) =
+  i A(1)$.
+
+  (c) $\Rightarrow$ (d): Let $A(1) = \alpha + i\beta$. Then $A(i) = iA(1)
+  = i(\alpha + i\beta) = -\beta + i\alpha$. Thus the matrix of $A$ with
+  respect to the basis $(1, i)$ is
+  \[
+    \begin{bmatrix}
+      \alpha & -\beta \\
+      \beta & \alpha
+    \end{bmatrix}.
+  \]
+
+  (d) $\Rightarrow$ (a): If the matrix of $A$ has the form in (d), then
+  for any $z = x + iy$, we have
+  \[
+    A(z) = A(x + iy) = xA(1) + yA(i) = (\alpha x - \beta y) + i(\beta x +
+    \alpha y).
+  \]
+  Let $\ell = \alpha + i\beta$. Then $\ell z = (\alpha + i\beta)(x + iy)
+  = (\alpha x - \beta y) + i(\beta x + \alpha y)$. Thus $A(z) = \ell z$.
+\end{solution}
+
+\end{document}
