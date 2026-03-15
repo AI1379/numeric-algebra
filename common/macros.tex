@@ -1,0 +1,59 @@
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% Common Macros for LaTeX
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+% Useful packages
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+
+% Math operators and common symbols
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\innerProd}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\T}{\mathrm{T}}
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+\newcommand{\abs}[1]{\left| #1 \right|}
+
+% Vector and Matrix shortcuts
+\newcommand{\vecTwo}[2]{
+  \begin{bmatrix}
+    #1 \\
+    #2
+\end{bmatrix}}
+\newcommand{\vecThree}[3]{
+  \begin{bmatrix}
+    #1 \\
+    #2 \\
+    #3
+\end{bmatrix}}
+\newcommand{\vecTwoH}[2]{
+  \begin{bmatrix}
+    #1 & #2
+  \end{bmatrix}
+}
+\newcommand{\vecThreeH}[3]{
+  \begin{bmatrix}
+    #1 & #2 & #3
+  \end{bmatrix}
+}
+
+% Common fields
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+
+% Solutions and proofs
+\newenvironment{solution}{
+\begin{proof}[解]}{
+\end{proof}}
+
+% Utility to get environment variables (requires lualatex)
+\newcommand{\getEnv}[2]{\directlua{tex.print(os.getenv("#1") or "#2")}}

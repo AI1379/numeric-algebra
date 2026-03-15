@@ -8,58 +8,18 @@
 
 % useful packages.
 \usepackage[UTF8]{ctex}
-\usepackage{amsfonts}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{enumerate}
-\usepackage{graphicx}
-\usepackage{multicol}
 \usepackage{fancyhdr}
 \usepackage{layout}
 \usepackage{luacode}
-\usepackage[ruled,linesnumbered]{algorithm2e}
 
-\newcommand{\getEnv}[2]{\directlua{tex.print(os.getenv("#1") or "#2")}}
-
-% some common command
-\newcommand{\dif}{\mathrm{d}}
-\newcommand{\innerProd}[1]{\left\langle #1 \right\rangle}
-\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
-\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
-\newcommand{\T}{\mathrm{T}}
+% import common macros
+\input{../../common/macros.tex}
 
 % Name and uID
 \newcommand{\name}{\getEnv{NAME}{NAME}}
 \newcommand{\uid}{\getEnv{UID}{UID}}
 \newcommand{\course}{数值代数}
 \newcommand{\hwNum}{1}
-
-\newcommand{\vecTwo}[2]{
-  \begin{bmatrix}
-    #1 \\
-    #2
-\end{bmatrix}}
-\newcommand{\vecThree}[3]{
-  \begin{bmatrix}
-    #1 \\
-    #2 \\
-    #3
-\end{bmatrix}}
-\newcommand{\vecTwoH}[2]{
-  \begin{bmatrix}
-    #1 & #2
-  \end{bmatrix}
-}
-\newcommand{\vecThreeH}[3]{
-  \begin{bmatrix}
-    #1 & #2 & #3
-  \end{bmatrix}
-}
-
-\newenvironment{solution}{
-\begin{proof}[解]}{
-\end{proof}}
 
 \begin{document}
 
