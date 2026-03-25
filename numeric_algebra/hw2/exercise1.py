@@ -39,7 +39,7 @@ def forward_substitution(
     n = L.shape[0]
     y = np.zeros_like(b)
     for i in range(n):
-        y[i] = b[i] - np.dot(L[i, :i], y[:i])
+        y[i] = (b[i] - np.dot(L[i, :i], y[:i])) / L[i, i]
     return y
 
 
