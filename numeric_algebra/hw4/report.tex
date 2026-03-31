@@ -1,0 +1,444 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{luacode}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Configure listings for Python code highlighting
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,
+  frame=single,
+  framesep=5pt,
+  rulecolor=\color{gray},
+  backgroundcolor=\color{white},
+  captionpos=b,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=5,
+}
+
+\lstnewenvironment{plaintext}[1][]{
+  \lstset{
+    language=none,
+    basicstyle=\ttfamily,
+    keywordstyle=,
+    commentstyle=,
+    stringstyle=,
+    numbers=none,
+    frame=none,
+    backgroundcolor=\color{white},
+    #1                % 允许用户自行覆盖默认设置
+  }
+}{}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{数值代数}
+\newcommand{\hwNum}{4}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name (\uid)}
+\chead{\course \#\hwNum}
+\rhead{\today}
+
+\section{题目 1：向量范数}
+
+设 $\|\cdot\|_p: \mathbb{R}^n \to \mathbb{R}$ 是由
+\[
+  \|x\|_p = \left( |x_1|^p + \cdots + |x_n|^p \right)^{1/p}, \quad x
+  \in \mathbb{R}^n, \ p \geq 1
+\]
+定义的。证明：
+\begin{enumerate}
+  \item $\|\cdot\|_p$ 是一个向量范数。
+  \item $\|x\|_\infty = \max_{1 \leq i \leq n} |x_i|$。
+\end{enumerate}
+
+\begin{solution}
+  \textbf{Step 1. 证明 H\"older 不等式}
+
+  首先证明 Young 不等式：对于任意 $a, b \geq 0$ 和 $p, q > 1$ 满足 $\frac{1}{p} +
+  \frac{1}{q} = 1$，有
+  \[
+    ab \leq \frac{a^p}{p} + \frac{b^q}{q}.
+  \]
+
+  考虑对数 $\ln(ab) = \ln a + \ln b = \frac{1}{p} \ln a^p + \frac{1}{q} \ln b^q$。
+  于是由 Jensen 不等式可得 $\ln(ab) \leq \ln\left( \frac{a^p}{p} +
+  \frac{b^q}{q} \right)$，从而得到 Young 不等式。
+
+  然后考虑 H\"older 不等式：对于任意 $x, y \in \mathbb{R}^n$ 和 $p, q > 1$ 满足 $\frac{1}{p} +
+  \frac{1}{q} = 1$，有
+
+  \[
+    \sum_{i=1}^{n} |x_i y_i| \leq \left( \sum_{i=1}^{n} |x_i|^p \right)^{1/p}
+    \left( \sum_{i=1}^{n} |y_i|^q \right)^{1/q}.
+  \]
+
+  首先考虑归一化。令 $A = \left( \sum_{i=1}^{n} |x_i|^p \right)^{1/p}$ 和 $B =
+  \left( \sum_{i=1}^{n} |y_i|^q \right)^{1/q}$，则 $A, B > 0$。于是令
+  $\hat{a}_i = \frac{|x_i|}{A}$ 和 $\hat{b}_i = \frac{|y_i|}{B}$，则
+  $\sum_{i=1}^{n} \hat{a}_i^p = \sum_{i=1}^{n} \hat{b}_i^q = 1$。由 Young 不等式可得
+  \[
+    \sum_{i=1}^{n} \hat{a}_i \hat{b}_i \leq \sum_{i=1}^{n} \left(
+      \frac{\hat{a}_i^p}{p} +
+    \frac{\hat{b}_i^q}{q} \right) = 1.
+  \]
+  从而
+  \[
+    \sum_{i=1}^{n} |x_i y_i| = AB \sum_{i=1}^{n} \hat{a}_i \hat{b}_i \leq AB =
+    \left( \sum_{i=1}^{n} |x_i|^p \right)^{1/p} \left( \sum_{i=1}^{n} |y_i|^q
+    \right)^{1/q}.
+  \]
+  从而得到 H\"older 不等式。
+
+  \textbf{Step 2. 证明 $\|\cdot\|_p$ 是一个向量范数}
+
+  首先正定性与线性性显然，只需证明三角不等式。
+
+  考虑 $|x_i + y_i|^p = |x_i + y_i| |x_i + y_i|^{p-1} \leq (|x_i| +
+  |y_i|) |x_i + y_i|^{p-1}$ ，求和，得到：
+  \[
+    \sum_{i=1}^{n} |x_i + y_i|^p \leq \sum_{i=1}^{n} |x_i| |x_i + y_i|^{p-1} +
+    \sum_{i=1}^{n} |y_i| |x_i + y_i|^{p-1}.
+  \]
+
+  考虑 $\sum |x_i||x_i+y_i|^{p-1}$ 的项，令 $a_i = |x_i|$ 和 $b_i = |x_i +
+  y_i|^{p-1}$，并令 $q = \frac{p}{p-1}$，则 $a_i^p = |x_i|^p$ 和 $b_i^q =
+  |x_i + y_i|^p$。由 H\"older 不等式可得
+
+  \[
+    \sum_{i=1}^{n} |x_i||x_i+y_i|^{p-1} \leq \|x\|_p \cdot \|x+y\|_q^{p/q}
+  \]
+
+  对 $\sum |y_i||x_i+y_i|^{p-1}$ 的项同样处理，得到
+
+  \[
+    \sum_{i=1}^{n} |y_i||x_i+y_i|^{p-1} \leq \|y\|_p \cdot \|x+y\|_q^{p/q}.
+  \]
+
+  于是有：
+
+  \[
+    \sum_{i=1}^{n} |x_i + y_i|^p \leq (\|x\|_p + \|y\|_p) \cdot \|x+y\|_q^{p/q}.
+  \]
+
+  这里又有：$p/q = p - 1$，所以 $\|x+y\|_q^{p/q} = \|x+y\|_p^{p-1}$。因此：
+
+  \[
+    \|x+y\|_p^p \leq (\|x\|_p + \|y\|_p) \cdot \|x+y\|_p^{p-1},
+    \Rightarrow \|x+y\|_p \leq \|x\|_p + \|y\|_p.
+  \]
+
+  从而得证。
+
+  \textbf{Step 3. 证明 $\|x\|_\infty = \max_{1 \leq i \leq n} |x_i|$}
+
+  不妨设 $\max_{1 \leq i \leq n} |x_i| = |x_1|$，则 $|x_i| \leq |x_1|$ 对任意
+  $i$ 都成立，因此 $\|x\|_p \leq (n |x_1|^p)^{1/p} = n^{1/p} |x_1|$。当 $p
+  \to \infty$ 时，$n^{1/p} \to 1$，因此 $\|x\|_\infty \leq \max_{1 \leq i
+  \leq n} |x_i|$。
+
+  另一方面，$|x_1| \leq \|x\|_p$ 对任意 $p$ 都成立，因此 $\max_{1 \leq i \leq n}
+  |x_i| \leq \|x\|_\infty$。
+
+  从而得证。
+
+\end{solution}
+
+\section{题目 2：向量范数的等价性}
+
+证明 $\|\cdot\|_1$, $\|\cdot\|_2$, $\|\cdot\|_\infty$ 有如下的等价性：
+\begin{enumerate}
+  \item $\|x\|_2 \leq \|x\|_1 \leq \sqrt{n}\|x\|_2$。
+  \item $\|x\|_\infty \leq \|x\|_2 \leq \sqrt{n}\|x\|_\infty$。
+  \item $\|x\|_\infty \leq \|x\|_1 \leq n\|x\|_\infty$。
+\end{enumerate}
+
+\begin{solution}
+  \subsection*{(1) $L_1$ 范数与 $L_2$ 范数的等价性}
+
+  首先证明 $\|x\|_2 \leq \|x\|_1$。由于
+  \[
+    \|x\|_1^2 = \left( \sum_{i=1}^{n} |x_i| \right)^2 =
+    \sum_{i=1}^{n} |x_i|^2 + 2 \sum_{1 \leq i < j \leq n} |x_i||x_j|
+    \geq \sum_{i=1}^{n} |x_i|^2 = \|x\|_2^2,
+  \]
+  因此 $\|x\|_2 \leq \|x\|_1$。
+
+  然后证明 $\|x\|_1 \leq \sqrt{n} \|x\|_2$。由 Cauchy-Schwarz 不等式：
+  \[
+    \|x\|_1 = \sum_{i=1}^{n} |x_i| \cdot 1 \leq \left( \sum_{i=1}^{n}
+    |x_i|^2 \right)^{1/2} \left( \sum_{i=1}^{n} 1^2 \right)^{1/2} =
+    \sqrt{n} \|x\|_2.
+  \]
+
+  综上，$\|x\|_2 \leq \|x\|_1 \leq \sqrt{n} \|x\|_2$。
+
+  \subsection*{(2) $L_2$ 范数与 $L_\infty$ 范数的等价性}
+
+  设 $|x_k| = \|x\|_\infty = \max_{1 \leq i \leq n} |x_i|$，则
+  \[
+    \|x\|_2 = \left( \sum_{i=1}^{n} |x_i|^2 \right)^{1/2} \geq \left(
+    |x_k|^2 \right)^{1/2} = |x_k| = \|x\|_\infty.
+  \]
+  这给出了 $\|x\|_\infty \leq \|x\|_2$。
+
+  另一方面，
+  \[
+    \|x\|_2 = \left( \sum_{i=1}^{n} |x_i|^2 \right)^{1/2} \leq \left(
+    \sum_{i=1}^{n} \|x\|_\infty^2 \right)^{1/2} = \left( n
+    \|x\|_\infty^2 \right)^{1/2} = \sqrt{n} \|x\|_\infty.
+  \]
+
+  综上，$\|x\|_\infty \leq \|x\|_2 \leq \sqrt{n} \|x\|_\infty$。
+
+  \subsection*{(3) $L_1$ 范数与 $L_\infty$ 范数的等价性}
+
+  设 $|x_k| = \|x\|_\infty$，则
+  \[
+    \|x\|_1 = \sum_{i=1}^{n} |x_i| \geq |x_k| = \|x\|_\infty.
+  \]
+
+  另一方面，
+  \[
+    \|x\|_1 = \sum_{i=1}^{n} |x_i| \leq \sum_{i=1}^{n} \|x\|_\infty =
+    n \|x\|_\infty.
+  \]
+
+  综上，$\|x\|_\infty \leq \|x\|_1 \leq n \|x\|_\infty$。
+
+\end{solution}
+
+\section{题目 3：Frobenius 范数}
+
+设 $\|\cdot\|_F: \mathbb{R}^{n \times n} \to \mathbb{R}$ 是由
+\[
+  \|A\|_F = \left( \sum_{i,j=1}^{n} |a_{ij}|^2 \right)^{1/2}, \quad A
+  = (a_{ij}) \in \mathbb{R}^{n \times n}
+\]
+定义的。证明 $\|\cdot\|_F$ 是一个矩阵范数。（注：该范数也是一个常用且易于计算的矩阵范数，称为 Frobenius 范数。）
+
+\begin{solution}
+  正定性、线性性与三角不等式由 $L_2$ 范数的性质易得，因此只需证明相容性，即 $\|AB\|_F \leq \|A\|_F \|B\|_F$。
+
+  令 $C = AB$，则 $c_{ij} = \sum_{k=1}^{n} a_{ik} b_{kj}$。由 Cauchy-Schwarz 不等式：
+  \[
+    |c_{ij}|^2 = \left| \sum_{k=1}^{n} a_{ik} b_{kj} \right|^2 \leq
+    \left( \sum_{k=1}^{n} |a_{ik}|^2 \right) \left( \sum_{k=1}^{n}
+    |b_{kj}|^2 \right).
+  \]
+
+  对所有 $i, j$ 求和：
+  \[
+    \|AB\|_F^2 = \sum_{i,j=1}^{n} |c_{ij}|^2 \leq \sum_{i,j=1}^{n}
+    \left( \sum_{k=1}^{n} a_{ik}^2 \right) \left( \sum_{k=1}^{n}
+    b_{kj}^2 \right).
+  \]
+
+  注意到 $\sum_{k=1}^{n} a_{ik}^2$ 只与 $i$ 有关，$\sum_{k=1}^{n} b_{kj}^2$
+  只与 $j$ 有关，因此：
+  \[
+    \|AB\|_F^2 \leq \left( \sum_{i=1}^{n} \sum_{k=1}^{n} a_{ik}^2
+    \right) \left( \sum_{j=1}^{n} \sum_{k=1}^{n} b_{kj}^2 \right) =
+    \|A\|_F^2 \|B\|_F^2.
+  \]
+
+  从而 $\|AB\|_F \leq \|A\|_F \|B\|_F$，相容性得证。
+
+\end{solution}
+
+\section{题目 4：矩阵范数的不等式}
+
+设 $A, B \in \mathbb{R}^{n \times n}$，证明：
+\begin{enumerate}
+  \item $\max_{1 \leq i,j \leq n} |a_{ij}| \leq \|A\|_2 \leq n
+    \max_{1 \leq i,j \leq n} |a_{ij}|$。
+  \item $\frac{1}{\sqrt{n}} \|A\|_\infty \leq \|A\|_2 \leq
+    \sqrt{n}\|A\|_\infty$。
+  \item $\frac{1}{\sqrt{n}} \|A\|_1 \leq \|A\|_2 \leq \sqrt{n}\|A\|_1$。
+  \item $\|A\|_2 \leq \|A\|_F \leq \sqrt{n}\|A\|_2$。
+  \item $\|AB\|_F \leq \|A\|_2\|B\|_F$。
+  \item $\|AB\|_F \leq \|A\|_F\|B\|_2$。
+\end{enumerate}
+
+\begin{solution}
+  \subsection*{(1) $\max_{i,j} |a_{ij}| \leq \|A\|_2 \leq n
+  \max_{i,j} |a_{ij}|$}
+
+  设 $\max_{i,j} |a_{ij}| = |a_{kl}|$。取 $e_k$ 为第 $k$ 个单位向量，则
+  \[
+    \|A\|_2 \geq \|Ae_k\|_2 = \sqrt{\sum_{i=1}^n a_{ik}^2} \geq
+    |a_{kl}| = \max_{i,j} |a_{ij}|.
+  \]
+
+  另一方面，设 $\|x\|_2 = 1$，则
+  \[
+    \|Ax\|_2^2 = \sum_{i=1}^n \left( \sum_{j=1}^n a_{ij} x_j
+    \right)^2 \leq \sum_{i=1}^n \left( n \max_{i,j} |a_{ij}|^2 \cdot
+    \sum_{j=1}^n x_j^2 \right) = n^2 \max_{i,j} |a_{ij}|^2.
+  \]
+  因此 $\|A\|_2 \leq n \max_{i,j} |a_{ij}|$。
+
+  \subsection*{(2) $\frac{1}{\sqrt{n}} \|A\|_\infty \leq \|A\|_2 \leq
+  \sqrt{n}\|A\|_\infty$}
+
+  先证 $\|A\|_2 \leq \sqrt{n}\|A\|_\infty$。设 $\|x\|_2 = 1$，则
+  \[
+    \|Ax\|_2^2 = \sum_{i=1}^n \left| \sum_{j=1}^n a_{ij} x_j
+    \right|^2 \leq \sum_{i=1}^n \left( \sum_{j=1}^n |a_{ij}| \cdot
+    |x_j| \right)^2 \leq \sum_{i=1}^n \|A\|_\infty^2 \cdot \|x\|_1^2
+    \leq n \|A\|_\infty^2.
+  \]
+
+  再证 $\frac{1}{\sqrt{n}} \|A\|_\infty \leq \|A\|_2$。设第 $k$ 行达到最大行和，取
+  $x = (\text{sgn}(a_{k1}), \ldots, \text{sgn}(a_{kn}))^T /
+  \sqrt{n}$，则 $\|x\|_2 = 1$，且
+  \[
+    \|Ax\|_2 \geq \frac{1}{\sqrt{n}} \left| \sum_{j=1}^n |a_{kj}|
+    \right| = \frac{1}{\sqrt{n}} \|A\|_\infty.
+  \]
+
+  \subsection*{(3) $\frac{1}{\sqrt{n}} \|A\|_1 \leq \|A\|_2 \leq
+  \sqrt{n}\|A\|_1$}
+
+  由于 $\|A\|_2 = \|A^T\|_2$ 且 $\|A^T\|_\infty = \|A\|_1$，由 (2) 即得。
+
+  \subsection*{(4) $\|A\|_2 \leq \|A\|_F \leq \sqrt{n}\|A\|_2$}
+
+  设 $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_n \geq 0$ 为 $A$ 的奇异值，则
+  \[
+    \|A\|_2 = \sigma_1, \quad \|A\|_F = \sqrt{\sum_{i=1}^n \sigma_i^2}.
+  \]
+
+  显然 $\sigma_1^2 \leq \sum_{i=1}^n \sigma_i^2 \leq n \sigma_1^2$，即
+  $\|A\|_2 \leq \|A\|_F \leq \sqrt{n}\|A\|_2$。
+
+  \subsection*{(5) $\|AB\|_F \leq \|A\|_2\|B\|_F$}
+
+  现设 $B = (b_1, \ldots, b_n)$ 其中 $b_j$ 为 $B$ 的第 $j$ 列。设 $C = AB$，则
+  \[
+    c_{ij} = \sum_{k=1}^n a_{ik} b_{kj}.
+  \]
+  而 $Ab_j$ 的第 $i$ 个分量为
+  \[
+    (Ab_j)_i = \sum_{k=1}^n a_{ik} b_{kj} = c_{ij}.
+  \]
+  因此
+  \[
+    \|Ab_j\|_2^2 = \sum_{i=1}^n (Ab_j)_i^2 = \sum_{i=1}^n c_{ij}^2,
+  \]
+  于是
+  \[
+    \|AB\|_F^2 = \sum_{i,j} c_{ij}^2 = \sum_{j=1}^n \sum_{i=1}^n
+    c_{ij}^2 = \sum_{j=1}^n \|Ab_j\|_2^2.
+  \]
+  由相容性 $\|Ab_j\|_2 \leq \|A\|_2 \|b_j\|_2$，得
+  \[
+    \|AB\|_F^2 = \sum_{j=1}^n \|Ab_j\|_2^2 \leq \sum_{j=1}^n
+    \|A\|_2^2 \|b_j\|_2^2 = \|A\|_2^2 \|B\|_F^2.
+  \]
+
+  \subsection*{(6) $\|AB\|_F \leq \|A\|_F\|B\|_2$}
+
+  由 $\|AB\|_F = \|(AB)^T\|_F = \|B^T A^T\|_F$，应用 (5) 得
+  \[
+    \|B^T A^T\|_F \leq \|B^T\|_2 \|A^T\|_F = \|B\|_2 \|A\|_F.
+  \]
+
+\end{solution}
+
+\section{题目 5：LU 分解的增长因子}
+
+令 $A = LU$ 是 $n \times n$ 矩阵 $A$ 的 LU 分解且 $|l_{ij}| \leq 1$。设 $a_i^T$
+和 $u_i^T$ 分别表示 $A$ 和 $U$ 的第 $i$ 行。证明
+\[
+  u_i^T = a_i^T - \sum_{j=1}^{i-1} l_{ij} u_j^T,
+\]
+以及用它证明 $\|U\|_\infty \leq 2^{n-1}\|A\|_\infty$。
+
+\begin{solution}
+  \textbf{Step 1. 证明等式 $u_i^T = a_i^T - \sum_{j=1}^{i-1} l_{ij} u_j^T$}
+
+  由 LU 分解 $A = LU$，其中 $L$ 是下三角矩阵（对角线元素为1），$U$ 是上三角矩阵。
+
+  考虑 $A = LU$ 的第 $i$ 行。设 $L$ 的第 $i$ 行为 $(l_{i1}, l_{i2}, \ldots,
+  l_{i,i-1}, 1, 0, \ldots, 0)$，$U$ 的第 $j$ 行为 $u_j^T$。
+
+  由矩阵乘法，$A$ 的第 $i$ 行 $a_i^T$ 为：
+  \[
+    a_i^T = \sum_{k=1}^{n} l_{ik} \cdot u_k^T.
+  \]
+
+  由于 $L$ 是单位下三角矩阵，$l_{ik} = 0$ 当 $k > i$，且 $l_{ii} = 1$。因此：
+  \[
+    a_i^T = \sum_{k=1}^{i-1} l_{ik} u_k^T + l_{ii} u_i^T =
+    \sum_{k=1}^{i-1} l_{ik} u_k^T + u_i^T.
+  \]
+
+  移项即得：
+  \[
+    u_i^T = a_i^T - \sum_{k=1}^{i-1} l_{ik} u_k^T.
+  \]
+
+  此即所证等式。
+
+  \textbf{Step 2. 证明 $\|U\|_\infty \leq 2^{n-1}\|A\|_\infty$}
+
+  考虑归纳证明：
+  \[
+    \|u_i^T\|_1 \leq 2^{i-1} \|A\|_\infty
+  \]
+  为了书写方便，以下所有的范数均为 $L_1$ 范数。从而有 $\|A\|_\infty = \max_{1 \leq i \leq
+  n} \|a_i^T\|$。
+  于是有：
+
+  \textbf{I.} 当 $i=1$ 时，$u_1^T = a_1^T$，因此 $\|u_1^T\| = \|a_1^T\|
+  \leq \|A\|_\infty$，结论成立。
+
+  \textbf{II.} 假设当 $i < k$ 时，$\|u_i^T\|_1 \leq 2^{i-1} \|A\|_\infty$
+  成立。则当 $i = k$ 时：
+
+  \[
+    \begin{aligned}
+      \|u_k^T\| & = \left\| a_k^T - \sum_{j=1}^{k-1} l_{kj} u_j^T
+      \right\| \\
+      & \leq \|a_k^T\| + \sum_{j=1}^{k-1} |l_{kj}| \cdot \|u_j^T\|
+      \quad (\text{由三角不等式}) \\
+      & \leq \|a_k^T\| + \sum_{j=1}^{k-1} 2^{j-1} \|A\|_\infty
+      \quad (\text{由归纳假设和 $|l_{kj}| \leq 1$}) \\
+      & \leq \|A\|_\infty + \|A\|_\infty \sum_{j=1}^{k-1} 2^{j-1} \\
+      & = \|A\|_\infty \left( 1 + \sum_{j=1}^{k-1} 2^{j-1} \right) \\
+      & = \|A\|_\infty \cdot 2^{k-1}.
+    \end{aligned}
+  \]
+
+  从而 $\|u_k^T\|_1 \leq 2^{k-1} \|A\|_\infty$，结论成立。于是 $\|U\|_\infty =
+  \max_{1 \leq i \leq n} \|u_i^T\|_1 \leq 2^{n-1} \|A\|_\infty$。
+\end{solution}
+
+\end{document}
