@@ -1,0 +1,46 @@
+                POINT SET TOPOLOGY - HOMEWORK 04
+
+
+                            Due: 2026 April 19th, 22:00PM
+
+  For questions below, we assume that Rn is endowed with the standard topology (the
+one induced from the metric d(x, y) = ( ni=1 (xi − yi )2 )1/2 ), unless stated otherwise.
+                                       P
+
+  Question 1. Let X = R2 be endowed with the standard topology. Consider the
+subset
+                    A = {(x, sin(1/x)) : x ∈ (0, 1]} ⊂ X.
+Compute the following four sets:
+                              Ao , A, LP(A), A ∩ R2 − A.
+
+
+  Question 2. Let X be a set with power set P(A). Let f : P(X) −→ P(X) be a
+function satisfying the following properties (for any A, B ∈ P(X)):
+     (i) f (∅) = ∅,
+    (ii) A ⊆ f (A),
+   (iii) f (A) = f (f (A)),
+   (iv) f (A ∪ B) = f (A) ∪ f (B).
+Prove that
+    (1) the set
+                         Tf := {X − A : A ∈ P(X) and f (A) = A}
+       is a topology on X;
+   (2) the closue A of any A ⊆ X with respect to the topology Tf is just f (A).
+
+
+  Question 3. Consider the function f : [0, 1) −→ S 1 given by
+                               f (t) = (cos(2πt), sin(2πt)).
+Show that f is not a homeomorphism with respect to the standard subspace topologies
+on [0, 1) and S 1 . Is it possible to find a homeomorphism between [0, 1) and S 1 ?
+
+   Question 4. Fix a topological space (X, T ). A subset A ⊆ X is called regularly open
+if A = (A)o , i.e., A is equal to the interior of its closure.
+     (i) Give an example of an open set in R (with respect to the standard topology) that
+         is not regularly open. Can you characterize the regularly open sets in R?
+    (ii) Prove that for any A ⊆ X, the set (A)o is regularly open.
+
+
+  Question 5. Let A be a subset of a topological space (X, T ). Prove the equality
+A = A ∪ LP(A).
+
+                                             1
+

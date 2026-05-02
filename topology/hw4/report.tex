@@ -1,0 +1,248 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+% \usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Point Set Topology}
+\newcommand{\hwNum}{4}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+\section{Question 1}
+
+Let
+\[
+A=\{(x,\sin(1/x)):x\in(0,1]\}\subset\R^2
+\]
+with the standard topology on $\R^2$. Compute $A^{\circ}$, $\overline{A}$, $LP(A)$, and $\overline{A}\cap(\R^2\setminus A)$.
+
+\begin{solution}
+The set $A$ is the graph of a function over $(0,1]$, so it has empty interior in $\R^2$:
+\[
+A^{\circ}=\varnothing.
+\]
+
+For closure, note first that $A\subset\overline A$. For $x\to0^+$, the values $\sin(1/x)$ oscillate in $[-1,1]$.
+Given any $y\in[-1,1]$, choose $t_n\to\infty$ with $\sin t_n\to y$ and put $x_n=1/t_n$. Then $x_n\to0^+$ and
+\[
+(x_n,\sin(1/x_n))=(x_n,\sin t_n)\to(0,y).
+\]
+So $\{0\}\times[-1,1]\subset\overline A$.
+Conversely, if a sequence in $A$ converges to $(a,b)$, then either $a>0$ and continuity of $x\mapsto\sin(1/x)$ on $(0,1]$ gives $b=\sin(1/a)$, or $a=0$ and necessarily $b\in[-1,1]$. Hence
+\[
+\overline A=A\cup(\{0\}\times[-1,1]).
+\]
+
+Now compute limit points.
+Every point of $A$ is a limit point of $A$ because near each $x_0\in(0,1]$ there are infinitely many nearby $x\neq x_0$ in $(0,1]$, hence nearby points of the graph.
+Every point of $\{0\}\times[-1,1]$ is also a limit point by the construction above.
+There are no other limit points, so
+\[
+LP(A)=A\cup(\{0\}\times[-1,1]).
+\]
+
+Therefore
+\[
+\overline A\cap(\R^2\setminus A)=\{0\}\times[-1,1].
+\]
+\end{solution}
+
+\section{Question 2}
+
+Let $X$ be a set and $f:\mathcal P(X)\to\mathcal P(X)$ satisfy:
+\[
+\text{(i) }f(\varnothing)=\varnothing,\quad
+\text{(ii) }A\subseteq f(A),\quad
+\text{(iii) }f(f(A))=f(A),\quad
+\text{(iv) }f(A\cup B)=f(A)\cup f(B).
+\]
+Define
+\[
+\mathcal{T}_f:=\{X\setminus C:\ C\subseteq X,\ f(C)=C\}.
+\]
+Prove: (1) $\mathcal{T}_f$ is a topology on $X$; (2) closure in $\mathcal{T}_f$ is exactly $f(A)$.
+
+\begin{solution}
+\textbf{Step 1: closed-set viewpoint.}
+Let
+\[
+\mathcal C_f:=\{C\subseteq X:f(C)=C\}.
+\]
+Then $\mathcal{T}_f$ is exactly the family of complements of sets in $\mathcal C_f$.
+So it is enough to show $\mathcal C_f$ is a closed-set system.
+
+We first prove monotonicity of $f$.
+If $A\subseteq B$, then $B=A\cup B$, so
+\[
+f(B)=f(A\cup B)=f(A)\cup f(B),
+\]
+hence $f(A)\subseteq f(B)$.
+
+Now verify closed-set axioms:
+\[
+f(X)=f(X\cup\varnothing)=f(X)\cup f(\varnothing)=f(X),
+\]
+trivial; and by (ii), $X\subseteq f(X)\subseteq X$, so $f(X)=X$. Thus $X\in\mathcal C_f$.
+Also $\varnothing\in\mathcal C_f$ by (i).
+
+If $C_1,C_2\in\mathcal C_f$, then
+\[
+f(C_1\cup C_2)=f(C_1)\cup f(C_2)=C_1\cup C_2,
+\]
+so finite unions stay in $\mathcal C_f$.
+
+If $\{C_i\}_{i\in I}\subseteq\mathcal C_f$ and $C=\bigcap_{i\in I}C_i$, then $C\subseteq C_i$ for all $i$, hence by monotonicity
+\[
+f(C)\subseteq f(C_i)=C_i\quad(\forall i),
+\]
+so $f(C)\subseteq\bigcap_i C_i=C$. By (ii), $C\subseteq f(C)$. Therefore $f(C)=C$ and $C\in\mathcal C_f$.
+
+So $\mathcal C_f$ is exactly the family of closed sets of a topology, and therefore $\mathcal{T}_f$ is a topology.
+
+\textbf{Step 2: closure is $f(A)$.}
+Take any $A\subseteq X$.
+By (iii),
+\[
+f(f(A))=f(A),
+\]
+so $f(A)$ is $\mathcal{T}_f$-closed; by (ii), $A\subseteq f(A)$.
+Hence $f(A)$ is a closed superset of $A$.
+
+Now let $C$ be any $\mathcal{T}_f$-closed set with $A\subseteq C$.
+Then $f(C)=C$. By monotonicity,
+\[
+f(A)\subseteq f(C)=C.
+\]
+So $f(A)$ is contained in every closed superset of $A$, i.e. it is the closure:
+\[
+\overline A^{\,\mathcal{T}_f}=f(A).
+\]
+\end{solution}
+
+\section{Question 3}
+
+Consider
+\[
+f:[0,1)\to S^1,\qquad f(t)=(\cos(2\pi t),\sin(2\pi t)).
+\]
+Show $f$ is not a homeomorphism (with standard subspace topologies). Is there any homeomorphism between $[0,1)$ and $S^1$?
+
+\begin{solution}
+The map $f$ is continuous and bijective.
+If it were a homeomorphism, then $[0,1)$ and $S^1$ would be homeomorphic.
+But compactness is a topological invariant:
+\begin{itemize}
+\item $S^1$ is compact (closed and bounded in $\R^2$).
+\item $[0,1)$ is not compact in $\R$.
+\end{itemize}
+Contradiction. So $f$ is not a homeomorphism.
+
+Consequently, there is no homeomorphism between $[0,1)$ and $S^1$ at all.
+\end{solution}
+
+\section{Question 4}
+
+Fix a topological space $(X,\mathcal{T})$. A set $A\subseteq X$ is regularly open if
+\[
+A=(\overline A)^\circ.
+\]
+(i) Give an open set in $\R$ (standard topology) that is not regularly open, and characterize regularly open sets in $\R$.
+(ii) Prove that $(\overline A)^\circ$ is regularly open for any $A\subseteq X$.
+
+\begin{solution}
+\textbf{(i) Example and characterization in $\R$.}
+
+Take
+\[
+U=(0,1)\cup(1,2).
+\]
+Then $U$ is open, but
+\[
+\overline U=[0,2],\qquad (\overline U)^\circ=(0,2)\neq U.
+\]
+So $U$ is not regularly open.
+
+A useful characterization (in any topological space, hence in $\R$) is:
+\[
+U\text{ is regularly open }\Longleftrightarrow U=\operatorname{int}(F)\text{ for some closed }F.
+\]
+Indeed, if $U$ is regularly open, take $F=\overline U$.
+Conversely, if $U=\operatorname{int}(F)$ with $F$ closed, then
+\[
+\overline U\subseteq\overline F=F
+\]
+and $U\subseteq\operatorname{int}(\overline U)$ since $U$ is open. Also
+\[
+\operatorname{int}(\overline U)\subseteq\operatorname{int}(F)=U.
+\]
+Hence $\operatorname{int}(\overline U)=U$.
+
+\textbf{(ii) $(\overline A)^\circ$ is regularly open.}
+
+Set
+\[
+B=(\overline A)^\circ.
+\]
+Since $B$ is open, $B\subseteq(\overline B)^\circ$.
+Also $B\subseteq\overline A$, so by monotonicity of closure
+\[
+\overline B\subseteq\overline{\overline A}=\overline A.
+\]
+Taking interiors,
+\[
+(\overline B)^\circ\subseteq(\overline A)^\circ=B.
+\]
+Thus $(\overline B)^\circ=B$, i.e. $B$ is regularly open.
+\end{solution}
+
+\section{Question 5}
+
+Let $A\subseteq(X,\mathcal{T})$. Prove
+\[
+\overline A=A\cup LP(A).
+\]
+
+\begin{solution}
+First show $A\cup LP(A)\subseteq\overline A$.
+Clearly $A\subseteq\overline A$.
+If $x\in LP(A)$, every neighborhood $U$ of $x$ meets $A\setminus\{x\}$, hence meets $A$; therefore $x\in\overline A$.
+So $A\cup LP(A)\subseteq\overline A$.
+
+Now show $\overline A\subseteq A\cup LP(A)$.
+Take $x\in\overline A$.
+If $x\in A$, done.
+If $x\notin A$, then for any neighborhood $U$ of $x$, because $x\in\overline A$, we have $U\cap A\neq\varnothing$.
+Since $x\notin A$, this implies
+\[
+U\cap(A\setminus\{x\})\neq\varnothing.
+\]
+Hence $x\in LP(A)$.
+So $\overline A\subseteq A\cup LP(A)$.
+
+Combining both inclusions gives
+\[
+\overline A=A\cup LP(A).
+\]
+\end{solution}
+
+\end{document}
