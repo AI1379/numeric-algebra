@@ -1,0 +1,41 @@
+=== Task (1): Solve three linear systems ===
+
+System 1: tridiagonal, n=84, cond(A) = 3.4591e+16
+QR residual ||Ax - b|| = 1.6945e-14
+NumPy residual ||Ax - b|| = 1.7764e-15
+diff ||x_qr - x_np|| = 2.0636e+01
+
+System 2: tridiagonal(10,1,1), n=100, cond(A) = 1.4997e+00
+QR residual ||Ax - b|| = 8.5709e-16
+NumPy residual ||Ax - b|| = 6.2485e-16
+diff ||x_qr - x_np|| = 6.5058e-17
+
+System 3: Hilbert, n=40, cond(A) = 6.5817e+18
+QR residual ||Ax - b|| = 1.3428e-13
+NumPy residual ||Ax - b|| = 8.2216e-15
+diff ||x_qr - x_np|| = 4.3604e+03
+
+=== Task (2): Quadratic polynomial fitting ===
+
+y = 1.000000 t^2 + 1.000000 t + 1.000000
+residual ||r||_2 = 4.577567e-16
+NumPy lstsq diff = 1.5263e-15
+
+=== Task (3): House price linear model ===
+
+Least squares coefficients:
+  x0                   = 2.077517
+  a1 (tax)             = 0.718888
+  a2 (bathrooms)       = 9.680204
+  a3 (lot size)        = 0.153506
+  a4 (living area)     = 13.679591
+  a5 (garage)          = 1.986828
+  a6 (rooms)           = -0.958225
+  a7 (bedrooms)        = -0.484023
+  a8 (age)             = -0.073647
+  a9 (build type)      = 1.018700
+  a10 (layout)         = 1.443523
+  a11 (fireplace)      = 2.902790
+
+residual ||r||_2 = 1.634035e+01
+NumPy lstsq diff = 4.2496e-14

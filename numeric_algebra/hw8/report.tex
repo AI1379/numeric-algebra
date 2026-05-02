@@ -1,0 +1,381 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{luacode}
+
+% import common macros
+\input{../../common/macros.tex}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Configure listings for Python code highlighting
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,
+  frame=single,
+  framesep=5pt,
+  rulecolor=\color{gray},
+  backgroundcolor=\color{white},
+  captionpos=b,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=5,
+}
+
+\lstnewenvironment{plaintext}[1][]{
+  \lstset{
+    language=none,
+    basicstyle=\ttfamily,
+    keywordstyle=,
+    commentstyle=,
+    stringstyle=,
+    numbers=none,
+    frame=none,
+    backgroundcolor=\color{white},
+    #1                % 允许用户自行覆盖默认设置
+  }
+}{}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{数值代数}
+\newcommand{\hwNum}{8}
+
+\newcommand{\fl}{\mathrm{fl}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name (\uid)}
+\chead{\course \#\hwNum}
+\rhead{\today}
+
+\section{题目 1}
+
+Householder 变换和 Givens 变换是两个最基本的初等正交变换。
+\begin{enumerate}
+  \item[(1)] 设 $x = (3, 1, 6, 4, 2, 2)^T$。求一个 Householder 变换和一个整数
+    $\alpha$，使得 $Hx = (3, \alpha, 4, 6, 0, 0)^T$。
+  \item[(2)] 确定 $c = \cos\theta$，$s = \sin\theta$，使得
+    \[
+      \begin{pmatrix} c & s \\ -s & c
+      \end{pmatrix}
+      \begin{pmatrix} 5 \\ 12
+      \end{pmatrix}
+      = \beta
+      \begin{pmatrix} 1 \\ 1
+      \end{pmatrix}, \quad \beta \in \R.
+    \]
+\end{enumerate}
+
+\begin{solution}
+
+  \textbf{(1)} 设目标向量 $z = (3, \alpha, 4, 6, 0, 0)^T$。由于 Householder
+  变换是正交变换，$\norm{Hx}_2 = \norm{x}_2$，故
+  \[
+    \norm{x}_2^2 = 9 + 1 + 36 + 16 + 4 + 4 = 70, \quad
+    \norm{z}_2^2 = 9 + \alpha^2 + 16 + 36 = 61 + \alpha^2.
+  \]
+  因此 $\alpha^2 = 9$，取 $\alpha = 3$，即 $z = (3, 3, 4, 6, 0, 0)^T$。
+
+  令 $v = x - z = (0, -2, 2, -2, 2, 2)^T$，则 Householder 变换为
+  \[
+    H = I - \frac{2}{\norm{v}_2^2} vv^T = I - \frac{1}{10} vv^T.
+  \]
+  验证：
+  \[
+    \norm{v}_2^2 = 4 + 4 + 4 + 4 + 4 = 20, \quad
+    v^T x = (-2)(1) + 2(6) + (-2)(4) + 2(2) + 2(2) = 10,
+  \]
+  \[
+    Hx = x - \frac{2 v^T x}{\norm{v}_2^2} v = x - v = (3, 3, 4, 6, 0, 0)^T
+  \]
+
+  \textbf{(2)} 展开得
+  \[
+    5c + 12s = \beta, \qquad -5s + 12c = \beta.
+  \]
+  两式相减：$17s = 7c$，即 $\dfrac{s}{c} = \dfrac{7}{17}$。
+
+  由 $c^2 + s^2 = 1$ 得
+  \[
+    c = \pm\frac{17}{\sqrt{17^2 + 7^2}} = \pm\frac{17}{\sqrt{338}} =
+    \pm\frac{17\sqrt{2}}{26}, \quad
+    s = \pm\frac{7}{\sqrt{338}} = \pm\frac{7\sqrt{2}}{26}.
+  \]
+  代入求 $\beta$：
+  \[
+    \beta = 5c + 12s = \pm\frac{13\sqrt{2}}{2}.
+  \]
+
+\end{solution}
+
+\section{题目 2}
+
+证明 Givens 变换矩阵 $G(i, k, \theta)$ 为正交阵。
+
+\begin{solution}
+
+  Givens 变换矩阵 $G(i, k, \theta)$ 与单位阵仅在
+  $(i,i)$、$(i,k)$、$(k,i)$、$(k,k)$ 四个位置不同，对应的 $2 \times 2$ 子块为
+  \[
+    \widetilde{G} =
+    \begin{pmatrix} \cos\theta & \sin\theta \\ -\sin\theta & \cos\theta
+    \end{pmatrix}.
+  \]
+  验证 $\widetilde{G}^T \widetilde{G} = I$：
+  \[
+    \widetilde{G}^T \widetilde{G}
+    =
+    \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta
+    \end{pmatrix}
+    \begin{pmatrix} \cos\theta & \sin\theta \\ -\sin\theta & \cos\theta
+    \end{pmatrix}
+    =
+    \begin{pmatrix} \cos^2\theta + \sin^2\theta & 0 \\ 0 &
+      \sin^2\theta + \cos^2\theta
+    \end{pmatrix}
+    = I_2.
+  \]
+
+  对于其余行和列，$G(i,k,\theta)$ 与单位阵相同，因此 $G(i,k,\theta)^T G(i,k,\theta) =
+  I$，即 $G(i,k,\theta)$ 为正交阵。
+
+\end{solution}
+
+\section{题目 3}
+
+设 $x \in \R^n$，$x \neq 0$ 且 $x$ 与 $e_1$ 不平行，这里 $e_1$ 为单位阵的第一列。
+\begin{enumerate}
+  \item[(1)] 构造一个 Householder 变换 $H$ 使得 $Hx = \norm{x}_2 e_1$。
+  \item[(2)] $He_1$ 平行于 $x$ 是否成立？请给出详细理由。
+\end{enumerate}
+
+\begin{solution}
+
+  \textbf{(1)} 令 $v = x - \norm{x}_2 e_1$。由于 $x$ 与 $e_1$ 不平行，$v \neq 0$。
+
+  构造 Householder 变换
+  \[
+    H = I - \frac{2}{\norm{v}_2^2} vv^T.
+  \]
+
+  验证 $Hx = \norm{x}_2 e_1$：计算
+  \[
+    v^T x = (x - \norm{x}_2 e_1)^T x = \norm{x}_2^2 - \norm{x}_2 x_1
+    = \norm{x}_2(\norm{x}_2 - x_1),
+  \]
+  \[
+    \norm{v}_2^2 = \norm{x}_2^2 - 2\norm{x}_2 x_1 + \norm{x}_2^2 =
+    2\norm{x}_2(\norm{x}_2 - x_1).
+  \]
+  因此
+  \[
+    \frac{2v^T x}{\norm{v}_2^2} = \frac{2\norm{x}_2(\norm{x}_2 -
+    x_1)}{2\norm{x}_2(\norm{x}_2 - x_1)} = 1,
+  \]
+  \[
+    Hx = x - v = x - (x - \norm{x}_2 e_1) = \norm{x}_2 e_1
+  \]
+
+  \textbf{(2)} 成立。Householder 矩阵满足 $H^2 = I$，对 (1) 中得到的 $Hx =
+  \norm{x}_2 e_1$ 两边左乘 $H$：
+  \[
+    H(Hx) = H(\norm{x}_2 e_1) \implies x = \norm{x}_2 He_1,
+  \]
+  即 $He_1 = x / \norm{x}_2$，故 $He_1$ 与 $x$ 平行。
+
+\end{solution}
+
+\section{题目 4}
+
+设 $A \in \R^{n \times n}$，且 $a_i$ 为 $A$ 的第 $i$ 列，证明
+\[
+  \abs{\det(A)} \leq \norm{a_1}_2 \norm{a_2}_2 \cdots \norm{a_n}_2.
+\]
+
+\begin{solution}
+
+  对 $A$ 作 QR 分解 $A = QR$，其中 $Q$ 为正交阵，$R$ 为上三角阵。则
+  \[
+    \abs{\det(A)} = \abs{\det(Q) \cdot \det(R)} = \abs{\det(R)} =
+    \prod_{i=1}^n \abs{r_{ii}}.
+  \]
+
+  由 $A = QR$，第 $j$ 列满足 $a_j = Q r_j$，其中 $r_j$ 是 $R$ 的第 $j$ 列。由于 $R$ 为上三角阵，
+  \[
+    a_j = \sum_{i=1}^{j} r_{ij} q_i,
+  \]
+  其中 $\{q_1, \ldots, q_n\}$ 为 $Q$ 的标准正交列向量。因此
+  \[
+    \norm{a_j}_2^2 = \sum_{i=1}^{j} r_{ij}^2 \geq r_{jj}^2,
+  \]
+  即 $\abs{r_{jj}} \leq \norm{a_j}_2$（$j = 1, 2, \ldots, n$）。
+
+  综上，
+  \[
+    \abs{\det(A)} = \prod_{i=1}^n \abs{r_{ii}} \leq \prod_{i=1}^n \norm{a_i}_2.
+  \]
+
+\end{solution}
+
+\section{题目 5（附加题）}
+
+设
+\[
+  A =
+  \begin{pmatrix} R & w \\ 0 & v
+  \end{pmatrix}, \quad
+  b =
+  \begin{pmatrix} c \\ d
+  \end{pmatrix},
+\]
+其中 $R \in \R^{(n-1) \times (n-1)}$，$w \in \R^{n-1}$，$v \in
+\R^{m-n+1}$，$c \in \R^{n-1}$，$d \in \R^{m-n+1}$，且 $A$ 为列满秩的。
+
+证明
+\[
+  \min \norm{Ax - b}_2^2 = \norm{d}_2^2 - \left(\frac{v^T
+  d}{\norm{v}_2}\right)^2.
+\]
+
+\begin{solution}
+
+  将 $x$ 分块为 $x = \binom{x_1}{x_2}$，其中 $x_1 \in \R^{n-1}$，$x_2 \in \R$。则
+  \[
+    \norm{Ax - b}_2^2 = \norm{Rx_1 + wx_2 - c}_2^2 + \norm{vx_2 - d}_2^2.
+  \]
+
+  注意 $R$ 必须可逆：若 $Ru = 0$ 对某个 $u \neq 0$ 成立，则 $A\binom{u}{0} = 0$，与列满秩矛盾。
+
+  由于 $R$ 可逆，对任意固定的 $x_2$，取 $x_1 = R^{-1}(c - wx_2)$ 即可使第一项为零。于是问题化为
+  \[
+    \min_{x_2 \in \R} \norm{vx_2 - d}_2^2
+    = \min_{x_2 \in \R} \left( \norm{v}_2^2 x_2^2 - 2(v^T d) x_2 +
+    \norm{d}_2^2 \right).
+  \]
+  对 $x_2$ 求导令其为零，得 $x_2^* = v^T d / \norm{v}_2^2$，代入得最小值
+  \[
+    \norm{d}_2^2 - \frac{(v^T d)^2}{\norm{v}_2^2}
+    = \norm{d}_2^2 - \left(\frac{v^T d}{\norm{v}_2}\right)^2.
+  \]
+
+\end{solution}
+
+\section{题目 6（附加题）}
+
+设 $x, y \in \R^n$，利用 Householder 矩阵证明
+\[
+  \det(I + xy^T) = 1 + x^T y.
+\]
+
+\begin{solution}
+
+  \textbf{情形一：$x = 0$。} $\det(I + 0) = 1 = 1 + 0$。成立。
+
+  \textbf{情形二：$x \neq 0$ 且 $x$ 与 $e_1$ 不平行。} 由题目 3 的构造，存在 Householder
+  矩阵 $H$ 使得 $Hx = \norm{x}_2 e_1$。Householder 矩阵满足 $H^T = H$ 且 $H^2 = I$，故
+  \[
+    \det(I + xy^T) = \det\bigl(H(I + xy^T)H\bigr)
+    = \det\bigl(I + (Hx)(Hy)^T\bigr)
+    = \det(I + \norm{x}_2 e_1 \tilde{y}^T),
+  \]
+  其中 $\tilde{y} = Hy$。
+
+  矩阵 $M = I + \norm{x}_2 e_1 \tilde{y}^T$ 的第 $(i,j)$ 元素为 $M_{ij} =
+  \delta_{ij} + \norm{x}_2 \delta_{i1} \tilde{y}_j$，即
+  \[
+    M =
+    \begin{pmatrix}
+      1 + \norm{x}_2 \tilde{y}_1 & \norm{x}_2 \tilde{y}_2 & \cdots &
+      \norm{x}_2 \tilde{y}_n \\
+      0 & 1 & \cdots & 0 \\
+      \vdots & & \ddots & \vdots \\
+      0 & 0 & \cdots & 1
+    \end{pmatrix}.
+  \]
+  这是上三角矩阵，故
+  \[
+    \det(M) = 1 + \norm{x}_2 \tilde{y}_1.
+  \]
+
+  由于 $e_1 = Hx / \norm{x}_2$，
+  \[
+    \tilde{y}_1 = e_1^T Hy = \frac{(Hx)^T(Hy)}{\norm{x}_2}
+    = \frac{x^T H^T H y}{\norm{x}_2} = \frac{x^T y}{\norm{x}_2}.
+  \]
+  因此 $\det(I + xy^T) = 1 + \norm{x}_2 \cdot \dfrac{x^T y}{\norm{x}_2}
+  = 1 + x^T y$。
+
+  \textbf{情形三：$x \neq 0$ 且 $x$ 与 $e_1$ 平行。} 设 $x = \alpha e_1$，则
+  \[
+    I + xy^T =
+    \begin{pmatrix}
+      1 + \alpha y_1 & \alpha y_2 & \cdots & \alpha y_n \\
+      0 & 1 & \cdots & 0 \\
+      \vdots & & \ddots & \vdots \\
+      0 & 0 & \cdots & 1
+    \end{pmatrix},
+  \]
+  故 $\det(I + xy^T) = 1 + \alpha y_1 = 1 + x^T y$。
+
+  综上，$\det(I + xy^T) = 1 + x^T y$ 对一切 $x, y \in \R^n$ 成立。
+
+\end{solution}
+
+\section{上机习题}
+
+用所熟悉的计算机语言编制利用 QR 分解求解线性方程组和线性最小二乘问题的通用子程序，并用你编制的子程序完成下面的三个计算任务：
+
+\begin{enumerate}
+  \item[(1)] 求解第一章上机习题中的三个线性方程组，并将所得的计算结果与前面的结果相比较，说明各方法的优劣；
+  \item[(2)] 求一个二次多项式 $y = at^2 + bt + c$，使得在残向量的 2 范数最小的意义下拟合表 3.2 中的数据；
+  \item[(3)] 在房产估价的线性模型
+    \[
+      y = x_0 + a_1 x_1 + a_2 x_2 + \cdots + a_{11} x_{11}
+    \]
+    中，$a_1, a_2, \ldots, a_{11}$
+    分别表示税、浴室数目、占地面积、居住面积、车库数目、房屋数目、居室数目、房龄、建筑类型、户型及壁炉数目，$y$
+    代表房屋价格。现根据表 3.3 和表 3.4 给出的 28 组数据，求出模型中参数的最小二乘结果。
+\end{enumerate}
+
+\begin{solution}
+
+  \mbox{}
+
+  \lstinputlisting[language=Python,caption=Data]{data.py}
+
+  \lstinputlisting[language=Python,caption=QR decomposition solver]{exercise.py}
+
+  \lstinputlisting[language={},caption=Output]{output.txt}
+
+  \textbf{结果分析：}
+
+  三个方程组的对比可以看出条件数对求解精度的影响。系统 1 和系统 3 条件数都在 $10^{16}$ 以上，QR 分解和 NumPy
+  的残差都能做到很小，但解向量本身差别很大，说明这时候两个方法的结果都不可信了。系统 2 条件数只有 1.50，两种方法给出的解几乎完全一致。
+
+  任务 (2) 的数据恰好就是 $y = t^2 + t + 1$ 生成的，所以拟合出来系数就是 $(1, 1, 1)$，残差在机器精度量级。
+
+  任务 (3) 的残差有 16.34，用线性模型描述房价误差不小，可能需要进一步的优化模型。这也可以从一个侧面展示出深度神经网络中引入 Sigmoid 与 ReLU 等非线性项的必要性。
+
+\end{solution}
+
+\end{document}
