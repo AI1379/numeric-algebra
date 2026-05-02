@@ -1,0 +1,48 @@
+                  POINT SET TOPOLOGY - HOMEWORK 05
+
+
+                               Due: 2026 April 26th, 22:00PM
+
+  Question 1. Let (X, d) be a metric space, and let T be the topology induced from d.
+Define
+                             d∗ (x, y) = min {d(x, y), 1}
+for every x, y ∈ X. Show that
+     (i) d∗ is a metric on X, and
+    (ii) its induced topology T ∗ is equal to T .
+Can one always find A ∈ R>0 such that A · d(x, y) ⩽ d∗ (x, y) for all x, y?
+
+
+
+  Question 2. Consider the Cartesian product
+                              Y
+                        Rω :=     R = {(xi )i∈N | xi ∈ R} .
+                                     i∈N
+
+Let Rωez ⊆ Rω be the subset consisting of all sequences that are “eventually zero”, i.e.,
+(xi )i∈N such that xi 6= 0 for only finitely many i. What are the interior and closure of
+Rωez in Rω , when the latter is endowed with the product topology Tp ? What if Rω is
+endowed with the box topology Tb ?
+
+
+
+  Question 3. Is the topological space (Rω , Tp ) metrizable? Is it connected? (Hint: for
+the first question, consider the function dω ((xi ), (yi )) = sup {d∗ (xi , yi )/(i + 1) : i ∈ N},
+where d is the standard metric on R.)
+
+
+
+   Question 4. Consider the topological space (Rω , Tb ). Let U ⊆ Rω be the subset
+consisting of bounded sequences, i.e., those x = (xi )i such that there is Cx with |xi | ⩽ Cx
+for all i. Prove that U and Rω − U form a non-trivial sepration of Rω with respect to Tb ,
+and thus conclude that (Rω , Tb ) is disconnected.
+
+
+
+  Question 5. Consider the following subset of R2
+                        X = {(x, 0) : x ∈ R} ∪ {(x, 1/x) : x ∈ R>0 }
+endowed with the standard subspace topology from R2 . Is X connected? Justify your
+answer.
+
+
+                                                1
+

@@ -1,0 +1,384 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+% \usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Point Set Topology}
+\newcommand{\hwNum}{5}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+\section{Question 1}
+
+Let $(X,d)$ be a metric space and define
+\[
+  d^*(x,y)=\min\{d(x,y),1\}.
+\]
+Show that: (i) $d^*$ is a metric; (ii) the induced topology $\mathcal{T}^*$
+equals the topology $\mathcal{T}$ induced by $d$.
+Also decide whether there always exists $A>0$ such that
+\[
+  A\,d(x,y)\le d^*(x,y)\quad (\forall x,y\in X).
+\]
+
+\begin{solution}
+  \textbf{(i) $d^*$ is a metric.}
+
+  Non-negativity and symmetry are immediate from the definition of
+  $\min$ and from the same properties of $d$.
+  Also,
+  \[
+    d^*(x,y)=0 \iff \min\{d(x,y),1\}=0 \iff d(x,y)=0 \iff x=y.
+  \]
+  So only the triangle inequality needs proof.
+  For $x,y,z\in X$,
+  \[
+    d^*(x,z)=\min\{d(x,z),1\}\le \min\{d(x,y)+d(y,z),1\}.
+  \]
+  Hence it is enough to show
+  \[
+    \min\{a+b,1\}\le \min\{a,1\}+\min\{b,1\}\quad (a,b\ge 0).
+  \]
+  If $a\ge 1$ or $b\ge 1$, the right-hand side is at least $1$, while
+  the left-hand side is at most $1$.
+  If $a<1$ and $b<1$, then the right-hand side is $a+b$, so
+  \[
+    \min\{a+b,1\}\le a+b=\min\{a,1\}+\min\{b,1\}.
+  \]
+  Therefore $d^*$ satisfies the triangle inequality.
+
+  \textbf{(ii) $\mathcal{T}^*=\mathcal{T}$.}
+
+  If $0<r\le 1$, then
+  \[
+    B_{d^*}(x,r)=\{y: d^*(x,y)<r\}=\{y:d(x,y)<r\}=B_d(x,r).
+  \]
+  Thus small open balls are identical for both metrics.
+
+  Now prove both inclusions.
+
+  $\mathcal{T}\subseteq \mathcal{T}^*$: let $U\in \mathcal{T}$ and $x\in U$. Choose $\varepsilon>0$
+  with $B_d(x,\varepsilon)\subseteq U$.
+  Set $r=\min\{\varepsilon,1/2\}$.
+  Then $0<r\le 1$ and
+  \[
+    B_{d^*}(x,r)=B_d(x,r)\subseteq B_d(x,\varepsilon)\subseteq U.
+  \]
+  So $U\in \mathcal{T}^*$.
+
+  $\mathcal{T}^*\subseteq \mathcal{T}$: let $U\in \mathcal{T}^*$ and $x\in U$. Choose $r>0$ with
+  $B_{d^*}(x,r)\subseteq U$.
+  Set $s=\min\{r,1/2\}>0$.
+  Then $B_d(x,s)=B_{d^*}(x,s)\subseteq B_{d^*}(x,r)\subseteq U$, hence $U\in \mathcal{T}$.
+
+  So $\mathcal{T}^*=\mathcal{T}$.
+
+  \textbf{(iii) Existence of a uniform $A>0$.}
+
+  Not always.
+  Take $X=\R$ with the usual metric $d(x,y)=|x-y|$. If such $A>0$
+  existed, then for all $x,y$,
+  \[
+    A|x-y|\le d^*(x,y)=\min\{|x-y|,1\}\le 1.
+  \]
+  Choose $|x-y|>1/A$. Then $A|x-y|>1$, contradiction.
+  Hence in general no such $A$ exists.
+\end{solution}
+
+\section{Question 2}
+
+Let
+\[
+  \R^\omega=\prod_{i\in\N}\R,
+\]
+and let $\R^\omega_{\mathrm{ez}}$ be the set of eventually-zero sequences.
+Find interior and closure of $\R^\omega_{\mathrm{ez}}$ in $\R^\omega$ under:
+(1) product topology $\mathcal{T}_p$;
+(2) box topology $\mathcal{T}_b$.
+
+\begin{solution}
+  \textbf{A. In $(\R^\omega,\mathcal{T}_p)$:}
+
+  A basic neighborhood has the form
+  \[
+    \prod_{i\in\N}U_i,
+  \]
+  where $U_i\subseteq\R$ is open and $U_i=\R$ for all but finitely many $i$.
+
+  \emph{Interior is empty.}
+  Let $x\in \R^\omega_{\mathrm{ez}}$ and let $N=\prod_i U_i$ be any
+  basic neighborhood of $x$.
+  Only finitely many coordinates are restricted. Let $F$ be that finite set.
+  Define
+  \[
+    y_i=
+    \begin{cases}
+      x_i,& i\in F,\\
+      1,& i\notin F.
+    \end{cases}
+  \]
+  Then $y\in N$ (because unrestricted coordinates allow any real
+  value), but $y$ has infinitely many nonzero entries, so $y\notin
+  \R^\omega_{\mathrm{ez}}$.
+  Hence no neighborhood of $x$ is contained in
+  $\R^\omega_{\mathrm{ez}}$; therefore
+  \[
+    \operatorname{int}_{\mathcal{T}_p}(\R^\omega_{\mathrm{ez}})=\varnothing.
+  \]
+
+  \emph{Closure is all of $\R^\omega$.}
+  Take any $x\in\R^\omega$ and any basic neighborhood $N=\prod_i U_i$ of $x$.
+  Again, only finitely many coordinates are restricted; call that set $F$.
+  Define
+  \[
+    z_i=
+    \begin{cases}
+      x_i,& i\in F,\\
+      0,& i\notin F.
+    \end{cases}
+  \]
+  Then $z\in N$ and $z$ is eventually zero.
+  So every nonempty basic neighborhood meets $\R^\omega_{\mathrm{ez}}$.
+  Hence
+  \[
+    \overline{\R^\omega_{\mathrm{ez}}}^{\,\mathcal{T}_p}=\R^\omega.
+  \]
+
+  \textbf{B. In $(\R^\omega,\mathcal{T}_b)$:}
+
+  A basic neighborhood is still $\prod_i U_i$, but now every
+  coordinate may be restricted.
+
+  \emph{Interior is empty.}
+  Fix $x\in\R^\omega_{\mathrm{ez}}$ and a box-basic neighborhood
+  $N=\prod_i U_i$ of $x$.
+  For all sufficiently large $i$, $x_i=0$, and since each $U_i$ is
+  open containing $0$, choose $t_i\in U_i$ with $t_i\ne 0$.
+  Define
+  \[
+    y_i=
+    \begin{cases}
+      x_i,& x_i\ne 0,\\
+      t_i,& x_i=0.
+    \end{cases}
+  \]
+  Then $y\in N$, and $y_i\ne 0$ for infinitely many $i$, so $y\notin
+  \R^\omega_{\mathrm{ez}}$.
+  Thus
+  \[
+    \operatorname{int}_{\mathcal{T}_b}(\R^\omega_{\mathrm{ez}})=\varnothing.
+  \]
+
+  \emph{Closure equals $\R^\omega_{\mathrm{ez}}$.}
+  It suffices to show the complement is open.
+  Take $x\notin \R^\omega_{\mathrm{ez}}$; then
+  \[
+    I=\{i\in\N: x_i\ne 0\}
+  \]
+  is infinite.
+  For each $i\in I$, choose an open interval $V_i\ni x_i$ with $0\notin V_i$.
+  For $i\notin I$, set $V_i=\R$.
+  Then $N=\prod_i V_i$ is a box-basic neighborhood of $x$.
+  Any $y\in N$ satisfies $y_i\ne 0$ for all $i\in I$, so $y$ has
+  infinitely many nonzero coordinates.
+  Hence $y\notin \R^\omega_{\mathrm{ez}}$.
+  Therefore $N\subseteq \R^\omega\setminus \R^\omega_{\mathrm{ez}}$,
+  and the complement is open.
+  So $\R^\omega_{\mathrm{ez}}$ is closed in $\mathcal{T}_b$, and
+  \[
+    \overline{\R^\omega_{\mathrm{ez}}}^{\,\mathcal{T}_b}=\R^\omega_{\mathrm{ez}}.
+  \]
+\end{solution}
+
+\section{Question 3}
+
+Is $(\R^\omega,\mathcal{T}_p)$ metrizable? Is it connected?
+
+\begin{solution}
+  \textbf{Metrizable: yes.}
+  Define
+  \[
+    d_\omega(x,y)=\sup_{i\in\N}\frac{d^*(x_i,y_i)}{i+1},
+  \]
+  where $d^*(u,v)=\min\{|u-v|,1\}$ on $\R$.
+  Since $0\le d^*(x_i,y_i)\le 1$, the supremum is finite and $d_\omega\le 1$.
+
+  Metric axioms follow from coordinatewise properties of $d^*$.
+  For triangle inequality,
+  \[
+    \frac{d^*(x_i,z_i)}{i+1}
+    \le \frac{d^*(x_i,y_i)+d^*(y_i,z_i)}{i+1},
+  \]
+  then take supremum over $i$:
+  \[
+    d_\omega(x,z)\le d_\omega(x,y)+d_\omega(y,z).
+  \]
+  So $d_\omega$ is a metric.
+
+  Now compare topologies.
+
+  Every $d_\omega$-ball is $\mathcal{T}_p$-open:
+  fix $x$ and $\varepsilon>0$. Choose $N$ with $1/(N+1)<\varepsilon/2$.
+  If for $1\le i\le N$ we require
+  \[
+    |y_i-x_i|<\frac{\varepsilon(i+1)}{2},
+  \]
+  then for $i\le N$,
+  \[
+    \frac{d^*(x_i,y_i)}{i+1}\le \frac{|x_i-y_i|}{i+1}<\frac\varepsilon2,
+  \]
+  and for $i>N$,
+  \[
+    \frac{d^*(x_i,y_i)}{i+1}\le \frac{1}{i+1}<\frac\varepsilon2.
+  \]
+  Hence $d_\omega(x,y)<\varepsilon$. This gives a cylinder
+  neighborhood inside the ball.
+
+  Every $\mathcal{T}_p$-basic neighborhood contains a $d_\omega$-ball:
+  let
+  \[
+    N=\left(\prod_{i\in F}U_i\right)\times\left(\prod_{i\notin F}\R\right)
+  \]
+  be basic with finite $F$, and $x\in N$.
+  Choose $\delta_i\in(0,1)$ such that
+  $(x_i-\delta_i,x_i+\delta_i)\subseteq U_i$ for $i\in F$.
+  Set
+  \[
+    \delta=\min_{i\in F}\frac{\delta_i}{i+1}>0.
+  \]
+  If $d_\omega(x,y)<\delta$, then for each $i\in F$,
+  \[
+    d^*(x_i,y_i)<(i+1)\delta\le \delta_i<1,
+  \]
+  so $|x_i-y_i|=d^*(x_i,y_i)<\delta_i$, hence $y_i\in U_i$.
+  Thus $y\in N$.
+  So topologies coincide: $\mathcal{T}_{d_\omega}=\mathcal{T}_p$.
+
+  \textbf{Connected: yes (in fact path connected).}
+  For $x=(x_i)$ and $y=(y_i)$, define
+  \[
+    H:[0,1]\to\R^\omega,\qquad H(t)=((1-t)x_i+ty_i)_i.
+  \]
+  Each coordinate map $t\mapsto (1-t)x_i+ty_i$ is continuous in $\R$.
+  Therefore $H$ is continuous for the product topology (continuity of
+  all coordinate projections).
+  Also $H(0)=x$, $H(1)=y$.
+  So any two points are joined by a path; hence $(\R^\omega,\mathcal{T}_p)$ is connected.
+\end{solution}
+
+\section{Question 4}
+
+Let $(\R^\omega,\mathcal{T}_b)$ and let
+\[
+  U=\{x=(x_i): \exists C_x>0\text{ such that }|x_i|\le C_x\ \forall i\}
+\]
+(the set of bounded sequences).
+Prove that $U$ and $\R^\omega\setminus U$ form a nontrivial
+separation, and conclude $(\R^\omega,\mathcal{T}_b)$ is disconnected.
+
+\begin{solution}
+  First, both sets are nonempty:
+  \[
+    (0,0,\dots)\in U,
+  \]
+  while
+  \[
+    (1,2,3,\dots)\notin U.
+  \]
+  Clearly
+  \[
+    U\cap(\R^\omega\setminus U)=\varnothing,
+    \qquad
+    U\cup(\R^\omega\setminus U)=\R^\omega.
+  \]
+  So it remains to show both are open in $\mathcal{T}_b$.
+
+  \textbf{$U$ is open.}
+  Take $x\in U$. Choose $C_x$ with $|x_i|\le C_x$ for all $i$.
+  Define box neighborhood
+  \[
+    N_x=\prod_{i\in\N}(x_i-1,x_i+1).
+  \]
+  If $y\in N_x$, then
+  \[
+    |y_i|\le |x_i|+1\le C_x+1\quad(\forall i),
+  \]
+  so $y$ is bounded, i.e. $y\in U$.
+  Hence $N_x\subseteq U$, thus $U$ is open.
+
+  \textbf{$\R^\omega\setminus U$ is open.}
+  Take $x\notin U$ (so $x$ is unbounded).
+  Use the same box neighborhood
+  \[
+    N_x=\prod_{i\in\N}(x_i-1,x_i+1).
+  \]
+  For any $y\in N_x$ and each $i$,
+  \[
+    |y_i|\ge |x_i|-1.
+  \]
+  Given $M>0$, unboundedness of $x$ gives some $i$ with $|x_i|>M+1$.
+  Then $|y_i|>|x_i|-1>M$.
+  So $y$ is unbounded, hence $y\notin U$.
+  Therefore $N_x\subseteq \R^\omega\setminus U$, and the complement is open.
+
+  Thus $U$ and $\R^\omega\setminus U$ are two disjoint nonempty open
+  sets whose union is the whole space: a nontrivial separation.
+  So $(\R^\omega,\mathcal{T}_b)$ is disconnected.
+\end{solution}
+
+\section{Question 5}
+
+Let
+\[
+  X=\{(x,0):x\in\R\}\cup\{(x,1/x):x>0\}\subseteq\R^2
+\]
+with the subspace topology from $\R^2$. Determine whether $X$ is connected.
+
+\begin{solution}
+  Define
+  \[
+    f:X\to\R,\qquad f(x,y)=xy.
+  \]
+  This is continuous as the restriction to $X$ of the continuous
+  multiplication map on $\R^2$.
+
+  Now compute values on the two pieces of $X$:
+  \[
+    (x,0)\in X \implies f(x,0)=0,
+  \]
+  \[
+    (x,1/x)\in X,\ x>0 \implies f(x,1/x)=1.
+  \]
+  Hence
+  \[
+    f(X)=\{0,1\}.
+  \]
+  Suppose $X$ were connected. Then its continuous image $f(X)$ would
+  have to be connected in $\R$.
+  But $\{0,1\}$ is not connected.
+  Contradiction.
+
+  Therefore $X$ is disconnected.
+\end{solution}
+
+\end{document}
