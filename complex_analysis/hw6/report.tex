@@ -1,0 +1,558 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+% \usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Complex Analysis}
+\newcommand{\hwNum}{6}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+\section{Exercise 3.78}
+
+Compute
+\[
+  I = \oint_{|z|=1} \frac{3z-1}{z(z-2)}\,dz.
+\]
+
+\begin{solution}
+  Partial fractions give
+  \[
+    \frac{3z-1}{z(z-2)}
+    = \frac{1/2}{z} + \frac{5/2}{z-2}.
+  \]
+  The circle $|z|=1$ encloses $z=0$ but not $z=2$.
+  By the Cauchy integral formula (Theorem~3.73),
+  \[
+    \oint_{|z|=1}\frac{dz}{z} = 2\pi i.
+  \]
+  Since $z=2$ lies outside $|z|=1$, the function
+  $1/(z-2)$ is analytic on $U_1(0)$; by the Cauchy
+  integral theorem (Theorem~3.57),
+  \[
+    \oint_{|z|=1}\frac{dz}{z-2} = 0.
+  \]
+  Therefore
+  \[
+    I = \frac{1}{2}(2\pi i) + \frac{5}{2}(0) = \pi i.\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 3.79}
+
+For some $r > 0$, $f$ is an analytic function on
+$\{z \in \C : |z| > r\}$.
+Show that $\lim_{z\to\infty} z f(z) = A$ implies
+\[
+  \forall R > r,\quad \oint_{|z|=R} f(z)\,dz = 2\pi i A.
+\]
+
+\begin{solution}
+  Define $g(w) := f(1/w)$ for $0 < |w| < 1/r$.
+  The hypothesis $\lim_{z\to\infty}zf(z) = A$ gives
+  \[
+    \lim_{w\to 0}\frac{g(w)}{w}
+    = \lim_{w\to 0}\frac{f(1/w)}{w}
+    = \lim_{z\to\infty}zf(z) = A,
+  \]
+  so $g$ has a removable singularity at $w=0$ with
+  $g(0)=0$ and $g'(0)=A$.
+  Hence $g$ is analytic on $|w|<1/r$ with Taylor expansion
+  \[
+    g(w) = Aw + \sum_{n=2}^{\infty}b_n w^n,\qquad |w|<1/r,
+  \]
+  and therefore
+  \[
+    f(z) = g(1/z) = \frac{A}{z}
+    + \sum_{n=2}^{\infty}\frac{b_n}{z^n},
+    \qquad |z|>r.
+  \]
+  The series converges uniformly on $|z|=R$ for any $R>r$.
+  Integrating term by term and applying Corollary~3.17,
+  \[
+    \oint_{|z|=R}f(z)\,dz
+    = A\oint_{|z|=R}\frac{dz}{z}
+    + \sum_{n=2}^{\infty}b_n\oint_{|z|=R}z^{-n}\,dz
+    = 2\pi iA + 0 = 2\pi iA.\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 3.80}
+
+For $R > 0$, write $U_R := \{z \in \C : |z| < R\}$.
+
+(a) Let $f : U_{R_0} \to \C$ be an analytic function, where
+$R_0 > 0$. Prove that whenever $R \in (0, R_0)$ and $z \in U_R$,
+then
+\[
+  f(z) = \frac{1}{2\pi}\int_0^{2\pi}
+  f(Re^{it})\,\frac{R^2 - |z|^2}{|Re^{it} - z|^2}\,dt.
+\]
+
+(b) Show that
+\[
+  \Re\frac{Re^{it} + z}{Re^{it} - z}
+  = \frac{R^2 - |z|^2}{|Re^{it} - z|^2}.
+\]
+
+(c) If $u$ is harmonic in the unit disk $D = U_1$ and continuous
+on $\bar{D}$, then show that for $z \in D$,
+\[
+  u(z) = \int_0^{2\pi} P(z, e^{it})\,u(e^{it})\,dt,
+\]
+where $P(z, e^{it})$ is the Poisson kernel defined by
+\[
+  P(z, e^{it})
+  = \frac{1}{2\pi}\,\frac{1 - |z|^2}{|e^{it} - z|^2}
+  = \frac{1}{2\pi}\,\Re\frac{e^{it} + z}{e^{it} - z}.
+\]
+
+\begin{solution}
+  \textbf{(a)}\;
+  Set $w := R^2/\bar{z}$.  Since $|z|<R$, we have
+  $|w| = R^2/|z| > R$, so $w$ lies outside $|\zeta|=R$.
+  By the Cauchy integral formula (Theorem~3.73),
+  \[
+    f(z) = \frac{1}{2\pi i}\oint_{|\zeta|=R}
+    \frac{f(\zeta)}{\zeta - z}\,d\zeta.
+  \]
+  Since $w \notin U_R$ and $f$ is analytic on $U_{R_0}\supset U_R$,
+  the Cauchy integral theorem gives
+  \[
+    0 = \frac{1}{2\pi i}\oint_{|\zeta|=R}
+    \frac{f(\zeta)}{\zeta - w}\,d\zeta.
+  \]
+  Subtracting,
+  \[
+    f(z) = \frac{1}{2\pi i}\oint_{|\zeta|=R}f(\zeta)
+    \left(\frac{1}{\zeta-z}-\frac{1}{\zeta-w}\right)d\zeta
+    = \frac{w-z}{2\pi i}\oint_{|\zeta|=R}
+    \frac{f(\zeta)}{(\zeta-z)(\zeta-w)}\,d\zeta.
+  \]
+  For $\zeta = Re^{it}$, a direct computation yields
+  $(\zeta-z)(\zeta-w) = -\zeta|\zeta-z|^2/\bar{z}$ and
+  $w-z = (R^2-|z|^2)/\bar{z}$.
+  Parameterizing $\zeta = Re^{it}$, $d\zeta = iRe^{it}dt$:
+  \[
+    f(z) = \frac{1}{2\pi i}\int_0^{2\pi}
+    f(Re^{it})\cdot
+    \frac{(R^2-|z|^2)/\bar{z}}{-Re^{it}|Re^{it}-z|^2/\bar{z}}
+    \cdot iRe^{it}\,dt
+    = \frac{1}{2\pi}\int_0^{2\pi}
+    f(Re^{it})\frac{R^2-|z|^2}{|Re^{it}-z|^2}\,dt.
+  \]
+
+  \medskip
+
+  \textbf{(b)}\;
+  Set $\zeta = Re^{it}$.  Then
+  \[
+    \frac{\zeta+z}{\zeta-z}
+    = \frac{(\zeta+z)(\bar\zeta-\bar z)}{|\zeta-z|^2}
+    = \frac{|\zeta|^2 - |z|^2 + z\bar\zeta - \bar z\zeta}
+    {|\zeta-z|^2}.
+  \]
+  Since $z\bar\zeta-\bar z\zeta = 2i\,\Im(z\bar\zeta)$ is purely
+  imaginary,
+  \[
+    \Re\frac{\zeta+z}{\zeta-z}
+    = \frac{|\zeta|^2-|z|^2}{|\zeta-z|^2}
+    = \frac{R^2-|z|^2}{|Re^{it}-z|^2}.
+  \]
+
+  \medskip
+
+  \textbf{(c)}\;
+  By Exercise~3.39, there exists an analytic function $F$ on
+  $U_1$ with $\Re F = u$.
+  Applying part~(a) with $R_0 = 1$ and $R \in (0,1)$ to $F$:
+  \[
+    F(z) = \frac{1}{2\pi}\int_0^{2\pi}
+    F(Re^{it})\frac{R^2-|z|^2}{|Re^{it}-z|^2}\,dt.
+  \]
+  Taking real parts,
+  \[
+    u(z) = \frac{1}{2\pi}\int_0^{2\pi}
+    u(Re^{it})\frac{R^2-|z|^2}{|Re^{it}-z|^2}\,dt.
+  \]
+  Since $u$ is continuous on $\bar{D}$, letting $R\to 1^-$ gives
+  \[
+    u(z) = \frac{1}{2\pi}\int_0^{2\pi}
+    u(e^{it})\frac{1-|z|^2}{|e^{it}-z|^2}\,dt
+    = \int_0^{2\pi}P(z,e^{it})\,u(e^{it})\,dt.\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 3.86}
+
+Compute
+\[
+  I = \oint_{|z|=2\pi} \frac{z^3}{(z-\pi)^3}\,dz.
+\]
+
+\begin{solution}
+  Set $f(z) = z^3$.  Since $f$ is entire and $\pi$ lies inside
+  $|z|=2\pi$, the generalized Cauchy integral formula
+  (Theorem~3.83) with $n=2$ yields
+  \[
+    I = \oint_{|z|=2\pi}\frac{f(z)}{(z-\pi)^3}\,dz
+    = \frac{2\pi i}{2!}\,f''(\pi).
+  \]
+  Since $f''(z) = 6z$ and $f''(\pi) = 6\pi$,
+  \[
+    I = \pi i \cdot 6\pi = 6\pi^2 i.\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 3.87}
+
+Suppose $f : D \to \C$ is analytic. Show that the diameter
+$d = \sup_{z,w \in D} |f(z) - f(w)|$ of the image of $f$ satisfies
+\[
+  2|f'(0)| \le d.
+\]
+
+\begin{solution}
+  By the Cauchy integral formula,
+  \[
+    f'(0) = \frac{1}{2\pi i}\oint_{|\zeta|=r}
+    \frac{f(\zeta)}{\zeta^2}\,d\zeta
+  \]
+  for any $r \in (0,1)$.
+  The substitution $\zeta \mapsto -\zeta$ (a rotation of the
+  circle) gives
+  \[
+    f'(0) = \frac{1}{2\pi i}\oint_{|\zeta|=r}
+    \frac{f(-\zeta)}{\zeta^2}\,d\zeta.
+  \]
+  (Indeed, $g(\zeta) := f(-\zeta)$ is analytic with
+  $g'(0) = -f'(0)$, and the Cauchy formula for $g'$ gives
+  $\frac{1}{2\pi i}\oint g(\zeta)/\zeta^2\,d\zeta = g'(0) = -f'(0)$.)
+
+  Adding the two representations,
+  \[
+    2f'(0) = \frac{1}{2\pi i}\oint_{|\zeta|=r}
+    \frac{f(\zeta)+f(-\zeta)}{\zeta^2}\,d\zeta.
+  \]
+  Similarly, subtracting,
+  \[
+    2f'(0) = \frac{1}{2\pi i}\oint_{|\zeta|=r}
+    \frac{f(\zeta)-f(-\zeta)}{\zeta^2}\,d\zeta.
+  \]
+  By the ML inequality (Lemma~3.7),
+  \[
+    |2f'(0)|
+    \le \frac{1}{2\pi}\cdot 2\pi r\cdot\frac{d}{r^2}
+    = \frac{d}{r}.
+  \]
+  Since this holds for all $r \in (0,1)$, letting
+  $r \to 1^-$ gives $2|f'(0)| \le d$.\qedhere
+\end{solution}
+
+\section{Exercise 3.88}
+
+Let $f$ be a bounded analytic function on the unit disk $D$.
+Prove that
+\[
+  \sup_{z \in D}\,(1 - |z|)\,|f'(z)| < +\infty.
+\]
+
+\begin{solution}
+  Since $f$ is bounded, there exists $M > 0$ such that
+  $|f(z)| \le M$ for all $z \in D$.
+  For any $z_0 \in D$, the disk
+  $U_{1-|z_0|}(z_0)$ is contained in $D$.
+  By the Cauchy inequality (Corollary~3.84) applied with
+  $r = 1 - |z_0|$,
+  \[
+    |f'(z_0)| \le \frac{M}{1-|z_0|}.
+  \]
+  Therefore $(1-|z_0|)|f'(z_0)| \le M$ for every $z_0 \in D$, so
+  \[
+    \sup_{z \in D}(1-|z|)|f'(z)| \le M < +\infty.\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 3.89}
+
+Let $f$ be an analytic function on the strip
+$D := \{z \in \C : |\Im z| < 1\}$.
+For a fixed $\eta \in \R$, there exists $A > 0$ such that
+\[
+  \forall z \in D,\quad |f(z)| \le A(1 + |z|)^\eta.
+\]
+Show that for each $n \in \N$, there exists $A_n > 0$ such that
+\[
+  \forall x \in \R,\quad |f^{(n)}(x)| \le A_n(1 + |x|)^\eta.
+\]
+
+\begin{solution}
+  Fix $n \in \N$ and $x \in \R$.
+  Since $x$ lies on the real axis with distance $1$ from the
+  boundary of $D$, for any $r \in (0,1)$ the closed disk
+  $\bar{U}_r(x)$ is contained in $D$.
+  By the Cauchy inequality (Corollary~3.84),
+  \[
+    |f^{(n)}(x)| \le \frac{n!\,M(r)}{r^n},
+    \qquad M(r) := \max_{|w-x|=r}|f(w)|.
+  \]
+  For $|w-x| = r$, we have $|w| \le |x| + r$, so
+  \[
+    |f(w)| \le A(1+|x|+r)^\eta.
+  \]
+  Hence
+  \[
+    |f^{(n)}(x)| \le \frac{n!\,A(1+|x|+r)^\eta}{r^n}.
+  \]
+  Choose $r = 1/2$.  Then $1+|x|+r \le \frac{3}{2}(1+|x|)$.
+  If $\eta \ge 0$,
+  $(1+|x|+r)^\eta \le (\frac{3}{2})^\eta(1+|x|)^\eta$.
+  If $\eta < 0$, then $(1+|x|+r)^\eta \le (1+|x|)^\eta$.
+  In either case there exists a constant $C(\eta)$ such that
+  \[
+    |f^{(n)}(x)| \le 2^n n!\,A\,C(\eta)\,(1+|x|)^\eta
+    =: A_n(1+|x|)^\eta.\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 3.90}
+
+Let $f$ be an analytic function on the closed unit disk $\bar{D}$.
+
+(a) Prove that
+\[
+  \frac{1}{2\pi i}\oint_{|\zeta|=1}
+  \frac{\overline{f(\zeta)}}{\zeta - z}\,d\zeta
+  =
+  \begin{cases}
+    \overline{f(0)} & \text{if } |z| < 1,\\
+    \overline{f(0)} - \overline{f(1/\bar{z})} & \text{if } |z| > 1.
+  \end{cases}
+\]
+
+(b) If $|z| < 1$, compute
+\[
+  \frac{1}{2\pi i}\oint_{|\zeta|=1}
+  \frac{f(\zeta)}{\zeta - z}\,d|\zeta|.
+\]
+
+(c) If $P$ is a polynomial, show that
+\[
+  \oint_{|\zeta|=1} \overline{P(\zeta)}\,d\zeta
+  = 2\pi i\,\overline{P'(0)}.
+\]
+
+\begin{solution}
+  \textbf{(a)}\;
+  Define $g(w) := \overline{f(\bar{w})}$, which is analytic on
+  $\bar{D}$.
+  On $|\zeta|=1$, $\bar\zeta = 1/\zeta$, so
+  $\overline{f(\zeta)} = g(\bar\zeta) = g(1/\zeta)$.
+
+  \smallskip
+
+  \textit{Case $|z|<1$.}\;
+  The integrand has poles at $\zeta = z$ (simple) and
+  $\zeta = 0$ (from $g(1/\zeta)$).
+  The residue at $\zeta = z$ is $g(1/z)$.
+  For the residue at $\zeta = 0$, expand
+  $\frac{1}{\zeta-z} = -\frac{1}{z}\sum_{n=0}^{\infty}
+  \frac{\zeta^n}{z^n}$ and $g(1/\zeta)
+  = \sum_{k=0}^{N}\bar{a}_k\,\zeta^{-k}$:
+  \[
+    \operatorname{Res}_{\zeta=0}
+    = -\frac{1}{z}\sum_{\substack{n,k\\ n-k=-1}}
+    \frac{\bar{a}_k}{z^n}
+    = -\sum_{k=1}^{N}\frac{\bar{a}_k}{z^k}.
+  \]
+  The total residue is
+  \[
+    g(1/z) - \sum_{k=1}^{N}\frac{\bar{a}_k}{z^k}
+    = \bar{a}_0 = \overline{f(0)}.
+  \]
+
+  \smallskip
+
+  \textit{Case $|z|>1$.}\;
+  Now $\zeta = z$ lies outside the circle, so the only pole
+  inside is $\zeta = 0$, with residue
+  $-\sum_{k=1}^{N}\bar{a}_k/z^k$.
+  Hence
+  \[
+    \frac{1}{2\pi i}\oint_{|\zeta|=1}
+    \frac{\overline{f(\zeta)}}{\zeta-z}\,d\zeta
+    = -\sum_{k=1}^{N}\frac{\bar{a}_k}{z^k}
+    = \bar{a}_0 - \sum_{k=0}^{N}\frac{\bar{a}_k}{z^k}
+    = \overline{f(0)} - g(1/z)
+    = \overline{f(0)} - \overline{f(1/\bar{z})},
+  \]
+  since $g(1/z) = \overline{f(\overline{1/z})}
+  = \overline{f(1/\bar{z})}$.
+
+  \medskip
+
+  \textbf{(b)}\;
+  On $|\zeta|=1$, we have $d|\zeta| = d\zeta/(i\zeta)$, so
+  \[
+    \frac{1}{2\pi i}\oint_{|\zeta|=1}
+    \frac{f(\zeta)}{\zeta-z}\,d|\zeta|
+    = \frac{1}{2\pi i}\oint_{|\zeta|=1}
+    \frac{f(\zeta)}{(\zeta-z)\,i\zeta}\,d\zeta
+    = \frac{1}{2\pi}\oint_{|\zeta|=1}
+    \frac{f(\zeta)}{(\zeta-z)\zeta}\,d\zeta.
+  \]
+  Partial fractions:
+  $\frac{1}{(\zeta-z)\zeta}
+  = \frac{1}{z}\!\left(\frac{1}{\zeta-z}-\frac{1}{\zeta}\right)$.
+  By the Cauchy integral formula,
+  \[
+    \frac{1}{z}\!\left(
+      \oint\frac{f(\zeta)}{\zeta-z}\,d\zeta
+      -\oint\frac{f(\zeta)}{\zeta}\,d\zeta
+    \right)
+    = \frac{2\pi i(f(z)-f(0))}{z}.
+  \]
+  Hence the desired value is
+  \[
+    \frac{1}{2\pi}\cdot\frac{2\pi i(f(z)-f(0))}{z}
+    = \frac{i(f(z)-f(0))}{z}.
+  \]
+
+  \medskip
+
+  \textbf{(c)}\;
+  On $|\zeta|=1$, $\bar\zeta = 1/\zeta$, so
+  $\overline{P(\zeta)} = \overline{\sum_{k=0}^{n}a_k\zeta^k}
+  = \sum_{k=0}^{n}\bar{a}_k\,\bar\zeta^k
+  = \sum_{k=0}^{n}\bar{a}_k\,\zeta^{-k}$.
+  By Corollary~3.17,
+  \[
+    \oint_{|\zeta|=1}\overline{P(\zeta)}\,d\zeta
+    = \sum_{k=0}^{n}\bar{a}_k\oint_{|\zeta|=1}\zeta^{-k}\,d\zeta
+    = \bar{a}_1\cdot 2\pi i
+    = 2\pi i\,\overline{P'(0)}.\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 3.95}
+
+Let $f$ be an entire function. For a given integer $m \ge 1$,
+there exists $C > 0$ such that
+\[
+  \forall z \in \C,\quad |f(z)| \le C(1 + |z|)^m.
+\]
+Show that $f$ is a polynomial of degree at most $m$.
+
+\begin{solution}
+  Fix $z_0 \in \C$ and $r > 0$.
+  By the Cauchy inequality (Corollary~3.84),
+  \[
+    |f^{(m+1)}(z_0)|
+    \le \frac{(m+1)!}{r^{m+1}}\max_{|z-z_0|=r}|f(z)|
+    \le \frac{(m+1)!\,C(1+|z_0|+r)^m}{r^{m+1}}.
+  \]
+  For fixed $z_0$, as $r \to \infty$ the numerator grows as
+  $r^m$ while the denominator grows as $r^{m+1}$, so
+  \[
+    |f^{(m+1)}(z_0)|
+    \le (m+1)!\,C\,\frac{(1+|z_0|+r)^m}{r^{m+1}}
+    \xrightarrow{r\to\infty}0.
+  \]
+  Hence $f^{(m+1)}(z_0) = 0$ for every $z_0 \in \C$.
+  Therefore $f^{(m+1)} \equiv 0$ on $\C$, which implies
+  $f$ is a polynomial of degree at most $m$.\qedhere
+\end{solution}
+
+\section{Exercise 3.96}
+
+We say $f : \C \to \C$ is a doubly periodic function if there
+exists $\tau \in \C \setminus \R$ such that
+\[
+  \forall z \in \C,\quad f(z + 1) = f(z + \tau) = f(z).
+\]
+Show that every entire doubly periodic function is a constant.
+
+\begin{solution}
+  The fundamental parallelogram
+  \[
+    P := \{s + t\tau : s,t \in [0,1]\}
+  \]
+  is compact, and the continuous function $|f|$ attains a maximum
+  $M$ on $\bar{P}$.
+  For any $z \in \C$, write $z = s + t\tau + n + m\tau$ with
+  $s,t \in [0,1)$ and $n,m \in \Z$.
+  By double periodicity,
+  $f(z) = f(s + t\tau)$, so $|f(z)| \le M$.
+  Thus $f$ is a bounded entire function, and Liouville's theorem
+  (Theorem~3.93) implies $f$ is constant.\qedhere
+\end{solution}
+
+\section{Exercise 3.97}
+
+Let $f$ be a nonconstant entire function. Show that $f(\C)$ is
+dense in $\C$, that is, for any $\zeta \in \C$, there exists a
+sequence $\{z_n\}$ such that $f(z_n) \to \zeta$.
+
+\begin{solution}
+  Suppose for contradiction that $f(\C)$ is not dense.
+  Then there exist $\zeta_0 \in \C$ and $r > 0$ such that
+  $U_r(\zeta_0) \cap f(\C) = \emptyset$, i.e.,
+  \[
+    |f(z) - \zeta_0| \ge r
+    \qquad\text{for all } z \in \C.
+  \]
+  Define $g(z) := 1/(f(z) - \zeta_0)$.
+  Then $g$ is entire (since $f(z) \ne \zeta_0$ for all $z$) and
+  $|g(z)| \le 1/r$ for all $z$.
+  By Liouville's theorem (Theorem~3.93), $g$ is constant,
+  hence $f$ is constant---contradiction.\qedhere
+\end{solution}
+
+\section{Exercise 3.98}
+
+\textbf{(Alternative proof of the fundamental theorem of algebra.)}
+Prove Theorem 3.47 by applying Liouville's theorem.
+
+\textbf{Theorem 3.47 (Fundamental theorem of Algebra).}
+Any nonconstant complex polynomial
+$P(z) = \sum_{j=0}^{n} a_j z^j$ ($a_n \ne 0$) has a root.
+
+\begin{solution}
+  Suppose $P$ has no root, i.e., $P(z) \ne 0$ for all $z \in \C$.
+  Then $g(z) := 1/P(z)$ is entire.
+  By Lemma~3.46 (polynomial growth), for $|z|$ sufficiently
+  large, $|P(z)| \ge \frac{|a_n|}{2}|z|^n$.
+  Hence
+  \[
+    |g(z)| \le \frac{2}{|a_n|\,|z|^n} \to 0
+    \qquad\text{as } |z| \to \infty.
+  \]
+  In particular, $g$ is bounded on $\C$.
+  By Liouville's theorem (Theorem~3.93), $g$ is constant,
+  hence $P$ is constant---contradicting $n \ge 1$.
+  Therefore $P$ has a root.\qedhere
+\end{solution}
+
+\end{document}
