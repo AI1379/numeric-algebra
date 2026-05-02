@@ -1,0 +1,248 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{luacode}
+
+% import common macros
+\input{../../common/macros.tex}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Configure listings for Python code highlighting
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,
+  frame=single,
+  framesep=5pt,
+  rulecolor=\color{gray},
+  backgroundcolor=\color{white},
+  captionpos=b,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=5,
+}
+
+\lstnewenvironment{plaintext}[1][]{
+  \lstset{
+    language=none,
+    basicstyle=\ttfamily,
+    keywordstyle=,
+    commentstyle=,
+    stringstyle=,
+    numbers=none,
+    frame=none,
+    backgroundcolor=\color{white},
+    #1                % 允许用户自行覆盖默认设置
+  }
+}{}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{数值代数}
+\newcommand{\hwNum}{7}
+
+\newcommand{\fl}{\mathrm{fl}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name (\uid)}
+\chead{\course \#\hwNum}
+\rhead{\today}
+
+\section{题目 1}
+
+证明：对任意的 $A \in \mathbb{R}^{m\times n}$，有 $\mathcal{N}(A^T A) = \mathcal{N}(A)$。
+
+\begin{solution}
+
+  我们需要证明两个集合相等，即对任意向量 $x \in \mathbb{R}^n$，有 $x \in \mathcal{N}(A^T
+  A)$ 当且仅当 $x \in \mathcal{N}(A)$。
+
+  \textbf{($\Leftarrow$) $\mathcal{N}(A) \subseteq \mathcal{N}(A^T A)$：}
+
+  若 $x \in \mathcal{N}(A)$，则 $Ax = 0$。因此
+  \[
+    A^T A x = A^T (Ax) = A^T \cdot 0 = 0,
+  \]
+  故 $x \in \mathcal{N}(A^T A)$。
+
+  \textbf{($\Rightarrow$) $\mathcal{N}(A^T A) \subseteq \mathcal{N}(A)$：}
+
+  若 $x \in \mathcal{N}(A^T A)$，则 $A^T A x = 0$。计算
+  \[
+    \|Ax\|_2^2 = (Ax)^T(Ax) = x^T A^T A x = x^T \cdot 0 = 0.
+  \]
+  因为范数非负，$\|Ax\|_2 = 0$ 当且仅当 $Ax = 0$，故 $x \in \mathcal{N}(A)$。
+
+  综上所述，$\mathcal{N}(A^T A) = \mathcal{N}(A)$。
+
+\end{solution}
+
+\section{题目 2}
+
+设
+\[
+  A =
+  \begin{pmatrix} 0 & -1 \\ 3 & 2 \\ 0 & -2
+  \end{pmatrix}, \quad
+  b =
+  \begin{pmatrix} -\frac{1}{3} \\ \frac{5}{3} \\ -\frac{2}{3}
+  \end{pmatrix}.
+\]
+
+\begin{enumerate}
+  \item[(1)] 请写出对应最小二乘问题的正则化方程；
+  \item[(2)] 请用平方根法求解上述正则化方程。
+\end{enumerate}
+
+\begin{solution}
+
+  \textbf{(1) 正则化方程}
+
+  最小二乘问题 $\min_x \|Ax - b\|_2^2$ 的正则化（法线）方程为
+  \[
+    A^T A x = A^T b.
+  \]
+
+  首先计算 $A^T$：
+  \[
+    A^T =
+    \begin{pmatrix} 0 & 3 & 0 \\ -1 & 2 & -2
+    \end{pmatrix}.
+  \]
+
+  计算 $A^T A$：
+  \[
+    A^T A =
+    \begin{pmatrix} 0 & 3 & 0 \\ -1 & 2 & -2
+    \end{pmatrix}
+    \begin{pmatrix} 0 & -1 \\ 3 & 2 \\ 0 & -2
+    \end{pmatrix}
+    =
+    \begin{pmatrix} 9 & 6 \\ 6 & 9
+    \end{pmatrix}.
+  \]
+
+  计算 $A^T b$：
+  \[
+    A^T b =
+    \begin{pmatrix} 0 & 3 & 0 \\ -1 & 2 & -2
+    \end{pmatrix}
+    \begin{pmatrix} -\frac{1}{3} \\ \frac{5}{3} \\ -\frac{2}{3}
+    \end{pmatrix}
+    =
+    \begin{pmatrix} 0 + 5 + 0 \\ \frac{1}{3} + \frac{10}{3} + \frac{4}{3}
+    \end{pmatrix}
+    =
+    \begin{pmatrix} 5 \\ 5
+    \end{pmatrix}.
+  \]
+
+  因此，正则化方程为
+  \[
+    \begin{pmatrix} 9 & 6 \\ 6 & 9
+    \end{pmatrix}
+    \begin{pmatrix} x_1 \\ x_2
+    \end{pmatrix}
+    =
+    \begin{pmatrix} 5 \\ 5
+    \end{pmatrix}.
+  \]
+
+  \textbf{(2) 用平方根法求解}
+
+  对矩阵 $G = A^T A =
+  \begin{pmatrix} 9 & 6 \\ 6 & 9
+  \end{pmatrix}$ 进行 Cholesky 分解 $G = LL^T$，其中 $L$ 为下三角矩阵。
+
+  计算第一列：$L_{11} = \sqrt{G_{11}} = \sqrt{9} = 3$。
+
+  计算第二行第一列：$L_{21} = \frac{G_{21}}{L_{11}} = \frac{6}{3} = 2$。
+
+  计算第二列对角线：$L_{22} = \sqrt{G_{22} - L_{21}^2} = \sqrt{9 - 4} = \sqrt{5}$。
+
+  因此
+  \[
+    L =
+    \begin{pmatrix} 3 & 0 \\ 2 & \sqrt{5}
+    \end{pmatrix}.
+  \]
+
+  验证：
+  \[
+    LL^T =
+    \begin{pmatrix} 3 & 0 \\ 2 & \sqrt{5}
+    \end{pmatrix}
+    \begin{pmatrix} 3 & 2 \\ 0 & \sqrt{5}
+    \end{pmatrix}
+    =
+    \begin{pmatrix} 9 & 6 \\ 6 & 4+5
+    \end{pmatrix} =
+    \begin{pmatrix} 9 & 6 \\ 6 & 9
+    \end{pmatrix}.
+  \]
+
+  现在求解 $Gy = b$，即 $LL^T y = A^T b$。
+
+  \textbf{前向替代} ($Lz = A^T b$)：
+  \[
+    \begin{pmatrix} 3 & 0 \\ 2 & \sqrt{5}
+    \end{pmatrix}
+    \begin{pmatrix} z_1 \\ z_2
+    \end{pmatrix}
+    =
+    \begin{pmatrix} 5 \\ 5
+    \end{pmatrix}.
+  \]
+
+  从第一个方程：$3z_1 = 5$，得 $z_1 = \frac{5}{3}$。
+
+  从第二个方程：$2z_1 + \sqrt{5}z_2 = 5$，得 $\sqrt{5}z_2 = 5 - 2 \cdot
+  \frac{5}{3} = 5 - \frac{10}{3} = \frac{5}{3}$，
+  因此 $z_2 = \frac{5}{3\sqrt{5}} = \frac{5\sqrt{5}}{15} = \frac{\sqrt{5}}{3}$。
+
+  \textbf{后向替代} ($L^T x = z$)：
+  \[
+    \begin{pmatrix} 3 & 2 \\ 0 & \sqrt{5}
+    \end{pmatrix}
+    \begin{pmatrix} x_1 \\ x_2
+    \end{pmatrix}
+    =
+    \begin{pmatrix} \frac{5}{3} \\ \frac{\sqrt{5}}{3}
+    \end{pmatrix}.
+  \]
+
+  从第二个方程：$\sqrt{5}x_2 = \frac{\sqrt{5}}{3}$，得 $x_2 = \frac{1}{3}$。
+
+  从第一个方程：$3x_1 + 2x_2 = \frac{5}{3}$，得 $3x_1 = \frac{5}{3} -
+  \frac{2}{3} = 1$，因此 $x_1 = \frac{1}{3}$。
+
+  所以最小二乘问题的解为
+  \[
+    x =
+    \begin{pmatrix} \frac{1}{3} \\ \frac{1}{3}
+    \end{pmatrix}.
+  \]
+
+\end{solution}
+
+\end{document}
