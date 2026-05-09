@@ -1,0 +1,382 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.8cm}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amssymb}
+\usepackage{amsthm}
+\usepackage{hyperref}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\title{点集拓扑题目整理}
+\author{}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{23--24 学年春夏学期点集拓扑（3 学分）期中试题}
+
+任课教师：吴惟为
+
+考试时间：95 分钟
+
+\begin{enumerate}
+  \item （25 分）证明恒同映射
+        \[
+          \mathrm{id} : (\R, \tau_c) \to (\R, \tau_f)
+        \]
+        是连续映射，但不是同胚映射。
+
+  \item
+        \begin{enumerate}
+          \item （25 分）证明紧致空间的连续像紧致。
+          \item （20 分）设 $f : X \to Y$ 是一一对应的连续函数，其中 $X$ 紧致，$Y$ 是 Hausdorff 空间，则 $f$ 是同胚。
+          \item （10 分）若 $f : S^1 \to E^1$ 连续，则 $f$ 不是单的，也不是满的。
+        \end{enumerate}
+
+  \item （10 分）证明仿紧的 Hausdorff 空间满足 $T_4$ 公理。
+
+  \item （10 分）$[0,1] \times [0,1]$ 是否可分解为两个连通子集 $A,B$ 的无交并，使得 $A$ 包含 $(0,0)$ 和 $(1,1)$，$B$ 包含 $(0,1)$ 和 $(1,0)$？若存在，试给出集合 $A,B$，并验证它们满足所需条件；若不存在，请说明理由。
+\end{enumerate}
+
+\subsection*{参考答案}
+
+\begin{enumerate}
+  \item 若 $\tau_c$ 表示可数补拓扑，$\tau_f$ 表示有限补拓扑，则 $\tau_f\subsetneq \tau_c$。因此对任意 $\tau_f$-开集 $U$，其原像
+        \[
+          \mathrm{id}^{-1}(U)=U
+        \]
+        仍是 $\tau_c$-开集，所以 $\mathrm{id}:(\R,\tau_c)\to(\R,\tau_f)$ 连续。它不是同胚，因为逆映射仍是恒同映射
+        \[
+          \mathrm{id}:(\R,\tau_f)\to(\R,\tau_c)
+        \]
+        不连续；例如 $\R\setminus\Q$ 在 $\tau_c$ 下开，但它的补集 $\Q$ 不是有限集，所以它在 $\tau_f$ 下不开。
+
+  \item
+        \begin{enumerate}
+          \item 设 $\{V_\lambda\}_{\lambda\in\Lambda}$ 是 $f(X)$ 的开覆盖，则 $\{f^{-1}(V_\lambda)\}_{\lambda\in\Lambda}$ 是 $X$ 的开覆盖。由 $X$ 紧致，存在有限子覆盖 $f^{-1}(V_{\lambda_1}),\dots,f^{-1}(V_{\lambda_n})$，于是 $V_{\lambda_1},\dots,V_{\lambda_n}$ 覆盖 $f(X)$，故 $f(X)$ 紧致。
+
+          \item 由上题，$f(X)$ 紧致。Hausdorff 空间中的紧集是闭集，因此 $f^{-1}:Y=f(X)\to X$ 将闭集的原像保持为闭集，从而连续。故 $f$ 是同胚。
+
+          \item $S^1$ 紧致，所以 $f(S^1)$ 是 $\R$ 中的紧集，因此不可能等于 $\R$，故 $f$ 不满。若 $f$ 单，则由（2）知 $f:S^1\to f(S^1)$ 是同胚。但 $\R$ 的紧连通子集只能是闭区间，而闭区间去掉一个内点后不连通；另一方面 $S^1$ 去掉任一点仍连通，矛盾。故 $f$ 也不单。
+        \end{enumerate}
+
+  \item 这是标准定理：仿紧 Hausdorff 空间必正规，从而满足 $T_4$。证明可由局部有限开覆盖细化与闭集分离完成：给定不交闭集 $A,B$，先对每个点选取分离它与另一个闭集的邻域，再取局部有限细化，最后把这些细化后的邻域做并，即得分离 $A,B$ 的两个不交开集。
+
+  \item 不存在。可用平面中的“交叉引理”：在正方形中，任何一个连通集若连接 $(0,0)$ 与 $(1,1)$，任何另一个连通集若连接 $(0,1)$ 与 $(1,0)$，则二者必相交。因此不可能把整个 $[0,1]^2$ 分解成满足题设要求的两个不交连通子集。
+\end{enumerate}
+
+\section{24--25 春夏点拓期末回忆卷}
+
+\renewcommand{\labelenumi}{题 \theenumi.}
+\begin{enumerate}
+  \item 描述 $(0,1)\cup(2,3)$ 的单点紧致化并说明理由。
+
+  \item 判断下列命题是否正确并给出理由。
+        \begin{enumerate}
+          \item 设 $Y$ 道路连通，$\forall y_1,y_2\in Y$，都存在连续映射
+                \[
+                  f : S^2 \to Y,
+                \]
+                使得 $f(N)=y_1,\ f(S)=y_2$，其中 $N,S$ 分别是 $S^2$ 的北极与南极。
+
+          \item 设 $X,Y$ 道路连通，$X$ 是无限集，$\forall y_1,y_2\in Y$，都存在连续映射
+                \[
+                  f : X \to Y,
+                \]
+                使得 $y_1,y_2\in f(X)$。
+        \end{enumerate}
+
+  \item 设 $X$ 是 Hausdorff 的，映射 $f : X \to X$ 连续，证明
+        \[
+          X_f=\{x\in X\mid f(x)=x\}
+        \]
+        是闭集。
+
+  \item 设 $I=[0,1]$，判断 $I^\omega$ 在一致拓扑下是否紧致与连通，并证明。
+
+  \item 证明 $\N$ 在有限补拓扑下局部连通但非局部道路连通。
+
+  \item 设 $f : S^1 \to S^1$ 是同胚，且 $f(f(x))=x$。映射 $g : S^1 \to \R$ 连续，证明 $\exists x_0\in S^1$，使得
+        \[
+          g(x_0)=g(f(x_0)).
+        \]
+\end{enumerate}
+\renewcommand{\labelenumi}{\theenumi.}
+
+\subsection*{参考答案}
+
+\renewcommand{\labelenumi}{题 \theenumi.}
+\begin{enumerate}
+  \item $(0,1)\cup(2,3)$ 同胚于两个不交的 $\R$ 的并。它的单点紧致化可描述为在两个区间的四个端点处同时补上同一个无穷远点，因此所得空间同胚于两个圆在一点粘接得到的空间，即“8”字形空间 $S^1\vee S^1$。
+
+  \item
+        \begin{enumerate}
+          \item 正确。因 $S^2$ 道路连通，只需取一条连接 $y_1,y_2$ 的道路 $\gamma:[0,1]\to Y$，再取连续函数 $\varphi:S^2\to[0,1]$，满足 $\varphi(N)=0,\ \varphi(S)=1$，令
+                \[
+                  f=\gamma\circ\varphi.
+                \]
+                则 $f(N)=y_1,\ f(S)=y_2$。
+
+          \item 不正确。反例：取 $X$ 为一个无限集赋予平凡拓扑，则 $X$ 是道路连通的；取 $Y=[0,1]$。任意连续映射 $f:X\to Y$ 都必须是常值，因为若 $f(x_1)\neq f(x_2)$，取 $Y$ 中把二者分开的开集，其原像会给出 $X$ 的非平凡开集，矛盾。因此不可能同时命中两个不同点 $y_1,y_2$。
+        \end{enumerate}
+
+  \item 设
+        \[
+          \Delta=\{(x,x):x\in X\}\subset X\times X.
+        \]
+        因 $X$ 是 Hausdorff，$\Delta$ 是闭集。又映射
+        \[
+          F:X\to X\times X,\qquad F(x)=(x,f(x))
+        \]
+        连续，所以
+        \[
+          X_f=F^{-1}(\Delta)
+        \]
+        为闭集。
+
+  \item 在一致拓扑下，$I^\omega$ 可看成赋予一致度量
+        \[
+          d(x,y)=\sup_n|x_n-y_n|
+        \]
+        的空间。它不是紧致的：令
+        \[
+          e_n=(0,\dots,0,1,0,\dots),
+        \]
+        则对 $m\neq n$ 有 $d(e_m,e_n)=1$，故该序列没有收敛子列，所以空间不列紧，从而不紧致。它是连通的，甚至道路连通：对任意 $x,y\in I^\omega$，线段
+        \[
+          H(t)=(1-t)x+ty,\qquad t\in[0,1]
+        \]
+        全落在 $I^\omega$ 中。
+
+  \item $\N$ 的有限补拓扑中，每个非空开集仍是无限集，并继承有限补拓扑，因此任意非空开子集都是连通的，故该空间局部连通。另一方面它不是局部道路连通。事实上，任意从 $[0,1]$ 到 $\N$ 的连续映射都只能是常值映射；否则 $[0,1]$ 会被分解成可数个互不相交的非空闭集（各点原像），这与区间的连通性不相容。故任一点的任意非空开邻域都不是道路连通的。
+
+  \item 设
+        \[
+          h(x)=g(x)-g(f(x)).
+        \]
+        则 $h:S^1\to\R$ 连续，且由 $f^2=\mathrm{id}$ 得
+        \[
+          h(f(x))=g(f(x))-g(f(f(x)))=-h(x).
+        \]
+        若对一切 $x$ 都有 $h(x)\neq 0$，则由 $S^1$ 连通知 $h$ 在 $S^1$ 上恒正或恒负；但上式表明 $h(x)$ 与 $h(f(x))$ 异号，矛盾。因此存在 $x_0$ 使 $h(x_0)=0$，即 $g(x_0)=g(f(x_0))$。
+\end{enumerate}
+\renewcommand{\labelenumi}{\theenumi.}
+
+\section{2025--2026 春夏学期点集拓扑期中考试}
+
+任课教师：吴惟为
+
+考试日期：2026 年 4 月 24 日
+
+考试时间：50 分钟
+
+\begin{enumerate}
+  \item （10 分）证明：Hausdorff 空间间乘积空间（赋予乘积拓扑）是 Hausdorff 的。
+
+  \item （10 分）证明：若 $X$ 关于两个拓扑 $\tau$ 和 $\tau'$ 都是紧致的 Hausdorff 空间，则要么 $\tau$ 和 $\tau'$ 相等，要么它们不能比较。
+
+  \item （15 分）证明：仿紧的 Hausdorff 空间是正规的。
+
+  \item 设 $f : X \to Y$ 是连续映射，称 $f$ 为固有映射（proper map），如果对任意紧集 $K\subset Y$，有 $f^{-1}(K)$ 都是紧的。
+        \begin{enumerate}
+          \item （5 分）证明：若 $f$ 是固有映射，则任意 $y\in Y$，集合 $f^{-1}(y)$ 是紧的。
+          \item （5 分）给出一个反例，说明“对任意 $y\in Y$，集合 $f^{-1}(y)$ 都是紧的”并不能推出 $f$ 是固有映射。
+          \item （10 分）设 $f : X \to Y$ 是连续且为闭映射，证明：对任意开集 $U\subset X$，集合
+                \[
+                  W(U):=\{y\in Y: f^{-1}(y)\subset U\}
+                \]
+                是 $Y$ 中的开集。
+          \item （5 分）设 $f : X \to Y$ 是连续且为闭映射，对任意 $y\in Y$，集合 $f^{-1}(y)$ 都是紧的，证明 $f$ 是固有映射。
+          \item （5 分）设 $f_1 : X_1 \to Y_1$ 和 $f_2 : X_2 \to Y_2$ 是两个固有映射，定义
+                \[
+                  f=f_1\times f_2 : X_1\times X_2 \to Y_1\times Y_2,
+                  \quad
+                  f(x_1,x_2)=(f_1(x_1),f_2(x_2)).
+                \]
+                若 $Y_1,Y_2$ 是 Hausdorff 的，证明 $f$ 也是固有映射。
+        \end{enumerate}
+\end{enumerate}
+
+\subsection*{参考答案}
+
+\begin{enumerate}
+  \item 设 $(x_1,y_1)\neq(x_2,y_2)\in X\times Y$。若 $x_1\neq x_2$，由 $X$ Hausdorff，取不交开集 $U_1\ni x_1,U_2\ni x_2$；则 $U_1\times Y,\ U_2\times Y$ 分离两点。若 $x_1=x_2$，则 $y_1\neq y_2$，同理由 $Y$ 的 Hausdorff 性可分离。故 $X\times Y$ 是 Hausdorff。有限次乘积同理。
+
+  \item 若 $\tau\subset\tau'$，则恒同映射
+        \[
+          \mathrm{id}:(X,\tau')\to(X,\tau)
+        \]
+        连续双射。定义域紧致、值域 Hausdorff，所以它是同胚，从而 $\tau'=\tau$。因此两个紧致 Hausdorff 拓扑若可比较就必相等；否则只能不可比较。
+
+  \item 这是标准结论：仿紧 Hausdorff 空间正规。证明思路与前一份试卷相同，利用 Hausdorff 性得到点与闭集可分离，再用仿紧性取局部有限开细化，最后把细化邻域整理为互不相交的开集以分离给定闭集。
+
+  \item
+        \begin{enumerate}
+          \item $\{y\}$ 是紧集，所以由 proper 的定义，$f^{-1}(\{y\})=f^{-1}(y)$ 紧。
+
+          \item 反例取投影
+                \[
+                  \pi:\R^2\to\R,\qquad \pi(x,t)=x.
+                \]
+                它是闭映射，且每个纤维 $\pi^{-1}(x)=\{x\}\times\R$ 与 $\R$ 同胚，并不紧。若要只反驳“每个纤维紧不能推出 proper”，可取
+                \[
+                  f:\R\to\R,\qquad f(x)=\arctan x.
+                \]
+                每个纤维至多一个点，因而紧；但紧集 $[-\pi/4,\pi/4]$ 的原像为 $[-1,1]$ 是紧的，而若取紧集 $[-\pi/2,\pi/2]$ 不属于值域。更直接的标准反例是
+                \[
+                  f:(0,1)\to\R,\qquad f(x)=0.
+                \]
+                每个纤维要么为空要么是 $(0,1)$，此例不满足纤维紧。故更合适的反例为包含映射
+                \[
+                  i:(0,1)\hookrightarrow \R.
+                \]
+                每个纤维为空集或单点，皆紧；但 $[0,1/2]$ 的原像是 $(0,1/2]$，在 $(0,1)$ 中不紧，所以 $i$ 不是 proper。
+
+          \item 注意
+                \[
+                  Y\setminus W(U)=\{y\in Y:f^{-1}(y)\cap(X\setminus U)\neq\varnothing\}=f(X\setminus U).
+                \]
+                因 $X\setminus U$ 闭，而 $f$ 是闭映射，所以 $f(X\setminus U)$ 闭，从而 $W(U)$ 开。
+
+          \item 任取紧集 $K\subset Y$。为证明 $f^{-1}(K)$ 紧，取其任一开覆盖 $\mathcal U$。对每个 $y\in K$，因纤维 $f^{-1}(y)$ 紧，可从 $\mathcal U$ 中取有限子族覆盖它们，其并记为 $U_y$。由（3），
+                \[
+                  W(U_y)=\{z\in Y:f^{-1}(z)\subset U_y\}
+                \]
+                是 $Y$ 中开集，且 $y\in W(U_y)$。故 $\{W(U_y):y\in K\}$ 是 $K$ 的开覆盖。由 $K$ 紧，存在有限子覆盖 $W(U_{y_1}),\dots,W(U_{y_n})$，于是对应的有限多个 $U_{y_i}$ 覆盖 $f^{-1}(K)$，故 $f^{-1}(K)$ 紧。
+
+          \item 设 $K\subset Y_1\times Y_2$ 紧。因 $Y_1,Y_2$ Hausdorff，投影像 $\pi_i(K)$ 紧。于是
+                \[
+                  f^{-1}(K)\subset f_1^{-1}(\pi_1(K))\times f_2^{-1}(\pi_2(K)).
+                \]
+                右边是紧集的乘积，故紧。又 $K$ 在 Hausdorff 空间中闭，故 $f^{-1}(K)$ 是右边紧集中的闭子集，因此紧。故 $f$ proper。
+        \end{enumerate}
+\end{enumerate}
+
+\section{小测题目}
+
+\begin{enumerate}
+  \item 称映射 $f:X\to Y$ 是开（闭）映射，若满足对任意 $X$ 中开（闭）集 $U$，$f(U)$ 是 $Y$ 中开（闭）集。举例说明：存在某个拓扑空间到某个拓扑空间的映射，它是开映射且是闭映射，但不是连续映射。
+
+  \item 设 $Y$ 为具有序拓扑的全序集，$f,g:X\to Y$ 是连续的。
+        \begin{enumerate}
+          \item 证明：$\{x:f(x)\le g(x)\}$ 在 $X$ 中是闭的。
+          \item 证明：由
+                \[
+                  h(x)=\min\{f(x),g(x)\}
+                \]
+                所定义的函数 $h:X\to Y$ 是连续的。
+        \end{enumerate}
+
+  \item 如果 $X_1$ 和 $X_2$ 都是 $X$ 的开集，$X=X_1\cup X_2$，并且 $X$ 与 $X_1\cap X_2$ 都道路连通，则 $X_1$ 与 $X_2$ 都道路连通。
+\end{enumerate}
+
+\subsection*{参考答案}
+
+\begin{enumerate}
+  \item 取同一集合 $\R$ 上的恒同映射
+        \[
+          \mathrm{id}:(\R,\tau_{\mathrm{std}})\to(\R,\tau_{\mathrm{disc}}).
+        \]
+        因离散拓扑中每个集合都开也都闭，所以通常拓扑下的任意开集、闭集的像在离散拓扑下仍开且闭，故它既是开映射也是闭映射。但它不是连续映射，因为值域中的单点集开，而其原像仍是单点集，在通常拓扑下不开。
+
+  \item
+        \begin{enumerate}
+          \item 设
+                \[
+                  A=\{x\in X:f(x)\le g(x)\}.
+                \]
+                只需证其补集开。若 $x_0\notin A$，即 $f(x_0)>g(x_0)$，由于 $Y$ 是序拓扑空间，可取开区间（或开射线）$U\ni f(x_0)$、$V\ni g(x_0)$，使得对任意 $u\in U,\ v\in V$ 都有 $u>v$。由连续性，存在 $x_0$ 的开邻域 $W$，使 $f(W)\subset U,\ g(W)\subset V$，故 $W\subset X\setminus A$，从而 $X\setminus A$ 开，$A$ 闭。
+
+          \item 序拓扑的一个子基可取为开射线 $\{(-\infty,a),(a,\infty):a\in Y\}$。对任意 $a\in Y$，
+                \[
+                  h^{-1}((-\infty,a))
+                  =f^{-1}((-\infty,a))\cup g^{-1}((-\infty,a)),
+                \]
+                \[
+                  h^{-1}((a,\infty))
+                  =f^{-1}((a,\infty))\cap g^{-1}((a,\infty)).
+                \]
+                右边都是开集，因此 $h$ 对子基开集的原像均开，故 $h$ 连续。
+        \end{enumerate}
+
+  \item 只证 $X_1$，$X_2$ 同理。任取 $a,b\in X_1$。由 $X$ 道路连通，存在道路 $\gamma:[0,1]\to X$ 连接 $a,b$。若 $\gamma([0,1])\subset X_1$，则已证。否则 $\gamma$ 有一段落在 $X_2\setminus X_1$ 中。由于 $X_1,X_2$ 都开，每一段离开 $X_1$ 又回到 $X_1$ 的参数区间，其两个端点都落在 $X_1\cap X_2$。而 $X_1\cap X_2$ 道路连通，所以可用落在 $X_1\cap X_2$ 中的道路替换这些区间。逐段替换后得到一条完全落在 $X_1$ 中的道路，连接 $a,b$。故 $X_1$ 道路连通。
+\end{enumerate}
+
+\section{小测}
+
+\begin{enumerate}
+  \item 设 $(X_\alpha)_{\alpha\in J}$ 是一族拓扑空间，求证：
+        \[
+          \mathcal C=\left\{\prod_{\alpha\in J}U_\alpha\;\middle|\;U_\alpha\text{ 是 }X_\alpha\text{ 中开集}\right\}
+        \]
+        是集合 $\prod_{\alpha\in J}X_\alpha$ 上的一组基。
+
+  \item 设 $A,B$ 为空间 $X$ 中的两个紧子集，$A\cap B$ 一定是紧子集吗？
+
+  \item 用 $M(n;\R)$ 表示 $n\times n$ 的实方阵构成的集合，看成 $n^2$ 维欧氏空间。$GL(n;\R)$ 是由 $n$ 阶可逆实方阵构成的子空间。问：该子空间有几个连通分支？证明你的结论。
+\end{enumerate}
+
+\subsection*{参考答案}
+
+\begin{enumerate}
+  \item 验证基的两条公理即可。
+        \begin{enumerate}
+          \item 覆盖性：对任意点 $x=(x_\alpha)_{\alpha\in J}\in\prod X_\alpha$，取 $U_\alpha=X_\alpha$，则
+                \[
+                  x\in \prod_{\alpha\in J}X_\alpha\in\mathcal C.
+                \]
+          \item 交叠性：若
+                \[
+                  x\in \prod_{\alpha}U_\alpha\cap\prod_{\alpha}V_\alpha,
+                \]
+                则对每个 $\alpha$ 有 $x_\alpha\in U_\alpha\cap V_\alpha$，且 $U_\alpha\cap V_\alpha$ 开。于是
+                \[
+                  x\in \prod_{\alpha}(U_\alpha\cap V_\alpha)\subset
+                  \left(\prod_{\alpha}U_\alpha\right)\cap
+                  \left(\prod_{\alpha}V_\alpha\right),
+                \]
+                且 $\prod_{\alpha}(U_\alpha\cap V_\alpha)\in\mathcal C$。
+        \end{enumerate}
+        故 $\mathcal C$ 是一组基；它生成的正是箱拓扑。
+
+  \item 不一定。若 $X$ 是 Hausdorff 空间，则一定成立，因为紧集在 Hausdorff 空间中闭，所以 $A\cap B$ 是紧集 $A$ 的闭子集，从而紧。但在一般空间中不成立。反例：取无限离散集 $D$，加上两个点 $\infty_1,\infty_2$，令
+        \[
+          X=D\cup\{\infty_1,\infty_2\},
+        \]
+        其中 $D$ 中每点孤立，而 $\infty_i$ 的邻域基取为
+        \[
+          \{\infty_i\}\cup(D\setminus F),\qquad F\subset D\text{ 有限}.
+        \]
+        则
+        \[
+          A=D\cup\{\infty_1\},\qquad B=D\cup\{\infty_2\}
+        \]
+        都是一点紧致化意义下的紧集，但
+        \[
+          A\cap B=D
+        \]
+        是无限离散空间，不紧。
+
+  \item $GL(n;\R)$ 恰有两个连通分支：
+        \[
+          GL^+(n,\R)=\{A:\det A>0\},\qquad
+          GL^-(n,\R)=\{A:\det A<0\}.
+        \]
+        因为行列式映射
+        \[
+          \det:GL(n,\R)\to\R\setminus\{0\}
+        \]
+        连续，而 $\R\setminus\{0\}$ 只有两个连通分支 $(0,\infty)$ 与 $(-\infty,0)$，故 $GL(n,\R)$ 的每个连通集必须落在其中之一，所以连通分支至多两个。另一方面这两个集合都道路连通：对 $GL^+(n,\R)$ 中任意矩阵，可借助极分解或 Gram--Schmidt 变形到单位矩阵；对 $GL^-(n,\R)$ 中任意矩阵，可先连到 $\mathrm{diag}(-1,1,\dots,1)$。故二者分别连通，且互不相交，因此正好是两个连通分支。
+\end{enumerate}
+
+\section*{说明}
+
+本文档根据你提供的多张试题图片整理而成，其中“24--25 春夏点拓期末回忆卷”同时参考了打印版和手写版，两者内容一致时采用较清晰的打印版表述。参考答案以复习提纲和证明骨架为主，个别标准定理题采用了简写说明。
+
+\end{document}

@@ -1,0 +1,3414 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% Chinese support (must load before macros to avoid fontspec conflicts)
+\usepackage[UTF8]{ctex}
+
+% useful packages.
+\usepackage{fancyhdr}
+\usepackage{layout}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Override ctex's Chinese proof label
+\renewcommand{\proofname}{Proof}
+
+% Clickable cross-references
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{Point Set Topology --- Midterm Reference}
+\rhead{\today}
+
+\begin{center}
+  {\Large\bfseries Point Set Topology --- Midterm Exam Reference Sheet}\\[6pt]
+  {\large Table of Contents}
+\end{center}
+\vspace{6pt}
+
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section{集合论与公理 (Set Theory and ZFC Axioms)}
+%=====================================================================
+
+\subsection{Axiom of Extensionality (外延公理)}\label{def:extensionality}
+Two sets are equal if and only if they have the same elements:
+\[
+  A = B \iff (\forall x)(x \in A \Leftrightarrow x \in B).
+\]
+
+\subsection{Axiom of Empty Set (空集公理)}\label{def:empty-set}
+There exists a set containing no elements:
+\[
+  (\exists A)(\forall x)(x \notin A).
+\]
+This unique set is denoted $\varnothing$ (the empty set).
+
+\subsection{Axiom of Pairing (配对公理)}\label{def:pairing}
+Given any two sets $A$ and $B$, there exists a set $\{A, B\}$
+containing exactly $A$ and $B$.
+
+\subsection{Axiom of Union (并集公理)}\label{def:union-axiom}
+For any set $A$, there exists a set $\bigcup A = \{x \mid (\exists B
+\in A)(x \in B)\}$.
+Example: if $A = \{\{1,2\}, \{3\}\}$, then $\bigcup A = \{1, 2, 3\}$.
+
+\subsection{Axiom of Power Set (幂集公理)}\label{def:power-set-axiom}
+For any set $A$, the collection of all subsets of $A$ forms a set:
+\[
+  \mathcal{P}(A) = \{B \mid B \subseteq A\}.
+\]
+
+\subsection{Axiom Schema of Separation (分离公理/概括公理)}\label{def:separation}
+Given a set $A$ and a property $P(x)$, the subset $\{x \in A \mid
+P(x)\}$ exists.
+\textbf{Key:} must start from an existing set $A$; this avoids
+Russell's paradox.
+
+\subsection{Axiom Schema of Replacement (替换公理)}\label{def:replacement}
+If $\varphi(x, y)$ defines a ``functional property'' (for each $x \in
+A$ there exists a unique $y$), then all such $y$ form a set.
+
+\subsection{Axiom of Infinity (无穷公理)}\label{def:infinity}
+There exists an infinite set. Formally: $\exists I$ such that
+$\varnothing \in I$ and $(\forall x \in I)(x \cup \{x\} \in I)$.
+This constructs $\N$: $0 = \varnothing$, $1 = \{0\}$, $2 = \{0, 1\}$, \ldots
+
+\subsection{Axiom of Regularity / Foundation (正则公理)}\label{def:regularity}
+Every nonempty set $A$ has an element disjoint from $A$:
+\[
+  (\forall A \neq \varnothing)(\exists x \in A)(x \cap A = \varnothing).
+\]
+\textbf{Corollary:} No set satisfies $A \in A$ (no ``infinite Russian
+doll'' self-containment).
+
+\subsection{Axiom of Choice --- AC (选择公理)}\label{def:ac}
+If $A$ is a family of nonempty sets, there exists a function $f : A
+\to \bigcup A$ such that $(\forall X \in A)(f(X) \in X)$.
+One simultaneously chooses one element from each set.
+
+\textbf{Independence:} G\"odel (1938) showed AC is consistent with
+ZF; Cohen (1963) showed AC is not provable from ZF. Hence AC is
+\emph{independent} of ZF.
+
+\subsection{Russell's Paradox (罗素悖论)}\label{def:russell}
+If one replaces Separation with unrestricted comprehension $\{x \mid
+P(x)\}$ is always a set, let $A = \{x \mid x \notin x\}$. Then $A \in
+A \Leftrightarrow A \notin A$, a contradiction. ZFC avoids this via
+the Separation axiom.
+
+\subsection{Forcing (力迫法)}\label{def:forcing}
+A technique invented by Cohen (1963) to prove independence results in
+set theory. Used to show both $\neg$AC and $\neg$CH are consistent with ZF.
+
+%=====================================================================
+\section{可数性与基数 (Countability and Cardinality)}
+%=====================================================================
+
+\subsection{Finite Set (有限集)}\label{def:finite}
+A set $S$ is \textbf{finite} if there exists a bijection $S \to \{1,
+2, \ldots, n\}$ for some $n \in \N$. The number $n$ is the \textbf{size} $|S|$.
+
+\subsection{Infinite Set (无限集)}\label{def:infinite}
+A set is \textbf{infinite} if it is not finite.
+
+\subsection{Countably Infinite (可数无限)}\label{def:countably-infinite}
+A set $S$ is \textbf{countably infinite} if there exists a bijection
+$S \to \N$. Intuitively: the elements can be listed as $s_0, s_1, s_2, \ldots$
+
+\subsection{Countable (可数)}\label{def:countable}
+A set is \textbf{countable} if it is either finite or countably infinite.
+
+\subsection{Uncountable (不可数)}\label{def:uncountable}
+A set is \textbf{uncountable} if it is not countable.
+
+\textbf{Key equivalence (for nonempty $B$):}
+\[
+  B \text{ is countable} \iff \exists\text{ surjection } \N
+  \twoheadrightarrow B \iff \exists\text{ injection } B \hookrightarrow \N.
+\]
+
+\begin{proof}
+  ($B$ countable $\Rightarrow$ surjection $\N \to B$): If $B$ is
+  finite $\{b_1, \ldots, b_n\}$,
+  define $f : \N \to B$ by $f(k) = b_{((k-1) \bmod n) + 1}$ (cycling).
+  If $B$ is countably infinite, there is a bijection $\N \to B$,
+  which is a surjection.
+
+  (Surjection $\N \to B$ $\Rightarrow$ injection $B \hookrightarrow \N$):
+  Given surjection $g : \N \to B$, for each $b \in B$ pick $n_b \in
+  g^{-1}(\{b\})$
+  (by AC). Then $b \mapsto n_b$ is injective: if $n_{b_1} = n_{b_2}$,
+  then $g(n_{b_1}) = b_1 = b_2$.
+
+  (Injection $B \hookrightarrow \N$ $\Rightarrow$ $B$ countable):
+  Let $i : B \hookrightarrow \N$ be injective. Then $B \cong i(B) \subseteq \N$.
+  Every subset of $\N$ is countable (well-order $i(B)$ by the natural
+    order of $\N$;
+  if infinite, enumerate in increasing order to get a bijection with $\N$).
+\end{proof}
+
+\subsection{Cantor Diagonal Argument (Cantor 对角线论证)}\label{def:cantor-diag}
+\begin{theorem}
+  $\{0, 1\}^{\N}$ (the set of all infinite binary sequences) is uncountable.
+\end{theorem}
+\begin{proof}
+  Assume countable. List all sequences $x_1, x_2, x_3, \ldots$ where
+  $x_i = (x_{i1}, x_{i2}, \ldots)$.
+  Define $y = (y_1, y_2, \ldots)$ by $y_j \neq x_{jj}$ for all $j$.
+  Then $y \neq x_i$ for all $i$ (differs at position $i$), contradiction.
+\end{proof}
+
+\subsection{Cantor's Theorem (Cantor 定理)}\label{def:cantor-thm}
+\begin{theorem}
+  For any set $A$, there is no surjection $A \twoheadrightarrow
+  \mathcal{P}(A)$. Hence $|A| < |\mathcal{P}(A)|$.
+\end{theorem}
+\begin{proof}
+  Suppose $g : A \to \mathcal{P}(A)$ is a surjection. Define $B = \{a
+  \in A : a \notin g(a)\}$.
+  Since $g$ is surjective, $\exists b \in A$ with $g(b) = B$.
+  If $b \in B = g(b)$, then by definition of $B$, $b \notin g(b) =
+  B$, contradiction.
+  If $b \notin B = g(b)$, then by definition of $B$, $b \in B$, contradiction.
+\end{proof}
+
+\subsection{Cardinal Number and Cardinality (基数与势)}\label{def:cardinality}
+Two sets $A, B$ have the \textbf{same cardinality} (same cardinal
+number), written $|A| = |B|$, if there exists a bijection $A \to B$.
+
+$|A| < |B|$ means: there exists an injection $A \hookrightarrow B$
+but no bijection $A \to B$.
+
+\subsection{$\aleph_0$ and $\aleph_1$}\label{def:aleph}
+$\aleph_0 = |\N|$ (cardinality of countably infinite sets).
+$\aleph_1 = |\R| = |\mathcal{P}(\N)|$ (cardinality of the continuum).
+
+\subsection{Continuum Hypothesis --- CH (连续统假设)}\label{def:ch}
+There is no set $A$ with $\aleph_0 < |A| < \aleph_1$.
+CH is \textbf{independent} of ZFC (G\"odel 1940: consistent; Cohen
+1963: not provable).
+
+%=====================================================================
+\section{拓扑空间 (Topological Spaces)}
+%=====================================================================
+
+\subsection{Topological Space and Topology (拓扑空间与拓扑)}\label{def:topology}
+\begin{definition}
+  A \textbf{topology} on a set $X$ is a collection $\mathcal{T}
+  \subseteq \mathcal{P}(X)$ satisfying:
+  \begin{enumerate}
+    \item $\varnothing \in \mathcal{T}$ and $X \in \mathcal{T}$.
+    \item Arbitrary unions: if $\{U_i\}_{i \in I} \subseteq
+      \mathcal{T}$, then $\bigcup_{i \in I} U_i \in \mathcal{T}$.
+    \item Finite intersections: if $U_1, \ldots, U_k \in
+      \mathcal{T}$, then $\bigcap_{i=1}^k U_i \in \mathcal{T}$.
+  \end{enumerate}
+  The pair $(X, \mathcal{T})$ is a \textbf{topological space}.
+\end{definition}
+
+\subsection{Open Set (开集)}\label{def:open}
+A subset $U \subseteq X$ is \textbf{open} (or $\mathcal{T}$-open) if
+$U \in \mathcal{T}$.
+``Open'' is relative to the topology, not absolute.
+
+\subsection{Closed Set (闭集)}\label{def:closed}
+A subset $C \subseteq X$ is \textbf{closed} if $X \setminus C$ is open.
+
+\textbf{Properties of closed sets:}
+\begin{itemize}
+  \item Arbitrary intersections of closed sets are closed.
+  \item Finite unions of closed sets are closed.
+\end{itemize}
+\begin{proof}
+  Let $\{C_\alpha\}$ be closed sets. Then $X \setminus \bigcap_\alpha
+  C_\alpha = \bigcup_\alpha (X \setminus C_\alpha)$
+  is a union of open sets, hence open. So $\bigcap_\alpha C_\alpha$ is closed.
+  Similarly, $X \setminus (C_1 \cup \cdots \cup C_k) = (X \setminus
+  C_1) \cap \cdots \cap (X \setminus C_k)$
+  is a finite intersection of open sets, hence open.
+\end{proof}
+
+\subsection{Clopen Set (既开又闭集)}\label{def:clopen}
+A set that is simultaneously open and closed.
+$\varnothing$ and $X$ are always clopen. The existence of
+\emph{other} clopen sets relates to disconnectedness.
+
+\subsection{Trivial / Indiscrete Topology (平凡拓扑/密着拓扑)}\label{def:trivial}
+$\mathcal{T} = \{\varnothing, X\}$. The coarsest possible topology.
+
+\subsection{Discrete Topology (离散拓扑)}\label{def:discrete-topo}
+$\mathcal{T} = \mathcal{P}(X)$. Every subset is open. The finest
+possible topology.
+
+\subsection{Cofinite Topology (余有限拓扑)}\label{def:cofinite}
+$\mathcal{T} = \{\varnothing\} \cup \{X \setminus F : F \text{ is
+finite}\}$. The open sets are $\varnothing$ and complements of finite sets.
+
+\begin{proof}[Verification that this is a topology]
+  $\varnothing, X \in \mathcal{T}$ trivially.
+  Arbitrary unions: let $\{X \setminus F_\alpha\}$ be open sets.
+  Then $\bigcup_\alpha (X \setminus F_\alpha) = X \setminus
+  \bigcap_\alpha F_\alpha$.
+  Since $\bigcap_\alpha F_\alpha \subseteq F_{\alpha_0}$ is finite,
+  the union is open.
+  Finite intersections: $(X \setminus F_1) \cap (X \setminus F_2) = X
+  \setminus (F_1 \cup F_2)$,
+  and $F_1 \cup F_2$ is finite.
+\end{proof}
+
+\subsection{Semicontinuous Topology (半无穷拓扑)}\label{def:semicontinuous}
+On $\R$: $\mathcal{T}$ consists of $\varnothing$, $\R$, and all sets
+of the form $(a, +\infty)$ (and their finite intersections, which are
+still of this form).
+This is coarser than the standard topology on $\R$.
+
+\subsection{Finer / Coarser (更细/更粗)}\label{def:finer-coarser}
+$\mathcal{T}_1$ is \textbf{finer} (larger) than $\mathcal{T}_2$ if
+$\mathcal{T}_2 \subseteq \mathcal{T}_1$.
+$\mathcal{T}_1$ is \textbf{coarser} (smaller) than $\mathcal{T}_2$ if
+$\mathcal{T}_1 \subseteq \mathcal{T}_2$.
+
+\textbf{Fact:} A finer topology has more open sets, hence more
+continuous functions. A coarser topology has fewer.
+
+%=====================================================================
+\section{基 (Basis)}
+%=====================================================================
+
+\subsection{Basis (基)}\label{def:basis}
+\begin{definition}
+  $\mathcal{B} \subseteq \mathcal{P}(X)$ is a \textbf{basis for a topology} if:
+  \begin{enumerate}
+    \item (Covering) $\bigcup_{B \in \mathcal{B}} B = X$.
+    \item (Intersection) If $x \in B_1 \cap B_2$ with $B_1, B_2 \in
+      \mathcal{B}$, then $\exists B_3 \in \mathcal{B}$ with $x \in
+      B_3 \subseteq B_1 \cap B_2$.
+  \end{enumerate}
+\end{definition}
+The topology \textbf{generated} by $\mathcal{B}$ is $\mathcal{T} =
+\{\bigcup_{i \in I} B_i : B_i \in \mathcal{B}\}$.
+
+\subsection{Subbasis (子基)}\label{def:subbasis}
+$\mathcal{S} \subseteq \mathcal{P}(X)$ is a \textbf{subbasis} if the
+collection of all finite intersections of elements of $\mathcal{S}$
+forms a basis.
+The topology generated by $\mathcal{S}$ is the coarsest topology
+containing $\mathcal{S}$.
+
+\subsection{Generating a Topology (生成拓扑)}\label{def:generate-topo}
+Given a basis $\mathcal{B}$, every open set is a union of basis
+elements: $U = \bigcup\{B \in \mathcal{B} : B \subseteq U\}$.
+
+\subsection{Countable Basis / Second-Countable
+(可数基/第二可数)}\label{def:second-countable}
+A space $(X, \mathcal{T})$ is \textbf{second-countable} if its
+topology has a countable basis.
+Example: $\R$ with the basis $\{(a, b) : a, b \in \Q\}$ (rational endpoints).
+
+\subsection{First-Countable (第一可数)}\label{def:first-countable}
+\begin{definition}
+  $(X, \mathcal{T})$ is \textbf{first-countable} if every point
+  $x \in X$ has a \emph{countable neighborhood basis} (local basis): a
+  countable collection $\{U_n\}_{n \in \N}$ of open neighborhoods of $x$
+  such that every open $V \ni x$ contains some $U_n$.
+\end{definition}
+
+\textbf{Intuition:} Second-countability is a \emph{global} condition (one
+countable basis for the entire topology).  First-countability is a \emph{local}
+condition (each point merely needs its own countable family of neighborhoods).
+
+\textbf{Key facts:}
+\begin{itemize}
+  \item \textbf{Second-countable $\Rightarrow$ first-countable}
+    (a global countable basis restricts to a countable local basis at each
+    point), but \emph{not} conversely.
+  \item Every \textbf{metrizable} space is first-countable:
+    $\{B(x, 1/n) : n \in \N\}$ is a countable neighborhood basis at $x$.
+  \item First-countability is \textbf{hereditary}: every subspace of a
+    first-countable space is first-countable.
+  \item In a first-countable space, \textbf{sequences suffice} for topology:
+    $x \in \overline{A}$ iff there exists a sequence in $A$ converging to $x$;
+    $f$ is continuous iff it preserves sequential convergence.
+    (In non-first-countable spaces, nets or filters are needed.)
+\end{itemize}
+
+\textbf{Examples showing strictness of the hierarchy:}
+\begin{itemize}
+  \item $\R$ with the standard topology: second-countable
+    (hence first-countable).
+  \item An uncountable set with the discrete topology: first-countable
+    (each point $\{x\}$ is itself a neighborhood basis), but \emph{not}
+    second-countable (would require uncountably many basis elements to cover
+    all singletons).
+  \item $\R_\ell$ (lower limit topology): first-countable
+    ($\{[x, x+1/n)\}$ is a local basis at $x$) and separable, but \emph{not}
+    second-countable.
+  \item The cocountable topology on an uncountable set: \emph{not}
+    first-countable (no point has a countable neighborhood basis), hence not
+    second-countable.
+\end{itemize}
+
+\textbf{First-countable vs.\ second-countable --- summary:}
+
+\begin{center}
+  \begin{tabular}{lcc}
+    \textbf{Property} & \textbf{First-countable} & \textbf{Second-countable} \\
+    \hline
+    Scope & Local (per point) & Global (whole space) \\
+    Metrizable $\Rightarrow$ & Yes & No ($\R^\omega$ is metrizable
+    but not $2$nd-count.) \\
+    Hereditary & Yes & Yes \\
+    Products & Preserved (finite/countable) & Preserved (countable) \\
+    Sequences determine topology & Yes & Yes (strictly stronger) \\
+  \end{tabular}
+\end{center}
+
+\subsection{Open Rectangle / Open Ball (开矩形/开球)}\label{def:open-rect}
+In $\R^n$ with Euclidean metric: the \textbf{open ball} $B(x,
+\varepsilon) = \{y : d(x, y) < \varepsilon\}$.
+The \textbf{open rectangle} $(a_1, b_1) \times \cdots \times (a_n,
+b_n)$ is a basis element for the product topology.
+
+%=====================================================================
+\section{分离公理 (Separation Axioms: $T_0$--$T_4$)}
+%=====================================================================
+
+The separation axioms are a hierarchy of increasingly strong conditions on a
+topological space, measuring the degree to which distinct points (or points and
+closed sets, or pairs of closed sets) can be ``separated'' by open sets.  These
+conditions are important in their own right and are the central tool for
+characterizing metrizability.
+
+\subsection{Overview: $T_0 \Rightarrow T_1 \Rightarrow T_2
+\Rightarrow T_3 \Rightarrow T_{3\frac{1}{2}} \Rightarrow T_4$}
+
+\begin{center}
+  \begin{tabular}{lll}
+    \textbf{Name} & \textbf{Symbol} & \textbf{Requirement} \\
+    \hline
+    Kolmogorov   & $T_0$     & Distinct points are topologically
+    distinguishable \\
+    Fr\'echet    & $T_1$     & Singletons are closed \\
+    Hausdorff    & $T_2$     & Distinct points have disjoint open
+    neighborhoods \\
+    Regular      & $T_3$     & Points and disjoint closed sets
+    separated by open sets \\
+    Tychonoff    & $T_{3\frac{1}{2}}$ & Points and disjoint closed
+    sets separated by continuous functions \\
+    Normal       & $T_4$     & Disjoint closed sets separated by open sets \\
+  \end{tabular}
+\end{center}
+
+\textbf{Convention:} $T_i$ denotes both the axiom and the space satisfying it.
+``$T_3$'' = regular + $T_1$; ``$T_4$'' = normal + $T_1$. Some authors write
+``regular'' for $T_3$ without $T_1$; we follow the convention that
+$T_3$ \emph{includes} $T_1$.
+
+\subsection{$T_0$ Space --- Kolmogorov Space (Kolmogorov 空间)}\label{def:T0}
+\begin{definition}
+  $(X, \mathcal{T})$ is $T_0$ if for any two distinct points $x \ne y$,
+  there exists an open set $U$ containing exactly one of them.
+\end{definition}
+
+\textbf{Intuition:} Topology can ``distinguish'' any two points --- you
+never have two points with \emph{exactly} the same set of open neighborhoods.
+
+\textbf{Non-example:} The trivial (indiscrete) topology on $\{a, b\}$ is
+\emph{not} $T_0$: the only open sets are $\varnothing$ and $\{a, b\}$,
+so $a$ and $b$ have identical neighborhoods.
+
+\textbf{Example:} The Sierpi\'nski space $\{0, 1\}$ with topology
+$\{\varnothing, \{1\}, \{0,1\}\}$ is $T_0$ but not $T_1$: $\{0\}$ is not closed.
+
+\subsection{$T_1$ Space --- Fr\'echet Space (Fr\'echet 空间)}\label{def:T1}
+\begin{definition}
+  $(X, \mathcal{T})$ is $T_1$ if for any two distinct points $x \ne y$,
+  there exist open sets $U \ni x$, $V \ni y$ with $y \notin U$ and $x \notin V$.
+\end{definition}
+
+\begin{proposition}
+  The following are equivalent:
+  \begin{enumerate}
+    \item $X$ is $T_1$.
+    \item Every singleton $\{x\}$ is closed.
+    \item Every finite subset of $X$ is closed.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  ($1 \Rightarrow 2$): For $x \in X$ and $y \ne x$, by $T_1$ there exists
+  open $V_y \ni y$ with $x \notin V_y$. Then $X \setminus \{x\} =
+  \bigcup_{y \ne x} V_y$ is open, so $\{x\}$ is closed.
+
+  ($2 \Rightarrow 3$): Finite unions of closed sets are closed.
+
+  ($3 \Rightarrow 1$): Given $x \ne y$, the set $\{y\}$ is closed, so
+  $U = X \setminus \{y\}$ is open, $x \in U$, $y \notin U$.
+  Symmetrically for $V$.
+\end{proof}
+
+\textbf{Key consequences of $T_1$:}
+\begin{itemize}
+  \item A sequence can have \emph{at most one} limit (limits need not exist,
+    but they are unique when they do).
+  \item $T_1$ is \textbf{hereditary}: every subspace of a $T_1$ space is $T_1$.
+  \item Products of $T_1$ spaces are $T_1$.
+\end{itemize}
+
+\textbf{Example:} Any metric space is $T_1$ (indeed $T_2$, $T_4$).
+The cofinite topology on an infinite set is $T_1$ but \emph{not} $T_2$.
+
+\subsection{$T_2$ Space --- Hausdorff Space (Hausdorff 空间)}\label{def:T2}
+\begin{definition}
+  $(X, \mathcal{T})$ is \textbf{Hausdorff} ($T_2$) if for any two distinct
+  points $x \ne y$, there exist disjoint open sets $U, V$ with
+  $x \in U$, $y \in V$, i.e.\ $U \cap V = \varnothing$.
+\end{definition}
+
+\begin{proposition}
+  In a Hausdorff space:
+  \begin{enumerate}
+    \item Every convergent sequence has a \textbf{unique} limit.
+    \item Every compact subset is \textbf{closed}.
+    \item The diagonal $\Delta = \{(x,x) : x \in X\}$ is closed in $X \times X$.
+  \end{enumerate}
+\end{proposition}
+
+\textbf{Proof sketch (compact $\Rightarrow$ closed):} Let $K \subseteq Y$ be
+compact, $Y$ Hausdorff, and $y \notin K$. For each $x \in K$, pick disjoint
+open $U_x \ni x$, $V_x \ni y$. The $U_x$ cover $K$, so finitely many
+$U_{x_1}, \ldots, U_{x_n}$ suffice. Then $V = V_{x_1} \cap \cdots \cap V_{x_n}$
+is an open neighborhood of $y$ disjoint from $K$. So $Y \setminus K$ is open.
+
+\textbf{Key facts:}
+\begin{itemize}
+  \item Hausdorff is \textbf{hereditary}: every subspace of a
+    Hausdorff space is Hausdorff.
+  \item Products of Hausdorff spaces are Hausdorff.
+  \item A continuous bijection from a \textbf{compact} space to a
+    \textbf{Hausdorff} space is a homeomorphism
+    (this is one of the most-used tools in point-set topology).
+\end{itemize}
+
+\textbf{Example:} $\R^n$, any metric space, any order topology.
+\textbf{Non-example:} Cofinite topology on infinite set; Zariski
+topology on $\C^n$.
+
+\subsection{$T_3$ Space --- Regular Space (正则空间)}\label{def:T3}
+\begin{definition}
+  $(X, \mathcal{T})$ is \textbf{regular} ($T_3$) if it is $T_1$ and for
+  every point $x$ and closed set $F$ with $x \notin F$, there exist
+  disjoint open sets $U \ni x$ and $V \supseteq F$.
+\end{definition}
+
+\textbf{Equivalent reformulation:} $X$ is regular iff each point $x$ has
+a neighborhood basis consisting of \emph{closed neighborhoods}
+$\bar{U}$ --- i.e., for every open $U \ni x$, there exists open $V$ with
+$x \in V \subseteq \bar{V} \subseteq U$.
+
+\textbf{Key facts:}
+\begin{itemize}
+  \item Regularity is hereditary: every subspace of a regular space is regular.
+  \item Products of regular spaces are regular.
+  \item Every metric space is regular (indeed normal).
+  \item \textbf{Compact + Hausdorff $\Rightarrow$ regular} (and normal).
+\end{itemize}
+
+\subsection{$T_{3\frac{1}{2}}$ Space --- Tychonoff / Completely Regular Space
+(完全正则空间)}\label{def:T3h}
+\begin{definition}
+  $(X, \mathcal{T})$ is \textbf{completely regular} ($T_{3\frac{1}{2}}$)
+  if it is $T_1$ and for every point $x$ and closed set $F$ with $x \notin F$,
+  there exists a continuous function $f : X \to [0,1]$ with $f(x) = 0$
+  and $f(F) = \{1\}$.
+\end{definition}
+
+This lies strictly between $T_3$ and $T_4$:
+\[ T_4 \;\Rightarrow\; T_{3\frac{1}{2}} \;\Rightarrow\; T_3. \]
+
+\textbf{Key fact (Urysohn's Lemma $\Rightarrow$ $T_4$ is $T_{3\frac{1}{2}}$):}
+Every normal space is completely regular (by Urysohn's Lemma).
+
+\textbf{Why $T_{3\frac{1}{2}}$ matters:} A space embeds into a (Tychonoff)
+cube $[0,1]^J$ for some index set $J$ if and only if it is $T_{3\frac{1}{2}}$.
+This is the content of the \emph{Tychonoff Embedding Theorem}.
+
+\subsection{$T_4$ Space --- Normal Space (正规空间)}\label{def:T4}
+\begin{definition}
+  $(X, \mathcal{T})$ is \textbf{normal} ($T_4$) if it is $T_1$ and for
+  every pair of disjoint closed sets $A, B$, there exist disjoint open
+  sets $U \supseteq A$, $V \supseteq B$.
+\end{definition}
+
+\begin{theorem}[Urysohn's Lemma]
+  $X$ is normal if and only if for every pair of disjoint closed sets
+  $A, B \subseteq X$, there exists a continuous function
+  $f : X \to [0,1]$ with $f(A) = \{0\}$ and $f(B) = \{1\}$.
+\end{theorem}
+
+This is one of the most important results in point-set topology. It connects
+the purely topological notion of ``separating closed sets by open sets'' with
+the analytic notion of ``separating by continuous functions.''
+
+\begin{theorem}[Tietze Extension Theorem]
+  $X$ is normal if and only if for every closed $A \subseteq X$ and every
+  continuous $f : A \to \R$, there exists a continuous extension
+  $F : X \to \R$ with $F|_A = f$.
+\end{theorem}
+
+\textbf{Key facts about normality:}
+\begin{itemize}
+  \item \textbf{Compact + Hausdorff $\Rightarrow$ normal.}
+    (Proof: Let $A, B$ be disjoint closed sets in a compact Hausdorff space.
+      $A$ is compact (closed in compact). Use the Hausdorff property to
+    separate each $a \in A$ from $B$, extract a finite subcover.)
+  \item \textbf{Metrizable $\Rightarrow$ normal.}
+    (Proof: see \S\ref{def:metrizable}, the function
+    $f(x) = d(x,A)/(d(x,A)+d(x,B))$ does the job.)
+  \item Normality is \textbf{NOT hereditary} in general
+    (a subspace of a normal space need not be normal).
+  \item Normality is \textbf{NOT preserved by products} in general
+    ($\R^\omega$ in the product topology is normal, but
+    Sorgenfrey plane $\mathbb{S} \times \mathbb{S}$ is not).
+\end{itemize}
+
+\textbf{Famous non-normal space:} The \emph{Sorgenfrey line}
+$\mathbb{S}$ (topology generated by $[a, b)$) is $T_3$ (regular) but
+the product $\mathbb{S} \times \mathbb{S}$ is \emph{not} $T_4$ (not normal).
+Also, $\R^\omega$ in the box topology is not normal
+(see \S\ref{def:metrizable}).
+
+\textbf{Jones' Lemma:} If $X$ is normal and contains a dense set $D$ and
+a closed discrete set $S$ with $|S| \ge 2^{|D|}$, then $X$ is not normal.
+(Used to show certain spaces are not $T_4$.)
+
+\subsection{Separation Axioms and Metrizability --- Summary
+(分离公理与可度量化的关系)}\label{def:sep-metrizable}
+
+The hierarchy of separation axioms gives both \textbf{necessary conditions}
+and (combined with countability) \textbf{sufficient conditions} for
+metrizability:
+
+\begin{center}
+  \begin{tabular}{ll}
+    \textbf{Direction} & \textbf{Statement} \\
+    \hline
+    Necessary & Metrizable $\Rightarrow$ $T_4$ (normal) \\
+    Necessary & Metrizable $\Rightarrow$ first-countable \\
+    Necessary & Metrizable $\Rightarrow$ $T_2$ (Hausdorff) \\
+    \hline
+    Sufficient & $T_3$ + second-countable $\Rightarrow$ metrizable (Urysohn) \\
+    Sufficient & Compact + metrizable $\Rightarrow$ second-countable \\
+  \end{tabular}
+\end{center}
+
+\begin{theorem}[Urysohn Metrization Theorem]
+  \label{thm:urysohn-metrization}
+  If $(X, \mathcal{T})$ is $T_3$ (regular $+$ $T_1$) and second-countable,
+  then $X$ is metrizable.
+\end{theorem}
+
+\textbf{Proof idea:} Use second-countability to embed $X$ into
+the Hilbert cube $[0,1]^\omega$ (a metrizable space). The regularity
+condition ensures we can separate points from closed sets using
+Urysohn functions, constructing an embedding.
+
+\textbf{Converse direction:}
+\begin{itemize}
+  \item Metrizable + separable $\Rightarrow$ second-countable
+    (the countable dense set gives a countable basis via $B(d, 1/n)$).
+  \item Metrizable + compact $\Rightarrow$ second-countable
+    (compact $\Rightarrow$ totally bounded $\Rightarrow$ separable,
+    then apply above).
+\end{itemize}
+
+So for \emph{compact} spaces: \textbf{metrizable $\iff$ second-countable
+$\iff$ separable.}
+
+\subsection{Second-Countability Revisited
+(第二可数再探)}\label{def:second-countable-revisit}
+
+Recall (\S\ref{def:second-countable}): $X$ is \textbf{second-countable}
+if $\mathcal{T}$ has a countable basis.
+
+\textbf{Equivalent / related conditions for second-countability:}
+\begin{itemize}
+  \item $X$ has a countable basis $\iff$ $X$ is \textbf{separable}
+    (has a countable dense subset) \textbf{and} metrizable.
+    (In general, second-countable $\Rightarrow$ separable, but not conversely
+    unless metrizable.)
+  \item $X$ is second-countable $\Rightarrow$ $X$ is \textbf{Lindel\"of}
+    (every open cover has a countable subcover).
+  \item $X$ is second-countable $\Rightarrow$ $X$ is \textbf{first-countable}
+    (each point has a countable neighborhood basis).
+\end{itemize}
+
+\textbf{Counterexamples to show strictness:}
+\begin{itemize}
+  \item $\R$ with the standard topology: second-countable
+    (basis $\{(a,b) : a, b \in \Q\}$).
+  \item $\R_\ell$ (lower limit topology, basis $\{[a,b)\}$):
+    separable ($\Q$ is dense) and first-countable, but \emph{not}
+    second-countable.
+  \item An uncountable set with the discrete topology:
+    first-countable (trivially) but not second-countable.
+\end{itemize}
+
+\textbf{Preservation properties:}
+\begin{itemize}
+  \item Second-countability is \textbf{hereditary}: every subspace of a
+    second-countable space is second-countable.
+  \item Countable \textbf{products} of second-countable spaces are
+    second-countable.
+  \item Second-countability is a \textbf{topological invariant}
+    (preserved by homeomorphisms).
+\end{itemize}
+
+%=====================================================================
+\section{度量空间 (Metric Spaces)}
+%=====================================================================
+
+\subsection{Metric Space and Metric (度量空间与度量)}\label{def:metric}
+\begin{definition}
+  A \textbf{metric space} $(S, d)$ consists of a set $S$ and a
+  function $d : S \times S \to \R$ satisfying:
+  \begin{enumerate}
+    \item $d(x, y) \ge 0$, with $d(x, y) = 0 \iff x = y$.
+    \item $d(x, y) = d(y, x)$ (symmetry).
+    \item $d(x, z) \le d(x, y) + d(y, z)$ (triangle inequality).
+  \end{enumerate}
+\end{definition}
+
+\subsection{Discrete Metric (离散度量)}\label{def:discrete-metric}
+$d(x, y) =
+\begin{cases} 0 & x = y \\ 1 & x \ne y
+\end{cases}$. Any two distinct points are at distance 1. This induces
+the discrete topology.
+
+\subsection{Open Ball and Closed Ball (开球与闭球)}\label{def:balls}
+\textbf{Open ball:} $B(x, \varepsilon) = \{y \in S : d(x, y) < \varepsilon\}$.
+\textbf{Closed ball:} $\bar{B}(x, \varepsilon) = \{y \in S : d(x, y)
+\le \varepsilon\}$.
+
+\subsection{Bounded Set (有界集)}\label{def:bounded}
+$A \subseteq (S, d)$ is \textbf{bounded} if $\exists M > 0$ such that
+$d(x, y) \le M$ for all $x, y \in A$.
+Equivalently: $\text{diam}(A) = \sup\{d(x, y) : x, y \in A\} < \infty$.
+
+\subsection{Bounded Metric (有界度量)}\label{def:bounded-metric}
+\begin{proposition}
+  For any metric $d$, the function $d^*(x, y) = \min\{d(x, y), 1\}$
+  is a metric that induces the same topology as $d$.
+\end{proposition}
+\textbf{Warning:} There need not exist a uniform $A > 0$ with $A
+\cdot d \le d^*$ (e.g., $X = \R$).
+
+\begin{proof}[Proof that $d^*$ is a metric]
+  Non-negativity and symmetry are immediate. For the triangle inequality:
+  $d^*(x,z) = \min\{d(x,z),1\} \le \min\{d(x,y)+d(y,z), 1\}$.
+  If $d(x,y) \ge 1$ or $d(y,z) \ge 1$, then $d^*(x,y)+d^*(y,z) \ge 1
+  \ge d^*(x,z)$.
+  If both $< 1$, then $d^*(x,z) \le d(x,z) \le d(x,y)+d(y,z) =
+  d^*(x,y)+d^*(y,z)$.
+\end{proof}
+
+\begin{proof}[Proof that $d^*$ induces the same topology]
+  For $0 < r < 1$: $B_{d^*}(x,r) = \{y : d^*(x,y) < r\} = \{y :
+  d(x,y) < r\} = B_d(x,r)$,
+  so $d^*$-balls with radius $< 1$ are exactly $d$-balls.
+  Any $d^*$-ball $B_{d^*}(x,r)$ with $r \ge 1$ equals all of $X$
+  (since $d^* \le 1 < r$),
+  which is open in $\mathcal{T}_d$. Conversely, any $d$-ball
+  $B_d(x,r)$ equals $B_{d^*}(x,r)$ if $r < 1$,
+  or $B_{d^*}(x,1/2) \subseteq B_d(x,r)$ if $r \ge 1$.
+\end{proof}
+
+\subsection{Equivalent Metrics (等价度量)}\label{def:equiv-metrics}
+Two metrics $d_1, d_2$ on $X$ are \textbf{equivalent} (topologically)
+if they induce the same topology.
+\begin{theorem}[Sufficient condition]
+  If $\exists c_1, c_2 > 0$ such that $c_1 d_1(x,y) \le d_2(x,y) \le
+  c_2 d_1(x,y)$ for all $x, y$, then $d_1$ and $d_2$ are equivalent.
+\end{theorem}
+\begin{proof}
+  For any $x$ and $r > 0$:
+  $B_{d_2}(x, r) \supseteq B_{d_1}(x, r/c_2)$
+  (since $d_1(x,y) < r/c_2$ implies $d_2(x,y) \le c_2 d_1(x,y) < r$).
+  Similarly, $B_{d_1}(x, r) \supseteq B_{d_2}(x, c_1 r)$
+  (since $d_2(x,y) < c_1 r$ implies $c_1 d_1(x,y) \le d_2(x,y) < c_1
+  r$, so $d_1(x,y) < r$).
+  So every $d_2$-ball contains a $d_1$-ball and vice versa, hence the
+  topologies coincide.
+\end{proof}
+
+\subsection{Metrizable Topology (可度量化的拓扑)}\label{def:metrizable}
+\begin{definition}
+  A topological space $(X, \mathcal{T})$ is \textbf{metrizable} if
+  there exists a metric $d$ on $X$ such that $\mathcal{T} = \mathcal{T}_d$.
+\end{definition}
+
+\textbf{Key fact:} ``Metrizable'' is a \emph{topological property}:
+if $X \cong Y$ and $X$ is metrizable, then $Y$ is metrizable
+(pull back the metric along the homeomorphism).
+
+\subsubsection*{Necessary Conditions for Metrizability}
+
+\begin{proposition}
+  Every metrizable space is Hausdorff ($T_2$).
+\end{proposition}
+\begin{proof}
+  Let $d$ be a metric inducing the topology.
+  For distinct $x, y$: set $r = d(x,y)/2 > 0$.
+  Then $B(x,r)$ and $B(y,r)$ are disjoint open neighborhoods
+  (if $z \in B(x,r) \cap B(y,r)$, then $d(x,y) \le d(x,z)+d(z,y) < 2r
+  = d(x,y)$, contradiction).
+\end{proof}
+
+\begin{proposition}
+  Every metrizable space is first-countable (each point has a countable
+  neighborhood basis).
+\end{proposition}
+\begin{proof}
+  For $x \in X$, the collection $\{B(x, 1/n) : n \in \N\}$ is a countable
+  neighborhood basis: any open $U \ni x$ contains $B(x, \varepsilon)$ for some
+  $\varepsilon > 0$, and $B(x, 1/n) \subseteq B(x, \varepsilon)$ for
+  $n > 1/\varepsilon$.
+\end{proof}
+
+\begin{proposition}
+  Every metrizable space is normal ($T_4$): disjoint closed sets can be
+  separated by disjoint open sets.
+\end{proposition}
+\begin{proof}
+  Let $A, B$ be disjoint closed sets in a metric space $(X,d)$.
+  Define $f(x) = \frac{d(x,A)}{d(x,A)+d(x,B)}$ where $d(x,S) =
+  \inf_{s \in S} d(x,s)$.
+  The denominator is always positive (if $d(x,A)=0$ then $x \in \bar{A}=A$,
+  so $x \notin B$, hence $d(x,B)>0$).
+  Then $f$ is continuous, $f(A)=\{0\}$, $f(B)=\{1\}$.
+  Set $U = f^{-1}([0,1/2))$, $V = f^{-1}((1/2,1])$: these are disjoint open
+  sets separating $A$ and $B$.
+\end{proof}
+
+\subsubsection*{Sufficient Condition: Urysohn Metrization Theorem}
+
+\begin{theorem}[Urysohn]
+  If $(X, \mathcal{T})$ is second-countable and $T_3$ (regular + $T_1$),
+  then $X$ is metrizable.
+\end{theorem}
+(Proof is beyond the scope of this reference. The idea: embed $X$ into the
+  Hilbert cube $[0,1]^\omega$ using a countable family of Urysohn functions,
+then pull back the metric.)
+
+\textbf{Useful corollaries:}
+\begin{itemize}
+  \item Compact + Hausdorff + second-countable $\Rightarrow$ metrizable.
+  \item A compact metrizable space is second-countable
+    (for each $n$, $\{B(x, 1/n) : x \in X\}$ has a finite subcover).
+\end{itemize}
+
+\subsubsection*{Proof Techniques}
+
+\textbf{To prove a space IS metrizable:}
+\begin{enumerate}
+  \item Construct an explicit metric $d$ and show $\mathcal{T} = \mathcal{T}_d$
+    (ball comparison: every $d$-ball contains a $\mathcal{T}$-open
+    set and vice versa).
+    \textbf{Example:} $d_\omega(x,y) = \sup_i \frac{d^*(x_i,y_i)}{i+1}$
+    induces the product topology on $\R^\omega$ (see HW5 Q3).
+  \item Apply Urysohn's theorem: show second-countable + regular + $T_1$.
+  \item Use inheritance: subspaces of metrizable spaces are metrizable
+    (restrict the metric); countable products of metrizable spaces
+    are metrizable.
+\end{enumerate}
+
+\textbf{To prove a space is NOT metrizable}, show it fails a
+necessary condition:
+\begin{enumerate}
+  \item \textbf{Not Hausdorff:} the trivial topology on $\{a,b\}$ is
+    not metrizable.
+  \item \textbf{Not first-countable:} the box topology on $\R^\omega$ is not
+    first-countable (diagonal argument: given any countable neighborhood basis
+      $\{U_n\}$ of the origin, each $U_n$ restricts coordinates to
+      $(-\varepsilon_{n,i}, \varepsilon_{n,i})$ for each $i$; construct the box
+      $V = \prod_i (-\varepsilon_{i,i}/2, \varepsilon_{i,i}/2)$; then
+      $V$ is open but
+    no $U_n \subseteq V$, since $U_n$ has coordinate $i=n$ wider than $V$).
+    Hence not metrizable.
+  \item \textbf{Not normal:} the Sorgenfrey line (lower limit topology) is
+    $T_3$ but not $T_4$, hence not metrizable.
+\end{enumerate}
+
+\subsubsection*{Quick Reference: Metrizability of Common Spaces}
+
+\begin{center}
+  \begin{tabular}{@{}lll@{}}
+    \hline
+    \textbf{Space} & \textbf{Metrizable?} & \textbf{Reason / Metric} \\
+    \hline
+    $\R^n$, standard topology & Yes & $d_2(x,y) = \|x-y\|$ \\
+    Discrete topology on any set & Yes & Discrete metric \\
+    Trivial topology, $|X| \ge 2$ & No & Not Hausdorff \\
+    Cofinite topology on infinite set & No & Not Hausdorff \\
+    $(0,1) \subset \R$ & Yes & Subspace of metrizable \\
+    $\R^\omega$, product topology & Yes & $d_\omega = \sup_i d^*_i/(i+1)$ \\
+    $\R^\omega$, box topology & No & Not first-countable \\
+    $S^n$ (sphere) & Yes & Subspace of $\R^{n+1}$ \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Euclidean Metric (欧几里得度量)}\label{def:euclidean}
+On $\R^n$: $d_2(x, y) = \sqrt{\sum_{i=1}^n (x_i - y_i)^2}$.
+
+\subsection{Taxicab Metric $\ell^1$ (曼哈顿度量)}\label{def:taxicab}
+On $\R^n$: $d_1(x, y) = \sum_{i=1}^n |x_i - y_i|$.
+
+\subsection{Supremum Metric $\ell^\infty$ (最大值度量)}\label{def:supremum}
+On $\R^n$: $d_\infty(x, y) = \max_{1 \le i \le n} |x_i - y_i|$.
+
+\textbf{Relations on $\R^n$:}
+\[
+  d_\infty \le d_2 \le \sqrt{n}\, d_\infty, \qquad d_\infty \le d_1
+  \le n\, d_\infty.
+\]
+All $l^p$ metrics are equivalent in finite dimensions.
+
+\subsection{Norm (范数)}\label{def:norm}
+A \textbf{norm} on a vector space $V$ is $\|\cdot\| : V \to [0, \infty)$ with:
+$\|x\| = 0 \iff x = 0$, $\|\alpha x\| = |\alpha|\|x\|$, $\|x + y\|
+\le \|x\| + \|y\|$.
+Every norm induces a metric via $d(x, y) = \|x - y\|$.
+
+%=====================================================================
+\section{子空间 (Subspace Topology)}
+%=====================================================================
+
+\subsection{Subspace Topology (子空间拓扑)}\label{def:subspace-topo}
+\begin{definition}
+  If $(X, \mathcal{T})$ is a topological space and $Y \subseteq X$,
+  the \textbf{subspace topology} on $Y$ is
+  \[
+    \mathcal{T}_Y = \{Y \cap U : U \in \mathcal{T}\}.
+  \]
+\end{definition}
+\textbf{Verification} (check four axioms): uses distributivity of
+$\cap$ over $\cup$.
+
+\subsection{Subspace (子空间)}\label{def:subspace}
+A subset $Y \subseteq X$ endowed with the subspace topology. Open
+sets in $Y$ look like $Y \cap U$ where $U$ is open in $X$.
+
+\textbf{Example:} $Y = [1, 2] \subset \R$. The sets $[1, c)$, $(c,
+d)$, $(c, 2]$ are all open in $Y$.
+
+\subsection{Hereditary Property (遗传性质)}\label{def:hereditary}
+A property $P$ is \textbf{hereditary} if $(X, \mathcal{T})$ has $P$
+implies every subspace has $P$.
+Examples of hereditary properties: $T_0, T_1, T_2$ (Hausdorff),
+second-countability.
+Non-example: compactness is not hereditary (only to closed subspaces).
+
+%=====================================================================
+\section{闭包、内部与边界 (Closure, Interior, Boundary)}
+%=====================================================================
+
+\subsection{Closure (闭包)}\label{def:closure}
+\begin{definition}
+  The \textbf{closure} of $A \subseteq X$ is $\bar{A} = \bigcap\{C
+  \supseteq A : C \text{ is closed}\}$, i.e., the smallest closed set
+  containing $A$.
+\end{definition}
+\textbf{Characterization:} $x \in \bar{A} \iff$ every open
+neighborhood of $x$ meets $A$.
+
+\begin{proof}
+  ($\Rightarrow$) Suppose $x \in \bar{A}$ and $U$ is an open
+  neighborhood of $x$ with $U \cap A = \varnothing$.
+  Then $X \setminus U$ is closed and $A \subseteq X \setminus U$.
+  Since $\bar{A}$ is the smallest closed superset of $A$, $\bar{A}
+  \subseteq X \setminus U$,
+  so $x \in X \setminus U$, contradicting $x \in U$.
+
+  ($\Leftarrow$) Suppose every open neighborhood of $x$ meets $A$.
+  If $x \notin \bar{A}$, then $X \setminus \bar{A}$ is an open
+  neighborhood of $x$
+  disjoint from $A$ (since $A \subseteq \bar{A}$), contradiction.
+\end{proof}
+\textbf{Properties:} $\overline{A \cup B} = \bar{A} \cup \bar{B}$; $A
+\subseteq B \Rightarrow \bar{A} \subseteq \bar{B}$; $\bar{\bar{A}} = \bar{A}$.
+
+\begin{proof}[Proof of closure properties]
+  \textbf{$\overline{A \cup B} = \bar{A} \cup \bar{B}$:}
+  ($\subseteq$) $A \cup B \subseteq \bar{A} \cup \bar{B}$, which is
+  closed (finite union of closed).
+  Since $\overline{A \cup B}$ is the smallest closed superset,
+  $\overline{A \cup B} \subseteq \bar{A} \cup \bar{B}$.
+  ($\supseteq$) $A \subseteq A \cup B \subseteq \overline{A \cup B}$,
+  so $\bar{A} \subseteq \overline{A \cup B}$.
+  Similarly $\bar{B} \subseteq \overline{A \cup B}$, so $\bar{A} \cup
+  \bar{B} \subseteq \overline{A \cup B}$.
+
+  \textbf{Monotonicity:} If $A \subseteq B$, then $A \subseteq B
+  \subseteq \bar{B}$ (closed).
+  Since $\bar{A}$ is the smallest closed superset of $A$, $\bar{A}
+  \subseteq \bar{B}$.
+
+  \textbf{Idempotence:} $\bar{A}$ is closed, so $\bar{\bar{A}} =
+  \bar{A}$ by definition (closure of a closed set is itself).
+\end{proof}
+
+\subsection{Interior (内部)}\label{def:interior}
+\begin{definition}
+  The \textbf{interior} of $A$ is $A^\circ = \operatorname{int}(A) =
+  \bigcup\{U \subseteq A : U \text{ is open}\}$, i.e., the largest
+  open set contained in $A$.
+\end{definition}
+\textbf{Properties:} $\operatorname{int}(A \cap B) =
+\operatorname{int}(A) \cap \operatorname{int}(B)$.
+
+\begin{proof}
+  ($\subseteq$) $\operatorname{int}(A \cap B) \subseteq A \cap B \subseteq A$,
+  and $\operatorname{int}(A \cap B)$ is open, so
+  $\operatorname{int}(A \cap B) \subseteq \operatorname{int}(A)$.
+  Similarly for $B$, giving $\operatorname{int}(A \cap B) \subseteq
+  \operatorname{int}(A) \cap \operatorname{int}(B)$.
+  ($\supseteq$) $\operatorname{int}(A) \cap \operatorname{int}(B)$ is
+  open (finite intersection of open),
+  and $\operatorname{int}(A) \cap \operatorname{int}(B) \subseteq A \cap B$.
+  Since $\operatorname{int}(A \cap B)$ is the largest open subset of $A \cap B$,
+  $\operatorname{int}(A) \cap \operatorname{int}(B) \subseteq
+  \operatorname{int}(A \cap B)$.
+\end{proof}
+
+\subsection{Boundary (边界)}\label{def:boundary}
+\begin{definition}
+  The \textbf{boundary} of $A$ is $\partial A = \bar{A} \setminus
+  \operatorname{int}(A)$.
+\end{definition}
+Equivalently: $x \in \partial A \iff$ every neighborhood of $x$ meets
+both $A$ and $X \setminus A$.
+
+\begin{proof}
+  ($\Rightarrow$) Let $x \in \partial A = \bar{A} \setminus
+  \operatorname{int}(A)$.
+  Since $x \in \bar{A}$, every neighborhood of $x$ meets $A$.
+  Since $x \notin \operatorname{int}(A)$, no neighborhood of $x$ is
+  contained in $A$,
+  so every neighborhood meets $X \setminus A$.
+
+  ($\Leftarrow$) If every neighborhood of $x$ meets $A$, then $x \in \bar{A}$.
+  If every neighborhood meets $X \setminus A$, then no neighborhood
+  is contained in $A$,
+  so $x \notin \operatorname{int}(A)$. Hence $x \in \bar{A} \setminus
+  \operatorname{int}(A) = \partial A$.
+\end{proof}
+
+\subsection{Neighborhood (邻域)}\label{def:neighborhood}
+A \textbf{neighborhood} of $x \in X$ is a set $N$ containing an open
+set $U$ with $x \in U \subseteq N$.
+(Some authors require $N$ to be open itself; the definitions are
+equivalent for most purposes.)
+
+\subsection{Limit Point / Cluster Point / Accumulation Point
+(极限点/聚点/附着点)}\label{def:limit-point}
+\begin{definition}
+  $x \in X$ is a \textbf{limit point} of $A$ if for every open set $U \ni x$:
+  \[
+    (U \cap A) \setminus \{x\} \ne \varnothing.
+  \]
+  I.e., every neighborhood of $x$ contains a point of $A$ different from $x$.
+\end{definition}
+\textbf{Examples:}
+\begin{itemize}
+  \item $A = \{1/n : n \in \N\}$: the only limit point is $0$ (and $0
+    \notin A$).
+  \item $A = \{a\}$ (singleton): no limit points.
+\end{itemize}
+
+\subsection{Isolated Point (孤立点)}\label{def:isolated}
+$x \in A$ is an \textbf{isolated point} of $A$ if there exists an
+open neighborhood $U$ of $x$ with $U \cap A = \{x\}$.
+Equivalently: $x \in A$ is not a limit point of $A$.
+
+\subsection{Derived Set (导集)}\label{def:derived}
+The \textbf{derived set} of $A$, denoted $A'$ or $A^d$, is the set of
+all limit points of $A$.
+\textbf{Key relation:} $\bar{A} = A \cup A'$.
+
+\subsection{Dense Set (稠密集)}\label{def:dense}
+$A$ is \textbf{dense} in $X$ if $\bar{A} = X$. Equivalently: $A$
+meets every nonempty open set.
+Example: $\Q$ is dense in $\R$.
+
+\subsection{Nowhere Dense (疏集/无处稠密)}\label{def:nowhere-dense}
+$A$ is \textbf{nowhere dense} if $\operatorname{int}(\bar{A}) = \varnothing$.
+Example: $\Z$ is nowhere dense in $\R$.
+
+\subsection{Regularly Open (正则开集)}\label{def:regularly-open}
+\begin{definition}
+  $A$ is \textbf{regularly open} if $A = (\bar{A})^\circ$, i.e., $A$
+  equals the interior of its closure.
+\end{definition}
+\textbf{Example:} $(0, 1)$ is regularly open; $(0, 1) \cup (1, 2)$ is
+open but \emph{not} regularly open (its closure is $[0, 2]$, interior
+of closure is $(0, 2) \ne (0, 1) \cup (1, 2)$).
+
+\begin{proposition}
+  For any $A \subseteq X$, the set $(\bar{A})^\circ$ is regularly open.
+\end{proposition}
+
+%=====================================================================
+\section{连续映射 (Continuous Functions)}
+%=====================================================================
+
+\subsection{Continuous Function (连续函数/连续映射)}\label{def:continuous}
+\begin{theorem}[Four equivalent definitions]
+  Let $f : X \to Y$ where $X, Y$ are topological spaces. The
+  following are equivalent:
+  \begin{enumerate}
+    \item $f^{-1}(V)$ is open in $X$ for every open $V \subseteq Y$
+      (global continuity).
+    \item For every $x \in X$ and every open $V \ni f(x)$, there
+      exists open $U \ni x$ with $f(U) \subseteq V$ (continuity at each point).
+    \item $f^{-1}(F)$ is closed in $X$ for every closed $F \subseteq Y$.
+    \item $f(\bar{A}) \subseteq \overline{f(A)}$ for all $A \subseteq X$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}[Proof of equivalence]
+  (1)$\Rightarrow$(2): For $x \in X$ and open $V \ni f(x)$, set $U = f^{-1}(V)$.
+  Then $U$ is open by (1), $x \in U$, and $f(U) \subseteq V$.
+
+  (2)$\Rightarrow$(3): Let $F \subseteq Y$ be closed. To show
+  $f^{-1}(F)$ is closed,
+  take $x \in \overline{f^{-1}(F)}$. For every open $U \ni x$, $U
+  \cap f^{-1}(F) \ne \varnothing$,
+  so $\exists\, y \in U$ with $f(y) \in F$.
+  By (2), $\exists$ open $U_0 \ni x$ with $f(U_0) \subseteq Y \setminus F$ open.
+  But $U_0 \cap f^{-1}(F) \ne \varnothing$ gives a point mapped into
+  $F$ and not into $F$, contradiction.
+  Hence $x \in f^{-1}(F)$, so $f^{-1}(F)$ is closed.
+
+  (3)$\Rightarrow$(4): Let $A \subseteq X$. Then $f(\bar{A})
+  \subseteq \overline{f(A)}$ iff
+  $\bar{A} \subseteq f^{-1}(\overline{f(A)})$. Since
+  $\overline{f(A)}$ is closed, by (3),
+  $f^{-1}(\overline{f(A)})$ is closed. Since $A \subseteq
+  f^{-1}(\overline{f(A)})$, and $\bar{A}$
+  is the smallest closed superset of $A$, we get $\bar{A} \subseteq
+  f^{-1}(\overline{f(A)})$.
+
+  (4)$\Rightarrow$(1): Let $V \subseteq Y$ be open. Set $A = X
+  \setminus f^{-1}(V) = f^{-1}(Y \setminus V)$.
+  Then $f(\bar{A}) \subseteq \overline{f(A)} \subseteq \overline{Y
+  \setminus V} = Y \setminus V$ (closed).
+  So $\bar{A} \subseteq f^{-1}(Y \setminus V) = A$, meaning $A$ is
+  closed, hence $f^{-1}(V)$ is open.
+\end{proof}
+
+In metric spaces, definition (2) reduces to the
+$\varepsilon$-$\delta$ formulation:
+\[
+  \forall \varepsilon > 0,\ \exists \delta > 0 :\ d(x, x_0) < \delta
+  \implies d'(f(x), f(x_0)) < \varepsilon.
+\]
+
+\subsection{Homeomorphism (同胚)}\label{def:homeomorphism}
+\begin{definition}
+  $f : X \to Y$ is a \textbf{homeomorphism} if $f$ is a bijection,
+  $f$ is continuous, and $f^{-1}$ is continuous.
+\end{definition}
+Homeomorphic spaces ($X \cong Y$) are topologically ``the same.''
+\textbf{Counterexample:} $f : [0,1) \to S^1$, $f(t) = (\cos 2\pi t,
+\sin 2\pi t)$ is a continuous bijection, but $f^{-1}$ is not continuous.
+
+\subsubsection*{Technique 1: Construct an explicit homeomorphism}
+To prove $X \cong Y$, build an explicit $f : X \to Y$ and verify:
+\begin{enumerate}
+  \item $f$ is a bijection (injective $+$ surjective, or exhibit
+    $f^{-1}$ explicitly).
+  \item $f$ is continuous.
+  \item $f^{-1}$ is continuous.
+\end{enumerate}
+\textbf{Shortcut:} If $f$ is a bijection and $X$ is \emph{compact},
+then ``$f$ continuous $\Rightarrow$ $f^{-1}$ continuous'' automatically.
+Indeed, for $U$ open in $X$, $(f^{-1})^{-1}(U) = f(U)$; since $X
+\setminus U$ is closed hence compact, $f(X \setminus U)$ is compact
+hence closed, so $f(U) = Y \setminus f(X \setminus U)$ is open.
+
+\textbf{Example:} $(0,1) \cong \R$ via $f(x) = \tan(\pi(x - 1/2))$.
+Both $f$ and $f^{-1}(y) = \frac{1}{\pi}\arctan(y) + \frac{1}{2}$ are
+continuous.
+
+\subsubsection*{Technique 2: Show $X \not\cong Y$ via topological invariants}
+Find a topological property that $X$ has but $Y$ does not (or vice
+versa). Common invariants:
+\begin{itemize}
+  \item \textbf{Compactness:} $[0,1]$ is compact; $(0,1)$ and $(0,\infty)$
+    are not. Hence $[0,1] \not\cong (0,1)$.
+  \item \textbf{Connectedness:} $\R \setminus \{0\}$ is disconnected;
+    $\R$ is connected. Hence $\R \not\cong \R \setminus \{0\}$.
+  \item \textbf{Cardinality:} A finite space cannot be homeomorphic to an
+    infinite one.
+  \item \textbf{Hausdorff / separation axioms:} The trivial topology on
+    $\{a,b\}$ is not Hausdorff; the discrete topology is. Not homeomorphic.
+\end{itemize}
+
+\subsubsection*{Technique 3: Point-removal argument}
+If $X \cong Y$ via $f$, then for any $p \in X$:
+\[
+  X \setminus \{p\} \;\cong\; Y \setminus \{f(p)\}.
+\]
+So the topological properties of $X \setminus \{p\}$ must match those of
+$Y \setminus \{f(p)\}$.
+
+\textbf{Example:} $(0,1] \not\cong [0,1]$.
+\begin{itemize}
+  \item $(0,1] \setminus \{1\} = (0,1)$ is connected.
+  \item $[0,1] \setminus \{p\}$ is disconnected for any $p \in (0,1)$.
+  \item If a homeomorphism existed, $f(p)$ would need to be an endpoint,
+    but then only $f(0)$ or $f(1)$ could map to endpoints, leaving no
+    valid image for the other endpoint.
+\end{itemize}
+
+\textbf{Example:} $(0,\infty) \not\cong (0,1]$.
+$(0,\infty) \setminus \{p\}$ is disconnected for every $p$, but
+$(0,1] \setminus \{1\} = (0,1)$ is connected.
+
+\textbf{Example:} $\R \not\cong \R^2$ (point-removal dimension
+invariant): $\R \setminus \{p\}$ is disconnected; $\R^2 \setminus \{p\}$
+is connected.
+
+\subsubsection*{Technique 4: Open-mapping / closed-mapping criterion}
+$f$ is a homeomorphism $\iff$ $f$ is a bijection, continuous, and
+\textbf{open} (or equivalently \textbf{closed}).
+\begin{itemize}
+  \item $f$ is \textbf{open} if $f(U)$ is open in $Y$ for every open
+    $U \subseteq X$.
+  \item $f$ is \textbf{closed} if $f(F)$ is closed in $Y$ for every
+    closed $F \subseteq X$.
+\end{itemize}
+\textbf{Use case:} When $f$ has a natural algebraic form (e.g.\ linear
+maps), it may be easier to verify that $f$ is open than to construct
+$f^{-1}$ explicitly.
+
+\subsubsection*{Technique 5: Continuous bijection from compact to Hausdorff}
+\begin{theorem}
+  If $X$ is compact, $Y$ is Hausdorff, and $f : X \to Y$ is a
+  continuous bijection, then $f$ is a homeomorphism.
+\end{theorem}
+\begin{proof}
+  It suffices to show $f$ is closed. If $F \subseteq X$ is closed, then
+  $F$ is compact (closed subset of compact). So $f(F)$ is compact
+  (continuous image of compact). Since $Y$ is Hausdorff, $f(F)$ is
+  closed.
+\end{proof}
+\textbf{Application:} Any continuous bijection from $[a,b]$ to a compact
+Hausdorff space is automatically a homeomorphism.
+
+\subsubsection*{Technique 6: Show a continuous bijection is NOT a homeomorphism}
+To show $f$ is not a homeomorphism despite being a continuous bijection,
+prove $f^{-1}$ is not continuous by finding an open set whose preimage
+under $f^{-1}$ (i.e.\ image under $f$) is not open.
+
+\textbf{Example:} $f : [0,1) \to S^1$, $f(t) = (\cos 2\pi t, \sin 2\pi t)$.
+The set $[0, 1/2)$ is open in $[0,1)$, but $f([0,1/2))$ is not open in
+$S^1$ (it contains the point $f(0) = (1,0)$ but no neighborhood of
+$(1,0)$ in $S^1$).
+
+\textbf{Alternative:} Use topological invariants. Here $S^1$ is compact
+but $[0,1)$ is not.
+
+\subsection{Topological Invariant (拓扑不变量)}\label{def:topo-invariant}
+A property $P$ is a \textbf{topological invariant} if $X \cong Y$ and
+$X$ has $P$ implies $Y$ has $P$.
+Examples: connectedness, compactness, Hausdorff, cardinality.
+Non-example: ``being a subset of $\R$'' is not a topological invariant.
+
+\subsection{Embedding (嵌入)}\label{def:embedding}
+$f : X \to Y$ is an \textbf{embedding} if $f : X \to f(X)$ is a
+homeomorphism (where $f(X)$ has the subspace topology).
+
+\subsection{Pasting / Gluing Lemma (粘接引理)}\label{def:pasting}
+\begin{theorem}
+  Let $X = A \cup B$ where $A, B$ are both closed (or both open). If
+  $f|_A$ and $f|_B$ are continuous and agree on $A \cap B$, then $f$
+  is continuous on $X$.
+\end{theorem}
+\begin{proof}
+  (Closed case.) Check $f^{-1}(F)$ is closed for closed $F \subseteq Y$.
+  $f^{-1}(F) = (f|_A)^{-1}(F) \cup (f|_B)^{-1}(F)$.
+  Each $(f|_A)^{-1}(F)$ is closed in $A$ (continuity of $f|_A$),
+  hence closed in $X$ (closed subset of closed set $A$).
+  A finite union of closed sets is closed.
+
+  (Open case.) For open $V \subseteq Y$: $f^{-1}(V) = (f|_A)^{-1}(V)
+  \cup (f|_B)^{-1}(V)$.
+  Each $(f|_A)^{-1}(V)$ is open in $A$, i.e.\ $A \cap W$ with $W$ open in $X$.
+  Since $A$ is open, $A \cap W$ is open in $X$. Union of two open sets is open.
+\end{proof}
+
+\subsection{Restriction (限制)}\label{def:restriction}
+$f|_A : A \to Y$ is the function $f|_A(x) = f(x)$ for $x \in A$. If
+$f$ is continuous, so is $f|_A$.
+
+\subsection{Composition (复合)}\label{def:composition}
+If $f : X \to Y$ and $g : Y \to Z$ are continuous, then $g \circ f :
+X \to Z$ is continuous.
+
+\subsection{Coordinate Function (坐标函数)}\label{def:coordinate}
+For $f : Y \to \prod_{i \in I} X_i$, the $i$-th coordinate function
+is $f_i = \pi_i \circ f : Y \to X_i$.
+
+%=====================================================================
+\section{积拓扑与箱拓扑 (Product and Box Topology)}
+%=====================================================================
+
+\subsection{Motivation: Topology on a Product of Spaces}
+Given topological spaces $\{X_i\}_{i \in I}$, the Cartesian product
+$X = \prod_{i \in I} X_i$ is the set of all functions $x : I \to
+\bigcup_{i} X_i$ with $x(i) \in X_i$ (written $(x_i)_{i \in I}$).
+
+\textbf{Question:} What topology should $X$ carry?
+
+There are two natural answers --- the \emph{product topology} and the
+\emph{box topology}. For \textbf{finite} $I$ they coincide, but for
+\textbf{infinite} $I$ they differ dramatically.
+
+\subsection{Product Topology (积拓扑)}\label{def:product-topo}
+\begin{definition}
+  The \textbf{product topology} on $X = \prod_{i \in I} X_i$ has
+  \textbf{subbasis}:
+  \[
+    \mathcal{S} = \{\pi_i^{-1}(U_i) : i \in I,\ U_i \text{ open in }
+    X_i\},
+  \]
+  i.e.\ sets of the form $U_i \times \prod_{j \ne i} X_j$ (one
+  coordinate restricted, all others free).
+
+  The \textbf{basis} generated by $\mathcal{S}$ consists of finite
+  intersections of subbasis elements:
+  \[
+    \mathcal{B} = \left\{\prod_{i \in I} U_i : U_i \text{ open in }
+    X_i,\ U_i = X_i \text{ for all but finitely many } i\right\}.
+  \]
+\end{definition}
+
+\textbf{Intuition:} A basic open set restricts only \emph{finitely
+many} coordinates. The remaining coordinates are completely free (set to
+$X_i$). Think of it as ``almost nothing is constrained.''
+
+\textbf{Why ``for all but finitely many''?} Because the basis is formed
+by \emph{finite intersections} of subbasis elements. Each subbasis
+element restricts exactly one coordinate; intersecting finitely many of
+them restricts finitely many coordinates.
+
+\textbf{Consequence:} If $I$ is finite (say $|I| = n$), then ``all but
+finitely many $=$ all,'' so the product topology and box topology are
+the same.
+
+\subsection{Box Topology (箱拓扑)}\label{def:box-topo}
+\begin{definition}
+  The \textbf{box topology} on $X = \prod_{i \in I} X_i$ has basis:
+  \[
+    \mathcal{B}_{\mathrm{box}} = \left\{\prod_{i \in I} U_i : U_i
+    \text{ open in } X_i\right\}.
+  \]
+\end{definition}
+
+\textbf{Intuition:} A basic open set restricts \emph{every} coordinate
+independently. For each $i$, you choose an open $U_i \subseteq X_i$, and
+the basic open set is the ``box'' $\prod_i U_i$.
+
+\textbf{Comparison of bases (for infinite $I$):}
+\[
+  \mathcal{B}_{\mathrm{prod}} \subsetneq \mathcal{B}_{\mathrm{box}}.
+\]
+Every product-basic open set is also box-basic (set the ``free''
+coordinates to $X_i$). But the box topology \emph{strictly} has more
+basic open sets: a box with $U_i \ne X_i$ for infinitely many $i$ is
+open in the box topology but \textbf{not} in the product topology.
+
+\textbf{Therefore:} $\tau_{\mathrm{prod}} \subsetneq
+\tau_{\mathrm{box}}$ for infinite $I$. The box topology is strictly
+finer.
+
+\subsection{Side-by-Side Comparison}
+
+\begin{center}
+  \begin{tabular}{@{}p{3.5cm}p{5.5cm}p{5.5cm}@{}}
+    \hline
+    & \textbf{Product Topology} & \textbf{Box Topology} \\
+    \hline
+    Basic open set & $\prod U_i$, $U_i = X_i$ for all but finitely many $i$ &
+    $\prod U_i$, each $U_i$ open in $X_i$ \\[4pt]
+    Subbasis & $\pi_i^{-1}(U_i)$ (one coordinate) &
+    No simpler subbasis in general \\[4pt]
+    Finer / coarser & Coarser & Strictly finer (for $|I| = \infty$) \\[4pt]
+    Finite $I$ & $=$ box topology & $=$ product topology \\[4pt]
+    Projections $\pi_i$ & Continuous \textbf{and open} & Continuous
+    \textbf{and open} \\[4pt]
+    Universal property & $f$ continuous $\iff$ each $f_i$ continuous &
+    \textbf{Fails} \\[4pt]
+    Continuous maps into & Easy to construct (coordinatewise) & Very
+    restrictive \\[4pt]
+    $\R^\omega$ connected? & Yes (path connected) & No (disconnected) \\
+    $\R^\omega$ metrizable? & Yes & No \\
+    $\R^\omega_{\mathrm{ez}}$ closure & All of $\R^\omega$ (dense) &
+    $\R^\omega_{\mathrm{ez}}$ itself (closed) \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Projection Map (投影映射)}\label{def:projection}
+$\pi_i : \prod_{j \in I} X_j \to X_i$, defined by $\pi_i((x_j)_{j \in
+I}) = x_i$.
+
+\textbf{Properties in both topologies:}
+\begin{itemize}
+  \item $\pi_i$ is continuous: $\pi_i^{-1}(U_i) = U_i \times \prod_{j
+    \ne i} X_j$ is a subbasis element (product) / basic open set (box).
+  \item $\pi_i$ is open: $\pi_i(\prod_j U_j) = U_i$ is open.
+\end{itemize}
+
+\textbf{Key point:} Projections are the same in both topologies. The
+difference is in the \emph{other} direction --- maps \emph{into} the
+product.
+
+\subsection{Cylinder / Cylinder Set (柱集)}\label{def:cylinder}
+A subbasis element of the product topology: $\pi_i^{-1}(U_i) = U_i
+\times \prod_{j \ne i} X_j$.
+
+\textbf{Visualization:} In $\R^3 = \R \times \R \times \R$, a cylinder
+$(a,b) \times \R \times \R$ restricts only the first coordinate. A
+basic open set in the product topology is a finite intersection of
+cylinders, giving an open rectangle $(a_1,b_1) \times (a_2,b_2) \times
+(a_3,b_3)$.
+
+For infinite products, cylinders restrict only \emph{one} coordinate,
+and basic open sets restrict \emph{finitely many}.
+
+\subsection{Universal Property (泛性质)}\label{def:universal}
+\begin{theorem}
+  Let $X = \prod_{i \in I} X_i$ with the product topology. For any
+  space $Y$:
+  \[
+    f : Y \to X \text{ is continuous} \iff \text{each } f_i = \pi_i
+    \circ f : Y \to X_i \text{ is continuous.}
+  \]
+\end{theorem}
+\begin{proof}
+  ($\Rightarrow$) Each $\pi_i$ is continuous, and composition of
+  continuous maps is continuous.
+
+  ($\Leftarrow$) It suffices to check $f^{-1}(S)$ is open for every
+  subbasis element $S = \pi_j^{-1}(U_j)$. Compute:
+  \[
+    f^{-1}(\pi_j^{-1}(U_j)) = (\pi_j \circ f)^{-1}(U_j) =
+    f_j^{-1}(U_j),
+  \]
+  which is open since $f_j$ is continuous. Since $f^{-1}$ commutes with
+  finite intersections and arbitrary unions, $f$ is continuous.
+\end{proof}
+
+\textbf{Why this fails for the box topology:} In the box topology, a
+basic open set $\prod_i U_i$ with $U_i \ne X_i$ for infinitely many $i$
+is NOT a finite intersection of subbasis elements. So checking on
+subbasis elements is not enough. One can have all $f_i$ continuous but
+$f$ not continuous in the box topology.
+
+\textbf{Practical consequence:} In the product topology, you can define
+maps into a product by specifying each coordinate independently. This
+makes proofs much easier.
+
+\subsection{Working with Product Topology: Practical Toolkit}
+
+\textbf{How to show a set is open in the product topology:}
+\begin{enumerate}
+  \item Write it as a union of basic open sets $\prod U_i$ with $U_i =
+    X_i$ for all but finitely many $i$.
+  \item Or: show it is a union of finite intersections of cylinders
+    $\pi_i^{-1}(U_i)$.
+\end{enumerate}
+
+\textbf{How to show a set is NOT open:}
+\begin{enumerate}
+  \item Assume it is open, so it contains a basic neighborhood of each
+    of its points.
+  \item Show that a basic neighborhood $\prod U_i$ (with $U_i = X_i$
+    for all but finitely many $i$) must contain points outside the set.
+  \item Exploit the \emph{free} coordinates: they can be chosen
+    arbitrarily, so set them to values that leave the set.
+\end{enumerate}
+
+\textbf{Example:} $\R^\omega_{\mathrm{ez}}$ has empty interior in the
+product topology. For any $x \in \R^\omega_{\mathrm{ez}}$ and any basic
+neighborhood $\prod U_i$ (free for $i > N$), set $x_i = 1$ for some $i
+> N$: this gives a point in the neighborhood that is not eventually
+zero.
+
+\subsection{Working with Box Topology: Practical Toolkit}
+
+\textbf{How to show a set is open in the box topology:}
+\begin{enumerate}
+  \item For each point $x$ in the set, find open $U_i \subseteq X_i$
+    with $x_i \in U_i$ for each $i$, such that $\prod_i U_i$ is
+    contained in the set.
+  \item This is easier than the product topology because you can control
+    \emph{every} coordinate independently.
+\end{enumerate}
+
+\textbf{The ``box neighborhood trick'':} Given $x = (x_i)$, the set
+$N_x = \prod_i (x_i - \varepsilon_i, x_i + \varepsilon_i)$ is a box
+neighborhood. By choosing $\varepsilon_i$ appropriately, you can confine
+all coordinates simultaneously.
+
+\textbf{Example:} Bounded sequences form an open set in box topology.
+If $|x_i| \le C$ for all $i$, then $\prod_i (x_i - 1, x_i + 1)$
+contains only bounded sequences (each $y_i$ satisfies $|y_i| < C + 1$).
+
+If $x$ is unbounded, then $\prod_i (x_i - 1, x_i + 1)$ contains only
+unbounded sequences (each $y_i$ satisfies $|y_i| > |x_i| - 1$).
+
+\subsection{Eventually-Zero Sequence (终零序列) --- A Key
+Example}\label{def:eventually-zero}
+
+Let $\R^\omega_{\mathrm{ez}} = \{(x_i) \in \R^\omega : x_i \ne 0
+\text{ for only finitely many } i\}$.
+
+\textbf{Interior in both topologies:} $\operatorname{int} = \varnothing$.
+
+\emph{Product topology:} Any basic neighborhood of $x \in
+\R^\omega_{\mathrm{ez}}$ has $U_i = \R$ for all $i > N$. For some $i_0
+> N$ with $x_{i_0} = 0$, change coordinate $i_0$ to any nonzero value
+--- still in the neighborhood, but not eventually zero.
+
+\emph{Box topology:} For $x \in \R^\omega_{\mathrm{ez}}$, let $F =
+\{i : x_i \ne 0\}$ (finite). Any box neighborhood $\prod U_i$ has
+$0 \in U_i$ for $i \notin F$ (since $x_i = 0 \in U_i$). For $i
+\notin F$, pick $t_i \in U_i \setminus \{0\}$ (possible since $U_i$ is
+open in $\R$ and contains $0$). The point with coordinates $t_i$ for
+$i \notin F$ and $x_i$ for $i \in F$ is in the box neighborhood but
+has infinitely many nonzero coordinates.
+
+\textbf{Closure in product topology:} $\overline{\R^\omega_{\mathrm{ez}}}
+= \R^\omega$ (dense).
+
+Given any $x \in \R^\omega$ and any basic neighborhood $\prod U_i$
+(with $U_i = \R$ for $i > N$), define $y$ by $y_i = x_i$ for $i \le N$
+and $y_i = 0$ for $i > N$. Then $y$ is eventually zero, and $y \in
+\prod U_i$ (since $y_i = x_i \in U_i$ for $i \le N$, and $y_i = 0 \in
+\R = U_i$ for $i > N$).
+
+\textbf{Closure in box topology:}
+$\overline{\R^\omega_{\mathrm{ez}}} =
+\R^\omega_{\mathrm{ez}}$ (closed).
+
+If $x \notin \R^\omega_{\mathrm{ez}}$, then $I_0 = \{i : x_i \ne 0\}$
+is infinite. Define $\prod V_i$ by $V_i = \R \setminus \{0\}$ for $i
+\in I_0$ and $V_i = \R$ for $i \notin I_0$. This is a box neighborhood
+of $x$, and every point in it has nonzero $i$-th coordinate for all $i
+\in I_0$, hence is not eventually zero. So $x \notin
+\overline{\R^\omega_{\mathrm{ez}}}$.
+
+\subsection{Bounded Sequence (有界序列)}\label{def:bounded-seq}
+$U = \{x = (x_i) : \exists C_x > 0,\ |x_i| \le C_x\ \forall i\}$.
+
+\textbf{In box topology,} $U$ and $\R^\omega \setminus U$ form a
+nontrivial separation, proving $(\R^\omega, \mathcal{T}_b)$ is
+disconnected.
+
+\textbf{Proof that $U$ is box-open:} If $x \in U$ with bound $C$,
+then $N_x = \prod_i (x_i - 1, x_i + 1) \subseteq U$ since $|y_i| \le
+|x_i| + 1 \le C + 1$.
+
+\textbf{Proof that $\R^\omega \setminus U$ is box-open:} If $x
+\notin U$, then for every $n$ there exists $i_n$ with $|x_{i_n}| > n$.
+Set $N_x = \prod_i (x_i - 1, x_i + 1)$. For any $y \in N_x$,
+$|y_{i_n}| \ge |x_{i_n}| - 1 > n - 1$, which is unbounded as $n \to
+\infty$. So $y \notin U$.
+
+\subsection{Metrizability and Connectedness of $\R^\omega$}
+
+\textbf{Product topology:} $(\R^\omega, \mathcal{T}_p)$ is
+\textbf{metrizable} and \textbf{path connected}.
+
+Explicit metric: $d_\omega(x,y) = \sup_{i \in \N}
+\frac{d^*(x_i, y_i)}{i+1}$ where $d^*(u,v) = \min\{|u-v|, 1\}$.
+
+Path connected: the straight-line homotopy $H(t) = ((1-t)x_i + ty_i)_i$
+is continuous because each coordinate function $H_i(t) = (1-t)x_i +
+ty_i$ is continuous, and the universal property guarantees continuity
+in the product topology.
+
+\textbf{Box topology:} $(\R^\omega, \mathcal{T}_b)$ is
+\textbf{not metrizable} and \textbf{disconnected} (bounded/unbounded
+separation above).
+
+\begin{proposition}
+  $(\R^\omega, \mathcal{T}_b)$ is not first-countable, hence not metrizable.
+\end{proposition}
+\begin{proof}
+  Suppose $\mathbf{0} = (0,0,\ldots)$ has a countable neighborhood basis
+  $\{U_n\}_{n \in \N}$. Each $U_n$ is a box neighborhood of $\mathbf{0}$,
+  so $U_n$ contains a box of the form $\prod_{i=1}^\infty (-\varepsilon_{n,i},\,
+  \varepsilon_{n,i})$ with $\varepsilon_{n,i} > 0$ for all $i$.
+  Define $V = \prod_{i=1}^\infty (-\varepsilon_{i,i}/2,\; \varepsilon_{i,i}/2)$.
+  Then $V$ is a box neighborhood of $\mathbf{0}$.
+  But for each $n$, the $n$-th coordinate of $U_n$ extends to
+  $\pm\varepsilon_{n,n}$,
+  while $V$ restricts to $\pm\varepsilon_{n,n}/2$, so $U_n \not\subseteq V$.
+  Hence no $U_n$ is contained in $V$, contradicting the assumption that
+  $\{U_n\}$ is a neighborhood basis.
+\end{proof}
+
+\subsection{Torus (环面)}\label{def:torus}
+$S^1 \times S^1$ (product of two circles). Visualized as the surface
+of a donut. Constructed by gluing opposite edges of $[0,1] \times
+[0,1]$.
+
+%=====================================================================
+\section{连通性 (Connectedness)}
+%=====================================================================
+
+\subsection{Connected Space (连通空间)}\label{def:connected}
+\begin{definition}
+  $(X, \mathcal{T})$ is \textbf{connected} if there do not exist
+  nonempty disjoint open sets $U, V$ with $X = U \cup V$.
+  Equivalently: the only clopen subsets of $X$ are $\varnothing$ and $X$.
+\end{definition}
+
+\subsection{Disconnected Space (不连通空间)}\label{def:disconnected}
+$X$ is \textbf{disconnected} if there exists a \textbf{separation}:
+nonempty open $U, V$ with $U \cap V = \varnothing$ and $U \cup V = X$.
+
+\subsection{Totally Disconnected (完全不连通)}\label{def:totally-disc}
+$X$ is \textbf{totally disconnected} if the only connected subsets
+are singletons (and $\varnothing$).
+Example: $\Q$ with the subspace topology from $\R$.
+
+\subsection{Separation (分离)}\label{def:separation-conn}
+A pair of nonempty, disjoint, open sets $U, V$ with $U \cup V = X$.
+
+\subsection{Connected Component (连通分支)}\label{def:component}
+Define $x \sim y$ if $x, y$ lie in a common connected subset. This is
+an equivalence relation.
+The equivalence class $C(x)$ is the \textbf{connected component} of
+$x$: the maximal connected subset containing $x$.
+\begin{itemize}
+  \item Each component is connected.
+  \item Different components are disjoint.
+  \item Components are closed in $X$.
+\end{itemize}
+
+\begin{proof}[Proof that components are closed]
+  Let $C$ be a connected component. Since $C$ is connected,
+  $\overline{C}$ is connected
+  (closure of connected). But $C$ is a \emph{maximal} connected set
+  and $C \subseteq \overline{C}$,
+  so $\overline{C} \subseteq C$, meaning $C = \overline{C}$,
+  i.e.\ $C$ is closed.
+\end{proof}
+
+\subsection{Path Connected (道路连通)}\label{def:path-connected}
+\begin{definition}
+  $X$ is \textbf{path connected} if for every $a, b \in X$, there
+  exists a continuous $f : [0, 1] \to X$ with $f(0) = a$ and $f(1) = b$.
+\end{definition}
+
+\begin{proposition}
+  Path connected $\implies$ connected. The converse is \textbf{false}.
+\end{proposition}
+\begin{proof}
+  Suppose $X$ is path connected but disconnected: $X = U \cup V$ is a
+  separation.
+  Pick $a \in U$, $b \in V$. By path connectedness, $\exists$
+  continuous $\gamma : [0,1] \to X$
+  with $\gamma(0) = a$, $\gamma(1) = b$. Then $\gamma^{-1}(U)$ and
+  $\gamma^{-1}(V)$ are disjoint
+  nonempty open subsets of $[0,1]$ with $\gamma^{-1}(U) \cup
+  \gamma^{-1}(V) = [0,1]$.
+  This is a separation of $[0,1]$, contradicting that $[0,1]$ is connected.
+\end{proof}
+
+\subsection{Path / Curve (道路/曲线)}\label{def:path}
+A continuous map $f : [0, 1] \to X$ is called a \textbf{path} from
+$f(0)$ to $f(1)$.
+
+\subsection{Path Component (道路连通分支)}\label{def:path-component}
+The equivalence class under ``$x \sim y$ if there is a path from $x$ to $y$.''
+Each path component $\subseteq$ a connected component.
+
+\subsection{Topologist's Sine Curve (拓扑学家的正弦曲线)}\label{def:sine-curve}
+\[
+  A = \{(x, \sin(1/x)) : x \in (0, 1]\} \cup \{(0, y) : y \in [-1, 1]\}.
+\]
+$A$ is \textbf{connected} but \textbf{not path connected}: no path
+can reach $(0, y)$ from a point $(x, \sin(1/x))$ with $x > 0$.
+
+\subsection{Intermediate Value Theorem --- IVT (介值定理)}\label{def:ivt}
+\begin{theorem}
+  If $f : [a, b] \to \R$ is continuous, then for every $c$ between
+  $f(a)$ and $f(b)$, there exists $x \in [a, b]$ with $f(x) = c$.
+\end{theorem}
+\begin{proof}
+  Suppose $c$ is not attained. Then $A = f^{-1}((-\infty, c))$ and $B
+  = f^{-1}((c, +\infty))$ are nonempty open sets (preimages of open
+  sets under continuous $f$) with $A \cup B = [a, b]$ and $A \cap B =
+  \varnothing$. This contradicts the connectedness of $[a, b]$.
+\end{proof}
+
+\textbf{Topological form:} If $f : X \to \R$ is continuous and $X$ is
+connected, then $f(X)$ is an interval (hence connected).
+
+\subsection{Key Connectedness Theorems}\label{def:conn-thms}
+
+\begin{theorem}[Continuous image of connected is connected]
+  If $f : X \to Y$ is continuous and $X$ is connected, then $f(X)$ is connected.
+\end{theorem}
+\begin{proof}
+  Contrapositive. Suppose $f(X)$ is disconnected: $f(X) = U \cup V$
+  where $U, V$ are disjoint nonempty open sets in the subspace
+  topology of $f(X)$.
+  Then $f^{-1}(U)$ and $f^{-1}(V)$ are disjoint nonempty open sets in $X$
+  (preimages of open sets under continuous $f$; nonempty because $f$
+  is surjective onto $f(X)$),
+  and $f^{-1}(U) \cup f^{-1}(V) = X$. This is a separation of $X$,
+  contradiction.
+\end{proof}
+
+\begin{theorem}[Union theorem for connected sets]
+  If $\{A_\alpha\}$ are connected subsets with
+  $\bigcap_\alpha A_\alpha \ne \varnothing$, then $\bigcup_\alpha
+  A_\alpha$ is connected.
+\end{theorem}
+\begin{proof}
+  Pick $p \in \bigcap_\alpha A_\alpha$. Suppose $\bigcup A_\alpha = U \cup V$
+  is a separation. Say $p \in U$. For each $\alpha$, $A_\alpha$ is connected,
+  so $A_\alpha \subseteq U$ or $A_\alpha \subseteq V$ (otherwise
+    $A_\alpha \cap U$,
+  $A_\alpha \cap V$ would separate $A_\alpha$). Since $p \in A_\alpha \cap U$,
+  we have $A_\alpha \subseteq U$ for all $\alpha$. Hence $\bigcup
+  A_\alpha \subseteq U$,
+  so $V = \varnothing$, contradiction.
+\end{proof}
+
+\begin{theorem}[Closure of connected is connected]
+  If $A$ is connected, then $\bar{A}$ is connected.
+\end{theorem}
+\begin{proof}
+  Suppose $\bar{A} = U \cup V$ is a separation with $U, V$ open in
+  $\bar{A}$, disjoint, nonempty.
+  Then $A = (A \cap U) \cup (A \cap V)$. Since $A$ is connected, one
+  of these must be empty.
+  Say $A \cap V = \varnothing$, so $A \subseteq U$.
+  Now $V$ is a nonempty open subset of $\bar{A}$, so $V$ contains a
+  point $x$ with
+  every neighborhood of $x$ meeting $A \subseteq U$. But $V$ is a
+  neighborhood of $x$ in $\bar{A}$,
+  so $V \cap A \ne \varnothing$, contradicting $A \cap V = \varnothing$.
+\end{proof}
+
+\begin{theorem}[Connected subsets of $\R$ are exactly intervals]
+  A subset $A \subseteq \R$ is connected if and only if $A$ is an interval
+  (of any type: open, closed, half-open, unbounded, or a singleton).
+\end{theorem}
+\begin{proof}
+  ($\Leftarrow$) Every interval $[a,b]$ is connected (standard proof
+  via supremum; see T5 below).
+  Half-open and open intervals are connected as subspaces of $[a,b]$
+  or by direct argument.
+  Unbounded intervals like $(-\infty, b)$ are unions of connected
+  $[-n, b]$ with nonempty intersection.
+  A singleton is trivially connected.
+
+  ($\Rightarrow$) Suppose $A$ is not an interval. Then $\exists\, a,
+  c \in A$ and $b \notin A$ with
+  $a < b < c$. Set $U = A \cap (-\infty, b)$ and $V = A \cap (b, +\infty)$.
+  Then $U, V$ are nonempty (contain $a$ and $c$ respectively), open in $A$,
+  disjoint, and $U \cup V = A$. This is a separation.
+\end{proof}
+
+\begin{theorem}[$\R^n$ is connected]
+  $\R^n$ is connected for all $n \ge 1$.
+\end{theorem}
+\begin{proof}
+  Each line through the origin $\ell_v = \{tv : t \in \R\}$ is
+  homeomorphic to $\R$, hence connected.
+  All such lines pass through $0$. By the union theorem, $\R^n =
+  \bigcup_v \ell_v$ is connected.
+\end{proof}
+
+\begin{theorem}[$\R^n \setminus \{0\}$ is connected for $n \ge 2$]
+  For $n \ge 2$, $\R^n \setminus \{0\}$ is connected (in fact path connected).
+\end{theorem}
+\begin{proof}
+  For any $x, y \in \R^n \setminus \{0\}$ with $n \ge 2$:
+  if $x$ and $y$ are not antipodal (i.e., $y \ne -x/\|x\| \cdot \|y\|$),
+  the straight line segment from $x$ to $y$ avoids $0$ (since the line through
+  $x$ and $y$ would pass through $0$ only if they are antipodal).
+  If $y = -cx$ for some $c > 0$, pick any $z$ not on the line through
+  $x$ and $y$
+  (possible since $n \ge 2$), and concatenate paths $x \to z \to y$,
+  both avoiding $0$. Hence $\R^n \setminus \{0\}$ is path connected,
+  hence connected.
+\end{proof}
+
+\begin{theorem}[Product of connected spaces is connected]
+  If $\{X_i\}_{i \in I}$ are connected, then $\prod_{i \in I} X_i$
+  (with the product topology) is connected.
+\end{theorem}
+\begin{proof}
+  Fix $a = (a_i) \in \prod X_i$. For each finite $J \subseteq I$, define
+  $A_J = \{x \in \prod X_i : x_i = a_i \text{ for all } i \notin J\}$.
+  Then $A_J \cong \prod_{i \in J} X_i$ (a finite product of connected
+    spaces is connected,
+    by induction: $X_1 \times X_2$ is connected since $\{x_1\} \times
+    X_2$ is connected for each $x_1$,
+    and $(X_1 \times X_2) = \bigcup_{x_1} (\{x_1\} \times X_2)$ with
+    all sets containing
+  $(x_1, a_2)$ for fixed $a_2$).
+  Each $A_J$ is connected and contains $a$. Let $A = \bigcup_{J
+  \text{ finite}} A_J$.
+  By the union theorem, $A$ is connected. Since $A$ is dense in $\prod X_i$
+  (any basic open set restricts only finitely many coordinates, so
+  contains a point of $A$),
+  $\overline{A} = \prod X_i$ is connected.
+\end{proof}
+
+\subsection{Proof Techniques for Connectedness}
+
+\subsubsection*{T1: Direct separation construction (to show disconnected)}
+Construct two nonempty disjoint open sets $U, V$ with $U \cup V = X$.
+\textbf{Equivalently,} find a nontrivial clopen subset ($\ne \varnothing, X$).
+
+\textbf{Example:} $\Q$ is disconnected. For any irrational $a$, set
+$U = \Q \cap (-\infty, a)$ and $V = \Q \cap (a, +\infty)$.
+
+\subsubsection*{T2: Continuous function to a discrete space (to show
+disconnected)}
+Find a continuous surjection $f : X \to \{0, 1\}$ (discrete topology).
+Then $f^{-1}(\{0\})$ and $f^{-1}(\{1\})$ form a separation.
+
+\textbf{General principle:} Find continuous $f : X \to Y$ where $Y$ is
+disconnected, then $X$ must be disconnected (contrapositive of
+``continuous image of connected is connected'').
+
+\textbf{Example:} $X = \{(x,0)\} \cup \{(x,1/x) : x > 0\} \subset \R^2$.
+Define $f(x,y) = xy$. Then $f(X) = \{0, 1\}$, which is disconnected.
+Hence $X$ is disconnected.
+
+\textbf{Example:} Bounded and unbounded sequences in $(\R^\omega,
+\mathcal{T}_b)$ are separated: the ``boundness'' function (though not a
+real-valued function) can be replaced by observing that the two sets are
+each open in box topology.
+
+\subsubsection*{T3: Use known connected sets $+$ theorems (to show connected)}
+Chain together known results rather than working from scratch:
+\begin{enumerate}
+  \item Start with a known connected set ($[0,1]$, $\R^n$, intervals).
+  \item Apply: continuous image, closure, union with nonempty intersection,
+    product.
+\end{enumerate}
+
+\textbf{Example:} $\R^n$ is connected: $\R^n = \bigcup_{v \in \R^n}
+\ell_v$ where $\ell_v$ is the line through the origin in direction $v$.
+Each line $\ell_v \cong \R$ is connected, and all lines pass through $0$,
+so $\bigcup \ell_v$ is connected by the union theorem.
+
+\textbf{Example:} The topologist's sine curve $\overline A$ is connected:
+$A = \{(x, \sin(1/x)) : x \in (0,1]\}$ is connected (continuous image of
+$(0,1]$), and $\overline{A}$ is connected (closure of connected).
+
+\subsubsection*{T4: Clopen set argument (to show a property holds globally)}
+To prove every point of a connected $X$ has property $P$:
+\begin{enumerate}
+  \item Define $S = \{x \in X : x \text{ has property } P\}$.
+  \item Show $S$ is open (use local property or neighborhood argument).
+  \item Show $S$ is closed (use limit points or complement is open).
+  \item Since $X$ is connected and $S$ is clopen and nonempty, $S = X$.
+\end{enumerate}
+
+\textbf{Example:} Connected $+$ locally path connected $\Rightarrow$ path
+connected. Set $S_x = \{y : \exists\text{ path from } x \text{ to } y\}$.
+$S_x$ is open (path-connected neighborhood of $y$ is contained in $S_x$)
+and closed (complement is open by same argument). So $S_x = X$.
+
+\subsubsection*{T5: Show a subset of $\R$ is connected}
+\textbf{Characterization:} $A \subseteq \R$ is connected $\iff$ $A$ is an
+interval (any type: open, closed, half-open, unbounded, a single point).
+
+\textbf{Proof that intervals are connected (standard proof):}
+Suppose $[a,b] = U \cup V$ with $U, V$ open, disjoint, nonempty.
+Pick $u \in U$, $v \in V$, say $u < v$. Set $c = \sup\{x \in U : x < v\}$.
+Then $c \in [a,b]$. If $c \in U$: some neighborhood $(c - \varepsilon,
+c + \varepsilon) \subseteq U$, but then $c + \varepsilon/2 \in U$ with
+$c + \varepsilon/2 < v$, contradicting supremum. If $c \in V$: similar
+contradiction.
+
+\subsubsection*{T6: Show NOT connected --- by removing a point}
+If removing a point disconnects $X$ but not $Y$, then $X \not\cong Y$
+(as used in the homeomorphism section). More directly, if $X \setminus
+\{p\}$ is disconnected for some $p$, this can sometimes prove $X$ itself
+has a ``weakness'' at $p$.
+
+\textbf{Example:} $\R \setminus \{0\} = (-\infty, 0) \cup (0, +\infty)$
+is disconnected. Hence $\R \not\cong \R^2$ (since $\R^2 \setminus
+\{(0,0)\}$ is connected).
+
+\subsection{Proof Techniques for Path Connectedness}
+
+\subsubsection*{P1: Construct explicit paths}
+For each pair $a, b \in X$, write down a continuous $\gamma : [0,1] \to X$
+with $\gamma(0) = a$, $\gamma(1) = b$.
+
+\textbf{Common path constructions:}
+\begin{itemize}
+  \item \textbf{Straight line} (convex sets): $\gamma(t) = (1-t)a + tb$.
+    Works in any convex subset of $\R^n$.
+  \item \textbf{Piecewise linear:} go through intermediate waypoints.
+  \item \textbf{Through a base point:} path $a \to x_0$, then $x_0 \to b$
+    (concatenation). Only need to show every point has a path to $x_0$.
+\end{itemize}
+
+\textbf{Example:} $\R^n$ is path connected: straight line $\gamma(t) =
+(1-t)\mathbf{a} + t\mathbf{b}$.
+
+\textbf{Example:} $S^n$ ($n \ge 1$) is path connected: any two points
+can be joined by an arc of a great circle, or go through a third point
+not antipodal to either.
+
+\subsubsection*{P2: Concatenation of paths}
+If there is a path from $a$ to $c$ and a path from $c$ to $b$, then there
+is a path from $a$ to $b$:
+\[
+  \gamma(t) =
+  \begin{cases}
+    \gamma_1(2t) & 0 \le t \le 1/2, \\
+    \gamma_2(2t - 1) & 1/2 \le t \le 1.
+  \end{cases}
+\]
+This is continuous by the pasting lemma ($[0,1/2]$ and $[1/2,1]$ are
+closed in $[0,1]$, and $\gamma_1(1) = c = \gamma_2(0)$).
+
+\textbf{Strategy:} Show every point has a path to a fixed base point
+$x_0$; then any two points are connected via $x_0$.
+
+\subsubsection*{P3: Continuous image preserves path connectedness}
+\begin{proposition}
+  If $X$ is path connected and $f : X \to Y$ is continuous and
+  surjective, then $Y$ is path connected.
+\end{proposition}
+\begin{proof}
+  Given $b_1, b_2 \in Y$, pick $a_i$ with $f(a_i) = b_i$. Let
+  $\gamma$ be a path from $a_1$ to $a_2$ in $X$. Then $f \circ \gamma$
+  is a path from $b_1$ to $b_2$ in $Y$.
+\end{proof}
+
+\textbf{Example:} $S^1$ is path connected (image of $[0,1]$ under
+$t \mapsto (\cos 2\pi t, \sin 2\pi t)$). Any continuous surjective
+image of an interval or $\R^n$ is path connected.
+
+\subsubsection*{P4: Product of path connected spaces}
+The product of path connected spaces is path connected (in product
+topology). A path in $\prod X_i$ is given coordinatewise:
+\[
+  \gamma(t) = (\gamma_i(t))_{i \in I}
+\]
+where each $\gamma_i$ is a path in $X_i$. By the universal property,
+$\gamma$ is continuous iff each coordinate is.
+
+\textbf{Example:} $\R^\omega = \prod_{i \in \N} \R$ is path connected:
+$H(t) = ((1-t)x_i + ty_i)_i$.
+
+\subsubsection*{P5: Show NOT path connected --- exploit oscillation}
+The standard counterexample is the \textbf{topologist's sine curve}:
+\[
+  A = \{(x, \sin(1/x)) : x \in (0,1]\}, \quad \overline{A} = A \cup
+  (\{0\} \times [-1,1]).
+\]
+$\overline{A}$ is connected (closure of connected) but not path connected.
+
+\textbf{Proof sketch (not path connected):} Suppose $\gamma : [0,1] \to
+\overline{A}$ is a path from $(0,0)$ to $(1, \sin 1)$.
+Write $\gamma(t) = (x(t), y(t))$. Then $x(t)$ is continuous, $x(0) = 0$,
+$x(1) = 1$. Set $t_0 = \sup\{t : x(t) = 0\}$. For $t > t_0$,
+$x(t) > 0$ so $y(t) = \sin(1/x(t))$. But $\sin(1/x)$ oscillates
+infinitely as $x \to 0^+$, so $y$ cannot be continuous at $t_0$:
+contradiction.
+
+\textbf{Key insight:} When a function oscillates infinitely near a limit
+point, no continuous path can ``trace'' the graph all the way to the
+limit point.
+
+\subsubsection*{P6: Connected $+$ locally path connected
+$\Rightarrow$ path connected}
+This is a powerful sufficient condition (see T4 above for the clopen proof).
+
+\textbf{Examples where this applies:}
+\begin{itemize}
+  \item Open connected subsets of $\R^n$ are path connected (open balls
+    are path connected, so $\R^n$ is locally path connected).
+  \item Manifolds: connected manifolds are path connected.
+\end{itemize}
+
+\textbf{Warning:} ``Connected'' alone does NOT imply path connected
+(topologist's sine curve). ``Locally path connected'' alone also does NOT
+imply path connected (discrete spaces are locally path connected but may
+have many path components). \emph{Both} hypotheses are needed.
+
+%=====================================================================
+\section{紧致性 (Compactness --- Introduction)}
+%=====================================================================
+
+\subsection{Compact Space (紧致空间/紧空间)}\label{def:compact}
+\begin{definition}
+  $(X, \mathcal{T})$ is \textbf{compact} if every open cover of $X$
+  has a finite subcover.
+\end{definition}
+
+\subsection{Open Cover (开覆盖)}\label{def:open-cover}
+A family $\{U_i\}_{i \in I}$ of open subsets is an \textbf{open
+cover} of $X$ if $X = \bigcup_{i \in I} U_i$.
+
+\subsection{Finite Subcover (有限子覆盖)}\label{def:finite-subcover}
+A \textbf{finite subcover} is a finite subset $\{U_{i_1}, \ldots,
+U_{i_k}\}$ that still covers $X$.
+
+\subsection{Subcover (子覆盖)}\label{def:subcover}
+A subfamily of a cover that still covers $X$.
+
+\subsection{Heine--Borel Theorem (Heine--Borel 定理)}\label{def:heine-borel}
+\begin{theorem}
+  A subset $A \subseteq \R^n$ is compact (in the standard topology)
+  if and only if $A$ is closed and bounded.
+\end{theorem}
+(See the Compactness Arguments section for the full proof.)
+
+\textbf{Compact examples:} $[a, b]$; any finite space.
+\textbf{Non-compact examples:} $\R$ (cover $\{(n, n+2)\}$ has no
+finite subcover); $(0, 1)$; $\R^n$.
+
+%=====================================================================
+\section{贝尔纲定理 (Baire Category Theorem)}
+%=====================================================================
+
+\subsection{Nowhere Dense Set (疏朗集/无处稠密集)}\label{def:nowhere-dense-baire}
+\begin{definition}
+  A subset $A \subseteq X$ is \textbf{nowhere dense} if its closure has
+  empty interior: $\operatorname{int}(\bar{A}) = \varnothing$.
+\end{definition}
+
+\textbf{Equivalent:} $A$ is nowhere dense iff $\bar{A}$ contains no
+nonempty open set, i.e.\ $X \setminus \bar{A}$ is dense in $X$.
+
+\textbf{Examples:}
+\begin{itemize}
+  \item $\Z \subseteq \R$: $\bar{\Z} = \Z$, $\operatorname{int}(\Z) =
+    \varnothing$.
+    Nowhere dense.
+  \item $\Q \subseteq \R$: $\overline{\Q} = \R$,
+    $\operatorname{int}(\R) = \R \ne \varnothing$.
+    \textbf{Not} nowhere dense (even though $\Q$ has empty interior --- it's the
+    \emph{closure} that matters).
+  \item A single point $\{x\}$ in $\R$: nowhere dense.
+  \item The Cantor set $C \subseteq [0,1]$: closed and has empty interior,
+    hence nowhere dense.
+  \item Any closed set with empty interior is nowhere dense.
+\end{itemize}
+
+\subsection{Meager / First Category Set (第一纲集)}\label{def:meager}
+\begin{definition}
+  $A \subseteq X$ is \textbf{meager} (or of \textbf{first category}) if
+  $A$ is a countable union of nowhere dense sets:
+  $A = \bigcup_{n=1}^\infty A_n$ where each $A_n$ is nowhere dense.
+\end{definition}
+
+\subsection{Non-meager / Second Category Set (第二纲集)}\label{def:non-meager}
+\begin{definition}
+  $A$ is of \textbf{second category} (in $X$) if it is \emph{not} meager
+  (i.e.\ not a countable union of nowhere dense sets).
+\end{definition}
+
+\textbf{Warning:} ``First category'' $\neq$ ``small'' in a measure-theoretic
+sense. For example, $\Q$ is meager in $\R$ but has full measure under
+certain exotic measures. Conversely, the Cantor set is nowhere dense but
+uncountable.
+
+\subsection{Baire Space (Baire 空间)}\label{def:baire-space}
+\begin{definition}
+  A topological space $X$ is a \textbf{Baire space} if the intersection
+  of any countable family of dense open sets is dense:
+  \[
+    \text{If } \{U_n\}_{n=1}^\infty \text{ are dense and open, then }
+    \bigcap_{n=1}^\infty U_n \text{ is dense.}
+  \]
+\end{definition}
+
+\textbf{Equivalent formulations} (for a topological space $X$):
+\begin{enumerate}
+  \item Every countable intersection of dense open sets is dense.
+  \item Every countable union of closed nowhere dense sets has empty interior.
+  \item Every nonempty open set is of second category (non-meager) in $X$.
+\end{enumerate}
+
+\begin{proof}[Equivalence ($1 \Leftrightarrow 2$)]
+  Let $A_n$ be closed nowhere dense sets. Then $U_n = X \setminus A_n$ is
+  open and dense (since $\operatorname{int}(A_n) = \varnothing$ means
+  $X \setminus A_n$ is dense). Now:
+  \[
+    \operatorname{int}\!\left(\bigcup_{n=1}^\infty A_n\right) = \varnothing
+    \;\iff\;
+    X \setminus \bigcup_{n=1}^\infty A_n = \bigcap_{n=1}^\infty U_n
+    \text{ is dense.}
+  \]
+\end{proof}
+
+\subsection{Baire Category Theorem (贝尔纲定理)}\label{thm:baire}
+
+\begin{theorem}[Baire Category Theorem]
+  \begin{enumerate}
+    \item Every \textbf{complete metric space} $(X, d)$ is a Baire space.
+    \item Every \textbf{locally compact Hausdorff space} is a Baire space.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}[Proof (complete metric space case)]
+  Let $\{U_n\}_{n=1}^\infty$ be dense open sets in $X$. We show
+  $\bigcap_{n=1}^\infty U_n$ is dense by proving it meets every nonempty
+  open ball $B_0 = B(x_0, r_0)$.
+
+  Since $U_1$ is dense, $B_0 \cap U_1 \ne \varnothing$.
+  Pick $x_1 \in B_0 \cap U_1$ and $r_1 < \min\{r_0/2, 1\}$ with
+  $\bar{B}(x_1, r_1) \subseteq B_0 \cap U_1$.
+
+  Inductively: pick $x_{n+1} \in B(x_n, r_n) \cap U_{n+1}$ (nonempty by density)
+  and $r_{n+1} < \min\{r_n/2, 1/(n+1)\}$ with
+  $\bar{B}(x_{n+1}, r_{n+1}) \subseteq B(x_n, r_n) \cap U_{n+1}$.
+
+  The closed balls $\bar{B}(x_n, r_n)$ form a nested sequence with
+  $\operatorname{diam}(\bar{B}(x_n, r_n)) \le 2r_n \to 0$.
+  By \textbf{completeness}, $\bigcap_{n=1}^\infty \bar{B}(x_n, r_n) = \{x\}$
+  for some $x \in X$.
+
+  Then $x \in \bar{B}(x_n, r_n) \subseteq U_n$ for all $n$, so
+  $x \in \bigcap_{n=1}^\infty U_n$.
+  Also $x \in \bar{B}(x_1, r_1) \subseteq B_0$, so $x \in B_0$.
+  Hence $B_0 \cap \bigcap_{n=1}^\infty U_n \ne \varnothing$.
+\end{proof}
+
+\begin{proof}[Proof (locally compact Hausdorff case)]
+  Let $\{U_n\}$ be dense open sets and let $V$ be any nonempty open set.
+  We show $V \cap \bigcap_n U_n \ne \varnothing$.
+
+  Since $X$ is locally compact Hausdorff, there exists a nonempty open set
+  $W_0$ with $\bar{W}_0$ compact and $\bar{W}_0 \subseteq V$.
+  Since $U_1$ is dense, $W_0 \cap U_1 \ne \varnothing$; by local compactness
+  again, pick open $W_1$ with $\bar{W}_1$ compact and
+  $\bar{W}_1 \subseteq W_0 \cap U_1$.
+
+  Inductively construct nested compact sets
+  $\bar{W}_0 \supseteq \bar{W}_1 \supseteq \cdots$ with
+  $\bar{W}_n \subseteq U_n$.
+  By the \textbf{finite intersection property} of the compact set
+  $\bar{W}_0$:
+  $\bigcap_{n=0}^\infty \bar{W}_n \ne \varnothing$.
+  Any point in this intersection lies in $V$ and in every $U_n$.
+\end{proof}
+
+\subsection{Applications of Baire Category Theorem
+(贝尔纲定理的应用)}\label{def:baire-applications}
+
+\textbf{Application 1: $\R$ is uncountable.}
+
+$\R$ is a complete metric space, hence Baire. If $\R$ were countable,
+say $\R = \{x_1, x_2, \ldots\}$, then $\R = \bigcup_{n=1}^\infty \{x_n\}$.
+Each $\{x_n\}$ is nowhere dense (closed with empty interior).
+But $\R$ itself has nonempty interior, contradicting Baire.
+So $\R$ is uncountable.
+
+\textbf{Application 2: $\Q$ is not a $G_\delta$ set in $\R$.}
+
+A $G_\delta$ set is a countable intersection of open sets.
+If $\Q = \bigcap_{n=1}^\infty U_n$ with each $U_n$ open,
+then each $U_n$ is dense (since $\Q$ is dense), so by Baire,
+$\bigcap_{n=1}^\infty U_n$ would be dense and hence uncountable.
+But $\Q$ is countable --- contradiction.
+
+\textbf{Application 3: Existence of continuous nowhere-differentiable
+functions.}
+
+The set of continuous functions on $[0,1]$ that are \emph{nowhere
+differentiable}
+is a dense $G_\delta$ in $C([0,1])$ (with the sup-norm metric), hence
+\textbf{generic} (second category). In particular, ``most'' continuous
+functions are nowhere differentiable --- they are the rule, not the exception.
+
+\textbf{Application 4: $\R$ cannot be written as a countable union of
+closed sets with empty interior.}
+
+This is immediate from Baire: $\R$ has nonempty interior.
+
+\subsection{Quick Reference: Baire Space Summary}\label{def:baire-summary}
+
+\begin{center}
+  \begin{tabular}{ll}
+    \textbf{Space} & \textbf{Baire?} \\
+    \hline
+    $\R$, $\R^n$ (complete metric) & Yes \\
+    Any complete metric space & Yes \\
+    Any locally compact Hausdorff space & Yes \\
+    $(0, 1) \subset \R$ (incomplete but locally compact Hausdorff) & Yes \\
+    $\Q$ (with subspace topology) & \textbf{No} \\
+    Any discrete space (locally compact Hausdorff) & Yes \\
+  \end{tabular}
+\end{center}
+
+\textbf{Key ``mnemonic'':} Complete metric spaces and locally compact
+Hausdorff spaces ``have enough room'' that countably many thin (nowhere dense)
+sets cannot cover the whole space. You can always find a point that avoids
+all of them.
+
+%=====================================================================
+\section{Key Results from Homework (HW1--3)}
+%=====================================================================
+
+\subsection{Characteristic Function Bijection (HW1 Q1)}
+\begin{theorem}
+  For any nonempty finite set $A$, there is a bijection between
+  $\mathcal{P}(A)$ and $2^A = \{f : A \to \{0,1\}\}$.
+  Hence $|\mathcal{P}(A)| = 2^{|A|}$.
+\end{theorem}
+\begin{proof}
+  Define $\Phi : \mathcal{P}(A) \to 2^A$ by
+  $\Phi(B) = \chi_B$ (the characteristic / indicator function of $B$):
+  \[
+    \chi_B(a) =
+    \begin{cases} 1 & a \in B, \\ 0 & a \notin B.
+    \end{cases}
+  \]
+  \textbf{Injective:} $\chi_{B_1} = \chi_{B_2} \Rightarrow B_1 = B_2$
+  (check elementwise). \textbf{Surjective:} given $f \in 2^A$, set
+  $B_f = f^{-1}(\{1\})$; then $\Phi(B_f) = f$.
+\end{proof}
+\textbf{Technique:} The characteristic function $\chi_A$ converts set
+operations into pointwise arithmetic: $\chi_{A \cap B} = \chi_A \cdot
+\chi_B$, $\chi_{A \cup B} = \max\{\chi_A, \chi_B\}$,
+$\chi_{X \setminus A} = 1 - \chi_A$.
+
+\subsection{Symmetric Group on a Finite Set (HW1 Q2)}
+\begin{proposition}
+  Let $F(A)$ be the set of all bijections $f : A \to A$. Then
+  $(F(A), \circ)$ is a group. It is abelian if and only if $|A| \le 2$.
+\end{proposition}
+\textbf{Verification checklist} (group axioms):
+\begin{enumerate}
+  \item \textbf{Closure:} composition of bijections is a bijection.
+  \item \textbf{Associativity:} $(f \circ g) \circ h = f \circ (g \circ
+    h)$ for functions.
+  \item \textbf{Identity:} $\mathrm{id}_A \in F(A)$.
+  \item \textbf{Inverses:} every bijection $f$ has $f^{-1}$ with
+    $f \circ f^{-1} = f^{-1} \circ f = \mathrm{id}$.
+\end{enumerate}
+\textbf{Non-abelian for $|A| \ge 3$:} Take $A = \{1,2,3\}$, $\sigma =
+(1\;2)$, $\tau = (2\;3)$; then $\sigma \circ \tau \ne \tau \circ
+\sigma$.
+
+\subsection{Induction on Primes (HW1 Q3)}
+\begin{theorem}
+  If $p_n$ is the $n$-th prime, then $p_n < 2^{2^n}$ for all $n \ge 1$.
+\end{theorem}
+\begin{proof}
+  Base: $p_1 = 2 < 2^2 = 4$.
+  Inductive step: by Euclid's argument,
+  \[
+    p_{n+1} \le p_1 p_2 \cdots p_n + 1
+    < 2^{2^1} \cdot 2^{2^2} \cdots 2^{2^n} + 1
+    = 2^{2+4+\cdots+2^n} + 1 = 2^{2^{n+1}-2} + 1 < 2^{2^{n+1}}.
+  \]
+\end{proof}
+\textbf{Technique:} When the inductive hypothesis gives a bound on a
+product, use $\sum_{k=1}^n 2^k = 2^{n+1} - 2$ (geometric series).
+
+\subsection{Equivalence Relations: Intersection and Generation (HW1 Q4)}
+\begin{definition}
+  A relation $R$ on $X$ is an \textbf{equivalence relation} if it is
+  reflexive ($x R x$), symmetric ($x R y \Rightarrow y R x$), and
+  transitive ($x R y, y R z \Rightarrow x R z$).
+\end{definition}
+
+\begin{proposition}
+  The intersection $\bigcap_{i \in I} R_i$ of any family of equivalence
+  relations on $X$ is an equivalence relation.
+\end{proposition}
+\begin{proof}
+  Each axiom is checked pointwise. E.g., for transitivity: if
+  $(x,y), (y,z) \in \bigcap R_i$, then $(x,y), (y,z) \in R_i$ for
+  each $i$, so $(x,z) \in R_i$ for each $i$ (transitivity of $R_i$),
+  hence $(x,z) \in \bigcap R_i$.
+\end{proof}
+
+\textbf{Generated equivalence relation:} The smallest equivalence
+relation containing a given relation $S$ is the intersection of all
+equivalence relations containing $S$. For the relation $S = \{(x,y) :
+y = x+1, 0 < x < 3\}$ on $\R$, the generated equivalence relation is
+$y - x \in \Z$ (since $S$ connects $x$ to $x+1$, transitivity gives all
+integer differences).
+
+\subsection{Countability of Algebraic Numbers (HW2 Q1)}
+\begin{theorem}
+  The set $A$ of real algebraic numbers is countable. Hence the set of
+  real transcendental numbers $\R \setminus A$ is uncountable.
+\end{theorem}
+\begin{proof}
+  A rational polynomial of degree $n$ is determined by $n+1$ rational
+  coefficients $(a_0, \ldots, a_{n-1}, 1)$, so the set of such
+  polynomials is countable ($\Q^n$ is countable).
+  The set of \emph{all} rational polynomials is
+  $\bigcup_{n=1}^\infty P_n$, a countable union of countable sets,
+  hence countable.
+  Each polynomial has finitely many roots, so $A$ is a countable union
+  of finite sets, hence countable.
+  Since $\R$ is uncountable, $\R \setminus A$ is uncountable.
+\end{proof}
+\textbf{Technique:} Countable union of countable (or finite) sets is
+countable. Use this to reduce ``uncountable'' objects to countable
+pieces.
+
+\subsection{Eventually-Zero Binary Sequences (HW2 Q2)}
+\begin{proposition}
+  $X_0^\N = \{f : \N \to \{0,1\} : |\mathrm{supp}(f)| < \infty\}$
+  is countable.
+\end{proposition}
+\begin{proof}
+  Partition by support size: $X_0^\N = \bigcup_{n=0}^\infty S_n$ where
+  $S_n = \{f : |\mathrm{supp}(f)| = n\}$.
+  Each $S_n$ is countable (inject into $\N^n$ by listing support
+  positions). A countable union of countable sets is countable.
+\end{proof}
+\textbf{Contrast with HW5:} When the support can be infinite, i.e.\
+$\{0,1\}^\N$ (all binary sequences), the set is uncountable by Cantor
+diagonalization.
+
+\subsection{Pseudo-metric Quotient (HW2 Q3)}
+\begin{definition}
+  A \textbf{pseudo-metric} on $S$ is $d : S \times S \to \R_{\ge 0}$
+  satisfying $d(x,x)=0$, symmetry, and the triangle inequality (but
+  possibly $d(x,y)=0$ for $x \ne y$).
+\end{definition}
+
+\begin{proposition}
+  Define $x \sim y$ iff $d(x,y) = 0$. Then:
+  \begin{enumerate}
+    \item $\sim$ is an equivalence relation.
+    \item $d^*([x],[y]) = d(x,y)$ is a well-defined metric on $S^* = S/{\sim}$.
+  \end{enumerate}
+\end{proposition}
+\textbf{Key technique --- well-definedness:} Must show $d^*$ does not
+depend on the choice of representatives: if $x \sim x'$ and $y \sim y'$,
+then $d(x,y) = d(x',y')$. Proof: $d(x,y) \le d(x,x') + d(x',y') +
+d(y',y) = d(x',y')$, and symmetrically.
+
+\subsection{Verifying the Triangle Inequality (HW2 Q4)}
+\textbf{Problem:} For which $n \in \N_{\ge 1}$ is $d_n(x,y) =
+(|x_1 - y_1| + |x_2 - y_2|)^n$ a metric on $\R^2$?
+
+\textbf{Answer:} Only $n = 1$.
+\begin{itemize}
+  \item $n = 1$: $d_1$ is the $\ell^1$ metric; triangle inequality is standard.
+  \item $n \ge 2$: Triangle inequality fails. Take $x = (0,0)$, $y =
+    (1,0)$, $z = (1,1)$. Then $d_n(x,z) = 2^n$, but $d_n(x,y) + d_n(y,z)
+    = 1 + 1 = 2 < 2^n$ for $n \ge 2$.
+\end{itemize}
+\textbf{Technique:} To disprove a metric axiom, find specific
+counterexample points. The triangle inequality is usually the first to
+fail.
+
+\subsection{No Metric on Power Set Extending Point Distances (HW2 Q5)}
+\begin{proposition}
+  In general, there is no metric on $\mathcal{P}(S)$ such that
+  $d'(\{x\},\{y\}) = d(x,y)$ for all $x, y \in S$.
+\end{proposition}
+\textbf{Counterexample:} Take $S = \{a, b, c\}$ with $d(a,b) = d(b,c)
+= d(a,c) = 1$ (discrete metric). Set $d'(\{a\},\{b,c\}) = t$.
+By triangle inequality: $t = d'(\{a\},\{b,c\}) \le d'(\{a\},\{b\}) +
+d'(\{b\},\{b,c\})$, but this forces constraints that cannot be
+simultaneously satisfied.
+
+\textbf{Technique:} ``Can one always\ldots'' questions are often
+resolved by a small counterexample ($|S| = 3$ suffices here).
+
+\subsection{Discrete Metric Induces Discrete Topology (HW3 Q1)}
+\begin{proposition}
+  For any set $S$ with the discrete metric $d(x,y) = \mathbf{1}_{x \ne
+  y}$, the induced topology is $\mathcal{P}(S)$.
+\end{proposition}
+\begin{proof}
+  For each $x \in S$, the open ball $B(x, 1/2) = \{x\}$ is open.
+  Any $A \subseteq S$ is a union of singletons: $A = \bigcup_{x \in A}
+  \{x\}$, hence open.
+\end{proof}
+
+\textbf{Conversely:} The trivial topology $\{\varnothing, S\}$ is
+metrizable only if $|S| \le 1$. If $|S| \ge 2$ and $d$ is a metric,
+pick distinct $x, y$; then $B(x, d(x,y)/2)$ is a nonempty open set
+$\ne S$, contradicting the trivial topology.
+
+\subsection{Rational Intervals as a Countable Basis (HW3 Q2)}
+\begin{proposition}
+  $\mathcal{B} = \{(a,b) : a < b,\ a,b \in \Q\}$ is a basis for the
+  standard topology on $\R$, and $|\mathcal{B}| = \aleph_0$.
+\end{proposition}
+\textbf{Basis verification:}
+\begin{enumerate}
+  \item \textbf{Covering:} $\bigcup_{a<b,\, a,b \in \Q} (a,b) = \R$
+    (for any $x \in \R$, pick $a < x < b$ with $a, b \in \Q$ by
+    density of $\Q$).
+  \item \textbf{Intersection:} if $x \in (a_1,b_1) \cap (a_2,b_2)$,
+    pick $c_1, c_2 \in \Q$ with $\max(a_1,a_2) < c_1 < x < c_2 <
+    \min(b_1,b_2)$; then $x \in (c_1,c_2) \subseteq (a_1,b_1) \cap
+    (a_2,b_2)$.
+\end{enumerate}
+\textbf{Countability:} injection $\mathcal{B} \hookrightarrow \Q \times
+\Q$ via $(a,b) \mapsto (a,b)$. Since $\Q \times \Q$ is countable, so is
+$\mathcal{B}$.
+
+\subsection{Intersection of Topologies (HW3 Q4)}
+\begin{proposition}
+  Let $\{\mathcal{T}_i\}_{i \in I}$ be a family of topologies on $S$.
+  Then $\bigcap_{i \in I} \mathcal{T}_i$ is a topology on $S$.
+\end{proposition}
+\begin{proof}
+  \begin{enumerate}
+    \item $\varnothing, S \in \mathcal{T}_i$ for all $i$, hence in the
+      intersection.
+    \item If $\{U_\alpha\} \subseteq \bigcap \mathcal{T}_i$, then each
+      $U_\alpha \in \mathcal{T}_i$ for all $i$, so $\bigcup_\alpha
+      U_\alpha \in \mathcal{T}_i$ for all $i$, hence in the
+      intersection.
+    \item Finite intersections: analogous.
+  \end{enumerate}
+\end{proof}
+
+\textbf{Warning:} $\mathcal{T}_1 \cup \mathcal{T}_2$ need \emph{not}
+be a topology. \textbf{Counterexample:} $S = \{a,b,c\}$,
+$\mathcal{T}_1 = \{\varnothing, \{a\}, S\}$,
+$\mathcal{T}_2 = \{\varnothing, \{b\}, S\}$.
+Then $\{a\}, \{b\} \in \mathcal{T}_1 \cup \mathcal{T}_2$ but $\{a,b\}
+\notin \mathcal{T}_1 \cup \mathcal{T}_2$.
+
+\textbf{Generated topology:} The smallest topology containing
+$\mathcal{T}_1 \cup \mathcal{T}_2$ is
+$\bigcap\{\mathcal{T} : \mathcal{T}_1 \cup \mathcal{T}_2 \subseteq
+\mathcal{T}\}$. Equivalently, take $\mathcal{T}_1 \cup \mathcal{T}_2$
+as a \textbf{subbasis} and generate.
+
+\subsection{Radially Open Topology (HW3 Q5)}
+\begin{definition}
+  $S \subseteq \R^2$ is \textbf{radially open} if for each $p \in S$
+  and each direction (unit vector $v$), $S$ contains an open line
+  segment from $p$ in direction $v$.
+\end{definition}
+
+\begin{proposition}
+  $\mathcal{T}_{\mathrm{ro}}$ (all radially open sets) is a topology on
+  $\R^2$, and $\mathcal{T}_{\mathrm{std}} \subsetneq
+  \mathcal{T}_{\mathrm{ro}}$.
+\end{proposition}
+\textbf{Topology verification:} $\varnothing$ and $\R^2$ are trivially
+radially open. Unions preserve radial openness (if each $S_\alpha$
+contains a segment, so does the union). Finite intersections: at $p \in
+\bigcap_{k=1}^n S_k$, take the minimum segment length over all $S_k$.
+
+\textbf{Strictly finer:} Every open ball $B(p,r)$ is radially open
+(ball contains segment in every direction). But a ``cross'' shape
+$C = \{(x,0) : |x|<1\} \cup \{(0,y) : |y|<1\}$ is radially open
+(segments exist along axes) but contains no open ball around the origin,
+so $C \in \mathcal{T}_{\mathrm{ro}} \setminus \mathcal{T}_{\mathrm{std}}$.
+
+%=====================================================================
+\section{Key Results from Homework (HW4--6)}
+%=====================================================================
+
+\subsection{Closure Operator Axioms $\Rightarrow$ Topology (HW4 Q2)}
+\begin{theorem}[Kuratowski closure axioms]
+  Let $f : \mathcal{P}(X) \to \mathcal{P}(X)$ satisfy:
+  \begin{enumerate}
+    \item $f(\varnothing) = \varnothing$,
+    \item $A \subseteq f(A)$ (expanding),
+    \item $f(f(A)) = f(A)$ (idempotent),
+    \item $f(A \cup B) = f(A) \cup f(B)$ (finite additivity).
+  \end{enumerate}
+  Then $\mathcal{C}_f = \{C \subseteq X : f(C) = C\}$ is the
+  collection of closed sets for a topology $\mathcal{T}_f = \{X
+  \setminus C : C \in \mathcal{C}_f\}$, and
+  $\overline{A}^{\mathcal{T}_f} = f(A)$.
+\end{theorem}
+\textbf{Key technique --- monotonicity from additivity:} $A \subseteq
+B \Rightarrow B = A \cup B \Rightarrow f(B) = f(A) \cup f(B)
+\Rightarrow f(A) \subseteq f(B)$. This is used repeatedly.
+
+\begin{proof}[Proof that $\mathcal{C}_f$ defines a topology]
+  \textbf{Step 1: Monotonicity.} $A \subseteq B \Rightarrow f(A) \subseteq f(B)$
+  (from $f(B) = f(A) \cup f(B \setminus A) \supseteq f(A)$).
+
+  \textbf{Step 2: $\mathcal{C}_f$ contains $\varnothing$ and $X$.}
+  $f(\varnothing) = \varnothing$ by axiom (1), so $\varnothing \in
+  \mathcal{C}_f$.
+  $X \subseteq f(X)$ by (2) and $f(X) \subseteq X$ trivially (since
+  $f$ maps into $\mathcal{P}(X)$),
+  so $f(X) = X$ and $X \in \mathcal{C}_f$.
+
+  \textbf{Step 3: Finite unions.} If $C_1, C_2 \in \mathcal{C}_f$, then
+  $f(C_1 \cup C_2) = f(C_1) \cup f(C_2) = C_1 \cup C_2$ by axiom (4),
+  so $C_1 \cup C_2 \in \mathcal{C}_f$.
+
+  \textbf{Step 4: Arbitrary intersections.} Let $\{C_\alpha\}
+  \subseteq \mathcal{C}_f$,
+  $C = \bigcap C_\alpha$. Then $C \subseteq C_\alpha$ implies $f(C)
+  \subseteq f(C_\alpha) = C_\alpha$
+  by monotonicity, so $f(C) \subseteq \bigcap C_\alpha = C$. Combined
+  with $C \subseteq f(C)$,
+  $f(C) = C$, hence $C \in \mathcal{C}_f$.
+
+  So $\mathcal{C}_f$ is a collection of closed sets. Hence
+  $\mathcal{T}_f = \{X \setminus C : C \in \mathcal{C}_f\}$ is a topology.
+
+  \textbf{Step 5: $f(A) = \overline{A}^{\mathcal{T}_f}$.}
+  Since $A \subseteq f(A) = f(f(A))$, $f(A) \in \mathcal{C}_f$, so
+  $f(A)$ is closed.
+  If $A \subseteq C \in \mathcal{C}_f$, then $f(A) \subseteq f(C) =
+  C$ by monotonicity.
+  So $f(A)$ is the smallest closed superset of $A$, i.e.\ $f(A) = \overline{A}$.
+\end{proof}
+
+\subsection{Closure $=$ Set $\cup$ Limit Points (HW4 Q5)}
+\begin{theorem}
+  $\overline{A} = A \cup LP(A)$.
+\end{theorem}
+\begin{proof}
+  ($\subseteq$) Take $x \in \overline{A}$. If $x \in A$, done. If $x
+  \notin A$: every neighborhood $U$ of $x$ meets $A$ (since $x \in
+  \overline{A}$), and $x \notin A$, so $U \cap (A \setminus \{x\})
+  \ne \varnothing$. Hence $x \in LP(A)$.
+
+  ($\supseteq$) $A \subseteq \overline{A}$ trivially. If $x \in
+  LP(A)$: every neighborhood of $x$ meets $A \setminus \{x\}
+  \subseteq A$, so every neighborhood meets $A$, hence $x \in \overline{A}$.
+\end{proof}
+
+\subsection{Computing Interior, Closure, Limit Points (HW4 Q1)}
+\textbf{Example (topologist's sine curve):}
+$A = \{(x, \sin(1/x)) : x \in (0, 1]\} \subset \R^2$.
+\begin{itemize}
+  \item $A^\circ = \varnothing$ (graph of a function over $(0,1]$ has
+    empty interior in $\R^2$).
+  \item $\overline{A} = A \cup (\{0\} \times [-1, 1])$.
+  \item $LP(A) = A \cup (\{0\} \times [-1, 1])$ (every point of $A$
+    and the vertical segment are limit points).
+  \item $\overline{A} \cap (\R^2 \setminus A) = \{0\} \times [-1, 1]$
+    (the ``accumulated boundary'').
+\end{itemize}
+\textbf{Proof technique --- sequence construction:} For each $y \in
+[-1, 1]$, choose $t_n \to \infty$ with $\sin t_n \to y$, set $x_n =
+1/t_n$. Then $(x_n, \sin(1/x_n)) = (x_n, \sin t_n) \to (0, y)$.
+
+\subsection{Compactness as a Topological Invariant (HW4 Q3)}
+$f : [0,1) \to S^1$, $f(t) = (\cos 2\pi t, \sin 2\pi t)$ is a
+continuous bijection but NOT a homeomorphism.
+\textbf{Reason:} $S^1$ is compact (closed and bounded in $\R^2$);
+$[0,1)$ is not compact. Compactness is a topological invariant.
+\textbf{Consequence:} No homeomorphism exists between $[0,1)$ and $S^1$ at all.
+
+\subsection{Regularly Open Sets (HW4 Q4)}
+\begin{definition}
+  $A$ is \textbf{regularly open} if $A = (\overline{A})^\circ$.
+\end{definition}
+\textbf{Example of open but not regularly open:} $U = (0,1) \cup (1,2)$ in $\R$:
+$\overline{U} = [0,2]$, $(\overline{U})^\circ = (0,2) \ne U$.
+
+\textbf{Characterization:} $U$ is regularly open $\iff$ $U =
+\operatorname{int}(F)$ for some closed $F$.
+
+\begin{proposition}
+  For any $A \subseteq X$, $(\overline{A})^\circ$ is regularly open.
+\end{proposition}
+\begin{proof}
+  Set $B = (\overline{A})^\circ$. Then $B$ open $\Rightarrow B
+  \subseteq (\overline{B})^\circ$.
+  Also $B \subseteq \overline{A} \Rightarrow \overline{B} \subseteq
+  \overline{\overline{A}} = \overline{A}$, so $(\overline{B})^\circ
+  \subseteq (\overline{A})^\circ = B$.
+  Hence $(\overline{B})^\circ = B$.
+\end{proof}
+
+\subsection{Bounded Metric Trick (HW5 Q1)}
+\begin{proposition}
+  $d^*(x,y) = \min\{d(x,y), 1\}$ is a metric inducing the same topology as $d$.
+\end{proposition}
+\textbf{Triangle inequality --- case analysis:} Need $\min\{a+b, 1\}
+\le \min\{a,1\} + \min\{b,1\}$.
+If $a \ge 1$ or $b \ge 1$: RHS $\ge 1 \ge$ LHS. If $a < 1, b < 1$:
+RHS $= a+b \ge$ LHS.
+
+\textbf{Same topology --- ball comparison:} For $0 < r \le 1$:
+$B_{d^*}(x,r) = B_d(x,r)$. For general balls, use $r' = \min\{r, 1/2\}$.
+
+\textbf{Warning:} No uniform $A > 0$ with $A \cdot d \le d^*$ in
+general (take $X = \R$).
+
+\subsection{Free Coordinates in Product/Box Topology (HW5 Q2)}
+\textbf{Key technique:} In the product topology, ``free''
+(unrestricted) coordinates are a powerful tool.
+
+\textbf{Eventually-zero sequences} $\R^\omega_{\mathrm{ez}}$ in $\R^\omega$:
+\begin{itemize}
+  \item Interior is $\varnothing$ in \emph{both} topologies: set free
+    coordinates to $1$ (product) or replace zeros with $t_i \ne 0$ (box).
+  \item Closure in $\mathcal{T}_p$: all of $\R^\omega$.
+    \textbf{Reason:} given $x \in \R^\omega$ and a basic
+    neighborhood, only finitely many coordinates are restricted; set
+    the rest to $0$.
+  \item Closure in $\mathcal{T}_b$: $\R^\omega_{\mathrm{ez}}$ itself
+    (it is closed). \textbf{Reason:} if $x \notin
+    \R^\omega_{\mathrm{ez}}$, then $I = \{i : x_i \ne 0\}$ is
+    infinite; box-neighborhood $\prod_i V_i$ with $0 \notin V_i$ for
+    $i \in I$ stays in the complement.
+\end{itemize}
+
+\subsection{Metrizability of $\R^\omega$ (HW5 Q3)}
+\begin{theorem}
+  $(\R^\omega, \mathcal{T}_p)$ is metrizable and connected.
+\end{theorem}
+\textbf{Explicit metric:} $d_\omega(x,y) = \sup_{i \in \N}
+\frac{d^*(x_i, y_i)}{i+1}$ where $d^*(u,v) = \min\{|u-v|, 1\}$.
+
+\textbf{Topology comparison --- two directions:}
+\begin{itemize}
+  \item $d_\omega$-ball $\subseteq$ $\mathcal{T}_p$-open: Choose $N$
+    with $1/(N+1) < \varepsilon/2$; restrict first $N$ coordinates.
+    Tail automatically satisfies $d^*/(i+1) < \varepsilon/2$ for $i > N$.
+  \item $\mathcal{T}_p$-basic neighborhood $\supseteq$
+    $d_\omega$-ball: Set $\delta = \min_{i \in F}\{\delta_i/(i+1)\}$;
+    then $d_\omega(x,y) < \delta$ forces $y_i \in U_i$ for $i \in F$.
+\end{itemize}
+
+\textbf{Connectedness:} $(\R^\omega, \mathcal{T}_p)$ is path
+connected: $H(t) = ((1-t)x_i + ty_i)_i$ is continuous (coordinatewise
+continuous, so continuous in product topology).
+
+\subsection{Box Topology is Disconnected (HW5 Q4)}
+\textbf{Key idea:} In $\mathcal{T}_b$, bounded and unbounded
+sequences form a nontrivial separation.
+
+$U = \{$bounded sequences$\}$ and $\R^\omega \setminus U$ are both open:
+$N_x = \prod_i (x_i - 1, x_i + 1)$ is a box neighborhood that stays
+entirely in $U$ (if $x$ bounded) or in the complement (if $x$
+unbounded, since $|y_i| \ge |x_i| - 1$).
+
+\subsection{Proving Disconnectedness via Continuous Functions (HW5 Q5)}
+\textbf{General technique:} To show $X$ is disconnected, find a
+continuous $f : X \to \R$ with $f(X)$ disconnected.
+
+\textbf{Example:} $X = \{(x,0)\} \cup \{(x,1/x) : x > 0\} \subset \R^2$.
+Define $f(x,y) = xy$. Then $f(X) = \{0, 1\}$ (disconnected). Hence
+$X$ is disconnected.
+
+\subsection{Brouwer Fixed Point Theorem in 1D (HW6 Q3)}
+\begin{theorem}
+  Every continuous $f : [0,1] \to [0,1]$ has a fixed point.
+\end{theorem}
+\begin{proof}
+  Define $g(x) = f(x) - x$. Then $g(0) = f(0) \ge 0$ and $g(1) = f(1)
+  - 1 \le 0$.
+  By IVT, $\exists x_0$ with $g(x_0) = 0$, i.e., $f(x_0) = x_0$.
+\end{proof}
+\textbf{Counterexamples for $(0,1)$ and $(0,1]$:} $f(x) = x/2$ maps
+$(0,1) \to (0,1/2) \subset (0,1)$ with no fixed point. Similarly
+$f(x) = x/2$ works on $(0,1]$.
+
+\subsection{Connected $+$ Locally Path Connected $\Rightarrow$ Path
+Connected (HW6 Q4)}
+\begin{definition}
+  $X$ is \textbf{locally path connected} if every point has an open
+  neighborhood basis of path-connected sets.
+\end{definition}
+
+\begin{theorem}
+  If $X$ is connected and locally path connected, then $X$ is path connected.
+\end{theorem}
+\begin{proof}[Proof sketch]
+  Fix $x \in X$. Let $S_x = \{y \in X : \exists\text{ path from } x
+  \text{ to } y\}$.
+  \begin{itemize}
+    \item $S_x$ is open: if $y \in S_x$ and $B$ is a path-connected
+      neighborhood of $y$, then every $z \in B$ has a path $x \to y
+      \to z$, so $B \subseteq S_x$.
+    \item $X \setminus S_x$ is open: if $y \notin S_x$ and $B$ is a
+      path-connected neighborhood of $y$, then $B \cap S_x =
+      \varnothing$ (otherwise concatenate paths to get $y \in S_x$).
+  \end{itemize}
+  So $S_x$ is clopen. Since $X$ is connected and $S_x \ne
+  \varnothing$ (contains $x$), $S_x = X$.
+\end{proof}
+\textbf{Key technique:} The ``clopen set'' argument. To show a
+property holds globally, define $S = \{$points with the property$\}$,
+show $S$ is clopen, and invoke connectedness.
+
+\subsection{Non-Homeomorphism via Connectedness (HW6 Q2)}
+$(0,\infty)$, $(0,1]$, and $[0,1]$ are pairwise non-homeomorphic.
+\textbf{Arguments:}
+\begin{itemize}
+  \item $[0,1]$ is compact; $(0,\infty)$ and $(0,1]$ are not.
+  \item $(0,1] \setminus \{1\} = (0,1)$ is connected, but $[0,1]
+    \setminus \{p\}$ is disconnected for $p \in (0,1)$ (interior
+    point removal disconnects). Since removing a point from one space
+    gives connected and from the other gives disconnected, they
+    cannot be homeomorphic.
+  \item $(0,\infty) \setminus \{p\}$ is disconnected for all $p$;
+    $(0,1] \setminus \{1\} = (0,1)$ is connected.
+\end{itemize}
+\textbf{General technique:} If $X \cong Y$ and $X \setminus \{p\}
+\cong Y \setminus \{f(p)\}$, then topological properties of the
+complement (like connectedness) must be preserved.
+
+\subsection{Every Subset Is Compact in Cofinite Topology (HW6 Q5)}
+\begin{theorem}
+  In $(\R, \mathcal{T}_{\mathrm{cof}})$ where
+  $\mathcal{T}_{\mathrm{cof}} = \{\varnothing\} \cup \{X \setminus F
+  : F \text{ finite}\}$, every subset is compact.
+\end{theorem}
+\begin{proof}
+  Let $Y \subseteq \R$ and $\{U_i\}$ be an open cover of $Y$. Pick
+  any $U_{i_0}$. Then $\R \setminus U_{i_0}$ is finite, so $Y
+  \setminus U_{i_0}$ is finite. For each $y \in Y \setminus U_{i_0}$,
+  pick $U_{i_y}$ containing $y$. Then $\{U_{i_0}\} \cup \{U_{i_y} : y
+  \in Y \setminus U_{i_0}\}$ is a finite subcover.
+\end{proof}
+\textbf{Key insight:} In the cofinite topology, the complement of any
+nonempty open set is finite. So any open cover has at most finitely
+many points not covered by a single set.
+
+%=====================================================================
+\section{Proof Technique Summary}
+%=====================================================================
+
+\begin{enumerate}
+  \item \textbf{Double inclusion:} To prove $A = B$, show $A
+    \subseteq B$ and $B \subseteq A$.
+    Used in: closure $= A \cup LP(A)$, topology equality
+    $\mathcal{T}_1 = \mathcal{T}_2$, bijection via injective $+$ surjective.
+
+  \item \textbf{Contraposition:} $P \Rightarrow Q$ $\iff$ $\neg Q
+    \Rightarrow \neg P$.
+    Used in: proving $f^{-1}$ is not continuous ($f^{-1}$ of open not open).
+
+  \item \textbf{Contradiction:} Assume $\neg$ conclusion, derive contradiction.
+    Used in: Cantor's theorem, non-existence of uniform Lipschitz constant.
+
+  \item \textbf{Case analysis:} Break into exhaustive cases.
+    Used in: triangle inequality for $d^*(x,y) = \min\{d(x,y),1\}$,
+    verifying metric axioms for $d_n = (\ell^1)^n$.
+
+  \item \textbf{Sequence construction:} Build explicit sequences to
+    show $x \in \overline{A}$ or $x \in LP(A)$.
+    Used in: closure of topologist's sine curve, density in product topology.
+
+  \item \textbf{Free coordinates:} In product topology, unrestricted
+    coordinates allow ``witness'' construction.
+    Used in: interior/closure computations in $\R^\omega$.
+
+  \item \textbf{Box neighborhood trick:} In box topology, $\prod_i
+    (x_i - \varepsilon, x_i + \varepsilon)$ controls every coordinate.
+    Used in: bounded/unbounded separation, showing sets are open.
+
+  \item \textbf{Continuous function to $\{0,1\}$:} To show
+    disconnectedness, find continuous $f$ with $f(X) = \{0, 1\}$.
+    Used in: HW5 Q5 ($f(x,y)=xy$), IVT-based arguments.
+
+  \item \textbf{Topological invariant argument:} To show $X \not\cong
+    Y$, find a property preserved by homeomorphism that differs.
+    Used in: $[0,1) \not\cong S^1$ (compactness), $(0,1] \not\cong
+    [0,1]$ (point-removal connectedness).
+
+  \item \textbf{Clopen set argument:} To show a global property,
+    define $S = \{$points with property$\}$, show $S$ is clopen,
+    invoke connectedness.
+    Used in: connected $+$ locally path connected $\Rightarrow$ path connected.
+
+  \item \textbf{IVT / fixed point:} Define $g(x) = f(x) - x$, check
+    signs at endpoints, apply IVT.
+    Used in: Brouwer fixed point in 1D.
+
+  \item \textbf{Ball comparison for topology equality:} Show every
+    $d_1$-ball contains a $d_2$-ball and vice versa.
+    Used in: $d^*$ induces same topology as $d$, metrizability of $\R^\omega$.
+
+  \item \textbf{Monotonicity from additivity:} $A \subseteq B
+    \Rightarrow f(A \cup B) = f(A) \cup f(B)$ implies $f(A) \subseteq f(B)$.
+    Used in: Kuratowski closure axioms.
+
+  \item \textbf{Characteristic function / indicator:} Encode subsets
+    as functions $A \to \{0,1\}$; set operations become pointwise
+    arithmetic.
+    Used in: bijection $\mathcal{P}(A) \cong 2^A$ (HW1 Q1).
+
+  \item \textbf{Countable union of countable/finite sets:} If
+    $S = \bigcup_{n=1}^\infty S_n$ with each $S_n$ countable (or
+    finite), then $S$ is countable.
+    Used in: algebraic numbers are countable (HW2 Q1), eventually-zero
+    sequences are countable (HW2 Q2).
+
+  \item \textbf{Well-definedness on quotient:} When defining a
+    function $f$ on equivalence classes $X/{\sim}$, verify $f([x])$
+    does not depend on the representative $x$.
+    Used in: quotient metric from pseudo-metric (HW2 Q3).
+
+  \item \textbf{Axiom verification (checklist):} Systematically
+    verify each axiom: topology (3 axioms), metric (3 axioms),
+    equivalence relation (3 axioms), group (4 axioms).
+    Used in: intersection of topologies (HW3 Q4), radially open sets
+    (HW3 Q5), pseudo-metric quotient (HW2 Q3), symmetric group
+    (HW1 Q2).
+
+  \item \textbf{Subbasis method:} To construct the smallest
+    topology/smallest equivalence relation containing a family, take
+    the intersection of all topologies/relations containing it.
+    Used in: topology generated by $\mathcal{T}_1 \cup \mathcal{T}_2$
+    (HW3 Q4), generated equivalence relation (HW1 Q4).
+
+  \item \textbf{Counterexample with minimal configuration:} ``Can one
+    always\ldots'' questions are often disproved by the smallest
+    nontrivial example.
+    Used in: no metric on $\mathcal{P}(S)$ extending point distances
+    ($|S|=3$, HW2 Q5), $\mathcal{T}_1 \cup \mathcal{T}_2$ not a
+    topology ($|S|=3$, HW3 Q4).
+
+  \item \textbf{Induction with auxiliary bound:} When inductively
+    bounding a sequence $\{a_n\}$, express $a_{n+1}$ in terms of the
+    product $a_1 \cdots a_n$ and use a closed-form bound (geometric
+    series).
+    Used in: $p_n < 2^{2^n}$ via $p_{n+1} \le p_1 \cdots p_n + 1$
+    (HW1 Q3).
+\end{enumerate}
+
+%=====================================================================
+\section{Additional Proof Techniques in Topology}
+%=====================================================================
+
+\subsection{Clopen Set $=$ $\varnothing$ or $X$ in a Connected Space}
+\begin{theorem}
+  If $(X,\mathcal{T})$ is connected and $A \subseteq X$ is clopen, then
+  $A = \varnothing$ or $A = X$.
+\end{theorem}
+\textbf{Why it matters:} This is the single most versatile tool in
+point-set topology. It converts a global statement into a \emph{local}
+check (show $A$ is open and closed), then hands the conclusion to
+connectedness.
+
+\textbf{Typical proof pattern:}
+\begin{enumerate}
+  \item Define $A$ to be the set of points with the desired property.
+  \item Show $A$ is open (usually easy: use neighborhoods / local structure).
+  \item Show $A$ is closed (either: show $X \setminus A$ is open, or
+      show $A$ contains all its limit points, or show $A$ is the preimage
+    of a closed set).
+  \item Check $A \ne \varnothing$ (exhibit one point with the property).
+  \item Conclude $A = X$ by connectedness.
+\end{enumerate}
+
+\textbf{Applications:}
+\begin{itemize}
+  \item \textbf{Uniqueness of lifts:} If $f, g : X \to Y$ are continuous
+    and agree on a dense set, and $Y$ is Hausdorff, then $A = \{x :
+    f(x) = g(x)\}$ is closed (preimage of closed diagonal in $Y \times
+    Y$). If also dense, then $A = X$.
+  \item \textbf{Identity theorem:} If $f : X \to \R$ is continuous on a
+    connected $X$ and $f$ vanishes on an open set, then $f \equiv 0$
+    ($\{x : f(x) = 0\}$ is clopen).
+  \item \textbf{Locally constant $\Rightarrow$ constant:} If $f : X \to
+    Y$ is locally constant (every point has a neighborhood on which $f$
+    is constant) and $X$ is connected, then $f$ is constant. For any
+    $y_0 \in f(X)$, $f^{-1}(y_0)$ is open (locally constant) and closed
+    (preimage of closed $\{y_0\}$ in a Hausdorff $Y$), hence $f^{-1}(y_0) = X$.
+  \item \textbf{Connected $+$ locally path connected $\Rightarrow$ path
+    connected:} $S_x = \{$points reachable by a path from $x\}$ is clopen.
+\end{itemize}
+
+\subsection{Proving a Set $A = \varnothing$}
+\begin{itemize}
+  \item \textbf{Via connectedness:} Show $A$ is clopen and $A \ne X$.
+    If $X$ is connected, the only clopen proper subset is $\varnothing$.
+    \textbf{Example:} To show $A \cap B = \varnothing$, show $A$ is
+    open, $A \subseteq X \setminus B$, and $B$ is dense (so $X \setminus
+    B$ has empty interior).
+
+  \item \textbf{Via interior:} Show $\operatorname{int}(A) = \varnothing$
+    and $A$ is open. Then $A = \varnothing$.
+    \textbf{Example:} The graph of $f : (0,1] \to \R$ has empty interior
+    in $\R^2$ (it's ``too thin'' --- any ball in $\R^2$ contains points
+    not on the graph). Hence the graph is nowhere dense.
+
+  \item \textbf{Via closure:} Show $\overline{A} = \varnothing$. Since
+    $A \subseteq \overline{A}$, this forces $A = \varnothing$.
+
+  \item \textbf{By contradiction:} Assume $x \in A$, derive a
+    contradiction with a known property.
+    \textbf{Example:} $\operatorname{int}(\overline{A}) = \varnothing$
+    when $A = \Z \subset \R$: any open interval $(a,b)$ contains
+    irrationals $\notin \overline{\Z} = \Z$.
+\end{itemize}
+
+\subsection{Proving a Set $A = X$ (Global Property)}
+\begin{itemize}
+  \item \textbf{Clopen $+$ nonempty:} Show $A$ is clopen and $A \ne
+    \varnothing$ in a connected $X$.
+  \item \textbf{Dense $+$ open:} If $A$ is dense ($\overline{A} = X$)
+    and open, then $A = X$. \textbf{Reason:} $\overline{A} = X$ and $A$
+    is open $\Rightarrow$ $X \setminus A$ is closed. If $X \setminus A
+    \ne \varnothing$, then $A \subseteq X \setminus (X \setminus A)
+    \subsetneq X$, contradicting density.
+  \item \textbf{Via complement $= \varnothing$:} Show $X \setminus A =
+    \varnothing$ using the methods above.
+\end{itemize}
+
+\subsection{Preimage / Inverse Image Arguments}
+The preimage $f^{-1}(U)$ is extremely well-behaved:
+\[
+  f^{-1}\!\Bigl(\bigcup_\alpha U_\alpha\Bigr) = \bigcup_\alpha
+  f^{-1}(U_\alpha), \qquad
+  f^{-1}\!\Bigl(\bigcap_\alpha U_\alpha\Bigr) = \bigcap_\alpha
+  f^{-1}(U_\alpha), \qquad
+  f^{-1}(Y \setminus U) = X \setminus f^{-1}(U).
+\]
+These hold for \emph{any} function $f$ (no continuity needed).
+Continuity gives the additional conclusion: ``$U$ open $\Rightarrow$
+$f^{-1}(U)$ open'' (and dually for closed).
+
+\textbf{Common patterns:}
+\begin{itemize}
+  \item \textbf{Level sets:} $f^{-1}(\{c\})$ is closed if $f$ is
+    continuous and $\{c\}$ is closed (e.g.\ $\R$ is Hausdorff).
+    Used to prove that the zero set of a continuous function is closed.
+  \item \textbf{Preimage of a separation:} If $Y = U \cup V$ is a
+    separation, then $f^{-1}(U) \cup f^{-1}(V) = X$ is a separation
+    (if $f$ is continuous and surjective). Used to prove: continuous
+    surjective image of connected is connected (contrapositive).
+  \item \textbf{Preimage of Hausdorff:} If $Y$ is Hausdorff, then the
+    \textbf{diagonal} $\Delta = \{(y,y) : y \in Y\}$ is closed in $Y
+    \times Y$. If $f,g : X \to Y$ are continuous, then $\{x : f(x) =
+    g(x)\} = (f \times g)^{-1}(\Delta)$ is closed.
+\end{itemize}
+
+\subsection{Open Set Description (``Pick a Point and Find a Ball'')}
+To show a set $U$ is open in a metric space:
+\begin{enumerate}
+  \item Take an arbitrary $x \in U$.
+  \item Find $\varepsilon > 0$ such that $B(x, \varepsilon) \subseteq U$.
+  \item Conclude $U$ is open.
+\end{enumerate}
+\textbf{This is the definition}, but the art lies in choosing
+$\varepsilon$.
+
+\textbf{Typical choices of $\varepsilon$:}
+\begin{itemize}
+  \item $\varepsilon = r - d(x, x_0)$ to show $B(x_0, r)$ is open.
+  \item $\varepsilon = \min\{\varepsilon_1, \ldots, \varepsilon_k\}$
+    for finite intersections of open sets.
+  \item $\varepsilon$ from the bounded metric: $d^*(x,y) < \varepsilon$
+    with $\varepsilon \le 1$ so that $d^* = d$.
+\end{itemize}
+
+For a general topological space, replace ``find a ball'' with ``find a
+basic open set $B \in \mathcal{B}$ with $x \in B \subseteq U$.''
+
+\subsection{Neighborhood Basis / Local Basis Argument}
+A \textbf{neighborhood basis} at $x$ is a collection $\{N_\alpha\}$ of
+neighborhoods of $x$ such that every neighborhood of $x$ contains some
+$N_\alpha$.
+
+\textbf{Use:} To verify a local property at $x$ (continuity, openness,
+limit point, etc.), it suffices to check on a neighborhood basis.
+
+\textbf{Examples:}
+\begin{itemize}
+  \item In a metric space: $\{B(x, 1/n) : n \in \N\}$ is a countable
+    neighborhood basis.
+  \item In the product topology on $\prod X_i$: basic neighborhoods of
+    $x$ are $\prod U_i$ where $U_i = X_i$ for all but finitely many $i$.
+  \item To show $x \in \overline{A}$: check that every basic
+    neighborhood of $x$ meets $A$.
+\end{itemize}
+
+\subsection{Closure Characterization Switching}
+The closure has many equivalent descriptions. Pick the one that makes
+your proof easiest:
+\begin{enumerate}
+  \item $\overline{A} = \bigcap\{C \supseteq A : C \text{ closed}\}$
+    (intersection definition --- useful for proving $\overline{A}$ is closed).
+  \item $x \in \overline{A} \iff$ every open neighborhood of $x$ meets $A$
+    (neighborhood definition --- useful for showing $x \in \overline{A}$).
+  \item $x \in \overline{A} \iff$ $\exists$ sequence $(a_n) \subseteq A$
+    with $a_n \to x$ (sequential characterization --- only valid in
+    first-countable spaces, e.g.\ metric spaces).
+  \item $\overline{A} = A \cup LP(A) = A \cup A'$ (via limit points).
+  \item $\overline{A} = A \cup \partial A$ (via boundary).
+\end{enumerate}
+
+\textbf{Strategy:}
+\begin{itemize}
+  \item To show $x \in \overline{A}$: use (2) or (3) (construct a
+    sequence or argue every neighborhood meets $A$).
+  \item To show $A$ is dense ($\overline{A} = X$): use (2) --- show
+    every nonempty open set meets $A$. E.g.\ $\Q$ is dense in $\R$:
+    every interval contains a rational.
+  \item To show $\overline{A} \subseteq B$: use (1) --- show $B$ is a
+    closed superset of $A$, hence $\overline{A} \subseteq B$ (since
+    $\overline{A}$ is the \emph{smallest} closed superset).
+  \item To show $\overline{A} = \overline{B}$: use double inclusion with
+    the neighborhood criterion. E.g.\ $A$ dense in $B$ and $B$ dense in
+    $X$ $\Rightarrow$ $\overline{A} = \overline{B} = X$.
+\end{itemize}
+
+\subsection{``It Suffices to Show'' --- Reducing to a Simpler Claim}
+Many topology proofs use the structure ``to prove $P$, it suffices to
+show $Q$,'' where $Q$ is a simpler, more local statement.
+
+\textbf{Common reductions:}
+\begin{itemize}
+  \item \textbf{Continuity:} To prove $f$ is continuous globally, it
+    suffices to check $f^{-1}(B)$ is open for every subbasis element $B$
+    (instead of every open set).
+  \item \textbf{Topology equality $\mathcal{T}_1 = \mathcal{T}_2$:} It
+    suffices to show every $\mathcal{T}_1$-basic open set is
+    $\mathcal{T}_2$-open and vice versa.
+  \item \textbf{Density:} To show $A$ is dense, it suffices to show $A$
+    meets every basis element (not every open set).
+  \item \textbf{Nowhere dense:} To show $\operatorname{int}(\overline{A})
+    = \varnothing$, it suffices to show every nonempty open set contains
+    a nonempty open subset disjoint from $A$.
+\end{itemize}
+
+\subsection{Contrapositive in Topology}
+Many topological statements are most naturally proved in contrapositive form.
+
+\textbf{Pattern:} ``$X$ connected $\Rightarrow$ $f(X)$ connected'' is
+proved as: ``$f(X)$ disconnected $\Rightarrow$ $X$ disconnected.'' If
+$f(X) = U \cup V$ is a separation, then $f^{-1}(U) \cup f^{-1}(V) = X$
+is a separation of $X$ (preimages preserve openness, disjointness, and
+covering).
+
+\textbf{Other examples:}
+\begin{itemize}
+  \item ``Continuous image of compact is compact'' $\equiv$
+    ``$f(X)$ not compact $\Rightarrow$ $X$ not compact.''
+  \item ``$f$ continuous $\Rightarrow$ $f^{-1}$(closed) is closed''
+    $\equiv$ ``$f^{-1}(F)$ not closed $\Rightarrow$ $f$ not continuous.''
+  \item ``Homeomorphism preserves topological invariants'' $\equiv$
+    ``$X, Y$ differ on some invariant $\Rightarrow$ $X \not\cong Y$.''
+\end{itemize}
+
+\subsection{Compactness Arguments}
+
+\begin{theorem}[Continuous image of compact is compact]
+  If $f : X \to Y$ is continuous and $X$ is compact, then $f(X)$ is compact.
+\end{theorem}
+\begin{proof}
+  Let $\{V_\alpha\}$ be an open cover of $f(X)$. Since $f$ is continuous,
+  each $f^{-1}(V_\alpha)$ is open in $X$, and $\{f^{-1}(V_\alpha)\}$ covers $X$
+  (for each $x \in X$, $f(x) \in V_\alpha$ for some $\alpha$, so $x
+  \in f^{-1}(V_\alpha)$).
+  Since $X$ is compact, extract a finite subcover $X =
+  f^{-1}(V_{\alpha_1}) \cup \cdots \cup f^{-1}(V_{\alpha_k})$.
+  Then $f(X) \subseteq V_{\alpha_1} \cup \cdots \cup V_{\alpha_k}$, a
+  finite subcover.
+\end{proof}
+
+\begin{theorem}[Closed subset of compact is compact]
+  If $K$ is compact and $F \subseteq K$ is closed, then $F$ is compact.
+\end{theorem}
+\begin{proof}
+  Let $\{U_\alpha\}$ be an open cover of $F$. Then $\{U_\alpha\} \cup
+  \{K \setminus F\}$
+  is an open cover of $K$ (since $F$ is closed, $K \setminus F$ is open).
+  By compactness of $K$, extract a finite subcover.
+  Removing $K \setminus F$ from this finite list (if present) gives a finite
+  subcover of $F$ from $\{U_\alpha\}$.
+\end{proof}
+
+\begin{theorem}[Compact subset of Hausdorff space is closed]
+  In a Hausdorff space $Y$, every compact subset $K \subseteq Y$ is closed.
+\end{theorem}
+\begin{proof}
+  We show $Y \setminus K$ is open. Fix $y \notin K$.
+  For each $x \in K$, by Hausdorff, pick disjoint open $U_x \ni x$
+  and $V_x \ni y$.
+  Then $\{U_x\}_{x \in K}$ covers $K$. Since $K$ is compact, extract
+  a finite subcover:
+  $K \subseteq U_{x_1} \cup \cdots \cup U_{x_n}$.
+  Set $V = V_{x_1} \cap \cdots \cap V_{x_n}$. Then $V$ is an open
+  neighborhood of $y$,
+  and $V \cap U_{x_i} = \varnothing$ for each $i$, so $V \cap K = \varnothing$.
+  Hence $y \in V \subseteq Y \setminus K$, proving $Y \setminus K$ is open.
+\end{proof}
+
+\begin{theorem}[Tube Lemma]
+  Let $X \times Y$ have the product topology with $Y$ compact.
+  If $N$ is an open set containing the ``slice'' $\{x_0\} \times Y$,
+  then there exists an open neighborhood $W$ of $x_0$ such that
+  $W \times Y \subseteq N$ (a ``tube'' around the slice).
+\end{theorem}
+\begin{proof}
+  For each $y \in Y$, $(x_0, y) \in N$. Since $N$ is open, there is a
+  basic open set
+  $U_y \times V_y \subseteq N$ with $x_0 \in U_y$, $y \in V_y$.
+  Then $\{V_y\}_{y \in Y}$ covers $Y$. By compactness, extract a finite subcover
+  $Y = V_{y_1} \cup \cdots \cup V_{y_n}$. Set $W = U_{y_1} \cap
+  \cdots \cap U_{y_n}$.
+  For any $(x, y) \in W \times Y$: $y \in V_{y_j}$ for some $j$, and
+  $x \in W \subseteq U_{y_j}$, so $(x, y) \in U_{y_j} \times V_{y_j}
+  \subseteq N$.
+\end{proof}
+
+\begin{theorem}[Heine--Borel]
+  A subset $A \subseteq \R^n$ is compact (in the standard topology)
+  if and only if $A$ is closed and bounded.
+\end{theorem}
+\begin{proof}
+  ($\Rightarrow$) Since $\R^n$ is Hausdorff, compact $A$ is closed.
+  Since $A \subseteq \bigcup_{n=1}^\infty B(0, n)$ is an open cover,
+  compactness gives a finite subcover, so $A \subseteq B(0, N)$ for
+  some $N$, i.e.\ bounded.
+
+  ($\Leftarrow$) If $A$ is closed and bounded, then $A \subseteq [-M,
+  M]^n$ for some $M$.
+  By Tychonoff (finite case), $[-M, M]^n$ is compact (product of
+  compact spaces).
+  Since $A$ is a closed subset of the compact $[-M, M]^n$, $A$ is compact.
+  The base case $[a,b]$ is compact: given open cover $\{U_\alpha\}$,
+  set $c = \sup\{t \in [a,b] : [a,t]$ has a finite subcover$\}$.
+  Then $c \in U_\beta$ for some $\beta$, so $[c-\varepsilon,
+  c+\varepsilon] \subseteq U_\beta$,
+  extending the finite subcover past $c$ unless $c = b$. Hence $c =
+  b$ and $[a,b]$ is compact.
+\end{proof}
+
+\textbf{Finite subcover trick:} Given an open cover of a compact
+space, extract a finite subcover and use finiteness (e.g.\ take
+minimum of finitely many positive numbers, which is still positive).
+\textbf{Example:} Heine--Cantor theorem: continuous on compact
+$\Rightarrow$ uniformly continuous. Cover $K$ by $B(x,
+\delta_x/2)$; extract finite subcover; set $\delta =
+\min\{\delta_{x_i}/2\} > 0$.
+
+\textbf{Vacuous truth (空真):} ``$\forall x \in \varnothing, P(x)$'' is
+true (nothing to check). This is why $\varnothing$ is open.
+
+\textbf{For almost all (除有限多个外全部):} In the product topology, $U_i =
+X_i$ for all but finitely many $i$.
+
+%=====================================================================
+\newpage
+\section{Terminology: Chinese--English Glossary (中英对照术语表)}
+%=====================================================================
+
+\subsection*{集合论与公理 (Set Theory and Axioms)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Axiom of Extensionality          & 外延公理 & \S\ref{def:extensionality} \\
+  Axiom of Empty Set               & 空集公理 & \S\ref{def:empty-set} \\
+  Axiom of Pairing                 & 配对公理 & \S\ref{def:pairing} \\
+  Axiom of Union                   & 并集公理 & \S\ref{def:union-axiom} \\
+  Axiom of Power Set               & 幂集公理 & \S\ref{def:power-set-axiom} \\
+  Axiom of Infinity                & 无穷公理 & \S\ref{def:infinity} \\
+  Axiom Schema of Separation       & 分离公理（概括公理）& \S\ref{def:separation} \\
+  Axiom Schema of Replacement      & 替换公理 & \S\ref{def:replacement} \\
+  Axiom of Regularity (Foundation) & 正则公理（基础公理）& \S\ref{def:regularity} \\
+  Axiom of Choice (AC)             & 选择公理 & \S\ref{def:ac} \\
+  Russell's paradox                & 罗素悖论 & \S\ref{def:russell} \\
+  Forcing                          & 力迫法 & \S\ref{def:forcing} \\
+  Power set $\mathcal{P}(A)$       & 幂集 & \S\ref{def:power-set-axiom} \\
+  Characteristic / indicator function $\chi_A$ & 特征函数 / 指示函数 &
+  \S\ref{def:power-set-axiom} \\
+  Equivalence relation             & 等价关系 & --- \\
+  Equivalence class                & 等价类 & --- \\
+  Transitive closure               & 传递闭包 & --- \\
+  Symmetric group $S_n$            & 对称群 & --- \\
+  Bijection                        & 双射 / 一一对应 & --- \\
+  Injection                        & 单射 & --- \\
+  Surjection                       & 满射 & --- \\
+  \hline
+\end{tabular}
+
+\subsection*{可数性与基数 (Countability and Cardinality)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Finite set                       & 有限集 & \S\ref{def:finite} \\
+  Infinite set                     & 无限集 & \S\ref{def:infinite} \\
+  Countably infinite               & 可数无限 & \S\ref{def:countably-infinite} \\
+  Countable                        & 可数 & \S\ref{def:countable} \\
+  Uncountable                      & 不可数 & \S\ref{def:uncountable} \\
+  Cantor diagonal argument         & Cantor 对角线论证 & \S\ref{def:cantor-diag} \\
+  Cantor's theorem                 & Cantor
+  定理（$|A|<|\mathcal{P}(A)|$）& \S\ref{def:cantor-thm} \\
+  Cardinal number                  & 基数 & \S\ref{def:cardinality} \\
+  Cardinality                      & 势 / 基数 & \S\ref{def:cardinality} \\
+  Same cardinality (equipotent)    & 等势 & \S\ref{def:cardinality} \\
+  $\aleph_0$ (aleph-nought)        & 可数无限集的基数 & \S\ref{def:aleph} \\
+  $\aleph_1$                       & 连续统的基数 & \S\ref{def:aleph} \\
+  Continuum Hypothesis (CH)        & 连续统假设 & \S\ref{def:ch} \\
+  Algebraic number                 & 代数数 & --- \\
+  Transcendental number            & 超越数 & --- \\
+  \hline
+\end{tabular}
+
+\subsection*{拓扑空间 (Topological Spaces)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Topological space                & 拓扑空间 & \S\ref{def:topology} \\
+  Topology                         & 拓扑 & \S\ref{def:topology} \\
+  Open set                         & 开集 & \S\ref{def:open} \\
+  Closed set                       & 闭集 & \S\ref{def:closed} \\
+  Clopen set                       & 既开又闭集 & \S\ref{def:clopen} \\
+  Trivial (indiscrete) topology    & 平凡拓扑（密着拓扑）& \S\ref{def:trivial} \\
+  Discrete topology                & 离散拓扑 & \S\ref{def:discrete-topo} \\
+  Cofinite topology                & 余有限拓扑 & \S\ref{def:cofinite} \\
+  Semicontinuous topology          & 半无穷拓扑 & \S\ref{def:semicontinuous} \\
+  Finer / larger topology          & 更细 / 更大的拓扑 & \S\ref{def:finer-coarser} \\
+  Coarser / smaller topology       & 更粗 / 更小的拓扑 & \S\ref{def:finer-coarser} \\
+  Generated topology               & 生成的拓扑 & \S\ref{def:generate-topo} \\
+  Radially open                    & 径向开集 & --- \\
+  \hline
+\end{tabular}
+
+\subsection*{基 (Basis)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Basis (base)                     & 基 & \S\ref{def:basis} \\
+  Subbasis (subbase)               & 子基 & \S\ref{def:subbasis} \\
+  Generate a topology              & 生成拓扑 & \S\ref{def:generate-topo} \\
+  Countable basis (second-countable) & 可数基（第二可数）&
+  \S\ref{def:second-countable} \\
+  Open rectangle / open ball       & 开矩形 / 开球 & \S\ref{def:open-rect} \\
+  \hline
+\end{tabular}
+
+\subsection*{度量空间 (Metric Spaces)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Metric space                     & 度量空间 & \S\ref{def:metric} \\
+  Metric / distance function       & 度量 / 距离函数 & \S\ref{def:metric} \\
+  Discrete metric                  & 离散度量 & \S\ref{def:discrete-metric} \\
+  Open ball                        & 开球 & \S\ref{def:balls} \\
+  Closed ball                      & 闭球 & \S\ref{def:balls} \\
+  Bounded set                      & 有界集 & \S\ref{def:bounded} \\
+  Bounded metric                   & 有界度量 & \S\ref{def:bounded-metric} \\
+  Equivalent metrics               & 等价度量 & \S\ref{def:equiv-metrics} \\
+  Metrizable (topology)            & 可度量化的（拓扑）& \S\ref{def:metrizable} \\
+  Euclidean metric                 & 欧几里得度量 & \S\ref{def:euclidean} \\
+  Taxicab metric ($\ell^1$)        & 曼哈顿度量 / 出租车度量 & \S\ref{def:taxicab} \\
+  Supremum metric ($\ell^\infty$)  & 最大值度量 & \S\ref{def:supremum} \\
+  Norm                             & 范数 & \S\ref{def:norm} \\
+  Pseudo-metric                    & 伪度量 & --- \\
+  Quotient metric / quotient space & 商度量 / 商空间 & --- \\
+  Well-defined                     & 良定义 & --- \\
+  \hline
+\end{tabular}
+
+\subsection*{分离公理 (Separation Axioms)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  $T_0$ / Kolmogorov space         & Kolmogorov 空间 & \S\ref{def:T0} \\
+  $T_1$ / Fr\'echet space          & Fr\'echet 空间 & \S\ref{def:T1} \\
+  $T_2$ / Hausdorff space          & Hausdorff 空间 & \S\ref{def:T2} \\
+  $T_3$ / Regular space            & 正则空间 & \S\ref{def:T3} \\
+  $T_{3\frac{1}{2}}$ / Tychonoff (completely regular) & 完全正则空间 &
+  \S\ref{def:T3h} \\
+  $T_4$ / Normal space             & 正规空间 & \S\ref{def:T4} \\
+  Urysohn's Lemma                  & Urysohn 引理 & \S\ref{def:T4} \\
+  Tietze Extension Theorem         & Tietze 扩张定理 & \S\ref{def:T4} \\
+  Urysohn Metrization Theorem      & Urysohn 可度量化定理 &
+  \S\ref{thm:urysohn-metrization} \\
+  \hline
+\end{tabular}
+
+\subsection*{贝尔纲定理 (Baire Category Theorem)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Nowhere dense set                & 疏朗集 / 无处稠密集 &
+  \S\ref{def:nowhere-dense-baire} \\
+  Meager / first category set      & 第一纲集 & \S\ref{def:meager} \\
+  Second category set              & 第二纲集 & \S\ref{def:non-meager} \\
+  Baire space                      & Baire 空间 & \S\ref{def:baire-space} \\
+  Baire Category Theorem           & 贝尔纲定理 & \S\ref{thm:baire} \\
+  $G_\delta$ set                   & $G_\delta$ 集 &
+  \S\ref{def:baire-applications} \\
+  \hline
+\end{tabular}
+
+\subsection*{子空间 (Subspace)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Subspace topology                & 子空间拓扑 & \S\ref{def:subspace-topo} \\
+  Subspace                         & 子空间 & \S\ref{def:subspace} \\
+  Hereditary property              & 遗传性质 & \S\ref{def:hereditary} \\
+  \hline
+\end{tabular}
+
+\subsection*{闭包、内部与边界 (Closure, Interior, Boundary)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Closure                          & 闭包 & \S\ref{def:closure} \\
+  Interior                         & 内部 & \S\ref{def:interior} \\
+  Boundary                         & 边界 & \S\ref{def:boundary} \\
+  Neighborhood                     & 邻域 & \S\ref{def:neighborhood} \\
+  Limit point (cluster/accumulation point) & 极限点（聚点/附着点）&
+  \S\ref{def:limit-point} \\
+  Isolated point                   & 孤立点 & \S\ref{def:isolated} \\
+  Derived set                      & 导集 & \S\ref{def:derived} \\
+  Dense set                        & 稠密集 & \S\ref{def:dense} \\
+  Nowhere dense                    & 疏集 / 无处稠密 & \S\ref{def:nowhere-dense} \\
+  Regularly open                   & 正则开集 & \S\ref{def:regularly-open} \\
+  \hline
+\end{tabular}
+
+\subsection*{连续映射 (Continuous Maps)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Continuous function / map        & 连续函数 / 连续映射 & \S\ref{def:continuous} \\
+  Homeomorphism                   & 同胚 & \S\ref{def:homeomorphism} \\
+  Topological invariant           & 拓扑不变量 & \S\ref{def:topo-invariant} \\
+  Embedding                       & 嵌入 & \S\ref{def:embedding} \\
+  Pasting (gluing) lemma          & 粘接引理 & \S\ref{def:pasting} \\
+  Restriction                     & 限制 & \S\ref{def:restriction} \\
+  Composition                     & 复合 & \S\ref{def:composition} \\
+  Coordinate function             & 坐标函数 & \S\ref{def:coordinate} \\
+  \hline
+\end{tabular}
+
+\subsection*{积拓扑与箱拓扑 (Product and Box Topology)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Product topology                 & 积拓扑 & \S\ref{def:product-topo} \\
+  Box topology                    & 箱拓扑 & \S\ref{def:box-topo} \\
+  Projection map                  & 投影映射 & \S\ref{def:projection} \\
+  Cylinder (cylinder set)         & 柱集 & \S\ref{def:cylinder} \\
+  Universal property              & 泛性质 & \S\ref{def:universal} \\
+  Eventually-zero sequence        & 终零序列 & \S\ref{def:eventually-zero} \\
+  Bounded sequence                & 有界序列 & \S\ref{def:bounded-seq} \\
+  Torus ($S^1 \times S^1$)        & 环面 & \S\ref{def:torus} \\
+  \hline
+\end{tabular}
+
+\subsection*{连通性 (Connectedness)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Connected space                  & 连通空间 & \S\ref{def:connected} \\
+  Disconnected space              & 不连通空间 & \S\ref{def:disconnected} \\
+  Totally disconnected            & 完全不连通 & \S\ref{def:totally-disc} \\
+  Separation                      & 分离 & \S\ref{def:separation-conn} \\
+  Connected component             & 连通分支 & \S\ref{def:component} \\
+  Path connected                  & 道路连通 & \S\ref{def:path-connected} \\
+  Path component                  & 道路连通分支 & \S\ref{def:path-component} \\
+  Path / curve                    & 道路 / 曲线 & \S\ref{def:path} \\
+  Topologist's sine curve         & 拓扑学家的正弦曲线 & \S\ref{def:sine-curve} \\
+  Intermediate Value Theorem (IVT)& 介值定理 & \S\ref{def:ivt} \\
+  \hline
+\end{tabular}
+
+\subsection*{紧致性 (Compactness)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Compact space                   & 紧致空间 / 紧空间 & \S\ref{def:compact} \\
+  Open cover                      & 开覆盖 & \S\ref{def:open-cover} \\
+  Finite subcover                 & 有限子覆盖 & \S\ref{def:finite-subcover} \\
+  Subcover                        & 子覆盖 & \S\ref{def:subcover} \\
+  Heine--Borel theorem            & Heine--Borel 定理 & \S\ref{def:heine-borel} \\
+  \hline
+\end{tabular}
+
+\subsection*{常用短语与表达 (Common Phrases)}
+
+\begin{tabular}{@{}lp{7.5cm}c@{}}
+  \hline
+  \textbf{English} & \textbf{中文} & \textbf{Ref.} \\
+  \hline
+  Endowed with / equipped with    & 赋予……拓扑 & --- \\
+  With respect to                 & 关于…… & --- \\
+  Induced topology                & 诱导拓扑 & --- \\
+  Show that / Prove that          & 证明 / 说明 & --- \\
+  Determine whether               & 判断是否 & --- \\
+  Find / Compute                  & 求出 / 计算 & --- \\
+  Justify your answer             & 证明你的结论 & --- \\
+  Is it possible to find          & 是否存在 & --- \\
+  Conclude that                   & 得出结论 & --- \\
+  By contradiction                & 反证法 & --- \\
+  Contraposition                  & 逆否命题 & --- \\
+  Without loss of generality      & 不失一般性 & --- \\
+  If and only if (iff)            & 当且仅当 & --- \\
+  Suppose / Assume                & 假设 & --- \\
+  Hence / Therefore               & 因此 & --- \\
+  It follows that                 & 由此可得 & --- \\
+  It suffices to show             & 只需证明 & --- \\
+  Note that                       & 注意到 & --- \\
+  Define                          & 定义 & --- \\
+  Denote by                       & 记……为 & --- \\
+  For almost all                  & 除有限多个外全部 & --- \\
+  Vacuous truth                   & 空真 & --- \\
+  \hline
+\end{tabular}
+
+\end{document}
