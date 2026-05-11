@@ -1,0 +1,656 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+% \usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Complex Analysis}
+\newcommand{\hwNum}{7}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+\section{Exercise D.163}
+
+Show that the functions in (D.47) and (B.45) are identical,
+where
+\[
+  f(x) := \lim_{m \to \infty} \lim_{n \to \infty} (\cos m!\pi x)^{2n}
+  \qquad (m, n \in \N).
+\]
+
+\begin{solution}
+  We show $f(x) = \chi_\Q(x)$, i.e., $f(x) = 1$ if $x \in \Q$
+  and $f(x) = 0$ if $x \notin \Q$.
+
+  \textbf{Case $x \in \Q$.}\;
+  Write $x = p/q$ in lowest terms with $q \in \N^+$.
+  For $m \ge q$, $m!\,x = m!\,p/q \in \Z$, so
+  $\cos(m!\,\pi x) = \pm 1$.
+  Hence $(\cos(m!\,\pi x))^{2n} = 1$ for all $n$.
+  The inner limit gives $1$, so $f(x) = 1$.
+
+  \textbf{Case $x \notin \Q$.}\;
+  For every $m \in \N$, $m!\,x$ is irrational,
+  so $m!\,\pi x$ is not an integer multiple of $\pi$.
+  Therefore $|\cos(m!\,\pi x)| < 1$, and
+  $(\cos(m!\,\pi x))^{2n} \to 0$ as $n \to \infty$.
+  The inner limit gives $0$ for every $m$, so $f(x) = 0$.
+
+  This is precisely the characteristic function of $\Q$
+  in~(D.47) and~(B.45).
+\end{solution}
+
+\section{Exercise D.172}
+
+If the radius of convergence of $f$ in Example D.171
+(Taylor polynomial convergence) is $+\infty$,
+does $(T_n)_{n \in \N^+}$ converge to $f$ uniformly
+or locally uniformly?
+
+\begin{solution}
+  The convergence is locally uniform but not uniformly in general.
+
+  \textbf{Locally uniform.}\;
+  A power series converges uniformly on every compact subset
+  of its convergence disk (by the Weierstrass $M$-test on compact
+  subsets).  Since $r = +\infty$, the disk is all of $\C$,
+  and every compact set is contained in some closed disk
+  $\bar{U}_R(0)$, so $(T_n) \to f$ locally uniformly on $\C$.
+
+  \textbf{Not uniformly.}\;
+  Consider $f(z) = e^z = \sum_{n=0}^{\infty} z^n/n!$.
+  For any fixed $N$,
+  \[
+    \sup_{z \in \C}\left|e^z - T_N(z)\right|
+    \ge \lim_{x \to +\infty}\left(e^x - \sum_{n=0}^{N}\frac{x^n}{n!}\right)
+    = +\infty.
+  \]
+  So $\sup_{z \in \C}|f(z) - T_N(z)|$ never tends to $0$.
+  Hence the convergence is not uniform on $\C$.\qedhere
+\end{solution}
+
+\section{Exercise D.182}
+
+Give a different proof of Theorem D.181 with the
+strengthened condition of each $f_n$ being continuously
+differentiable.
+
+\textbf{Theorem D.181.}
+For a sequence of differentiable scalar functions $(f_n)$,
+suppose that $(f_n(x_0))$ converges for some $x_0 \in [a,b]$
+and $(f_n')$ converges uniformly on $(a,b)$.
+Then $(f_n)$ converges uniformly on $[a,b]$ to a function
+$f \colon [a,b] \to \R$ and
+\[
+  \forall x \in [a,b],\quad f'(x) = \lim_{n \to \infty} f_n'(x).
+\]
+
+\begin{solution}
+  Since each $f_n$ is continuously differentiable, by the
+  fundamental theorem of calculus,
+  \[
+    f_n(x) = f_n(x_0) + \int_{x_0}^x f_n'(t)\,dt,
+    \qquad x \in [a,b].
+  \]
+
+  \textbf{Uniform convergence of $(f_n)$.}\;
+  For $n, m \in \N$ and $x \in [a,b]$,
+  \[
+    |f_n(x) - f_m(x)|
+    \le |f_n(x_0) - f_m(x_0)|
+    + \int_{x_0}^x |f_n'(t) - f_m'(t)|\,dt.
+  \]
+  Since $(f_n(x_0))$ converges (Cauchy) and $(f_n')$ converges
+  uniformly on $(a,b)$ (uniformly Cauchy), given $\eps > 0$
+  there exists $N$ such that for $n,m \ge N$,
+  \[
+    |f_n(x_0) - f_m(x_0)| < \frac{\eps}{2},
+    \qquad
+    \sup_{t \in [a,b]} |f_n'(t) - f_m'(t)|
+    < \frac{\eps}{2(b-a)}.
+  \]
+  Hence $|f_n(x) - f_m(x)| < \eps$ for all $x \in [a,b]$.
+  So $(f_n)$ is uniformly Cauchy, hence uniformly convergent
+  to some $f \colon [a,b] \to \R$.
+
+  \textbf{Differentiation of the limit.}\;
+  Let $g := \lim f_n'$ (uniform limit).  Passing to the limit in
+  \[
+    f_n(x) = f_n(x_0) + \int_{x_0}^x f_n'(t)\,dt
+  \]
+  gives $f(x) = f(x_0) + \int_{x_0}^x g(t)\,dt$.
+  By the fundamental theorem of calculus, $f$ is differentiable
+  with $f'(x) = g(x) = \lim_{n\to\infty} f_n'(x)$.\qedhere
+\end{solution}
+
+\section{Exercise 1.82}
+
+Determine the convergence radius of the series
+$\sum_{n=1}^{\infty} a_n z^n$ where
+
+(a) $a_n = (\log n)^2$;
+
+(b) $a_n = n!$;
+
+(c) $a_n = \dfrac{n^2}{4^n + 3^n}$;
+
+(d) $a_n = \dfrac{(n!)^3}{(3n)!}$.
+
+Hint: Use Stirling's formula
+$n! \sim \sqrt{2\pi n}\,(n/e)^n$.
+
+\begin{solution}
+  \textbf{(a)}\;
+  By the Cauchy--Hadamard theorem (Theorem~1.81),
+  $\frac{1}{r} = \limsup_{n\to\infty} |a_n|^{1/n}
+  = \limsup_{n\to\infty} (\log n)^{2/n} = 1$,
+  since $\frac{\log(\log n)^2}{n} \to 0$.
+  Hence $r = 1$.
+
+  \medskip
+
+  \textbf{(b)}\;
+  By the ratio test (Theorem~1.79),
+  \[
+    \frac{1}{r}
+    = \lim_{n\to\infty} \frac{|a_{n+1}|}{|a_n|}
+    = \lim_{n\to\infty} \frac{(n+1)!}{n!}
+    = \lim_{n\to\infty} (n+1) = +\infty.
+  \]
+  Hence $r = 0$.
+
+  \medskip
+
+  \textbf{(c)}\;
+  We have
+  \[
+    \frac{|a_{n+1}|}{|a_n|}
+    = \frac{(n+1)^2}{4^{n+1}+3^{n+1}}
+    \cdot \frac{4^n + 3^n}{n^2}
+    = \frac{(n+1)^2}{n^2} \cdot \frac{4^n + 3^n}{4^{n+1}+3^{n+1}}.
+  \]
+  Since $\frac{4^n + 3^n}{4^{n+1}+3^{n+1}}
+  = \frac{1+(3/4)^n}{4+3\cdot(3/4)^n} \to \frac{1}{4}$,
+  we get $\frac{1}{r} = \frac{1}{4}$, so $r = 4$.
+
+  \medskip
+
+  \textbf{(d)}\;
+  By Stirling's formula, $n! \sim \sqrt{2\pi n}\,(n/e)^n$, so
+  \[
+    \frac{(n!)^3}{(3n)!}
+    \sim \frac{(2\pi n)^{3/2}\,(n/e)^{3n}}
+    {\sqrt{2\pi \cdot 3n}\,(3n/e)^{3n}}
+    = \frac{(2\pi n)^{3/2}}{\sqrt{6\pi n}}
+    \cdot \frac{n^{3n}}{(3n)^{3n}}
+    = \frac{(2\pi n)}{\sqrt{3}} \cdot \frac{1}{3^{3n}}.
+  \]
+  Hence
+  $\lim_{n\to\infty} \left|\frac{a_{n+1}}{a_n}\right|
+  = \lim_{n\to\infty} \frac{(n+1)^3}{(3n+3)(3n+2)(3n+1)}
+  = \frac{1}{27}$.
+  So $r = 27$.
+\end{solution}
+
+\section{Exercise 3.100}
+
+Suppose a sequence $(f_n \colon D \to \C)_{n\in\N}$
+of continuous functions with $D$ open
+converges locally uniformly to $f$.
+Prove that
+\[
+  \lim_{n\to\infty} \int_\gamma f_n(z)\,dz
+  = \int_\gamma f(z)\,dz,
+\]
+where $\gamma \colon [0,1] \to D$ is any piecewise smooth curve.
+
+\begin{solution}
+  Consider the continuous mapping $\gamma: [0,1] \to D$. $[0,1]$ is
+  compact in $\R$, so the integral path $K = \gamma([0,1])$ is compact in $D$.
+
+  The sequence $(f_n)$ is locally uniformly convergent to $f$, so
+  that $(f_n)$ is uniformly convergent to $f$ on any compact subset of $D$.
+
+  Then we calculate the difference between the integrals:
+
+  \[
+    \left\|\int_\gamma f_n(z) \dd z - \int_\gamma f(z) \dd z\right\|
+    = \left\|\int_\gamma (f_n(z) - f(z)) \dd z\right\| \leq
+    \int_\gamma \|f_n(z) - f(z)\| \dd z.
+  \]
+
+  Define $L$ as the length of the curve $\gamma$. Since $K$ is
+  compact, there exists $M_n > 0$ such that $\|f_n(z) - f(z)\| < M_n$ for
+  all $z \in K$ and $n \in \N$. Then we have:
+
+  \[
+    \int_\gamma \|f_n(z) - f(z)\| \dd z
+    \leq \int_\gamma M_n \dd z = M_n L.
+  \]
+
+  Let $M_n = \max_{z \in K} \|f_n(z) - f(z)\|$. Since $(f_n)$
+  converges uniformly to $f$ on $K$, we have $M_n \to 0$ as $n \to
+  \infty$. Therefore, $\int_\gamma \|f_n(z) - f(z)\| \dd z \to 0$ as
+  $n \to \infty$.
+
+  Finally, we conclude that
+  \[
+    \lim_{n\to\infty} \int_\gamma f_n(z)\dd z
+    = \int_\gamma f(z)\dd z.
+  \]
+
+\end{solution}
+
+\section{Exercise 3.104}
+
+With the assumptions of Theorem 3.101, show that
+for each $k \in \N$,
+$(f_n^{(k)})$ converges locally uniformly to $f^{(k)}$,
+and $f^{(k)}$ can be obtained termwise in the
+convergence disk $U_r(c)$:
+\[
+  \forall z \in U_r(c),\quad
+  f^{(k)}(z)
+  = \sum_{n=k}^{\infty} n(n-1)\cdots(n-k+1)\,a_n\,(z-c)^{n-k}.
+\]
+
+\begin{solution}
+  Consider math induction on $k$.
+
+  \textbf{Base case:} $k = 1$.
+  By Theorem 3.101, $(f_n')$ converges locally uniformly to $f'$, so
+  the statement holds for $k = 1$.
+  Then consider the power series expansion of $f$ at $c$:
+  \[
+    f(z) = \sum_{n=0}^{\infty} a_n (z-c)^n.
+  \]
+  Since $f$ is analytic in $U_r(c)$, we can differentiate termwise
+  to get
+  \[
+    f'(z) = \sum_{n=1}^{\infty} n\,a_n\,(z-c)^{n-1}.
+  \]
+
+  \textbf{Inductive step:} Assume the statement holds for $k = m$.
+  We need to show it holds for $k = m + 1$.
+  Since $(f_n^{(m)})$ converges locally uniformly to $f^{(m)}$, by
+  Theorem 3.101 again, $(f_n^{(m+1)})$ converges locally uniformly to
+  $f^{(m+1)}$.
+  Then we can differentiate termwise again to get
+  \[
+    f^{(m+1)}(z) = \sum_{n=m+1}^{\infty} n(n-1)\cdots(n-m)\,a_n\,(z-c)^{n-m-1}.
+  \]
+
+
+\end{solution}
+
+\section{Exercise 3.105}
+
+Show that if $f$ is analytic in $D$ and continuous on $\bar{D}$, then
+\[
+  \oint_{|\zeta|=1} f(\zeta)\,d\zeta = 0.
+\]
+Hint: Consider a sequence of functions $(f_r)_{0<r<1}$,
+where $f_r \colon U_{1/r}(0) \to \C$,
+$f_r(z) = f(rz)$.
+
+\begin{solution}
+  For $0 < r < 1$, define $f_r(z) := f(rz)$.
+  Since $f$ is analytic in $D = U_1(0)$ and $rz \in U_1(0)$
+  whenever $|z| < 1/r$, the function $f_r$ is analytic on
+  $U_{1/r}(0) \supset \bar{D}$.
+  By the Cauchy integral theorem (Theorem~3.57),
+  \[
+    \oint_{|\zeta|=1} f_r(\zeta)\,d\zeta = 0,
+    \qquad 0 < r < 1.
+  \]
+
+  Since $f$ is continuous on $\bar{D}$ (compact), it is uniformly
+  continuous on $\bar{D}$.
+  Hence $f_r(\zeta) = f(r\zeta) \to f(\zeta)$ uniformly on
+  $|\zeta| = 1$ as $r \to 1^-$.
+  Therefore
+  \[
+    \left|\oint_{|\zeta|=1} f(\zeta)\,d\zeta\right|
+    = \left|\oint_{|\zeta|=1} [f(\zeta) - f_r(\zeta)]\,d\zeta\right|
+    \le 2\pi\sup_{|\zeta|=1}|f(\zeta) - f_r(\zeta)|
+    \xrightarrow{r\to 1^-}0.\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 3.110}
+
+The Bessel function of order $m$ is defined as
+\[
+  J_m(z) := \sum_{n=0}^{\infty}
+  \frac{(-1)^n}{n!\,(m+n)!}
+  \left(\frac{z}{2}\right)^{2n+m},
+\]
+where $m \in \N$.
+By computing the convergence radius of the above
+power series, show that $J_m$ is an entire function.
+
+\begin{solution}
+  Write
+  \[
+    J_m(z) = \left(\frac{z}{2}\right)^{\!m}
+    \sum_{n=0}^{\infty}
+    \frac{(-1)^n}{n!\,(m+n)!}\left(\frac{z}{2}\right)^{\!2n}.
+  \]
+  Since $(z/2)^m$ is entire, it suffices to show the series
+  converges for all $z$.
+  By the ratio test,
+  \[
+    \left|\frac{a_{n+1}}{a_n}\right|
+    = \frac{n!\,(m+n)!}{(n+1)!\,(m+n+1)!}\,|z/2|^2
+    = \frac{|z|^2}{4(n+1)(m+n+1)}
+    \xrightarrow{n\to\infty}0
+  \]
+  for every fixed $z$.
+  Hence the convergence radius is $+\infty$, and $J_m$ is entire.\qedhere
+\end{solution}
+
+\section{Exercise 3.111}
+
+The hypergeometric series is defined as
+\[
+  F(a,b,c;\,z) := \sum_{n=0}^{\infty}
+  \frac{(a)_n\,(b)_n}{(c)_n}\,\frac{z^n}{n!},
+\]
+where $a, b, c \in \C$ are fixed, $-c \notin \N$,
+and $(z)_n$ is the Pochhammer symbol defined as
+\[
+  \forall z \in \C,\quad (z)_n :=
+  \begin{cases} 1 & \text{if } n = 0, \\[2pt]
+    z(z+1)\cdots(z+n-1) & \text{if } n \in \N^+.
+  \end{cases}
+\]
+Show that $F(z)$ converges for $|z|<1$ and satisfies
+the differential equation
+\[
+  z(1-z)\,F''(z) + (c-(a+b+1)z)\,F'(z) - ab\,F(z) = 0.
+\]
+
+\begin{solution}
+  \textbf{Convergence for $|z| < 1$.}\;
+  Set $A_n := \frac{(a)_n(b)_n}{(c)_n\,n!}$.
+  By the ratio test,
+  \[
+    \left|\frac{A_{n+1}\,z^{n+1}}{A_n\,z^n}\right|
+    = \left|\frac{(a+n)(b+n)}{(c+n)(n+1)}\right|\,|z|
+    \xrightarrow{n\to\infty}|z|.
+  \]
+  Hence the series converges for $|z| < 1$.
+
+  \textbf{Differential equation.}\;
+  Write $F(z) = \sum_{n=0}^{\infty} A_n z^n$.
+  Then
+  \[
+    F'(z) = \sum_{n=0}^{\infty} (n+1)A_{n+1}\,z^n,
+    \qquad
+    F''(z) = \sum_{n=0}^{\infty} (n+2)(n+1)A_{n+2}\,z^n.
+  \]
+  The coefficient of $z^n$ ($n \ge 1$) in
+  $z(1-z)F'' + [c-(a+b+1)z]F' - abF$ is
+  \[
+    (n+1)n\,A_{n+1} - n(n-1)\,A_n
+    + c(n+1)\,A_{n+1} - (a+b+1)n\,A_n - ab\,A_n.
+  \]
+  Factor using $n^2 + (a+b)n + ab = (n+a)(n+b)$:
+  \[
+    (n+1)(n+c)\,A_{n+1} - (n+a)(n+b)\,A_n.
+  \]
+  Since $A_{n+1} = A_n \cdot \frac{(a+n)(b+n)}{(c+n)(n+1)}$,
+  we have $(n+1)(n+c)\,A_{n+1} = (n+a)(n+b)\,A_n$,
+  so the coefficient vanishes.
+  For $n = 0$: $c\,A_1 - ab\,A_0 = c \cdot \frac{ab}{c} - ab = 0$.
+  Hence the ODE is satisfied.\qedhere
+\end{solution}
+
+\section{Exercise 3.113 (Gutzmer's inequality)}
+
+With the assumptions of Theorem~3.112,
+show that for any $r \in (0, R)$,
+\[
+  \sum_{n=0}^{\infty} |a_n|^2 r^{2n} \le M(r)^2,
+\]
+where $M(r) := \max_{|z-c|=r} |f(z)|$.
+
+\begin{solution}
+  By Theorem~3.112, for $f(z) = \sum_{n=0}^{\infty} a_n(z-c)^n$
+  and $0 < r < R$,
+  \[
+    \frac{1}{2\pi}\int_0^{2\pi}|f(c+re^{i\theta})|^2\,d\theta
+    = \sum_{n=0}^{\infty}|a_n|^2 r^{2n}.
+  \]
+  Since $|f(c+re^{i\theta})| \le M(r)$ for all $\theta$,
+  \[
+    \sum_{n=0}^{\infty}|a_n|^2 r^{2n}
+    = \frac{1}{2\pi}\int_0^{2\pi}|f(c+re^{i\theta})|^2\,d\theta
+    \le M(r)^2.\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 3.114 (Alternative proof of Corollary~3.84)}
+
+Prove the Cauchy inequality
+\[
+  |f^{(n)}(c)| \le \frac{n!\,M(r)}{r^n}
+\]
+by using Gutzmer's inequality~(3.59).
+Furthermore, show that the equality holds for some
+$n_0 \in \N$ if and only if $f(z) = a_{n_0}(z-c)^{n_0}$.
+
+\begin{solution}
+  By Gutzmer's inequality (3.59),
+  $\sum_{k=0}^{\infty}|a_k|^2 r^{2k} \le M(r)^2$.
+  Since every term is non-negative,
+  $|a_n|^2 r^{2n} \le M(r)^2$, hence
+  $|a_n| \le M(r)/r^n$.
+  Since $f^{(n)}(c) = n!\,a_n$ (Taylor's theorem),
+  \[
+    |f^{(n)}(c)| \le \frac{n!\,M(r)}{r^n}.
+  \]
+
+  \textbf{Equality.}\;
+  If equality holds for some $n_0$, then
+  $|a_{n_0}|^2 r^{2n_0} = M(r)^2$.
+  Since $|a_{n_0}|^2 r^{2n_0} \le \sum_{k=0}^{\infty}|a_k|^2 r^{2k}
+  \le M(r)^2 = |a_{n_0}|^2 r^{2n_0}$,
+  we must have $|a_k|^2 r^{2k} = 0$ for all $k \ne n_0$,
+  i.e.\ $a_k = 0$ for $k \ne n_0$.
+  Hence $f(z) = a_{n_0}(z-c)^{n_0}$.
+
+  Conversely, if $f(z) = a_{n_0}(z-c)^{n_0}$, then
+  $M(r) = |a_{n_0}|\,r^{n_0}$ and
+  $|f^{(n_0)}(c)| = n_0!\,|a_{n_0}| = n_0!\,M(r)/r^{n_0}$,
+  so equality holds.\qedhere
+\end{solution}
+
+\section{Exercise 3.118 (Double series theorem of Weierstrass)}
+
+Let the power series
+\[
+  f_j(z) = \sum_{k=0}^{\infty} c_{jk}\,(z-c)^k
+\]
+be convergent in the disk $U_r(c)$ with $r > 0$.
+If the series $F := \sum_{j=0}^{\infty} f_j$ converges normally
+in $U_r(c)$, show that $F$ is analytic in $U_r(c)$ and can be
+represented as
+\[
+  F(z) = \sum_{k=0}^{\infty}
+  \left(\sum_{j=0}^{\infty} c_{jk}\right)(z-c)^k.
+\]
+
+\begin{solution}
+  Since $\sum_{j=0}^{\infty} f_j$ converges normally in $U_r(c)$,
+  for each $\rho \in (0,r)$,
+  \[
+    \sum_{j=0}^{\infty} \sup_{|z-c|\le\rho}|f_j(z)| < \infty.
+  \]
+  Each $f_j$ is analytic in $U_r(c)$ (its power series converges
+  there), and normal convergence implies uniform convergence on
+  compact subsets.
+  By the Weierstrass convergence theorem (Theorem~3.101),
+  $F = \sum_j f_j$ is analytic in $U_r(c)$.
+
+  For the coefficient formula, let
+  $b_k := F^{(k)}(c)/k!$ be the $k$-th Taylor coefficient of $F$
+  at $c$.
+  By the Cauchy integral formula, for any $\rho \in (0,r)$,
+  \[
+    b_k = \frac{1}{2\pi i}\oint_{|z-c|=\rho}
+    \frac{F(z)}{(z-c)^{k+1}}\,dz
+    = \frac{1}{2\pi i}\oint_{|z-c|=\rho}
+    \frac{\sum_{j=0}^{\infty} f_j(z)}{(z-c)^{k+1}}\,dz.
+  \]
+  The normal convergence on $|z-c| = \rho$ justifies interchanging
+  sum and integral:
+  \[
+    b_k = \sum_{j=0}^{\infty}
+    \frac{1}{2\pi i}\oint_{|z-c|=\rho}
+    \frac{f_j(z)}{(z-c)^{k+1}}\,dz
+    = \sum_{j=0}^{\infty} c_{jk},
+  \]
+  where the last step uses the Cauchy formula for the Taylor
+  coefficients of $f_j$.
+  Hence
+  \[
+    F(z) = \sum_{k=0}^{\infty}
+    \left(\sum_{j=0}^{\infty} c_{jk}\right)(z-c)^k.\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 3.121}
+
+Let the power series $f(z) = \sum_{n=0}^{\infty} a_n z^n$
+be convergent in $U_r(0)$.
+Show that if $f$ is nonconstant and
+\[
+  \sum_{n=2}^{\infty} n\,|a_n|\,r^{n-1} \le |a_1|,
+\]
+then $f$ is injective.
+
+\begin{solution}
+  For $|z| < r$,
+  \[
+    f'(z) = a_1 + \sum_{n=2}^{\infty} n\,a_n\,z^{n-1},
+  \]
+  so
+  \[
+    |f'(z) - a_1|
+    \le \sum_{n=2}^{\infty} n\,|a_n|\,|z|^{n-1}
+    < \sum_{n=2}^{\infty} n\,|a_n|\,r^{n-1}
+    \le |a_1|.
+  \]
+  Hence $f'(z)$ lies in the open disk
+  $\{w : |w - a_1| < |a_1|\}$, which does not contain $0$.
+  So $f'(z) \ne 0$ for all $z \in U_r(0)$.
+
+  Now take $z_1 \ne z_2$ in $U_r(0)$ and set
+  $\gamma(t) := (1-t)z_2 + tz_1$ for $t \in [0,1]$.
+  Since $U_r(0)$ is convex, $\gamma(t) \in U_r(0)$.
+  Then
+  \[
+    f(z_1) - f(z_2)
+    = \int_0^1 f'(\gamma(t))\,(z_1 - z_2)\,dt
+    = (z_1 - z_2)\int_0^1 f'(\gamma(t))\,dt.
+  \]
+  The integral $I := \int_0^1 f'(\gamma(t))\,dt$ satisfies
+  \[
+    |I - a_1|
+    \le \int_0^1 |f'(\gamma(t)) - a_1|\,dt
+    < |a_1|,
+  \]
+  so $I \ne 0$.
+  Therefore $f(z_1) \ne f(z_2)$, and $f$ is injective.\qedhere
+\end{solution}
+
+\section{Exercise 3.122}
+
+Let the power series $f(z) = \sum_{n=0}^{\infty} a_n z^n$
+be convergent in $U_R(0)$.
+Define $A(r) = \max_{|z|=r} \Re f(z)$.
+Show that for each $r \in (0, R)$ and $n \in \N^+$,
+
+(a) $\displaystyle a_n r^n
+= \frac{1}{\pi}\int_0^{2\pi}
+[\Re f(r e^{i\theta})]\,e^{-in\theta}\,d\theta$;
+
+(b) $|a_n|\,r^n \le 2\,A(r) - 2\,\Re f(0)$.
+
+\begin{solution}
+  \textbf{(a)}\;
+  By Cauchy's integral formula,
+  \[
+    a_n = \frac{1}{2\pi i}\oint_{|z|=r}
+    \frac{f(z)}{z^{n+1}}\,dz
+    = \frac{1}{2\pi}\int_0^{2\pi} f(re^{i\theta})\,e^{-in\theta}\,d\theta,
+  \]
+  so $a_n r^n = \frac{1}{2\pi}\int_0^{2\pi}
+  f(re^{i\theta})\,e^{-in\theta}\,d\theta$.
+  Since $\overline{f(re^{i\theta})} = \sum_{k=0}^{\infty}
+  \bar{a}_k r^k e^{-ik\theta}$, we have
+  \[
+    \frac{1}{2\pi}\int_0^{2\pi}
+    \overline{f(re^{i\theta})}\,e^{-in\theta}\,d\theta
+    = \sum_{k=0}^{\infty}\bar{a}_k r^k
+    \cdot\frac{1}{2\pi}\int_0^{2\pi}e^{-i(n+k)\theta}\,d\theta = 0
+  \]
+  for $n \ge 1$ (only the $k = -n$ term survives, which does not
+  exist in the sum).
+  Hence
+  \[
+    a_n r^n
+    = \frac{1}{2\pi}\int_0^{2\pi}
+    \bigl[f(re^{i\theta})
+    + \overline{f(re^{i\theta})}\bigr]e^{-in\theta}\,d\theta
+    = \frac{1}{\pi}\int_0^{2\pi}
+    [\Re f(re^{i\theta})]\,e^{-in\theta}\,d\theta.
+  \]
+
+  \medskip
+
+  \textbf{(b)}\;
+  Define $u(\theta) := A(r) - \Re f(re^{i\theta}) \ge 0$.
+  Then $\Re f(re^{i\theta}) = A(r) - u(\theta)$, and by part~(a),
+  \[
+    a_n r^n
+    = \frac{1}{\pi}\int_0^{2\pi}[A(r)-u(\theta)]\,e^{-in\theta}\,d\theta
+    = -\frac{1}{\pi}\int_0^{2\pi}u(\theta)\,e^{-in\theta}\,d\theta,
+  \]
+  since $\int_0^{2\pi}e^{-in\theta}\,d\theta = 0$.
+  Therefore
+  \[
+    |a_n|\,r^n
+    \le \frac{1}{\pi}\int_0^{2\pi}u(\theta)\,d\theta
+    = 2A(r) - \frac{1}{\pi}\int_0^{2\pi}\Re f(re^{i\theta})\,d\theta.
+  \]
+  By the mean value property (Cauchy's formula with $n = 0$),
+  $\frac{1}{2\pi}\int_0^{2\pi}f(re^{i\theta})\,d\theta = f(0)$,
+  so $\frac{1}{\pi}\int_0^{2\pi}\Re f(re^{i\theta})\,d\theta
+  = 2\,\Re f(0)$.
+  Hence $|a_n|\,r^n \le 2A(r) - 2\,\Re f(0)$.\qedhere
+\end{solution}
+
+\end{document}
