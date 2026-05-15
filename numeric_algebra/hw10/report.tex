@@ -1,0 +1,366 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{luacode}
+
+% import common macros
+\input{../../common/macros.tex}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Configure listings for Python code highlighting
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,
+  frame=single,
+  framesep=5pt,
+  rulecolor=\color{gray},
+  backgroundcolor=\color{white},
+  captionpos=b,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=5,
+}
+
+\lstnewenvironment{plaintext}[1][]{
+  \lstset{
+    language=none,
+    basicstyle=\ttfamily,
+    keywordstyle=,
+    commentstyle=,
+    stringstyle=,
+    numbers=none,
+    frame=none,
+    backgroundcolor=\color{white},
+    #1                % 允许用户自行覆盖默认设置
+  }
+}{}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{数值代数}
+\newcommand{\hwNum}{10}
+
+\newcommand{\fl}{\mathrm{fl}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name (\uid)}
+\chead{\course \#\hwNum}
+\rhead{\today}
+
+\section{题目 1}
+
+证明：若 $A = (a_{ij})$ 满足 $\sum_{\substack{i=1\\i\neq j}}^n
+|\frac{a_{ij}}{a_{jj}}| < 1, \ j=1,\dots,n$，则 Jacobi 迭代法与 Gauss-Seidel 迭代法收敛。
+
+\begin{solution}
+  设矩阵 $A = D + L + U$ ，其中 $D$ 是 $A$ 的对角线部分，$L$ 是 $A$ 的严格下三角部分，$U$ 是
+  $A$ 的严格上三角部分。Jacobi 迭代法的迭代矩阵为 $B_J = -D^{-1}(L + U)$，Gauss-Seidel
+  迭代法的迭代矩阵为 $B_{GS} = -(D + L)^{-1}U$。
+
+  构造矩阵 $\tilde{B} = D B_J D^{-1} = -(L+U)D^{-1}$ 于是 $\tilde{B}$ 与
+  $B_J$ 有相同的谱半径 $\rho(\tilde{B}) = \rho(B_J)$。考虑 $\tilde{B}$ 的元素，有：
+
+  \[
+    \tilde{b}_{ij} =
+    \begin{cases}
+      0, & i = j \\
+      -\frac{a_{ij}}{a_{jj}}, & i \neq j
+    \end{cases}
+  \]
+
+  于是有 $\|\tilde{B}\|_1 = \max_{1 \leq j \leq n} \sum_{i=1}^n
+  |\tilde{b}_{ij}| < 1$。从而 $\rho(B_J) = \rho(\tilde{B}) \leq
+  \|\tilde{B}\|_1 < 1$，Jacobi 迭代法收敛。
+
+  考虑 Gauss-Seidel 迭代法的迭代矩阵 $B_{GS}$，考虑反证：若存在特征值 $\lambda$ 满足
+  $|\lambda| \geq 1$，则存在非零向量 $x$ 满足 $B_{GS} x = \lambda x$，即：
+  \[
+    -(D+L)^{-1} Ux = \lambda x
+  \]
+  即：
+  \[
+    (\lambda D + \lambda L + U) x = 0
+  \]
+  而 $x$ 非零，于是有 $M = (\lambda D + \lambda L + U)$ 是奇异矩阵。考虑 $M$ 的元素，有：
+  \[
+    m_{ij} =
+    \begin{cases}
+      \lambda a_{ii}, & i = j \\
+      \lambda a_{ij}, & i > j \\
+      a_{ij}, & i < j
+    \end{cases}
+  \]
+
+  考虑列和，有：
+  \[
+    \sum_{i=1, i\neq j}^{n} |m_{ij}| \leq |\lambda| \sum_{i=1, i\neq
+    j}^{n} |a_{ij}| < |\lambda| |a_{jj}| = |m_{jj}|
+  \]
+  从而 $M$ 是严格对角占优的矩阵，因此 $M$ 是非奇异矩阵，与之前的假设矛盾。因此 Gauss-Seidel
+  迭代法的迭代矩阵的谱半径 $\rho(B_{GS}) < 1$，Gauss-Seidel 迭代法收敛。
+
+\end{solution}
+
+\section{题目 2}
+
+证明：若 $A$ 是严格对角占优阵或弱严格对角占优的不可约阵，则 Gauss-Seidel 迭代法收敛。
+
+\begin{solution}
+  严格占优的情形与第一题同理可证。
+
+  弱对角占优的不可约阵时，考虑 Gauss-Seidel 迭代法的迭代矩阵 $B_{GS}$，考虑反证：若存在特征值 $\lambda$ 满足
+  $|\lambda| \geq 1$，则存在非零向量 $x$ 满足 $B_{GS} x = \lambda x$，即：
+  \[
+    -(D+L)^{-1} Ux = \lambda x
+  \]
+  即：
+  \[
+    (\lambda D + \lambda L + U) x = 0
+  \]
+  即 $M = (\lambda D + \lambda L + U)$ 是奇异矩阵。考虑 $M$ 的元素，有：
+  \[
+    \lambda a_{ii} x_i + \sum_{j < i} \lambda a_{ij} x_j + \sum_{j >
+    i} a_{ij} x_j = 0, \quad \forall i = 1, \dots, n
+  \]
+  设 $|x_k| = \max_{1 \leq i \leq n} |x_i|$，则有：
+  \[
+    |\lambda| |a_{kk}| |x_k| \leq \sum_{j < k} |\lambda| |a_{kj}| |x_j| +
+    \sum_{j > k} |a_{kj}| |x_j| \leq \sum_{j < k} |\lambda| |a_{kj}| |x_k| +
+    \sum_{j > k} |a_{kj}| |x_k| = |\lambda| \sum_{j < k} |a_{kj}| |x_k| +
+    \sum_{j > k} |a_{kj}| |x_k|
+  \]
+  从而有：
+  \[
+    |a_{kk}| |x_k| \leq \sum_{j<k} |a_{kj}| |x_k| + \frac{1}{|\lambda|}
+    \sum_{j>k} |a_{kj}| |x_k| \leq \sum_{j \neq k} |a_{kj}| |x_k|
+  \]
+  即：
+  \[
+    |a_{kk}| \leq \sum_{j \neq k} |a_{kj}|
+  \]
+  然而 $A$ 弱对角占优，于是所有不等号都取等，从而对于所有的 $i$ 总有 $x_i = x_k$ 或 $x_i =
+  -x_k$，且总有 $|a_{ii}| = \sum_{j \neq i} |a_{ij}|$
+  ，与弱对角占优且不可约的条件矛盾。从而不存在 $|\lambda| \geq 1$ 。于是 Gauss-Seidel
+  迭代法的迭代矩阵的谱半径 $\rho(B_{GS}) < 1$，Gauss-Seidel 迭代法收敛。
+\end{solution}
+
+\section{题目 3}
+
+证明：若 $A$ 是严格对角占优阵或弱严格对角占优的不可约阵，且松弛因子 $\omega \in (0,1]$，则松弛迭代收敛。
+
+\begin{solution}
+  $\omega = 1$ 时松弛迭代退化为 G-S 迭代，由习题 2 可知收敛，于是不妨假设 $\omega \in (0,1)$ 。
+
+  考虑松弛迭代矩阵 $B_{\omega} = (D + \omega L)^{-1}[(1-\omega)D - \omega U]$
+  ，仍然考虑反证，同理有：
+  \[
+    ((\lambda +\omega - 1) D + \omega \lambda L + \omega U) x = 0
+  \]
+  设 $|x_k| = \max_{1 \leq i \leq n} |x_{i}|$，则有：
+  \[
+    |\lambda + \omega - 1| |a_{kk}| |x_k| \leq \sum_{j < k}
+    |\lambda\omega| |a_{kj}| |x_j| + \sum_{j > k} |\omega| |a_{kj}|
+    |x_j| \leq \sum_{j < k} |\lambda\omega| |a_{kj}| |x_k| +
+    \sum_{j > k} |\omega| |a_{kj}| |x_k|
+  \]
+  于是有
+  \[
+    |\lambda + \omega - 1| |a_{kk}| \leq \sum_{j<k}
+    |\lambda\omega||a_{kj}| + \sum_{j>k} |\omega||a_{kj}| \leq
+    \sum_{j \neq k} |\lambda\omega||a_{kj}|
+  \]
+  最后一个不等号是因为反证法的假设 $|\lambda| \geq 1$。
+
+  对于严格对角占优的情形，有 $|a_{kk}| > \sum_{j \neq k} |a_{kj}|$，从而有：
+  \[
+    |\lambda + \omega - 1||a_{kk}| \leq |\lambda| \omega \sum_{j\neq
+    k}|a_{kj}| < |\lambda| \omega |a_{kk}|
+  \]
+  即
+  \[
+    |\lambda + \omega - 1| < \omega |\lambda|
+  \]
+  然而：
+  \[
+    |\lambda| \geq 1 \Rightarrow |\lambda| (1-\omega) \geq (1-\omega)
+    \Rightarrow |\lambda| - (1-\omega) \geq \omega |\lambda|
+    \Rightarrow |\lambda + \omega - 1| \geq \omega |\lambda|
+  \]
+  于是矛盾。
+
+  弱对角占优的情形下，同理可以得到所有等号全部取等，于是对于所有的 $i$ 都有 $|a_{ii}| = \sum_{j \neq i}
+  |a_{ij}|$，且对于所有的 $i$ 都有 $x_i = x_k$ 或 $x_i = -x_k$，与弱对角占优且不可约的条件矛盾。
+
+\end{solution}
+
+\section{题目 4}
+
+证明：若 $A \in \mathbb{R}^{2\times 2}$ 为对称正定矩阵，则 Jacobi 迭代收敛。
+
+\begin{solution}
+  设 $A =
+  \begin{bmatrix} a & b \\ b & c
+  \end{bmatrix}$，由于 $A$ 是对称正定矩阵，因此 $a > 0, c > 0, ac - b^2 > 0$。
+
+  Jacobi 迭代矩阵为 $B_J = -D^{-1}(L + U) =
+  \begin{bmatrix} 0 & -\frac{b}{a} \\ -\frac{b}{c} & 0
+  \end{bmatrix}$，其特征值为 $\lambda = \pm \sqrt{\frac{b^2}{ac}}$。由于 $ac -
+  b^2 > 0$，因此 $\frac{b^2}{ac} < 1$，从而 $|\lambda| < 1$，Jacobi 迭代收敛。
+\end{solution}
+
+\section{题目 5}
+
+方程组
+\begin{equation}
+  \begin{cases}
+    x_1 + \rho x_2 = b_1 \\
+    \rho x_1 + 2 x_2 = b_2
+  \end{cases}
+\end{equation}
+
+(1) 讨论当 $\rho$ 取何值, Gauss-Seidel 迭代收敛。
+
+(2) 讨论松弛因子的取值范围使得松弛迭代收敛。最佳松弛因子为何值？
+
+\begin{solution}
+  $A = \matTwoTwo{1}{\rho}{\rho}{2}$，Gauss-Seidel 迭代矩阵为 $B_{GS} =
+  \matTwoTwo{0}{-\rho}{0}{\frac{\rho^2}{2}}$，其特征值为 $\lambda = 0,
+  \frac{\rho^2}{2}$。因此
+  Gauss-Seidel 迭代收敛的充要条件是 $|\frac{\rho^2}{2}| < 1$，即 $|\rho| < \sqrt{2}$。
+
+  设松弛因子为 $\omega$，则松弛迭代矩阵为 $B_{\omega}
+  =\matTwoTwo{1-\omega}{-\omega \rho}{-\frac{\omega \rho
+  (1-\omega)}{2}}{\frac{\omega^2\rho^2}{2} + 1 - \omega}$，特征方程：
+  \[
+    \lambda^2 - (2(1-\omega)+ \frac{1}{2}\omega^2 \rho^2)\lambda +
+    (1-\omega)^2 = \lambda^2 - P \lambda + Q = f(\lambda)= 0
+  \]
+  这是一个二次方程，于是有谱半径小于 1 的的充要条件：
+  \begin{enumerate}
+    \item $Q < 1$
+    \item $f(1) = 1-P+Q > 0$
+    \item $f(-1) = 1+P+Q > 0$
+  \end{enumerate}
+  代入解得收敛时的充要条件为 $0 < \omega < 2, |\rho| < \sqrt{2}$。
+
+  考虑最佳收敛因子，此时 $\rho(B_{\omega}) = \max(|\lambda_1|, |\lambda_2|)$
+  最小。考虑二次方程的判别式，有：
+  \[
+    \Delta = P^2 - 4Q = \frac{1}{2}\omega^2 \rho^2 \left(4(1-\omega)
+    + \frac{1}{2}\omega^2\rho^2\right) = 0
+  \]
+  而 $\omega\rho \ne 0$ ，从而有：
+  \[
+    \rho^2 \omega^2 - 8\omega + 8 = 0
+  \]
+  代入求根公式有：
+  \[
+    \omega = \frac{4 \pm 2\sqrt{4-2\rho^2}}{\rho^2}
+  \]
+  由于 $0 < \omega < 2$ ，于是取减号，得到：
+  \[
+    \omega_{\text{best}} = \frac{4-2\sqrt{4-2\rho^2}}{\rho^2}
+  \]
+\end{solution}
+
+\section{上机习题}
+
+考虑两点边值问题
+\[
+  \begin{cases}
+    \varepsilon \frac{\mathrm{d}^2 y}{\mathrm{d}x^2} +
+    \frac{\mathrm{d} y}{\mathrm{d}x} = a, \quad 0 < a < 1, \\
+    y(0) = 0, \ y(1) = 1.
+  \end{cases}
+\]
+
+容易知道它的精确解为
+\[
+  y = \frac{1 - a}{1 - e^{-\frac{1}{\varepsilon}}} (1 -
+  e^{-\frac{x}{\varepsilon}}) + ax.
+\]
+为了把微分方程离散化, 把 $[0,1]$ 区间 $n$ 等分, 令 $h = 1/n$,
+\[
+  x_i = ih, \quad i = 1, \dots, n-1,
+\]
+得到差分方程
+\[
+  \varepsilon \frac{y_{i-1} - 2y_i + y_{i+1}}{h^2} + \frac{y_{i+1} -
+  y_i}{h} = a,
+\]
+简化为
+\[
+  (\varepsilon + h) y_{i+1} - (2\varepsilon + h) y_i + \varepsilon
+  y_{i-1} = ah^2,
+\]
+从而离散化后得到的线性方程组的系数矩阵为
+\[
+  A =
+  \begin{bmatrix}
+    -(2\varepsilon + h) & \varepsilon + h & & & \\
+    \varepsilon & -(2\varepsilon + h) & \varepsilon + h & & \\
+    & \varepsilon & -(2\varepsilon + h) & \ddots & \\
+    & & \ddots & \ddots & \varepsilon + h \\
+    & & & \varepsilon & -(2\varepsilon + h)
+  \end{bmatrix}.
+\]
+
+对 $\varepsilon = 1, a = 1/2, n = 100$, 分别用 Jacobi 迭代法, Gauss-Seidel
+迭代法和 SOR 迭代法求线性方程组的解, 要求有 4 位有效数字, 然后比较与精确解的误差.
+
+对 $\varepsilon = 0.1, \varepsilon = 0.01, \varepsilon = 0.0001$, 考虑同样的问题.
+
+\begin{solution}
+  将差分方程写成矩阵形式 $Ay = f$，其中 $A$ 为 $(n-1)\times(n-1)$ 三对角矩阵，右端向量
+  $f_i = ah^2$（$i = 1,\dots,n-2$），$f_{n-1} = ah^2 - (\varepsilon +
+  h)$（因 $y(1) = 1$
+  的边界条件）。分别实现 Jacobi 迭代、Gauss-Seidel 迭代和 SOR 迭代，停机准则为
+  $\|x^{(k+1)} - x^{(k)}\|_\infty < 10^{-8}$。
+
+  SOR 的最优松弛因子由 Jacobi 迭代矩阵的谱半径确定：
+  \[
+    \omega_{\mathrm{opt}} = \frac{2}{1 + \sqrt{1 - \rho(B_J)^2}}.
+  \]
+
+  \lstinputlisting[language=Python,caption=迭代求解]{exercise.py}
+  \lstinputlisting[language={},caption=Output]{output.txt}
+
+  从 Part 1 输出可以看到，$\varepsilon$ 越小 $\rho(B_J)$ 越小，三种方法收敛越快。
+  $\varepsilon = 1$ 时 $\rho(B_J) \approx 0.9995$，Jacobi 与 G-S 迭代分别需要约 $22000$
+  和 $11000$ 次，而 SOR 利用最优松弛因子仅需约 $323$ 次。$\varepsilon = 0.0001$ 时
+  $\rho(B_J) \approx 0.195$，三种方法均仅需百余次迭代。
+
+  迭代解与精确解的误差随 $\varepsilon$ 减小而增大（$\varepsilon = 0.01$ 时误差约
+  $6.6 \times 10^{-2}$），这是由差分离散化无法充分分辨边界层所致，与迭代方法无关。
+  Part 2 的实验验证了这一点：
+
+  精确解在 $x = 0$ 附近存在宽度约为 $\varepsilon$ 的边界层，解在此薄层内从 $0$
+  迅速跃升至约 $1 - a$。当 $h \ll \varepsilon$ 时网格能充分分辨边界层，误差随 $h$ 以
+  $O(h)$ 的速率下降（例如 $\varepsilon = 1$ 时 $n$ 每翻倍误差约减半）；而当
+  $h \gg \varepsilon$ 时（如 $\varepsilon = 0.0001$），网格完全无法捕捉边界层，
+  此时增大 $n$ 反而使误差增大，因为更多网格点落在边界层之外，离散解更贴近外部解
+  $y \approx (1-a) + ax$ 而非真实的边界层行为。
+\end{solution}
+
+\end{document}
