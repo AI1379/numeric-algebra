@@ -1,0 +1,2284 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta,decorations.markings}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+
+
+\providecommand{\mathdefault}[1]{#1}
+
+\input{../common/macros.tex}
+
+\newtheorem{example}[theorem]{Example}
+
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\area}{area}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\divergence}{div}
+\DeclareMathOperator{\grad}{grad}
+
+\newcommand{\course}{数学分析辅导教案}
+\newcommand{\hwNum}{4}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\course\ 第\hwNum\ 讲}
+\rhead{\today}
+
+% ============================================================
+%  TABLE OF CONTENTS
+% ============================================================
+
+\begin{center}
+  {\Large 数学分析辅导教案 —— 第四讲大纲} \\[6pt]
+  {\large 曲线积分 $\cdot$ 曲面积分 $\cdot$ Green $\cdot$ Gauss $\cdot$ Stokes}
+\end{center}
+
+\tableofcontents
+\newpage
+
+% ============================================================
+%  PART 1: 两类曲线积分
+% ============================================================
+\section{两类曲线积分——概念、计算与辨析}
+
+% ---------- 1.1 第一类曲线积分（对弧长的曲线积分） ----------
+\subsection{第一类曲线积分（对弧长的曲线积分）}
+
+\begin{definition}[第一类曲线积分]
+  设 $L$ 为 $xy$ 平面上的一条光滑曲线弧，$f(x,y)$ 在 $L$ 上有界。
+  将 $L$ 任意分成 $n$ 个小弧段，第 $i$ 段弧长为 $\Delta s_i$，
+  在其上任取一点 $(\xi_i, \eta_i)$。若极限
+  \[
+    \lim_{\lambda \to 0} \sum_{i=1}^{n} f(\xi_i, \eta_i) \,\Delta s_i
+  \]
+  存在（$\lambda$ 为各小弧段长度的最大值），则称此极限为 $f$ 在 $L$ 上的
+  \textbf{第一类曲线积分}（对弧长的曲线积分），记作
+  \[
+    \int_L f(x,y) \,\dif s.
+  \]
+\end{definition}
+
+\begin{remark}[物理意义]
+  若 $f(x,y)$ 表示曲线 $L$ 上的线密度，则 $\int_L f \,\dif s$ 就是 $L$ 的\textbf{总质量}。
+  若 $f \equiv 1$，则 $\int_L \dif s$ 就是曲线 $L$ 的\textbf{弧长}。
+\end{remark}
+
+\subsubsection*{计算方法}
+
+\begin{theorem}[第一类曲线积分的计算——参数方程]
+  设曲线 $L$ 的参数方程为 $x = x(t)$，$y = y(t)$（$t \in [\alpha, \beta]$），
+  $x'(t)$, $y'(t)$ 连续且不同时为零，$f$ 在 $L$ 上连续，则
+  \[
+    \int_L f(x,y) \,\dif s
+    = \int_\alpha^\beta f\bigl(x(t), y(t)\bigr) \sqrt{[x'(t)]^2 +
+    [y'(t)]^2} \,\dif t.
+  \]
+\end{theorem}
+
+\begin{remark}[第一类曲线积分计算要点]
+  \begin{itemize}
+    \item 参数 $t$ 的\textbf{下限必须小于等于上限}（$\alpha \le \beta$），
+      因为 $\dif s$ 是弧长元素，始终非负。
+    \item $\dif s = \sqrt{[x'(t)]^2 + [y'(t)]^2} \,\dif t$ 称为\textbf{弧长元素}（弧微分）。
+    \item 若 $L$ 由 $y = g(x)$（$a \le x \le b$）给出，则
+      $\dif s = \sqrt{1 + [g'(x)]^2} \,\dif x$。
+  \end{itemize}
+\end{remark}
+
+\subsubsection*{空间曲线情形}
+
+对于空间曲线 $\Gamma: x = x(t), y = y(t), z = z(t)$（$t \in [\alpha, \beta]$）：
+\[
+  \int_\Gamma f(x,y,z) \,\dif s
+  = \int_\alpha^\beta f\bigl(x(t), y(t), z(t)\bigr)
+  \sqrt{[x'(t)]^2 + [y'(t)]^2 + [z'(t)]^2} \,\dif t.
+\]
+
+% ---------- 1.2 第二类曲线积分（对坐标的曲线积分） ----------
+\subsection{第二类曲线积分（对坐标的曲线积分）}
+
+\begin{definition}[第二类曲线积分]
+  设 $L$ 为从点 $A$ 到点 $B$ 的\textbf{有向}光滑曲线弧，
+  向量场 $\mathbf{F}(x,y) = (P(x,y), Q(x,y))$ 在 $L$ 上有界。
+  将 $L$ 沿方向分成 $n$ 个小弧段，第 $i$ 段的有向弦为
+  $(\Delta x_i, \Delta y_i)$。若极限
+  \[
+    \lim_{\lambda \to 0} \sum_{i=1}^{n}
+    \bigl[ P(\xi_i, \eta_i) \,\Delta x_i + Q(\xi_i, \eta_i) \,\Delta y_i \bigr]
+  \]
+  存在，则称为 $\mathbf{F}$ 在有向曲线 $L$ 上的\textbf{第二类曲线积分}
+  （对坐标的曲线积分），记作
+  \[
+    \int_L P(x,y) \,\dif x + Q(x,y) \,\dif y,
+    \quad\text{或}\quad \int_L \mathbf{F} \cdot \dif\mathbf{r}.
+  \]
+\end{definition}
+
+\begin{remark}[物理意义]
+  $\int_L \mathbf{F} \cdot \dif\mathbf{r}$ 是力场 $\mathbf{F}$ 沿路径 $L$
+  所做的\textbf{功}。
+\end{remark}
+
+\begin{remark}[与方向的依赖关系]
+  第二类曲线积分\textbf{与曲线方向有关}：
+  \[
+    \int_{L^-} P \,\dif x + Q \,\dif y = -\int_L P \,\dif x + Q \,\dif y,
+  \]
+  其中 $L^-$ 表示与 $L$ 方向相反的曲线。这是第二类与第一类的\textbf{本质区别}之一。
+\end{remark}
+
+\subsubsection*{计算方法}
+
+\begin{theorem}[第二类曲线积分的计算]
+  设有向曲线 $L$ 的参数方程为 $x = x(t), y = y(t)$，
+  $t$ 从 $\alpha$ 变到 $\beta$（起点 $A = (x(\alpha), y(\alpha))$，
+  终点 $B = (x(\beta), y(\beta))$），则
+  \[
+    \int_L P \,\dif x + Q \,\dif y
+    = \int_\alpha^\beta \bigl[ P(x(t),y(t))\,x'(t) +
+    Q(x(t),y(t))\,y'(t) \bigr] \,\dif t.
+  \]
+\end{theorem}
+
+\begin{remark}[第二类曲线积分计算要点]
+  \begin{itemize}
+    \item 参数 $t$ 的\textbf{下限对应起点，上限对应终点}，
+      下限可以大于上限（与第一类曲线积分不同！）。
+    \item 空间曲线情形：
+      $\int_\Gamma P\,\dif x + Q\,\dif y + R\,\dif z
+      = \int_\alpha^\beta [Px'(t) + Qy'(t) + Rz'(t)] \,\dif t$。
+  \end{itemize}
+\end{remark}
+
+% ---------- 1.3 两类曲线积分的联系 ----------
+\subsection{两类曲线积分的联系}
+
+设 $L$ 为有向曲线，$(\cos\alpha, \cos\beta)$ 为 $L$ 在点 $(x,y)$ 处
+\textbf{与 $L$ 方向一致}的单位切向量，则
+\[
+  \int_L P \,\dif x + Q \,\dif y
+  = \int_L (P\cos\alpha + Q\cos\beta) \,\dif s.
+\]
+
+一般地，若 $\mathbf{F} = (P, Q)$，$\mathbf{t}$ 为单位切向量，$\dif\mathbf{r} =
+\mathbf{t} \,\dif s$，则
+\[
+  \int_L \mathbf{F} \cdot \dif\mathbf{r}
+  = \int_L (\mathbf{F} \cdot \mathbf{t}) \,\dif s.
+\]
+
+\begin{remark}[方向余弦的确定]
+  设曲线 $L$ 的参数方程为 $x = x(t), y = y(t)$，方向为 $t$ 增大方向，则
+  \[
+    \cos\alpha = \frac{x'(t)}{\sqrt{[x'(t)]^2+[y'(t)]^2}}, \quad
+    \cos\beta = \frac{y'(t)}{\sqrt{[x'(t)]^2+[y'(t)]^2}}.
+  \]
+\end{remark}
+
+% ---------- 1.4 第一类与第二类的对比表 ----------
+\subsection{两类曲线积分的对比}
+
+\begin{center}
+  \renewcommand{\arraystretch}{1.6}
+  \begin{tabular}{>{\raggedright\arraybackslash}p{3cm}
+      >{\raggedright\arraybackslash}p{5cm}
+    >{\raggedright\arraybackslash}p{5cm}}
+    \toprule
+    & \textbf{第一类（对弧长）} & \textbf{第二类（对坐标）} \\
+    \midrule
+    记号
+    & $\displaystyle\int_L f \,\dif s$
+    & $\displaystyle\int_L P\,\dif x + Q\,\dif y$ \\
+    被积函数
+    & 标量函数 $f(x,y)$
+    & 向量场分量 $P(x,y), Q(x,y)$ \\
+    积分元素
+    & $\dif s$（弧长元素，始终 $\ge 0$）
+    & $\dif x, \dif y$（坐标微分，有正有负） \\
+    方向依赖
+    & \textbf{与方向无关}：$\int_{L^-} f \,\dif s = \int_L f \,\dif s$
+    & \textbf{与方向有关}：$\int_{L^-} P\,\dif x + Q\,\dif y = -\int_L
+    P\,\dif x + Q\,\dif y$ \\
+    参数限
+    & 下限 $\le$ 上限
+    & 下限 = 起点，上限 = 终点（可大可小） \\
+    物理意义
+    & 质量、弧长
+    & 变力沿曲线做的功 \\
+    联系
+    & \multicolumn{2}{c}{$\displaystyle\int_L P\,\dif x + Q\,\dif y =
+    \int_L (P\cos\alpha + Q\cos\beta) \,\dif s$} \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+% ---------- 1.5 常考易错点 ----------
+\subsection{常考易错点总结}
+
+\begin{enumerate}
+  \item \textbf{混淆参数限规则}：
+    第一类曲线积分的参数下限必须小于等于上限；
+    第二类曲线积分的参数下限是起点、上限是终点。
+    \textbf{这是最常考的辨析点}。
+  \item \textbf{弧长元素漏掉根号}：
+    $\dif s = \sqrt{[x'(t)]^2+[y'(t)]^2}\,\dif t$，不要漏掉根号或漏掉平方。
+  \item \textbf{第二类曲线积分的方向}：
+    反向时加负号。题目中"逆时针""从 $A$ 到 $B$"等描述要仔细读。
+  \item \textbf{曲线分段}：
+    若曲线 $L$ 由 $L_1$ 和 $L_2$ 拼接而成（不同参数方程），需分段计算再相加。
+  \item \textbf{利用对称性}：
+    第一类曲线积分可以利用对称性（类似重积分），
+    第二类曲线积分\textbf{不能简单利用对称性}（因为方向会反转）。
+  \item \textbf{闭曲线上的第二类积分}：
+    常用 Green 公式转化为二重积分（见第~\ref{sec:green}~节），不要死算。
+\end{enumerate}
+
+% ---------- 1.6 练习题 ----------
+\subsection{练习题——曲线积分}
+
+\begin{exercise}[第一类曲线积分——参数方程]
+  计算 $\int_L (x^2 + y^2) \,\dif s$，其中 $L$ 为圆周 $x^2 + y^2 = a^2$。
+\end{exercise}
+
+\begin{solution}
+  参数方程：$x = a\cos\theta$，$y = a\sin\theta$（$0 \le \theta \le 2\pi$）。
+  $\dif s = \sqrt{a^2\sin^2\theta + a^2\cos^2\theta}\,\dif\theta =
+  a\,\dif\theta$。
+  \[
+    \int_L (x^2+y^2) \,\dif s
+    = \int_0^{2\pi} a^2 \cdot a \,\dif\theta
+    = a^3 \cdot 2\pi
+    = 2\pi a^3.
+  \]
+\end{solution}
+
+\begin{exercise}[第一类曲线积分——空间曲线]
+  计算 $\int_\Gamma (x^2+y^2+z^2) \,\dif s$，其中 $\Gamma$ 为螺旋线
+  $x = a\cos t,\; y = a\sin t,\; z = bt$（$0 \le t \le 2\pi$）。
+\end{exercise}
+
+\begin{solution}
+  $x^2+y^2+z^2 = a^2 + b^2 t^2$。
+  \[
+    \dif s = \sqrt{a^2\sin^2 t + a^2\cos^2 t + b^2}\,\dif t =
+    \sqrt{a^2+b^2}\,\dif t.
+  \]
+  \[
+    \int_\Gamma (x^2+y^2+z^2) \,\dif s
+    = \sqrt{a^2+b^2} \int_0^{2\pi} (a^2 + b^2 t^2) \,\dif t
+    = \sqrt{a^2+b^2} \left[ a^2 \cdot 2\pi + b^2 \cdot \frac{8\pi^3}{3} \right].
+  \]
+\end{solution}
+
+\begin{exercise}[第二类曲线积分——直线段]
+  计算 $\int_L (x+y) \,\dif x + (x-y) \,\dif y$，
+  其中 $L$ 为从 $(1,0)$ 到 $(0,1)$ 的直线段。
+\end{exercise}
+
+\begin{solution}
+  参数方程：$x = 1-t$，$y = t$（$t: 0 \to 1$）。
+  $\dif x = -\dif t$，$\dif y = \dif t$。
+  \begin{align*}
+    &\int_0^1 \bigl[(1-t+t)(-1) + (1-t-t)(1)\bigr] \,\dif t \\
+    &= \int_0^1 (-1 + 1 - 2t) \,\dif t
+    = \int_0^1 (-2t) \,\dif t = -1.
+  \end{align*}
+\end{solution}
+
+\begin{exercise}[第二类曲线积分——椭圆]
+  计算 $\oint_L (3x^2 + 4y) \,\dif x + (2x - 3y^2) \,\dif y$，
+  其中 $L$ 为椭圆 $\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$，逆时针方向。
+\end{exercise}
+
+\begin{solution}
+  $P = 3x^2+4y$，$Q = 2x-3y^2$。
+  $\pdfFrac{Q}{x} = 2$，$\pdfFrac{P}{y} = 4$。
+
+  由 Green 公式（第~\ref{sec:green}~节）：
+  \[
+    \oint_L P\,\dif x + Q\,\dif y
+    = \iint_D \left(\pdfFrac{Q}{x} - \pdfFrac{P}{y}\right) \dif x\,\dif y
+    = \iint_D (2-4) \,\dif x\,\dif y
+    = -2 \cdot \pi ab
+    = -2\pi ab.
+  \]
+\end{solution}
+
+\begin{exercise}[两类曲线积分的转化]
+  设 $L$ 为从 $(0,0)$ 到 $(1,1)$ 的直线段，
+  将 $\int_L xy \,\dif x + x^2 \,\dif y$ 转化为第一类曲线积分并计算。
+\end{exercise}
+
+\begin{solution}
+  $L$ 的方向向量 $(1,1)$，单位切向量 $\mathbf{t} = \frac{1}{\sqrt{2}}(1,1)$。
+  $\cos\alpha = \cos\beta = \frac{1}{\sqrt{2}}$。
+
+  参数方程 $x = t, y = t$（$t: 0 \to 1$），$\dif s = \sqrt{2}\,\dif t$。
+  \begin{align*}
+    \int_L xy\,\dif x + x^2\,\dif y
+    &= \int_L \left(\frac{xy}{\sqrt{2}} + \frac{x^2}{\sqrt{2}}\right) \dif s \\
+    &= \int_0^1 \frac{t^2 + t^2}{\sqrt{2}} \cdot \sqrt{2} \,\dif t
+    = \int_0^1 2t^2 \,\dif t
+    = \frac{2}{3}.
+  \end{align*}
+\end{solution}
+
+\begin{exercise}[第一类曲线积分——利用对称性]
+  计算 $\int_L x \,\dif s$，其中 $L$ 为圆周 $x^2+y^2 = R^2$。
+\end{exercise}
+
+\begin{solution}
+  $L$ 关于 $y$ 轴对称，$f(x,y)=x$ 关于 $x$ 为奇函数。
+  故 $\int_L x \,\dif s = 0$。
+
+  也可直接验证：
+  \[
+    \int_0^{2\pi} R\cos\theta \cdot R \,\dif\theta
+    = R^2 \int_0^{2\pi} \cos\theta \,\dif\theta = 0.
+  \]
+\end{solution}
+
+\begin{exercise}[第二类曲线积分——抛物线]
+  计算 $\int_L 2xy \,\dif x + x^2 \,\dif y$，
+  其中 $L$ 为抛物线 $y = x^2$ 从 $(0,0)$ 到 $(1,1)$ 的一段。
+\end{exercise}
+
+\begin{solution}
+  参数方程：$x = t$，$y = t^2$（$t: 0 \to 1$）。
+  \[
+    \int_0^1 [2t \cdot t^2 \cdot 1 + t^2 \cdot 2t] \,\dif t
+    = \int_0^1 (2t^3 + 2t^3) \,\dif t
+    = \int_0^1 4t^3 \,\dif t
+    = 1.
+  \]
+  \textbf{注}：$\pdfFrac{Q}{x} = \pdfFrac{P}{y} = 2x$，此积分与路径无关。
+  若改为从 $(0,0)$ 先到 $(1,0)$ 再到 $(1,1)$ 的折线路径：
+  水平段 $y=0$：$\int_0^1 0 \,\dif x + 0 = 0$；
+  垂直段 $x=1$：$\int_0^1 1 \,\dif y = 1$。总计 $1$。$\checkmark$
+\end{solution}
+
+\begin{exercise}[第一类曲线积分——对称性]
+  计算 $\int_L (x^2 + y^2 + 2xy) \,\dif s$，其中 $L$ 为圆周 $x^2+y^2=a^2$。
+\end{exercise}
+
+\begin{solution}
+  拆分为三个积分：
+  $\int_L x^2\,\dif s + \int_L y^2\,\dif s + 2\int_L xy\,\dif s$。
+
+  $L$ 关于 $y$ 轴对称，$xy$ 关于 $x$ 为奇函数，故 $\int_L xy\,\dif s = 0$。
+
+  由轮换对称性，$\int_L x^2\,\dif s = \int_L y^2\,\dif s$，因此
+  \[
+    \int_L (x^2+y^2)\,\dif s = \int_L a^2 \,\dif s = a^2 \cdot 2\pi a = 2\pi a^3.
+  \]
+  故原积分 $= 2\pi a^3 + 0 = 2\pi a^3$。
+\end{solution}
+
+\begin{exercise}[第一类曲线积分——空间对称性]
+  计算 $\int_\Gamma (x^2 + y^2 - z^2) \,\dif s$，
+  其中 $\Gamma$ 为球面 $x^2+y^2+z^2=R^2$ 与平面 $x+y+z=0$ 的交线。
+\end{exercise}
+
+\begin{solution}
+  $\Gamma$ 是球面上的大圆，关于 $x, y, z$ 完全对称（轮换不变）。
+  故 $\int_\Gamma x^2\,\dif s = \int_\Gamma y^2\,\dif s = \int_\Gamma z^2\,\dif s$。
+  \[
+    \int_\Gamma (x^2+y^2+z^2)\,\dif s = R^2 \int_\Gamma \dif s = R^2 \cdot 2\pi R = 2\pi R^3.
+  \]
+  故 $\int_\Gamma x^2\,\dif s = \frac{2\pi R^3}{3}$。
+  \[
+    \int_\Gamma (x^2+y^2-z^2)\,\dif s
+    = \frac{2\pi R^3}{3} + \frac{2\pi R^3}{3} - \frac{2\pi R^3}{3}
+    = \frac{2\pi R^3}{3}.
+  \]
+\end{solution}
+
+\begin{exercise}[第一类曲线积分——参数换元]
+  计算 $\int_L \frac{1}{(x^2+y^2)^{3/2}} \,\dif s$，
+  其中 $L$ 为螺旋线 $x = \cos t, y = \sin t, z = t$（$0 \le t \le 2\pi$）的上半部分。
+\end{exercise}
+
+\begin{solution}
+  $x^2+y^2 = 1$，故 $(x^2+y^2)^{3/2} = 1$。
+  $\dif s = \sqrt{\sin^2 t + \cos^2 t + 1}\,\dif t = \sqrt{2}\,\dif t$。
+  \[
+    \int_L \frac{1}{1} \cdot \sqrt{2} \,\dif t
+    = \sqrt{2} \cdot 2\pi = 2\sqrt{2}\,\pi.
+  \]
+\end{solution}
+
+\begin{exercise}[第一类曲线积分——椭圆与广义极坐标]
+  计算 $\int_L (x^2+y^2) \,\dif s$，
+  其中 $L$ 为椭圆 $\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$。
+\end{exercise}
+
+\begin{solution}
+  参数方程：$x = a\cos t$, $y = b\sin t$（$0 \le t \le 2\pi$）。
+  \[
+    \dif s = \sqrt{a^2\sin^2 t + b^2\cos^2 t}\,\dif t.
+  \]
+  \[
+    \int_L (x^2+y^2)\,\dif s
+    = \int_0^{2\pi} (a^2\cos^2 t + b^2\sin^2 t)
+      \sqrt{a^2\sin^2 t + b^2\cos^2 t}\,\dif t.
+  \]
+  当 $a = b = R$ 时退化为圆，结果为 $2\pi R^3$。
+  一般情形无初等闭式，需用椭圆积分表示。
+
+  \textbf{特殊情形} $a = b$：$\int_L = 2\pi a^3$。
+  当 $a \ne b$ 时，可做近似或数值计算。
+  这说明椭圆周长的曲线积分通常比圆复杂。
+\end{solution}
+
+\begin{exercise}[第二类曲线积分——分段路径]
+  计算 $\int_L x \,\dif y - y \,\dif x$，
+  其中 $L$ 为沿椭圆 $\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$
+  逆时针一周。
+\end{exercise}
+
+\begin{solution}
+  $P = -y$, $Q = x$。由 Green 公式（或直接参数化）：
+  \[
+    \oint_L x\,\dif y - y\,\dif x
+    = \iint_D (1+1)\,\dif x\,\dif y = 2\cdot\pi ab = 2\pi ab.
+  \]
+  也可直接参数化验证：
+  \[
+    \int_0^{2\pi}[a\cos t\cdot b\cos t - b\sin t\cdot(-a\sin t)]\,\dif t
+    = ab\int_0^{2\pi}(\cos^2 t+\sin^2 t)\,\dif t = 2\pi ab.\;\checkmark
+  \]
+\end{solution}
+
+\begin{exercise}[第一类曲线积分——重心坐标]
+  求上半圆周 $L: y = \sqrt{a^2-x^2}$（$-a \le x \le a$）的重心 $(\bar{x}, \bar{y})$。
+\end{exercise}
+
+\begin{solution}
+  弧长 $= \pi a$。由对称性，$\bar{x} = 0$（$L$ 关于 $y$ 轴对称）。
+  \[
+    \bar{y} = \frac{1}{\pi a}\int_L y\,\dif s
+    = \frac{1}{\pi a}\int_{-a}^a \sqrt{a^2-x^2}\cdot\frac{a}{\sqrt{a^2-x^2}}\,\dif x
+    = \frac{1}{\pi a}\int_{-a}^a a\,\dif x
+    = \frac{2a}{\pi}.
+  \]
+  其中 $\dif s = \sqrt{1+(y')^2}\,\dif x = \frac{a}{\sqrt{a^2-x^2}}\,\dif x$。
+
+  故重心为 $(0, \frac{2a}{\pi})$。
+\end{solution}
+
+\begin{exercise}[第二类曲线积分——椭圆路径换元]
+  计算 $\int_L y^2 \,\dif x + x^2 \,\dif y$，
+  其中 $L$ 为上半椭圆 $\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$（$y \ge 0$），
+  从 $(a,0)$ 到 $(-a,0)$。
+\end{exercise}
+
+\begin{solution}
+  参数方程：$x = a\cos t$, $y = b\sin t$，$t: 0 \to \pi$。
+  \[
+    \int_0^\pi [b^2\sin^2 t\cdot(-a\sin t) + a^2\cos^2 t\cdot b\cos t]\,\dif t
+    = -ab^2\int_0^\pi\sin^3 t\,\dif t + a^2 b\int_0^\pi\cos^3 t\,\dif t.
+  \]
+  $\int_0^\pi\sin^3 t\,\dif t = \frac{4}{3}$，
+  $\int_0^\pi\cos^3 t\,\dif t = 0$（$\cos^3 t$ 关于 $t=\pi/2$ 为奇函数）。
+  \[
+    = -ab^2\cdot\frac{4}{3} + 0 = -\frac{4ab^2}{3}.
+  \]
+\end{solution}
+
+
+% ============================================================
+%  PART 2: 两类曲面积分
+% ============================================================
+\section{两类曲面积分——概念、计算与辨析}
+
+% ---------- 2.1 第一类曲面积分（对面积的曲面积分） ----------
+\subsection{第一类曲面积分（对面积的曲面积分）}
+
+\begin{definition}[第一类曲面积分]
+  设曲面 $\Sigma$ 光滑，$f(x,y,z)$ 在 $\Sigma$ 上有界。
+  将 $\Sigma$ 任意分成 $n$ 个小曲面片，第 $i$ 片面积为 $\Delta S_i$，
+  在其上任取一点 $(\xi_i, \eta_i, \zeta_i)$。若极限
+  \[
+    \lim_{\lambda \to 0} \sum_{i=1}^{n} f(\xi_i, \eta_i, \zeta_i) \,\Delta S_i
+  \]
+  存在，则称为 $f$ 在 $\Sigma$ 上的\textbf{第一类曲面积分}，记作
+  \[
+    \iint_\Sigma f(x,y,z) \,\dif S.
+  \]
+\end{definition}
+
+\begin{remark}[物理意义]
+  若 $f$ 为面密度，则 $\iint_\Sigma f \,\dif S$ 为曲面 $\Sigma$ 的\textbf{总质量}。
+  $f \equiv 1$ 时，$\iint_\Sigma \dif S$ 为曲面的\textbf{面积}。
+\end{remark}
+
+\subsubsection*{计算方法}
+
+\begin{theorem}[第一类曲面积分的计算——投影法]
+  设曲面 $\Sigma$ 的方程为 $z = z(x,y)$，$(x,y) \in D_{xy}$，
+  $z$ 有连续偏导数，$f$ 在 $\Sigma$ 上连续，则
+  \[
+    \iint_\Sigma f(x,y,z) \,\dif S
+    = \iint_{D_{xy}} f\bigl(x,y,z(x,y)\bigr)
+    \sqrt{1 + \left(\pdfFrac{z}{x}\right)^{\!2} +
+    \left(\pdfFrac{z}{y}\right)^{\!2}} \,\dif x\,\dif y.
+  \]
+\end{theorem}
+
+\begin{remark}[面元素公式]
+  \[
+    \dif S = \sqrt{1 + z_x^2 + z_y^2} \,\dif x\,\dif y.
+  \]
+  若曲面由 $x = x(y,z)$ 给出，则 $\dif S = \sqrt{1+x_y^2+x_z^2}\,\dif y\,\dif z$。
+  若曲面由 $y = y(x,z)$ 给出，则 $\dif S = \sqrt{1+y_x^2+y_z^2}\,\dif x\,\dif z$。
+\end{remark}
+
+\subsubsection*{参数方程形式}
+
+若曲面 $\Sigma$ 由参数方程
+$\mathbf{r}(u,v) = \bigl(x(u,v), y(u,v), z(u,v)\bigr)$，$(u,v) \in D$ 给出，则
+\[
+  \iint_\Sigma f \,\dif S
+  = \iint_D f\bigl(x(u,v),y(u,v),z(u,v)\bigr)
+  \sqrt{EG - F^2} \,\dif u\,\dif v,
+\]
+其中 $E = \mathbf{r}_u \cdot \mathbf{r}_u$，
+$G = \mathbf{r}_v \cdot \mathbf{r}_v$，
+$F = \mathbf{r}_u \cdot \mathbf{r}_v$。
+
+\begin{proof}[$\dif S = \sqrt{EG - F^2}\,\dif u\,\dif v$ 的推导]
+  曲面 $\Sigma$ 上一点 $\mathbf{r}(u,v)$ 附近的面积元素近似为
+  由切向量 $\mathbf{r}_u\,\dif u$ 和 $\mathbf{r}_v\,\dif v$ 张成的\textbf{平行四边形的面积}：
+  \[
+    \dif S = \abs{\mathbf{r}_u \times \mathbf{r}_v} \,\dif u\,\dif v.
+  \]
+  由向量叉积与点积的关系 $\abs{\mathbf{a} \times \mathbf{b}}^2
+  = \abs{\mathbf{a}}^2 \abs{\mathbf{b}}^2 - (\mathbf{a} \cdot
+  \mathbf{b})^2$（Lagrange 恒等式）：
+  \[
+    \abs{\mathbf{r}_u \times \mathbf{r}_v}^2
+    = (\mathbf{r}_u \cdot \mathbf{r}_u)(\mathbf{r}_v \cdot \mathbf{r}_v)
+    - (\mathbf{r}_u \cdot \mathbf{r}_v)^2
+    = EG - F^2.
+  \]
+  故 $\dif S = \sqrt{EG - F^2}\,\dif u\,\dif v$。
+\end{proof}
+
+\begin{remark}[$\sqrt{EG-F^2}$ 与显式表达式的等价性]
+  当曲面由 $z = z(x,y)$ 给出时，取参数 $u = x, v = y$，
+  $\mathbf{r}(x,y) = (x, y, z(x,y))$。
+  \begin{align*}
+    \mathbf{r}_x &= (1, 0, z_x), \quad
+    \mathbf{r}_y = (0, 1, z_y), \\
+    E &= 1 + z_x^2, \quad
+    G = 1 + z_y^2, \quad
+    F = z_x z_y.
+  \end{align*}
+  \[
+    EG - F^2 = (1+z_x^2)(1+z_y^2) - z_x^2 z_y^2
+    = 1 + z_x^2 + z_y^2.
+  \]
+  故 $\dif S = \sqrt{1+z_x^2+z_y^2}\,\dif x\,\dif y$，与显式公式一致。
+\end{remark}
+
+% ---------- 2.2 第二类曲面积分（对坐标的曲面积分） ----------
+\subsection{第二类曲面积分（对坐标的曲面积分）}
+
+\begin{definition}[第二类曲面积分]
+  设 $\Sigma$ 为\textbf{有向}光滑曲面，选定一侧（法向量方向），
+  向量场 $\mathbf{F} = (P, Q, R)$ 在 $\Sigma$ 上有界。
+  第二类曲面积分定义为
+  \[
+    \iint_\Sigma P \,\dif y\,\dif z + Q \,\dif z\,\dif x + R \,\dif x\,\dif y,
+    \quad\text{或}\quad
+    \iint_\Sigma \mathbf{F} \cdot \dif\mathbf{S},
+  \]
+  其中 $\dif\mathbf{S} = \mathbf{n} \,\dif S$，$\mathbf{n}$ 为单位法向量。
+\end{definition}
+
+\begin{remark}[物理意义]
+  $\iint_\Sigma \mathbf{F} \cdot \dif\mathbf{S}$ 是向量场 $\mathbf{F}$
+  穿过有向曲面 $\Sigma$ 的\textbf{通量}（flux）。
+\end{remark}
+
+\begin{remark}[与侧的依赖关系]
+  第二类曲面积分\textbf{与曲面侧的选择有关}：
+  \[
+    \iint_{\Sigma^-} \mathbf{F} \cdot \dif\mathbf{S}
+    = -\iint_\Sigma \mathbf{F} \cdot \dif\mathbf{S},
+  \]
+  其中 $\Sigma^-$ 表示 $\Sigma$ 的另一侧（法向量反向）。
+\end{remark}
+
+\subsubsection*{计算方法}
+
+\begin{theorem}[第二类曲面积分的计算——投影法]
+  设 $\Sigma$ 由 $z = z(x,y)$ 给出，$(x,y) \in D_{xy}$，
+  取\textbf{上侧}（法向量与 $z$ 轴正方向成锐角），则
+  \[
+    \iint_\Sigma R(x,y,z) \,\dif x\,\dif y
+    = \iint_{D_{xy}} R\bigl(x,y,z(x,y)\bigr) \,\dif x\,\dif y.
+  \]
+  若取\textbf{下侧}，则加负号：
+  \[
+    \iint_{\Sigma_{\text{下}}} R \,\dif x\,\dif y
+    = -\iint_{D_{xy}} R\bigl(x,y,z(x,y)\bigr) \,\dif x\,\dif y.
+  \]
+\end{theorem}
+
+\begin{remark}[$\dif x\,\dif y$ 的含义]
+  \begin{itemize}
+    \item 在第一类曲面积分中，$\dif S$ 是面积元素（始终正）。
+    \item 在第二类曲面积分中，$\dif x\,\dif y$ 是\textbf{有向投影面积}：
+      上侧为正，下侧为负。$\dif x\,\dif y = \cos\gamma \,\dif S$（$\gamma$ 为法向量与 $z$ 轴的夹角）。
+    \item 同理，$\dif y\,\dif z = \cos\alpha \,\dif S$，$\dif z\,\dif x =
+      \cos\beta \,\dif S$。
+  \end{itemize}
+\end{remark}
+
+\subsubsection*{统一投影法}
+
+若曲面 $\Sigma: z = z(x,y)$ 取上侧，$P, Q, R$ 的第二类曲面积分可以统一投影到 $D_{xy}$：
+\[
+  \iint_\Sigma P\,\dif y\,\dif z + Q\,\dif z\,\dif x + R\,\dif x\,\dif y
+  = \iint_{D_{xy}} \left[ -P\,z_x - Q\,z_y + R \right] \dif x\,\dif y.
+\]
+取下侧时等式右端加负号。
+
+% ---------- 2.3 两类曲面积分的联系 ----------
+\subsection{两类曲面积分的联系}
+
+设 $(\cos\alpha, \cos\beta, \cos\gamma)$ 为有向曲面 $\Sigma$ 在点 $(x,y,z)$ 处的
+\textbf{单位法向量}，则
+\[
+  \iint_\Sigma P\,\dif y\,\dif z + Q\,\dif z\,\dif x + R\,\dif x\,\dif y
+  = \iint_\Sigma (P\cos\alpha + Q\cos\beta + R\cos\gamma) \,\dif S.
+\]
+
+% ---------- 2.4 第一类与第二类的对比表 ----------
+\subsection{两类曲面积分的对比}
+
+\begin{center}
+  \renewcommand{\arraystretch}{1.6}
+  \begin{tabular}{>{\raggedright\arraybackslash}p{3cm}
+      >{\raggedright\arraybackslash}p{5cm}
+    >{\raggedright\arraybackslash}p{5cm}}
+    \toprule
+    & \textbf{第一类（对面积）} & \textbf{第二类（对坐标）} \\
+    \midrule
+    记号
+    & $\displaystyle\iint_\Sigma f \,\dif S$
+    & $\displaystyle\iint_\Sigma P\,\dif y\,\dif z + Q\,\dif z\,\dif
+    x + R\,\dif x\,\dif y$ \\
+    被积函数
+    & 标量函数 $f(x,y,z)$
+    & 向量场分量 $P, Q, R$ \\
+    积分元素
+    & $\dif S$（面积元素，$\ge 0$）
+    & $\dif y\,\dif z$, $\dif z\,\dif x$, $\dif x\,\dif y$（有向投影，有正负） \\
+    方向/侧
+    & \textbf{与侧无关}
+    & \textbf{与侧有关}：换侧加负号 \\
+    计算公式
+    & $\sqrt{1+z_x^2+z_y^2}\,\dif x\,\dif y$
+    & 上侧为正，下侧为负 \\
+    物理意义
+    & 质量、面积
+    & 通量（流量） \\
+    联系
+    & \multicolumn{2}{c}{$\displaystyle\iint_\Sigma \mathbf{F} \cdot
+    \dif\mathbf{S} = \iint_\Sigma (\mathbf{F}\cdot\mathbf{n}) \,\dif S$} \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+% ---------- 2.5 常考易错点 ----------
+\subsection{常考易错点总结}
+
+\begin{enumerate}
+  \item \textbf{侧的选取}：
+    封闭曲面通常取\textbf{外侧}（Gauss 公式要求）。
+    非封闭曲面要由题目指定（"上侧""前侧""右侧"）。
+    \textbf{右手法则}：法向量指向"观察者看到的那一侧"。
+  \item \textbf{投影方向的选择}：
+    $P\,\dif y\,\dif z$ 投影到 $yOz$ 面；$Q\,\dif z\,\dif x$ 投影到 $zOx$ 面；
+    $R\,\dif x\,\dif y$ 投影到 $xOy$ 面。不要混淆！
+  \item \textbf{面元素与投影面积的区别}：
+    $\dif S = \frac{\dif x\,\dif y}{\abs{\cos\gamma}} =
+    \sqrt{1+z_x^2+z_y^2}\,\dif x\,\dif y$。
+  \item \textbf{统一投影时符号}：
+    用 $z = z(x,y)$ 统一投影时，$P$ 和 $Q$ 的系数为 $-z_x$ 和 $-z_y$，
+    不要漏掉负号。
+  \item \textbf{封闭曲面要分片}：
+    若封闭曲面不能由单一函数 $z=z(x,y)$ 表示
+    （如球面需分上下半球），需分片计算。
+  \item \textbf{利用 Gauss 公式}：
+    封闭曲面上的第二类曲面积分优先用 Gauss 公式（见第~\ref{sec:gauss}~节）。
+\end{enumerate}
+
+% ---------- 2.6 练习题 ----------
+\subsection{练习题——曲面积分}
+
+\begin{exercise}[第一类曲面积分——球面]
+  计算 $\iint_\Sigma (x^2+y^2) \,\dif S$，
+  其中 $\Sigma$ 为球面 $x^2+y^2+z^2 = R^2$。
+\end{exercise}
+
+\begin{solution}
+  由对称性，$x^2$, $y^2$, $z^2$ 在球面上的积分相等：
+  $\iint_\Sigma x^2 \,\dif S = \iint_\Sigma y^2 \,\dif S =
+  \iint_\Sigma z^2 \,\dif S$。
+  故 $\iint_\Sigma (x^2+y^2) \,\dif S = \frac{2}{3} \iint_\Sigma
+  (x^2+y^2+z^2) \,\dif S$。
+  \[
+    = \frac{2}{3} \iint_\Sigma R^2 \,\dif S
+    = \frac{2}{3} R^2 \cdot 4\pi R^2
+    = \frac{8\pi R^4}{3}.
+  \]
+\end{solution}
+
+\begin{exercise}[第一类曲面积分——参数化]
+  计算 $\iint_\Sigma z \,\dif S$，
+  其中 $\Sigma$ 为锥面 $z = \sqrt{x^2+y^2}$（$0 \le z \le 1$）。
+\end{exercise}
+
+\begin{solution}
+  $z_x = \frac{x}{\sqrt{x^2+y^2}}$，$z_y = \frac{y}{\sqrt{x^2+y^2}}$。
+  $\sqrt{1+z_x^2+z_y^2} = \sqrt{1+\frac{x^2+y^2}{x^2+y^2}} = \sqrt{2}$。
+  投影区域 $D_{xy}: x^2+y^2 \le 1$。
+  \[
+    \iint_\Sigma z \,\dif S
+    = \iint_{D_{xy}} \sqrt{x^2+y^2} \cdot \sqrt{2} \,\dif x\,\dif y
+    = \sqrt{2} \int_0^{2\pi} \dif\theta \int_0^1 r \cdot r \,\dif r
+    = \sqrt{2} \cdot 2\pi \cdot \frac{1}{3}
+    = \frac{2\sqrt{2}\pi}{3}.
+  \]
+\end{solution}
+
+\begin{exercise}[第二类曲面积分——基本计算]
+  计算 $\iint_\Sigma x^2 \,\dif y\,\dif z + y^2 \,\dif z\,\dif x + z^2
+  \,\dif x\,\dif y$，
+  其中 $\Sigma$ 为球面 $x^2+y^2+z^2 = R^2$，取\textbf{外侧}。
+\end{exercise}
+
+\begin{solution}
+  由 Gauss 公式（第~\ref{sec:gauss}~节）：
+  $P = x^2$, $Q = y^2$, $R = z^2$。
+  $\divergence \mathbf{F} = 2x + 2y + 2z = 2(x+y+z)$。
+  \[
+    \oiint_\Sigma = \iiint_\Omega 2(x+y+z) \,\dif V
+    = 2\iiint_\Omega x \,\dif V + 2\iiint_\Omega y \,\dif V +
+    2\iiint_\Omega z \,\dif V.
+  \]
+  由对称性，$\iiint_\Omega x \,\dif V = \iiint_\Omega y \,\dif V = 0$（球体关于各坐标面对称，
+  $x$, $y$ 分别为奇函数）。
+  同理 $\iiint_\Omega z \,\dif V = 0$。
+  故结果为 $0$。
+\end{solution}
+
+\begin{exercise}[第二类曲面积分——平面片]
+  计算 $\iint_\Sigma x \,\dif y\,\dif z + y \,\dif z\,\dif x + z \,\dif
+  x\,\dif y$，
+  其中 $\Sigma$ 为平面 $x+y+z=1$ 在第一卦限部分，取\textbf{上侧}。
+\end{exercise}
+
+\begin{solution}
+  曲面 $\Sigma: z = 1-x-y$，$(x,y) \in D_{xy} = \{(x,y) \mid x,y \ge 0,
+  x+y \le 1\}$。
+  $z_x = -1$, $z_y = -1$。取上侧，统一投影：
+  \[
+    \iint_\Sigma = \iint_{D_{xy}} \bigl[-x\cdot(-1) - y\cdot(-1) +
+    (1-x-y)\bigr] \dif x\,\dif y
+    = \iint_{D_{xy}} (x + y + 1 - x - y) \,\dif x\,\dif y
+    = \iint_{D_{xy}} 1 \,\dif x\,\dif y = \frac{1}{2}.
+  \]
+\end{solution}
+
+\begin{exercise}[两类曲面积分的转化]
+  设 $\Sigma$ 为球面 $x^2+y^2+z^2=R^2$ 上半部分，取上侧。
+  将 $\iint_\Sigma x \,\dif y\,\dif z + y \,\dif z\,\dif x + z \,\dif x\,\dif y$
+  转化为第一类曲面积分并计算。
+\end{exercise}
+
+\begin{solution}
+  上半球面外侧法向量 $\mathbf{n} = \frac{1}{R}(x, y, z)$。
+  \[
+    \iint_\Sigma \mathbf{F} \cdot \dif\mathbf{S}
+    = \iint_\Sigma (\mathbf{F} \cdot \mathbf{n}) \,\dif S
+    = \iint_\Sigma \frac{x^2+y^2+z^2}{R} \,\dif S
+    = \iint_\Sigma \frac{R^2}{R} \,\dif S
+    = R \cdot 2\pi R^2
+    = 2\pi R^3.
+  \]
+\end{solution}
+
+\begin{exercise}[第一类曲面积分——对称性（轮换对称性）]
+  计算 $\iint_\Sigma (x+y+z) \,\dif S$，
+  其中 $\Sigma$ 为球面 $x^2+y^2+z^2 = R^2$。
+\end{exercise}
+
+\begin{solution}
+  由球面对称性，$x$, $y$, $z$ 在球面上的积分彼此相等。
+  又球面关于 $xOy$ 面对称，$z$ 关于此平面为奇函数，故
+  $\iint_\Sigma z \,\dif S = 0$。
+  同理 $\iint_\Sigma x \,\dif S = \iint_\Sigma y \,\dif S = 0$。
+  因此
+  \[
+    \iint_\Sigma (x+y+z) \,\dif S = 0.
+  \]
+\end{solution}
+
+\begin{exercise}[第一类曲面积分——奇偶对称性]
+  计算 $\iint_\Sigma xyz \,\dif S$，
+  其中 $\Sigma$ 为球面 $x^2+y^2+z^2 = 1$。
+\end{exercise}
+
+\begin{solution}
+  球面关于 $xOy$ 面对称（即 $z \to -z$ 对称），
+  被积函数 $xyz$ 关于 $z$ 为奇函数，
+  故 $\iint_\Sigma xyz \,\dif S = 0$。
+\end{solution}
+
+\begin{exercise}[第一类曲面积分——柱面参数换元]
+  计算 $\iint_\Sigma x \,\dif S$，
+  其中 $\Sigma$ 为圆柱面 $x^2+y^2=R^2$（$0 \le z \le H$）。
+\end{exercise}
+
+\begin{solution}
+  参数化：$x = R\cos\theta$, $y = R\sin\theta$, $z = z$，
+  $(\theta, z) \in [0, 2\pi] \times [0, H]$。
+  $\mathbf{r}_\theta = (-R\sin\theta, R\cos\theta, 0)$，
+  $\mathbf{r}_z = (0, 0, 1)$。
+  $\mathbf{r}_\theta \times \mathbf{r}_z = (R\cos\theta, R\sin\theta, 0)$，
+  $\abs{\mathbf{r}_\theta \times \mathbf{r}_z} = R$。
+  \[
+    \iint_\Sigma x \,\dif S = \int_0^H \int_0^{2\pi} R\cos\theta \cdot R \,\dif\theta \,\dif z
+    = R^2 H \int_0^{2\pi} \cos\theta \,\dif\theta = 0.
+  \]
+  （也可直接由对称性：$x$ 为 $\theta$ 的奇函数。）
+\end{solution}
+
+\begin{exercise}[第一类曲面积分——球面参数换元与轮换]
+  计算 $\iint_\Sigma (x^4+y^4) \,\dif S$，
+  其中 $\Sigma$ 为球面 $x^2+y^2+z^2 = R^2$。
+\end{exercise}
+
+\begin{solution}
+  由球面的轮换对称性，
+  $\iint_\Sigma x^4 \,\dif S = \iint_\Sigma y^4 \,\dif S = \iint_\Sigma z^4 \,\dif S$。
+  用球面参数 $(\theta, \varphi)$（$\theta$ 为方位角，$\varphi$ 为极角）：
+  $x = R\sin\varphi\cos\theta$, $\dif S = R^2\sin\varphi\,\dif\varphi\,\dif\theta$。
+  \[
+    \iint_\Sigma x^4 \,\dif S
+    = \int_0^{2\pi}\!\dif\theta \int_0^\pi R^4\sin^4\varphi\cos^4\theta \cdot R^2\sin\varphi\,\dif\varphi
+    = R^6 \left(\int_0^{2\pi}\cos^4\theta\,\dif\theta\right)
+      \left(\int_0^\pi \sin^5\varphi\,\dif\varphi\right).
+  \]
+  $\displaystyle\int_0^{2\pi}\cos^4\theta\,\dif\theta
+    = 4\int_0^{\pi/2}\cos^4\theta\,\dif\theta
+    = 4\cdot\frac{3\cdot 1}{4\cdot 2}\cdot\frac{\pi}{2} = \frac{3\pi}{4}$。
+  $\displaystyle\int_0^\pi \sin^5\varphi\,\dif\varphi
+    = 2\int_0^{\pi/2}\sin^5\varphi\,\dif\varphi
+    = 2\cdot\frac{4\cdot 2}{5\cdot 3} = \frac{16}{15}$。
+  故 $\iint_\Sigma x^4 \,\dif S = R^6 \cdot \frac{3\pi}{4} \cdot \frac{16}{15}
+    = \frac{4\pi R^6}{5}$。
+  \[
+    \iint_\Sigma (x^4+y^4) \,\dif S = 2 \cdot \frac{4\pi R^6}{5} = \frac{8\pi R^6}{5}.
+  \]
+\end{solution}
+
+\begin{exercise}[第一类曲面积分——锥面上的奇偶性与分段]
+  计算 $\iint_\Sigma (x^2+z^2) \,\dif S$，
+  其中 $\Sigma$ 为锥面 $z = \sqrt{x^2+y^2}$（$0 \le z \le 2$）。
+\end{exercise}
+
+\begin{solution}
+  $z_r = \frac{x}{\sqrt{x^2+y^2}} = \cos\theta$，$z_y = \sin\theta$。
+  $\sqrt{1+z_x^2+z_y^2} = \sqrt{1+1} = \sqrt{2}$。
+  投影 $D_{xy}: x^2+y^2 \le 4$。
+  \[
+    \iint_\Sigma (x^2+z^2) \,\dif S
+    = \sqrt{2} \iint_{D_{xy}} (x^2+x^2+y^2) \,\dif x\,\dif y
+    = \sqrt{2} \iint_{D_{xy}} (2x^2+y^2) \,\dif x\,\dif y.
+  \]
+  由极坐标换元：
+  \[
+    = \sqrt{2} \int_0^{2\pi}\!\dif\theta \int_0^2 (2r^2\cos^2\theta + r^2\sin^2\theta)\, r\,\dif r
+    = \sqrt{2} \int_0^{2\pi}(2\cos^2\theta+\sin^2\theta)\,\dif\theta \cdot \int_0^2 r^3 \,\dif r.
+  \]
+  $\int_0^{2\pi}(2\cos^2\theta+\sin^2\theta)\,\dif\theta
+    = \int_0^{2\pi}(1+\cos^2\theta)\,\dif\theta
+    = 2\pi + \pi = 3\pi$。
+  $\int_0^2 r^3 \,\dif r = 4$。
+  故结果 $= \sqrt{2} \cdot 3\pi \cdot 4 = 12\sqrt{2}\,\pi$。
+\end{solution}
+
+\begin{exercise}[第二类曲面积分——对称性与投影简化]
+  计算 $\iint_\Sigma x \,\dif y\,\dif z + y \,\dif z\,\dif x + z \,\dif x\,\dif y$，
+  其中 $\Sigma$ 为球面 $x^2+y^2+z^2 = 1$，取外侧。
+\end{exercise}
+
+\begin{solution}
+  由 Gauss 公式，$\divergence \mathbf{F} = 1+1+1 = 3$。
+  \[
+    \oiint_\Sigma = \iiint_\Omega 3 \,\dif V = 3 \cdot \frac{4\pi}{3} = 4\pi.
+  \]
+  （此题也可直接利用球面对称性：每个分量积分值相等，只需算 $\iint_\Sigma z\,\dif x\,\dif y$ 再乘 $3$。）
+\end{solution}
+
+\begin{exercise}[第二类曲面积分——分片投影]
+  计算 $\iint_\Sigma z \,\dif x\,\dif y$，
+  其中 $\Sigma$ 为锥面 $z = \sqrt{x^2+y^2}$（$0 \le z \le 1$）的外侧。
+\end{exercise}
+
+\begin{solution}
+  $\Sigma$ 可分上下两半。但此题锥面关于 $z$ 轴对称，不能用单一 $z=z(x,y)$ 表示闭曲面的外侧。
+  实际上题目给出的是锥面侧（锥面本身是开的），取外侧即法向量水平朝外。
+
+  直接投影：锥面 $z=\sqrt{x^2+y^2}$ 的法向量朝外（远离 $z$ 轴），
+  $\dif x\,\dif y$ 分量为 $\cos\gamma\,\dif S$。
+  上半锥面 $\cos\gamma = \frac{1}{\sqrt{2}} > 0$（法向量与 $z$ 轴正方向成锐角），
+  但外法线分量指向外侧。
+
+  利用 $z_x = \frac{x}{z}$, $z_y = \frac{y}{z}$，
+  取上侧时 $\dif x\,\dif y > 0$：
+  \[
+    \iint_\Sigma z \,\dif x\,\dif y
+    = \iint_{D_{xy}} \sqrt{x^2+y^2} \,\dif x\,\dif y
+    = \int_0^{2\pi}\!\dif\theta \int_0^1 r \cdot r \,\dif r
+    = \frac{2\pi}{3}.
+  \]
+\end{solution}
+
+% ============================================================
+%  PART 3: Green 公式、Gauss 公式与 Stokes 公式
+% ============================================================
+\section{三大公式：Green、Gauss、Stokes}
+\label{sec:three-formulas}
+
+% ---------- 3.1 Green 公式 ----------
+\subsection{Green 公式}
+\label{sec:green}
+
+\begin{theorem}[Green 公式]
+  设 $D$ 为平面上的有界闭区域，边界 $L$ 为分段光滑的\textbf{正向}（逆时针）简单闭曲线。
+  若 $P(x,y)$, $Q(x,y)$ 在 $D$ 上有连续的一阶偏导数，则
+  \[
+    \oint_L P \,\dif x + Q \,\dif y
+    = \iint_D \left( \pdfFrac{Q}{x} - \pdfFrac{P}{y} \right) \dif x\,\dif y.
+  \]
+\end{theorem}
+
+\begin{remark}[正向约定]
+  "正向"即\textbf{逆时针方向}（人沿边界行走时，区域始终在左手边）。
+  若题目给顺时针方向，结果要加负号。
+\end{remark}
+
+\subsubsection*{Green 公式的推论}
+
+\begin{corollary}[面积公式]
+  取 $P = -y$, $Q = x$：
+  \[
+    \area(D) = \frac{1}{2}\oint_L x \,\dif y - y \,\dif x.
+  \]
+  其他常用取法：$P = 0, Q = x$：$\area(D) = \oint_L x\,\dif y$；
+  $P = -y, Q = 0$：$\area(D) = -\oint_L y\,\dif x$。
+\end{corollary}
+
+\begin{corollary}[积分与路径无关的判别]
+  设 $P, Q$ 在单连通区域 $D$ 上有连续偏导数，则以下四条等价：
+  \begin{enumerate}
+    \item $\displaystyle\oint_L P\,\dif x + Q\,\dif y = 0$，对 $D$ 内任意闭曲线 $L$；
+    \item $\displaystyle\int_L P\,\dif x + Q\,\dif y$ 在 $D$ 内与路径无关；
+    \item $P\,\dif x + Q\,\dif y$ 在 $D$ 内是某个函数 $u$ 的全微分（即 $\dif u =
+      P\,\dif x + Q\,\dif y$）；
+    \item $\displaystyle\pdfFrac{P}{y} = \pdfFrac{Q}{x}$ 在 $D$ 内处处成立。
+  \end{enumerate}
+\end{corollary}
+
+\begin{remark}[求原函数的方法]
+  若 $\pdfFrac{P}{y} = \pdfFrac{Q}{x}$，取路径 $(x_0,y_0) \to (x,y_0) \to (x,y)$：
+  \[
+    u(x,y) = \int_{x_0}^x P(x, y_0) \,\dif x + \int_{y_0}^y Q(x, y) \,\dif y.
+  \]
+\end{remark}
+
+% ---------- 3.2 Gauss 公式 ----------
+\subsection{Gauss 公式（散度定理）}
+\label{sec:gauss}
+
+\begin{theorem}[Gauss 公式]
+  设空间有界闭区域 $\Omega$ 的边界 $\Sigma$ 为分段光滑的\textbf{封闭}曲面，
+  取\textbf{外侧}。若 $P, Q, R$ 在 $\Omega$ 上有连续的一阶偏导数，则
+  \[
+    \oiint_\Sigma P \,\dif y\,\dif z + Q \,\dif z\,\dif x + R \,\dif x\,\dif y
+    = \iiint_\Omega \left( \pdfFrac{P}{x} + \pdfFrac{Q}{y} +
+    \pdfFrac{R}{z} \right) \dif x\,\dif y\,\dif z.
+  \]
+  即 $\displaystyle\oiint_\Sigma \mathbf{F} \cdot \dif\mathbf{S}
+  = \iiint_\Omega (\divergence \mathbf{F}) \,\dif V$。
+\end{theorem}
+
+\begin{remark}[散度]
+  $\divergence \mathbf{F} = \pdfFrac{P}{x} + \pdfFrac{Q}{y} + \pdfFrac{R}{z}$。
+  散度是标量场，描述向量场在每一点的"源"或"汇"的强度。
+\end{remark}
+
+\begin{remark}[Gauss 公式使用要点]
+  \begin{itemize}
+    \item \textbf{封闭曲面 + 外侧}：这是使用前提。
+      若曲面不封闭，需补面（通常补坐标面或平面片），使其封闭后用 Gauss，
+      再减去补面的积分。
+    \item \textbf{内侧}：若取内侧，结果加负号。
+    \item \textbf{挖洞法}：若 $\mathbf{F}$ 在 $\Omega$ 内部有奇点（如原点处分母为零），
+      需在奇点附近挖一个小球面，用 Gauss 公式在"外球面$-$内球面"围成的区域上使用。
+  \end{itemize}
+\end{remark}
+
+\subsubsection*{Gauss 公式的推论}
+
+\begin{corollary}[体积公式]
+  取 $\mathbf{F} = (x, 0, 0)$：$V = \oiint_\Sigma x \,\dif y\,\dif z$。
+  取 $\mathbf{F} = (x, y, z)$：$V = \frac{1}{3}\oiint_\Sigma x\,\dif
+  y\,\dif z + y\,\dif z\,\dif x + z\,\dif x\,\dif y$。
+\end{corollary}
+
+% ---------- 3.3 Stokes 公式 ----------
+\subsection{Stokes 公式}
+\label{sec:stokes}
+
+\begin{theorem}[Stokes 公式]
+  设 $\Sigma$ 为以光滑闭曲线 $\Gamma$ 为边界的\textbf{有向}曲面，
+  $\Gamma$ 的正向与 $\Sigma$ 的侧符合\textbf{右手法则}（右手法则：法向量方向
+  与边界曲线走向满足右手螺旋关系）。若 $P, Q, R$ 在包含 $\Sigma$ 的空间区域内
+  有连续的一阶偏导数，则
+  \[
+    \oint_\Gamma P \,\dif x + Q \,\dif y + R \,\dif z
+    = \iint_\Sigma
+    \left(\pdfFrac{R}{y} - \pdfFrac{Q}{z}\right) \dif y\,\dif z
+    + \left(\pdfFrac{P}{z} - \pdfFrac{R}{x}\right) \dif z\,\dif x
+    + \left(\pdfFrac{Q}{x} - \pdfFrac{P}{y}\right) \dif x\,\dif y.
+  \]
+\end{theorem}
+
+\begin{remark}[旋度]
+  向量场 $\mathbf{F} = (P, Q, R)$ 的\textbf{旋度}定义为
+  \[
+    \curl \mathbf{F}
+    = \nabla \times \mathbf{F}
+    =
+    \begin{vmatrix}
+      \mathbf{i} & \mathbf{j} & \mathbf{k} \\
+      \pdfFrac{}{x} & \pdfFrac{}{y} & \pdfFrac{}{z} \\
+      P & Q & R
+    \end{vmatrix}
+    = \left(\pdfFrac{R}{y}-\pdfFrac{Q}{z},\;
+      \pdfFrac{P}{z}-\pdfFrac{R}{x},\;
+    \pdfFrac{Q}{x}-\pdfFrac{P}{y}\right).
+  \]
+  Stokes 公式的向量形式：
+  $\displaystyle\oint_\Gamma \mathbf{F} \cdot \dif\mathbf{r}
+  = \iint_\Sigma (\curl \mathbf{F}) \cdot \dif\mathbf{S}$。
+\end{remark}
+
+\begin{remark}[Stokes 公式使用要点]
+  \begin{itemize}
+    \item \textbf{右手法则}：四指沿 $\Gamma$ 的正向弯曲，
+      拇指指向 $\Sigma$ 的法向量方向。
+    \item \textbf{Green 公式是 Stokes 的特例}：
+      当 $\Sigma$ 为 $xy$ 平面上的区域时，$\dif z = 0$，
+      $\dif y\,\dif z = \dif z\,\dif x = 0$，
+      Stokes 公式退化为 Green 公式。
+    \item \textbf{空间曲线积分}：优先考虑用 Stokes 公式转化为曲面积分。
+    \item \textbf{曲面选择}：以 $\Gamma$ 为边界的曲面不唯一，
+      可选最方便计算的那个（如平面片）。
+  \end{itemize}
+\end{remark}
+
+\subsubsection*{空间曲线积分与路径无关}
+
+\begin{corollary}[空间积分与路径无关]
+  设 $\mathbf{F} = (P, Q, R)$ 在空间单连通区域 $\Omega$ 上有连续偏导数，则以下等价：
+  \begin{enumerate}
+    \item $\displaystyle\oint_\Gamma \mathbf{F}\cdot\dif\mathbf{r} = 0$
+      对 $\Omega$ 内任意闭曲线；
+    \item $\displaystyle\int_\Gamma \mathbf{F}\cdot\dif\mathbf{r}$ 与路径无关；
+    \item $\dif u = P\,\dif x + Q\,\dif y + R\,\dif z$（存在势函数 $u$）；
+    \item $\curl \mathbf{F} = \mathbf{0}$ 在 $\Omega$ 内处处成立，
+      即 $\pdfFrac{R}{y}=\pdfFrac{Q}{z}$，
+      $\pdfFrac{P}{z}=\pdfFrac{R}{x}$，
+      $\pdfFrac{Q}{x}=\pdfFrac{P}{y}$。
+  \end{enumerate}
+\end{corollary}
+
+% ---------- 3.4 三大公式对比 ----------
+\subsection{三大公式的对比与统一}
+
+\begin{center}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{>{\raggedright\arraybackslash}p{2.5cm}
+      >{\raggedright\arraybackslash}p{3.5cm}
+      >{\raggedright\arraybackslash}p{3.5cm}
+    >{\raggedright\arraybackslash}p{3.5cm}}
+    \toprule
+    & \textbf{Green} & \textbf{Gauss} & \textbf{Stokes} \\
+    \midrule
+    维度 & 2D & 3D & 3D \\
+    降维 & 线积分 $\to$ 面积分 & 面积分 $\to$ 体积分 & 线积分 $\to$ 面积分 \\
+    公式
+    & $\displaystyle\oint_L P\,\dif x+Q\,\dif y$
+    & $\displaystyle\oiint_\Sigma \mathbf{F}\cdot\dif\mathbf{S}$
+    & $\displaystyle\oint_\Gamma \mathbf{F}\cdot\dif\mathbf{r}$ \\
+    等于
+    & $\iint_D (Q_x - P_y)\,\dif\sigma$
+    & $\iiint_\Omega \divergence\mathbf{F}\,\dif V$
+    & $\iint_\Sigma (\curl\mathbf{F})\cdot\dif\mathbf{S}$ \\
+    微分算子 & 旋转（$Q_x - P_y$） & 散度（$\nabla\cdot\mathbf{F}$） &
+    旋度（$\nabla\times\mathbf{F}$） \\
+    边界 & $L = \partial D$ 正向 & $\Sigma = \partial\Omega$ 外侧 & $\Gamma
+    = \partial\Sigma$ 右手法则 \\
+    特殊情形 & — & — & 退化为 Green \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+\begin{remark}[三大公式的统一视角]
+  三大公式都是\textbf{Newton--Leibniz 公式的高维推广}：
+  \[
+    \text{边界上的积分} = \text{内部区域的积分}.
+  \]
+  统一写作 $\displaystyle\int_{\partial M} \omega = \int_M \dif\omega$
+  （外微分形式的一般 Stokes 定理）。
+\end{remark}
+
+% ---------- 3.5 常考易错点 ----------
+\subsection{常考易错点总结}
+
+\begin{enumerate}
+  \item \textbf{Green 公式的方向}：
+    正向为逆时针。题目给顺时针要加负号。
+  \item \textbf{Gauss 公式的封闭性}：
+    曲面必须封闭。不封闭时需补面，最后减去补面部分。
+  \item \textbf{Stokes 公式的右手法则}：
+    边界曲线的方向与曲面法向量必须满足右手关系。方向搞反，符号全错。
+  \item \textbf{奇点处理}：
+    被积函数在区域内有奇点时（如分母为零），不能直接用 Green/Gauss。
+    需要\textbf{挖洞}：绕开奇点做一个小圆/小球面，
+    在剩余区域用公式，然后让小圆/小球面半径趋于零取极限。
+  \item \textbf{Stokes 曲面选择的自由度}：
+    以给定闭曲线为边界的曲面可以不同，
+    只要 $\curl\mathbf{F}$ 在所围区域内连续（由 Stokes 公式保证结果相同）。
+    通常选\textbf{平面}或\textbf{简单曲面}。
+  \item \textbf{路径无关 vs Green}：
+    $\pdfFrac{P}{y}=\pdfFrac{Q}{x}$ 时积分与路径无关，
+    可选最简路径（如坐标轴平移路径）计算，不必用 Green。
+\end{enumerate}
+
+% ---------- 3.6 练习题 ----------
+\subsection{练习题——三大公式}
+
+\begin{exercise}[Green 公式——基本计算]
+  计算 $\oint_L (x^2 - y^2) \,\dif x + (x^2 + y^2) \,\dif y$，
+  其中 $L$ 为正方形 $\abs{x}+\abs{y}=1$ 的边界，逆时针方向。
+\end{exercise}
+
+\begin{solution}
+  $P = x^2 - y^2$，$Q = x^2 + y^2$。
+  $Q_x = 2x$，$P_y = -2y$。
+  \[
+    \oint_L = \iint_D (2x + 2y) \,\dif x\,\dif y.
+  \]
+  $D$ 关于 $x$ 轴和 $y$ 轴均对称，$x$ 关于 $x$ 为奇函数（在对称区间积分为零），
+  $y$ 关于 $y$ 为奇函数。故 $\iint_D (2x+2y)\,\dif\sigma = 0$。
+
+  所以 $\oint_L = 0$。
+\end{solution}
+
+\begin{exercise}[Green 公式——面积计算]
+  利用 Green 公式计算椭圆 $\frac{x^2}{a^2}+\frac{y^2}{b^2} \le 1$ 的面积。
+\end{exercise}
+
+\begin{solution}
+  椭圆边界参数方程：$x = a\cos t$，$y = b\sin t$（$t: 0 \to 2\pi$，逆时针）。
+  \[
+    S = \frac{1}{2}\oint_L x\,\dif y - y\,\dif x
+    = \frac{1}{2}\int_0^{2\pi} [a\cos t \cdot b\cos t - b\sin t \cdot
+    (-a\sin t)] \,\dif t
+    = \frac{ab}{2}\int_0^{2\pi} (\cos^2 t + \sin^2 t) \,\dif t
+    = \frac{ab}{2} \cdot 2\pi = \pi ab.
+  \]
+\end{solution}
+
+\begin{exercise}[积分与路径无关]
+  验证 $(2x+y)\,\dif x + (x+2y)\,\dif y$ 是某函数的全微分，并求该函数。
+\end{exercise}
+
+\begin{solution}
+  $P = 2x+y$, $Q = x+2y$。$P_y = 1$, $Q_x = 1$。$P_y = Q_x$。$\checkmark$
+
+  取 $(x_0, y_0) = (0, 0)$：
+  \[
+    u(x,y) = \int_0^x 2x \,\dif x + \int_0^y (x+2y) \,\dif y
+    = x^2 + xy + y^2 + C.
+  \]
+  验证：$\dif u = (2x+y)\,\dif x + (x+2y)\,\dif y$。$\checkmark$
+\end{solution}
+
+\begin{exercise}[Gauss 公式——球面通量]
+  计算 $\oiint_\Sigma \mathbf{F}\cdot\dif\mathbf{S}$，
+  其中 $\mathbf{F} = (x^3, y^3, z^3)$，$\Sigma$ 为球面 $x^2+y^2+z^2=R^2$ 外侧。
+\end{exercise}
+
+\begin{solution}
+  $\divergence\mathbf{F} = 3x^2+3y^2+3z^2 = 3(x^2+y^2+z^2)$。
+  \[
+    \oiint_\Sigma = \iiint_\Omega 3(x^2+y^2+z^2) \,\dif V.
+  \]
+  用球坐标：
+  \[
+    =
+    3\int_0^{2\pi}\dif\theta\int_0^\pi\sin\varphi\,\dif\varphi\int_0^R
+    \rho^2\cdot\rho^2\,\dif\rho
+    = 3\cdot 2\pi\cdot 2\cdot\frac{R^5}{5}
+    = \frac{12\pi R^5}{5}.
+  \]
+\end{solution}
+
+\begin{exercise}[Gauss 公式——补面法]
+  计算 $\iint_\Sigma x\,\dif y\,\dif z + y\,\dif z\,\dif x + z\,\dif x\,\dif y$，
+  其中 $\Sigma$ 为上半球面 $z = \sqrt{R^2-x^2-y^2}$，取上侧。
+\end{exercise}
+
+\begin{solution}
+  $\Sigma$ 不封闭。补底面 $\Sigma_1: z=0, x^2+y^2 \le R^2$，取下侧。
+  记封闭曲面 $\Sigma \cup \Sigma_1$ 围成的区域为 $\Omega$（上半球）。
+  $\divergence\mathbf{F} = 1+1+1 = 3$。
+
+  由 Gauss 公式：
+  \[
+    \oiint_{\Sigma \cup \Sigma_1} = \iiint_\Omega 3 \,\dif V = 3
+    \cdot \frac{2\pi R^3}{3} = 2\pi R^3.
+  \]
+  补面 $\Sigma_1$ 取下侧，法向量 $(0,0,-1)$：
+  \[
+    \iint_{\Sigma_1} x\,\dif y\,\dif z + y\,\dif z\,\dif x + z\,\dif x\,\dif y
+    = \iint_{\Sigma_1} 0 \,\dif x\,\dif y = 0.
+  \]
+  （$z=0$ 所以 $z\,\dif x\,\dif y = 0$；$\dif y\,\dif z = \dif z\,\dif x = 0$
+  因为底面法向量沿 $z$ 轴方向。）
+
+  故 $\iint_\Sigma = 2\pi R^3 - 0 = 2\pi R^3$。
+\end{solution}
+
+\begin{exercise}[Gauss 公式——挖洞法]
+  计算 $\oiint_\Sigma \frac{x\,\dif y\,\dif z + y\,\dif z\,\dif x +
+  z\,\dif x\,\dif y}{(x^2+y^2+z^2)^{3/2}}$，
+  其中 $\Sigma$ 为不经过原点的封闭光滑曲面外侧。
+\end{exercise}
+
+\begin{solution}
+  $\mathbf{F} = \frac{(x,y,z)}{(x^2+y^2+z^2)^{3/2}}$。
+  直接计算 $\divergence\mathbf{F}$：
+
+  $\pdfFrac{}{x}\frac{x}{(x^2+y^2+z^2)^{3/2}}
+  = \frac{(x^2+y^2+z^2)^{3/2} - x \cdot \frac{3}{2}\cdot
+  2x\cdot(x^2+y^2+z^2)^{1/2}}{(x^2+y^2+z^2)^3}
+  = \frac{r^3 - 3x^2 r}{r^6} = \frac{r^2-3x^2}{r^5}$（$r=\sqrt{x^2+y^2+z^2}$）。
+
+  同理其他两项为 $\frac{r^2-3y^2}{r^5}$ 和 $\frac{r^2-3z^2}{r^5}$。
+  \[
+    \divergence\mathbf{F} = \frac{3r^2 - 3(x^2+y^2+z^2)}{r^5} =
+    \frac{3r^2-3r^2}{r^5} = 0.
+  \]
+  故 $\mathbf{F}$ 在 $r \ne 0$ 处散度为零。
+
+  \textbf{情形一}：原点在 $\Sigma$ 外部。
+  直接用 Gauss：$\oiint_\Sigma = \iiint_\Omega 0 \,\dif V = 0$。
+
+  \textbf{情形二}：原点在 $\Sigma$ 内部。
+  在原点附近挖小球面 $S_\eps: x^2+y^2+z^2 = \eps^2$（内侧）。
+  在 $\Sigma$ 和 $S_\eps$ 之间的区域 $\Omega'$ 上用 Gauss：
+  \[
+    \oiint_{\Sigma} + \oiint_{S_\eps(\text{内侧})} = 0,
+    \quad \oiint_{S_\eps(\text{内侧})} = -\oiint_{S_\eps(\text{外侧})}.
+  \]
+  \[
+    \oiint_{S_\eps(\text{外侧})}
+    = \frac{1}{\eps^3}\oiint_{S_\eps} x\,\dif y\,\dif z + y\,\dif
+    z\,\dif x + z\,\dif x\,\dif y
+    = \frac{1}{\eps^3}\iiint_{B_\eps} 3 \,\dif V
+    = \frac{1}{\eps^3}\cdot 3\cdot\frac{4\pi\eps^3}{3} = 4\pi.
+  \]
+  故 $\oiint_\Sigma = 4\pi$。
+\end{solution}
+
+\begin{exercise}[Stokes 公式——空间闭曲线]
+  计算 $\oint_\Gamma y \,\dif x + z \,\dif y + x \,\dif z$，
+  其中 $\Gamma$ 为圆周 $x^2+y^2+z^2=a^2, x+y+z=0$，
+  从 $x$ 轴正方向看去为逆时针方向。
+\end{exercise}
+
+\begin{solution}
+  $\mathbf{F} = (y, z, x)$。
+  $\curl\mathbf{F} =
+  \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\
+    \pdfFrac{}{x} & \pdfFrac{}{y} & \pdfFrac{}{z} \\
+    y & z & x
+  \end{vmatrix}
+  = (-1, -1, -1)$。
+
+  选 $\Sigma$ 为平面 $x+y+z=0$ 上被 $\Gamma$ 所围的圆盘，法向量与 $\Gamma$ 方向满足右手法则。
+  由 $x+y+z=0$ 取法向量 $\mathbf{n} = \frac{1}{\sqrt{3}}(1,1,1)$（验证方向：$x$ 轴正方向看逆时针，
+  法向量应指向 $(1,1,1)$ 方向）。
+
+  \[
+    \iint_\Sigma (\curl\mathbf{F})\cdot\dif\mathbf{S}
+    = \iint_\Sigma (-1,-1,-1)\cdot\frac{1}{\sqrt{3}}(1,1,1) \,\dif S
+    = \iint_\Sigma \frac{-3}{\sqrt{3}} \,\dif S
+    = -\sqrt{3} \cdot \pi a^2.
+  \]
+  （圆盘半径为 $a$，面积为 $\pi a^2$。）
+
+  故 $\oint_\Gamma = -\sqrt{3}\,\pi a^2$。
+\end{solution}
+
+\begin{exercise}[Stokes 公式——选平面]
+  计算 $\oint_\Gamma (y-z)\,\dif x + (z-x)\,\dif y + (x-y)\,\dif z$，
+  其中 $\Gamma$ 为椭圆 $x^2+y^2=1, x+z=1$，
+  从 $z$ 轴正方向看去为逆时针。
+\end{exercise}
+
+\begin{solution}
+  $\mathbf{F} = (y-z, z-x, x-y)$。
+  $\curl\mathbf{F} = (-2, -2, -2)$（计算：$R_y-Q_z = -1-1 = -2$，
+  $P_z-R_x = -1-1=-2$，$Q_x-P_y = -1-1=-2$）。
+
+  选 $\Sigma$ 为平面 $x+z=1$ 上被 $\Gamma$ 所围的椭圆盘。
+  法向量 $\mathbf{n} = \frac{1}{\sqrt{2}}(1,0,1)$（与 $z$ 轴正方向看逆时针匹配，
+  即 $(1,0,1)/\sqrt{2}$ 方向）。
+
+  \[
+    \iint_\Sigma (\curl\mathbf{F})\cdot\mathbf{n}\,\dif S
+    = \iint_\Sigma \frac{(-2)+0+(-2)}{\sqrt{2}} \,\dif S
+    = \frac{-4}{\sqrt{2}} \cdot \area(\Sigma).
+  \]
+  $\Gamma$ 在 $x+z=1$ 上是椭圆，在 $xOy$ 面投影为单位圆 $x^2+y^2=1$，
+  $\Sigma$ 的面积 $= \iint_{x^2+y^2\le 1}\frac{1}{\abs{n_z}}\,\dif\sigma
+  = \sqrt{2}\cdot\pi$。
+
+  \[
+    \oint_\Gamma = \frac{-4}{\sqrt{2}}\cdot\sqrt{2}\pi = -4\pi.
+  \]
+\end{solution}
+
+\begin{exercise}[空间路径无关]
+  验证 $\mathbf{F} = (2xz+y^2, 2xy, x^2+z)$ 的线积分与路径无关，
+  并计算 $\int_\Gamma \mathbf{F}\cdot\dif\mathbf{r}$，
+  其中 $\Gamma$ 为从 $(0,0,0)$ 到 $(1,1,1)$ 的任意路径。
+\end{exercise}
+
+\begin{solution}
+  $\curl\mathbf{F}$:
+  \begin{align*}
+    \pdfFrac{R}{y}-\pdfFrac{Q}{z} &= 0 - 0 = 0, \\
+    \pdfFrac{P}{z}-\pdfFrac{R}{x} &= 2x - 2x = 0, \\
+    \pdfFrac{Q}{x}-\pdfFrac{P}{y} &= 2y - 2y = 0.
+  \end{align*}
+  $\curl\mathbf{F} = \mathbf{0}$。积分与路径无关。
+
+  选路径 $(0,0,0) \to (1,0,0) \to (1,1,0) \to (1,1,1)$：
+  \begin{itemize}
+    \item $(0,0,0) \to (1,0,0)$：$y=z=0$，$\dif y = \dif z = 0$。
+      $\int_0^1 0 \,\dif x = 0$。
+    \item $(1,0,0) \to (1,1,0)$：$x=1, z=0$，$\dif x = \dif z = 0$。
+      $\int_0^1 2y \,\dif y = 1$。
+    \item $(1,1,0) \to (1,1,1)$：$x=y=1$，$\dif x = \dif y = 0$。
+      $\int_0^1 (1+z) \,\dif z = 1 + \frac{1}{2} = \frac{3}{2}$。
+  \end{itemize}
+  总计 $0 + 1 + \frac{3}{2} = \frac{5}{2}$。
+
+  或求势函数 $u$：
+  \[
+    u = \int P\,\dif x = x^2 z + xy^2 + g(y,z).
+  \]
+  $u_y = 2xy + g_y = Q = 2xy \Rightarrow g_y = 0 \Rightarrow g = h(z)$。
+  $u_z = x^2 + h'(z) = R = x^2 + z \Rightarrow h'(z) = z \Rightarrow h = z^2/2$。
+  $u = x^2 z + xy^2 + z^2/2 + C$。
+
+  $\int_\Gamma = u(1,1,1) - u(0,0,0) = (1+1+1/2) - 0 = \frac{5}{2}$。
+\end{solution}
+
+
+% ============================================================
+%  PART 4: 综合辨析与进阶练习
+% ============================================================
+\section{综合辨析与进阶练习}
+
+% ---------- 4.1 四种积分的统一对比 ----------
+\subsection{四种积分的统一对比}
+
+\begin{center}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{>{\raggedright\arraybackslash}p{2.2cm}
+      >{\raggedright\arraybackslash}p{5cm}
+    >{\raggedright\arraybackslash}p{5cm}}
+    \toprule
+    & \textbf{第一类（无方向）} & \textbf{第二类（有方向）} \\
+    \midrule
+    \textbf{曲线积分}
+    & $\displaystyle\int_L f \,\dif s$
+    \newline 标量 $f$，弧长元素
+    & $\displaystyle\int_L P\,\dif x + Q\,\dif y$
+    \newline 向量场，坐标微分 \\
+    \textbf{曲面积分}
+    & $\displaystyle\iint_\Sigma f \,\dif S$
+    \newline 标量 $f$，面积元素
+    & $\displaystyle\iint_\Sigma P\,\dif y\,\dif z + Q\,\dif z\,\dif
+    x + R\,\dif x\,\dif y$
+    \newline 向量场，有向投影 \\
+    \midrule
+    \textbf{方向性}
+    & 无（$\dif s \ge 0$, $\dif S \ge 0$）
+    & 有（换向/换侧加负号） \\
+    \textbf{联系}
+    & \multicolumn{2}{c}{$\text{第二类} = \int (\text{向量} \cdot
+    \text{方向向量}) \,\dif\text{几何度量}$} \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+% ---------- 4.2 常见计算方法决策树 ----------
+\subsection{计算方法决策树}
+
+\textbf{遇到曲线积分时}：
+\begin{enumerate}
+  \item 是第一类还是第二类？（看积分元素：$\dif s$ vs $\dif x, \dif y$）
+  \item 第一类：直接参数化，注意下限 $\le$ 上限。
+  \item 第二类闭曲线：优先 Green 公式。
+  \item 第二类非闭曲线：检查 $\pdfFrac{P}{y}=\pdfFrac{Q}{x}$？
+    \begin{itemize}
+      \item 是：与路径无关，选最简路径或求势函数。
+      \item 否：直接参数化，注意下限=起点。
+    \end{itemize}
+\end{enumerate}
+
+\textbf{遇到曲面积分时}：
+\begin{enumerate}
+  \item 是第一类还是第二类？（看积分元素：$\dif S$ vs $\dif y\,\dif z$ 等）
+  \item 第一类：投影法 $\dif S = \sqrt{1+z_x^2+z_y^2}\,\dif x\,\dif y$。
+  \item 第二类封闭曲面：优先 Gauss 公式。
+  \item 第二类非封闭曲面：补面后用 Gauss，再减去补面；或直接投影。
+\end{enumerate}
+
+\textbf{遇到空间闭曲线积分时}：
+\begin{enumerate}
+  \item 检查 $\curl\mathbf{F} = \mathbf{0}$？若是，积分为 $0$。
+  \item 否则，用 Stokes 公式：选一个以曲线为边界的曲面（优先选平面），
+    转化为曲面积分。
+\end{enumerate}
+
+% ---------- 4.3 进阶练习题 ----------
+\subsection{进阶练习题}
+
+\begin{exercise}[综合——Green 公式与路径无关]
+  确定 $a$ 的值，使 $\frac{(x+y)\,\dif x + (ax+y)\,\dif y}{x^2+y^2}$
+  在除去原点的全平面上是某个函数的全微分，并求出该函数。
+\end{exercise}
+
+\begin{solution}
+  $P = \frac{x+y}{x^2+y^2}$，$Q = \frac{ax+y}{x^2+y^2}$。
+  \begin{align*}
+    P_y &= \frac{(x^2+y^2) - (x+y)\cdot 2y}{(x^2+y^2)^2}
+    = \frac{x^2-y^2-2xy}{(x^2+y^2)^2}, \\
+    Q_x &= \frac{a(x^2+y^2) - (ax+y)\cdot 2x}{(x^2+y^2)^2}
+    = \frac{(a-2a)x^2 + ay^2 - 2xy}{(x^2+y^2)^2}
+    = \frac{-ax^2 + ay^2 - 2xy}{(x^2+y^2)^2}.
+  \end{align*}
+  要求 $P_y = Q_x$：$x^2-y^2-2xy = -ax^2+ay^2-2xy$，
+  即 $(1+a)x^2 + (-1-a)y^2 = 0$，需 $1+a=0$，故 $a = -1$。
+
+  当 $a=-1$ 时，取路径绕开原点。
+  由极坐标 $x=r\cos\theta, y=r\sin\theta$：
+  \[
+    u = \int \frac{(x+y)\,\dif x + (-x+y)\,\dif y}{x^2+y^2}.
+  \]
+  参数化：取从 $(1,0)$ 沿 $x$ 轴到 $(x,0)$，再平行 $y$ 轴到 $(x,y)$：
+  \[
+    u = \int_1^x \frac{t}{t^2}\,\dif t + \int_0^y \frac{-x+t}{x^2+t^2}\,\dif t
+    = \frac{1}{2}\ln x^2 + \int_0^y \frac{-x+t}{x^2+t^2}\,\dif t.
+  \]
+  内层：$\int_0^y \frac{-x}{x^2+t^2}\,\dif t = -\arctan\frac{y}{x}$，
+  $\int_0^y \frac{t}{x^2+t^2}\,\dif t = \frac{1}{2}\ln\frac{x^2+y^2}{x^2}$。
+  \[
+    u = \ln x - \arctan\frac{y}{x} + \frac{1}{2}\ln\frac{x^2+y^2}{x^2} + C
+    = \frac{1}{2}\ln(x^2+y^2) - \arctan\frac{y}{x} + C.
+  \]
+\end{solution}
+
+\begin{exercise}[综合——Gauss 补面]
+  计算 $\iint_\Sigma (x^2\cos\alpha + y^2\cos\beta + z^2\cos\gamma) \,\dif S$，
+  其中 $\Sigma$ 为锥面 $z = \sqrt{x^2+y^2}$（$0 \le z \le h$），
+  $(\cos\alpha, \cos\beta, \cos\gamma)$ 为 $\Sigma$ 的\textbf{下侧}单位法向量。
+\end{exercise}
+
+\begin{solution}
+  这是第一类曲面积分形式的第二类积分。
+  补顶面 $\Sigma_1: z = h, x^2+y^2 \le h^2$，取上侧。
+  封闭曲面 $\Sigma \cup \Sigma_1$ 围成锥体 $\Omega$。
+
+  \[
+    \oiint_{\Sigma\cup\Sigma_1} = \iiint_\Omega (2x+2y+2z) \,\dif V.
+  \]
+  由对称性：$\iiint_\Omega x \,\dif V = \iiint_\Omega y \,\dif V = 0$。
+  \[
+    = 2\iiint_\Omega z \,\dif V = 2\int_0^h z \cdot \pi z^2 \,\dif z
+    = 2\pi \int_0^h z^3 \,\dif z = \frac{\pi h^4}{2}.
+  \]
+  顶面 $\Sigma_1$ 上 $z = h$，法向量 $(0,0,1)$（上侧）：
+  \[
+    \iint_{\Sigma_1} h^2 \,\dif x\,\dif y = h^2 \cdot \pi h^2 = \pi h^4.
+  \]
+  题目要求 $\Sigma$ 的下侧，而我们计算时用了 $\Sigma$ 的外侧（也是下侧，因为锥面的外侧朝外）：
+  \[
+    \iint_{\Sigma(\text{下侧})} = \frac{\pi h^4}{2} - \pi h^4 =
+    -\frac{\pi h^4}{2}.
+  \]
+\end{solution}
+
+\begin{exercise}[综合——Stokes 公式求旋度积分]
+  利用 Stokes 公式计算 $\oint_\Gamma (y^2-z^2)\,\dif x + (z^2-x^2)\,\dif y
+  + (x^2-y^2)\,\dif z$，
+  其中 $\Gamma$ 为立方体 $0 \le x,y,z \le a$ 的表面与平面 $x+y+z = \frac{3a}{2}$ 的交线，
+  从 $z$ 轴正方向看为逆时针。
+\end{exercise}
+
+\begin{solution}
+  $\mathbf{F} = (y^2-z^2, z^2-x^2, x^2-y^2)$。
+  $\curl\mathbf{F} = (-2y-2z,\; -2z-2x,\; -2x-2y) = -2(y+z,\; z+x,\; x+y)$。
+
+  选 $\Sigma$ 为平面 $x+y+z = \frac{3a}{2}$ 上被 $\Gamma$ 所围的正六边形。
+  法向量 $\mathbf{n} = \frac{1}{\sqrt{3}}(1,1,1)$。
+
+  \[
+    (\curl\mathbf{F})\cdot\mathbf{n} = -2\cdot\frac{(y+z)+(z+x)+(x+y)}{\sqrt{3}}
+    = -2\cdot\frac{2(x+y+z)}{\sqrt{3}}
+    = -2\cdot\frac{2\cdot\frac{3a}{2}}{\sqrt{3}}
+    = -2\sqrt{3}\,a.
+  \]
+  （在 $\Sigma$ 上，$x+y+z = \frac{3a}{2}$ 恒成立。）
+
+  $\Sigma$ 是边长为 $\frac{a\sqrt{2}}{2}$ 的正六边形，
+  面积 $= \frac{3\sqrt{3}}{2}\cdot\frac{a^2}{2} = \frac{3\sqrt{3}a^2}{4}$。
+
+  故 $\oint_\Gamma = -2\sqrt{3}\,a\cdot\frac{3\sqrt{3}a^2}{4}
+  = -\frac{9a^3}{2}$。
+\end{solution}
+
+\begin{exercise}[证明题——Green 等周不等式]
+  设 $L$ 为平面上长度为 $l$ 的简单光滑闭曲线，$D$ 为 $L$ 所围区域。
+  利用 Green 公式证明等周不等式：
+  \[
+    \area(D) \le \frac{l^2}{4\pi}.
+  \]
+\end{exercise}
+
+\begin{solution}
+  此处给出证明思路（Wirtinger 不等式方法）。
+
+  不妨设 $L$ 的重心在原点，即 $\oint_L x\,\dif s = \oint_L y\,\dif s = 0$。
+  参数化 $L$ 为 $x = x(t), y = y(t)$（$0 \le t \le 2\pi$），弧长参数 $s$ 从 $0$ 到 $l$。
+
+  令 $t = \frac{2\pi s}{l}$，则 $\dif s = \frac{l}{2\pi}\dif t$。
+
+  利用 Green 公式：
+  \[
+    2\area(D) = \oint_L x\,\dif y - y\,\dif x
+    = \int_0^{2\pi} (x\dot{y} - y\dot{x}) \,\dif t.
+  \]
+
+  由 Parseval 等式和 Wirtinger 不等式可以推出
+  $\int_0^{2\pi}(x\dot{y}-y\dot{x})\,\dif t \le \frac{l^2}{2\pi}$，
+  从而 $\area(D) \le \frac{l^2}{4\pi}$。
+
+  等号当且仅当 $L$ 为圆周时成立。
+\end{solution}
+
+\begin{exercise}[综合——综合应用三大公式]
+  设 $\Sigma$ 为上半球面 $z = \sqrt{1-x^2-y^2}$（上侧），
+  $\Gamma$ 为其边界 $x^2+y^2=1, z=0$（从 $z$ 轴正方向看逆时针）。
+  分别用直接计算、Green 公式和 Stokes 公式计算
+  \[
+    \oint_\Gamma y^3 \,\dif x - x^3 \,\dif y.
+  \]
+\end{exercise}
+
+\begin{solution}
+  \textbf{方法一：直接参数化。}
+  $\Gamma: x = \cos\theta, y = \sin\theta$（$0 \le \theta \le 2\pi$）。
+  \[
+    \int_0^{2\pi} [\sin^3\theta\cdot(-\sin\theta) -
+    \cos^3\theta\cdot\cos\theta] \,\dif\theta
+    = -\int_0^{2\pi} (\sin^4\theta + \cos^4\theta) \,\dif\theta.
+  \]
+  $\sin^4\theta+\cos^4\theta = 1 - \frac{1}{2}\sin^2 2\theta =
+  1-\frac{1-\cos 4\theta}{4} = \frac{3}{4}+\frac{\cos 4\theta}{4}$。
+  \[
+    = -2\pi\cdot\frac{3}{4} = -\frac{3\pi}{2}.
+  \]
+
+  \textbf{方法二：Green 公式。}
+  $\Gamma$ 围成 $D: x^2+y^2\le 1$。
+  $P = y^3, Q = -x^3$。$Q_x - P_y = -3x^2 - 3y^2 = -3(x^2+y^2)$。
+  \[
+    \oint_\Gamma = \iint_D -3(x^2+y^2) \,\dif\sigma
+    = -3\int_0^{2\pi}\dif\theta\int_0^1 r^3 \,\dif r
+    = -3\cdot 2\pi\cdot\frac{1}{4}
+    = -\frac{3\pi}{2}.
+  \]
+
+  \textbf{方法三：Stokes 公式。}
+  视为空间曲线（$z=0$），$\mathbf{F} = (y^3, -x^3, 0)$。
+  $\curl\mathbf{F} = (0, 0, -3x^2-3y^2)$。
+  \[
+    \iint_\Sigma (\curl\mathbf{F})\cdot\dif\mathbf{S}
+    = \iint_\Sigma (-3(x^2+y^2)) \cdot \cos\gamma \,\dif S.
+  \]
+  在上半球面上，$\cos\gamma = z = \sqrt{1-x^2-y^2}$，
+  $\dif S = \frac{\dif x\,\dif y}{\cos\gamma}$。
+  \[
+    = \iint_{x^2+y^2\le 1} (-3(x^2+y^2)) \,\dif x\,\dif y
+    = -\frac{3\pi}{2}.
+  \]
+  三种方法结果一致。$\checkmark$
+\end{solution}
+
+\begin{exercise}[综合——通量与散度]
+  求向量场 $\mathbf{F} = (x^2, y^2, z^2)$ 穿过圆锥面
+  $x^2+y^2=z^2$（$0 \le z \le h$）的\textbf{外侧}通量。
+\end{exercise}
+
+\begin{solution}
+  补底面 $\Sigma_1: z=h, x^2+y^2\le h^2$（上侧）。
+  $\Sigma\cup\Sigma_1$ 围成锥体 $\Omega$。
+  $\divergence\mathbf{F} = 2x+2y+2z$。
+
+  Gauss 公式：
+  \[
+    \oiint_{\Sigma\cup\Sigma_1} = \iiint_\Omega (2x+2y+2z) \,\dif V
+    = 2\iiint_\Omega z \,\dif V
+    = 2\int_0^h z\cdot\pi z^2 \,\dif z = \frac{\pi h^4}{2}.
+  \]
+  （由对称性 $\iiint x = \iiint y = 0$。）
+
+  底面 $\Sigma_1$：$\mathbf{n}=(0,0,1)$，$z=h$：
+  \[
+    \iint_{\Sigma_1} \mathbf{F}\cdot\dif\mathbf{S}
+    = \iint_{x^2+y^2\le h^2} h^2 \,\dif x\,\dif y = \pi h^4.
+  \]
+
+  锥面外侧通量：
+  $\iint_\Sigma = \frac{\pi h^4}{2} - \pi h^4 = -\frac{\pi h^4}{2}$。
+
+  负号表示通量指向锥体\textbf{内部}（因为 $\mathbf{F}$ 在锥面上主要指向外，
+  但锥面的"外侧"朝向远离 $z$ 轴的方向，$\mathbf{F}$ 的法向分量在某些部分为负）。
+\end{solution}
+
+\begin{exercise}[证明题——$\divergence(\curl\mathbf{F})=0$]
+  设 $\mathbf{F} = (P, Q, R)$ 为 $C^2$ 向量场。证明 $\divergence(\curl\mathbf{F}) = 0$。
+\end{exercise}
+
+\begin{solution}
+  $\curl\mathbf{F} = (R_y-Q_z,\; P_z-R_x,\; Q_x-P_y)$。
+  \[
+    \divergence(\curl\mathbf{F})
+    = \pdfFrac{}{x}(R_y-Q_z) + \pdfFrac{}{y}(P_z-R_x) + \pdfFrac{}{z}(Q_x-P_y).
+  \]
+  由混合偏导数连续，$R_{yx} = R_{xy}$，$Q_{xz} = Q_{zx}$ 等等。展开：
+  \[
+    = (R_{yx} - Q_{xz}) + (P_{zy} - R_{xy}) + (Q_{xz} - P_{yz})
+    = R_{xy} - Q_{xz} + P_{yz} - R_{xy} + Q_{xz} - P_{yz} = 0. \quad\square
+  \]
+  \textbf{推论}：$\divergence(\curl\mathbf{F})=0$ 意味着若 $\mathbf{F} =
+  \curl\mathbf{G}$，
+  则 $\oiint_\Sigma \mathbf{F}\cdot\dif\mathbf{S} = \iiint_\Omega
+  \divergence\mathbf{F}\,\dif V = 0$，
+  即\textbf{旋度场的通量为零}。
+\end{solution}
+
+\begin{exercise}[综合——梯度场性质]
+  设 $u(x,y,z)$ 有连续二阶偏导数。证明：
+  \begin{enumerate}
+    \item $\curl(\grad u) = \mathbf{0}$（梯度场无旋）；
+    \item 利用 Gauss 公式推导 $\iiint_\Omega \Delta u \,\dif V =
+      \oiint_{\partial\Omega} \pdfFrac{u}{\mathbf{n}} \,\dif S$，
+      其中 $\Delta u = u_{xx}+u_{yy}+u_{zz}$，$\pdfFrac{u}{\mathbf{n}}$ 为外法向导数。
+  \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+  (1) $\grad u = (u_x, u_y, u_z)$。
+  \[
+    \curl(\grad u) =
+    \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\
+      \pdfFrac{}{x} & \pdfFrac{}{y} & \pdfFrac{}{z} \\
+      u_x & u_y & u_z
+    \end{vmatrix}
+    = (u_{zy}-u_{yz},\; u_{xz}-u_{zx},\; u_{yx}-u_{xy})
+    = (0, 0, 0).
+  \]
+  （由 $u \in C^2$，混合偏导与求导顺序无关。）
+
+  (2) 设 $\mathbf{F} = \grad u = (u_x, u_y, u_z)$。
+  $\divergence\mathbf{F} = u_{xx}+u_{yy}+u_{zz} = \Delta u$。
+  由 Gauss 公式：
+  \[
+    \iiint_\Omega \Delta u \,\dif V
+    = \oiint_{\partial\Omega} \mathbf{F}\cdot\dif\mathbf{S}
+    = \oiint_{\partial\Omega} (\grad u)\cdot\mathbf{n} \,\dif S
+    = \oiint_{\partial\Omega} \pdfFrac{u}{\mathbf{n}} \,\dif S. \quad\square
+  \]
+  这是 Laplace 方程理论中的\textbf{第一 Green 恒等式}的基础。
+\end{solution}
+
+
+% ============================================================
+%  PART 5: 微分形式与广义 Stokes 公式
+% ============================================================
+\section{微分形式与广义 Stokes 公式}
+
+前三节分别讨论了 Green、Gauss、Stokes 三个公式。
+本节从\textbf{微分形式}（differential forms）的角度给出它们的统一表述，
+即\textbf{广义 Stokes 公式}。
+理解这一框架不仅能将三个公式"合并"为一个，
+还能揭示它们与一维 Newton--Leibniz 公式的深层联系。
+
+% ---------- 5.1 微分形式的定义 ----------
+\subsection{微分形式的基本概念}
+
+\begin{definition}[$k$-形式]
+  在 $\R^n$ 上，一个\textbf{$k$ 次微分形式}（简称 $k$-形式）是形如
+  \[
+    \omega = \sum_{1 \le i_1 < \cdots < i_k \le n}
+    a_{i_1 \cdots i_k}(x_1, \ldots, x_n) \;
+    \dif x_{i_1} \wedge \cdots \wedge \dif x_{i_k}
+  \]
+  的表达式，其中 $a_{i_1 \cdots i_k}$ 是光滑函数，
+  $\wedge$ 是\textbf{楔积}（外积，wedge product）。
+\end{definition}
+
+\begin{remark}[常见低次形式]
+  \begin{itemize}
+    \item \textbf{0-形式}：就是光滑函数 $f(x_1, \ldots, x_n)$。
+    \item \textbf{1-形式}（$\R^2$）：$\omega = P\,\dif x + Q\,\dif y$。
+      这正是第二类曲线积分中的被积表达式。
+    \item \textbf{1-形式}（$\R^3$）：$\omega = P\,\dif x + Q\,\dif y + R\,\dif z$。
+    \item \textbf{2-形式}（$\R^2$）：$\omega = f\,\dif x \wedge \dif y$。
+      这对应二重积分的被积式。
+    \item \textbf{2-形式}（$\R^3$）：
+      $\omega = P\,\dif y \wedge \dif z + Q\,\dif z \wedge \dif x +
+      R\,\dif x \wedge \dif y$。
+      这对应第二类曲面积分。
+    \item \textbf{3-形式}（$\R^3$）：$\omega = f\,\dif x \wedge \dif y
+      \wedge \dif z$。
+      这对应三重积分。
+  \end{itemize}
+\end{remark}
+
+% ---------- 5.2 楔积 ----------
+\subsection{楔积（外积）}
+
+\begin{definition}[楔积的运算规则]
+  楔积 $\wedge$ 满足以下规则：
+  \begin{enumerate}
+    \item \textbf{反对称性}：$\dif x_i \wedge \dif x_j = -\dif x_j \wedge \dif x_i$。
+    \item \textbf{特别地}：$\dif x_i \wedge \dif x_i = 0$。
+    \item \textbf{双线性}：对函数系数满足线性性。
+    \item \textbf{结合律}：
+      $(\dif x_i \wedge \dif x_j) \wedge \dif x_k
+      = \dif x_i \wedge (\dif x_j \wedge \dif x_k)$。
+  \end{enumerate}
+\end{definition}
+
+\begin{example}[楔积计算]
+  \begin{enumerate}
+    \item $\dif x \wedge \dif y = -\dif y \wedge \dif x$。
+    \item $\dif x \wedge \dif x = 0$。
+    \item $(P\,\dif x + Q\,\dif y) \wedge (R\,\dif x + S\,\dif y)$：
+      \begin{align*}
+        &= PR\,\dif x \wedge \dif x + PS\,\dif x \wedge \dif y
+        + QR\,\dif y \wedge \dif x + QS\,\dif y \wedge \dif y \\
+        &= (PS - QR)\,\dif x \wedge \dif y.
+      \end{align*}
+    \item $(a_1\,\dif x + b_1\,\dif y + c_1\,\dif z) \wedge
+      (a_2\,\dif x + b_2\,\dif y + c_2\,\dif z)$：
+      \begin{align*}
+        &= (b_1 c_2 - c_1 b_2)\,\dif y \wedge \dif z
+        + (c_1 a_2 - a_1 c_2)\,\dif z \wedge \dif x
+        + (a_1 b_2 - b_1 a_2)\,\dif x \wedge \dif y.
+      \end{align*}
+      这正是两个向量 $(a_1,b_1,c_1)$ 和 $(a_2,b_2,c_2)$ 叉积的分量！
+  \end{enumerate}
+\end{example}
+
+\begin{remark}[楔积与行列式]
+  更一般地，$n$ 个 1-形式的楔积展开后系数就是\textbf{行列式}：
+  \[
+    (a_{11}\,\dif x_1 + \cdots) \wedge \cdots \wedge (a_{n1}\,\dif x_1 + \cdots)
+    = \det(a_{ij}) \;\dif x_1 \wedge \cdots \wedge \dif x_n.
+  \]
+  这解释了为什么变量替换时出现\textbf{雅可比行列式}——
+  体积元素的变换本质上是楔积的变换。
+\end{remark}
+
+% ---------- 5.3 外微分 ----------
+\subsection{外微分（Exterior Derivative）}
+
+\begin{definition}[外微分]
+  外微分 $\dif$ 将 $k$-形式映为 $(k+1)$-形式：
+  \begin{itemize}
+    \item \textbf{0-形式} $f$ 的外微分就是梯度：
+      \[
+        \dif f = \pdfFrac{f}{x_1}\,\dif x_1 + \cdots +
+        \pdfFrac{f}{x_n}\,\dif x_n.
+      \]
+    \item \textbf{一般情形}：对 $\omega = a\,\dif x_{i_1} \wedge \cdots
+      \wedge \dif x_{i_k}$，
+      \[
+        \dif\omega = (\dif a) \wedge \dif x_{i_1} \wedge \cdots
+        \wedge \dif x_{i_k}
+        = \sum_{j=1}^{n} \pdfFrac{a}{x_j}\,\dif x_j \wedge \dif
+        x_{i_1} \wedge \cdots \wedge \dif x_{i_k}.
+      \]
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}[$\dif^2 = 0$]
+  对任意 $k$-形式 $\omega$，$\dif(\dif\omega) = 0$。
+\end{theorem}
+
+\begin{proof}
+  以 0-形式 $f$ 为例：
+  \[
+    \dif(\dif f)
+    = \dif\!\left(\sum_i f_{x_i}\,\dif x_i\right)
+    = \sum_{i,j} f_{x_i x_j}\,\dif x_j \wedge \dif x_i.
+  \]
+  将项按 $(i,j)$ 和 $(j,i)$ 配对：
+  $f_{x_i x_j}\,\dif x_j \wedge \dif x_i + f_{x_j x_i}\,\dif x_i \wedge \dif x_j
+  = f_{x_i x_j}(\dif x_j \wedge \dif x_i - \dif x_j \wedge \dif x_i) = 0$
+  （由 Schwarz 定理 $f_{x_i x_j} = f_{x_j x_i}$）。
+  故 $\dif^2 f = 0$。一般情形类似。
+\end{proof}
+
+\begin{remark}[$\dif^2 = 0$ 的向量场解释]
+  \begin{itemize}
+    \item $\curl(\grad f) = \mathbf{0}$：对应 $\dif(\dif f) = 0$。
+    \item $\divergence(\curl\mathbf{F}) = 0$：对应 $\dif(\dif\omega) =
+      0$（1-形式 $\omega$ 的情形）。
+  \end{itemize}
+  这两个恒等式是同一事实（$\dif^2=0$）在不同维度的表现。
+\end{remark}
+
+\subsubsection*{各维度的外微分计算}
+
+\begin{example}[$\R^2$ 上的外微分]
+  \begin{itemize}
+    \item 0-形式 $f$：
+      $\dif f = f_x\,\dif x + f_y\,\dif y$（梯度）。
+    \item 1-形式 $\omega = P\,\dif x + Q\,\dif y$：
+      \begin{align*}
+        \dif\omega &= (P_x\,\dif x + P_y\,\dif y) \wedge \dif x
+        + (Q_x\,\dif x + Q_y\,\dif y) \wedge \dif y \\
+        &= P_y\,\dif y \wedge \dif x + Q_x\,\dif x \wedge \dif y \\
+        &= (Q_x - P_y)\,\dif x \wedge \dif y.
+      \end{align*}
+      这正是 Green 公式中出现的 $Q_x - P_y$！
+  \end{itemize}
+\end{example}
+
+\begin{example}[$\R^3$ 上的外微分]
+  \begin{itemize}
+    \item 0-形式 $f$：
+      $\dif f = f_x\,\dif x + f_y\,\dif y + f_z\,\dif z$（梯度）。
+    \item 1-形式 $\omega = P\,\dif x + Q\,\dif y + R\,\dif z$：
+      \begin{align*}
+        \dif\omega &= P_y\,\dif y\wedge\dif x + P_z\,\dif z\wedge\dif x \\
+        &\quad + Q_x\,\dif x\wedge\dif y + Q_z\,\dif z\wedge\dif y \\
+        &\quad + R_x\,\dif x\wedge\dif z + R_y\,\dif y\wedge\dif z \\
+        &= (R_y - Q_z)\,\dif y\wedge\dif z
+        + (P_z - R_x)\,\dif z\wedge\dif x
+        + (Q_x - P_y)\,\dif x\wedge\dif y.
+      \end{align*}
+      系数恰好是 $\curl(P,Q,R)$ 的三个分量——Stokes 公式的核心！
+    \item 2-形式 $\omega = P\,\dif y\wedge\dif z + Q\,\dif z\wedge\dif
+      x + R\,\dif x\wedge\dif y$：
+      \[
+        \dif\omega = (P_x + Q_y + R_z)\,\dif x\wedge\dif y\wedge\dif z.
+      \]
+      系数就是 $\divergence(P,Q,R)$——Gauss 公式的核心！
+  \end{itemize}
+\end{example}
+
+\begin{center}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{>{\raggedright\arraybackslash}p{2.5cm}
+      >{\raggedright\arraybackslash}p{4cm}
+    >{\raggedright\arraybackslash}p{5cm}}
+    \toprule
+    \textbf{形式次数} & \textbf{外微分} & \textbf{对应的向量算子} \\
+    \midrule
+    0-形式 $\to$ 1-形式 & $\dif f = \sum f_{x_i}\,\dif x_i$ & $\grad f$ \\
+    1-形式 $\to$ 2-形式 & $\dif\omega$ 的系数 & $\curl\mathbf{F}$（$\R^3$）或
+    $Q_x-P_y$（$\R^2$） \\
+    2-形式 $\to$ 3-形式 & $\dif\omega$ 的系数 & $\divergence\mathbf{F}$（$\R^3$） \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+% ---------- 5.4 形式的拉回与变量替换 ----------
+\subsection{形式的拉回（Pullback）与变量替换}
+
+\begin{definition}[拉回]
+  设 $\Phi: \R^m \to \R^n$ 为光滑映射。
+  $\Phi$ 将 $k$-形式 $\omega$ \textbf{拉回}为 $\R^m$ 上的 $k$-形式 $\Phi^*\omega$，
+  定义为对每个分量做替换 $\dif x_i \to \sum_j \pdfFrac{\Phi_i}{u_j}\,\dif u_j$，
+  然后展开并用楔积规则化简。
+\end{definition}
+
+\begin{example}[极坐标的拉回]
+  $\Phi: (r,\theta) \mapsto (r\cos\theta, r\sin\theta)$。
+  \[
+    \Phi^*(\dif x \wedge \dif y)
+    = (\cos\theta\,\dif r - r\sin\theta\,\dif\theta)
+    \wedge (\sin\theta\,\dif r + r\cos\theta\,\dif\theta).
+  \]
+  展开：
+  \begin{align*}
+    &= \cos\theta\sin\theta\,\dif r\wedge\dif r
+    + r\cos^2\theta\,\dif r\wedge\dif\theta \\
+    &\quad - r\sin^2\theta\,\dif\theta\wedge\dif r
+    - r^2\sin\theta\cos\theta\,\dif\theta\wedge\dif\theta \\
+    &= r(\cos^2\theta+\sin^2\theta)\,\dif r\wedge\dif\theta
+    = r\,\dif r\wedge\dif\theta.
+  \end{align*}
+  故 $\iint_D f\,\dif x\wedge\dif y = \iint_{D'} f\,r\,\dif r\wedge\dif\theta$，
+  因子 $r$ 正是雅可比行列式的绝对值！
+\end{example}
+
+\begin{remark}[拉回与外微分交换]
+  拉回与外微分可交换：$\Phi^*(\dif\omega) = \dif(\Phi^*\omega)$。
+  这是广义 Stokes 公式与变量替换协调的根本原因。
+\end{remark}
+
+% ---------- 5.5 广义 Stokes 公式 ----------
+\subsection{广义 Stokes 公式}
+
+\begin{theorem}[广义 Stokes 公式]
+  设 $M$ 是一个 $n$ 维有向流形（带边），$\partial M$ 为其边界（取诱导定向），
+  $\omega$ 是 $M$ 上的 $(n-1)$-形式，系数有连续的一阶偏导数。则
+  \[
+    \int_M \dif\omega = \int_{\partial M} \omega.
+  \]
+\end{theorem}
+
+\begin{remark}[Newton--Leibniz 公式的高维统一]
+  广义 Stokes 公式是一切积分基本定理的统一表述：
+  \begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{>{\raggedright\arraybackslash}p{3cm}
+        >{\raggedright\arraybackslash}p{4cm}
+      >{\raggedright\arraybackslash}p{5cm}}
+      \toprule
+      \textbf{定理} & $M$ 与 $\partial M$ & $\omega$ 与 $\dif\omega$ \\
+      \midrule
+      Newton--Leibniz
+      & $[a,b]$, 端点 $\{a,b\}$
+      & $f(x)$, $\dif f = f'\,\dif x$ \\
+      Green
+      & $D \subset \R^2$, 边界曲线 $L$
+      & $P\,\dif x+Q\,\dif y$, $(Q_x-P_y)\,\dif x\wedge\dif y$ \\
+      Stokes
+      & 曲面 $\Sigma$, 边界曲线 $\Gamma$
+      & $P\,\dif x+\cdots$, 旋度形式 \\
+      Gauss
+      & 区域 $\Omega$, 边界曲面 $\Sigma$
+      & $P\,\dif y\wedge\dif z+\cdots$, 散度形式 \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  所有公式都写成同一个形式：
+  $\displaystyle\int_{\text{内部}} \dif(\text{形式}) = \int_{\text{边界}} \text{形式}$。
+\end{remark}
+
+\subsubsection*{逐个验证}
+
+\begin{example}[Newton--Leibniz 公式]
+  取 $M = [a,b]$, $\omega = f$（0-形式）。
+  $\dif\omega = f'\,\dif x$。
+  \[
+    \int_{[a,b]} f'\,\dif x = f(b) - f(a) = \int_{\partial[a,b]} f.
+  \]
+  边界 $\partial[a,b] = \{b\} - \{a\}$（有向端点），这就是 Newton--Leibniz 公式。
+\end{example}
+
+\begin{example}[Green 公式]
+  取 $M = D \subset \R^2$, $\omega = P\,\dif x + Q\,\dif y$（1-形式）。
+  \[
+    \dif\omega = (Q_x - P_y)\,\dif x \wedge \dif y.
+  \]
+  \[
+    \iint_D (Q_x - P_y)\,\dif x \wedge \dif y = \oint_{\partial D}
+    P\,\dif x + Q\,\dif y.
+  \]
+  这正是 Green 公式。
+\end{example}
+
+\begin{example}[Stokes 公式]
+  取 $M = \Sigma \subset \R^3$（曲面）,
+  $\omega = P\,\dif x + Q\,\dif y + R\,\dif z$（1-形式）。
+  \[
+    \dif\omega = (R_y-Q_z)\,\dif y\wedge\dif z
+    + (P_z-R_x)\,\dif z\wedge\dif x
+    + (Q_x-P_y)\,\dif x\wedge\dif y.
+  \]
+  \[
+    \iint_\Sigma \dif\omega = \oint_{\partial\Sigma} \omega.
+  \]
+  左端是 $\curl\mathbf{F}$ 的曲面积分，右端是 $\mathbf{F}$ 的曲线积分——Stokes 公式。
+\end{example}
+
+\begin{example}[Gauss 公式]
+  取 $M = \Omega \subset \R^3$（区域）,
+  $\omega = P\,\dif y\wedge\dif z + Q\,\dif z\wedge\dif x + R\,\dif
+  x\wedge\dif y$（2-形式）。
+  \[
+    \dif\omega = (P_x+Q_y+R_z)\,\dif x\wedge\dif y\wedge\dif z
+    = (\divergence\mathbf{F})\,\dif x\wedge\dif y\wedge\dif z.
+  \]
+  \[
+    \iiint_\Omega (\divergence\mathbf{F})\,\dif x\wedge\dif y\wedge\dif z
+    = \oiint_{\partial\Omega} \omega.
+  \]
+  这正是 Gauss 散度定理。
+\end{example}
+
+% ---------- 5.6 形式的积分与对偶 ----------
+\subsection{微分形式视角下的两类积分}
+
+\begin{remark}[第一类积分 vs 第二类积分——形式的解释]
+  \begin{itemize}
+    \item \textbf{第一类曲线/曲面积分}（对弧长/面积）：
+      积分对象是\textbf{函数}（0-形式）乘以\textbf{体积元素}（$n$-形式）。
+      不涉及定向。$\int f\,\dif s$，$\iint f\,\dif S$。
+    \item \textbf{第二类曲线/曲面积分}（对坐标）：
+      积分对象本身就是\textbf{微分形式}（$k$-形式沿 $k$ 维流形积分）。
+      依赖定向。$\int \omega$，其中 $\omega$ 是 $k$-形式。
+    \item 改变定向等价于改变形式的符号（$\omega \to -\omega$），
+      所以第二类积分在变向后加负号。
+  \end{itemize}
+  广义 Stokes 公式处理的是\textbf{第二类积分}（形式的积分）。
+  第一类积分不直接涉及外微分，但有联系：
+  $\dif s = \sqrt{\dif x^2+\dif y^2}$ 等，本质上是对度量结构的积分。
+\end{remark}
+
+% ---------- 5.7 常考要点 ----------
+\subsection{微分形式部分的常考要点}
+
+\begin{enumerate}
+  \item \textbf{楔积的反对称性}：
+    $\dif x \wedge \dif y = -\dif y \wedge \dif x$，
+    $\dif x \wedge \dif x = 0$。计算时要仔细处理符号。
+  \item \textbf{外微分就是旋度/散度}：
+    在 $\R^3$ 中，$\dif(1\text{-形式})$ 给出旋度，
+    $\dif(2\text{-形式})$ 给出散度。
+    这是考题中最常考的对应关系。
+  \item \textbf{$\dif^2 = 0$ 的含义}：
+    $\curl(\grad f) = 0$ 和 $\divergence(\curl\mathbf{F}) = 0$
+    是 $\dif^2=0$ 的具体表现。
+    由此可以判断：梯度场一定无旋，旋度场一定无散。
+  \item \textbf{拉回计算雅可比}：
+    极坐标、球坐标等变量替换中的雅可比因子可以通过形式拉回统一推导。
+  \item \textbf{定向与符号}：
+    广义 Stokes 公式中 $\partial M$ 取\textbf{诱导定向}，
+    方向搞错则符号错。诱导定向的规则：
+    在边界上，法向量指向"外侧"，切向量与法向量构成右手系。
+\end{enumerate}
+
+% ---------- 5.8 练习题 ----------
+\subsection{练习题——微分形式与广义 Stokes}
+
+\begin{exercise}[楔积基本计算]
+  计算 $(2\,\dif x + 3\,\dif y) \wedge (\dif x - \dif y + \dif z)$。
+\end{exercise}
+
+\begin{solution}
+  \begin{align*}
+    &2\,\dif x \wedge \dif x - 2\,\dif x \wedge \dif y + 2\,\dif x
+    \wedge \dif z \\
+    &+\; 3\,\dif y \wedge \dif x - 3\,\dif y \wedge \dif y + 3\,\dif
+    y \wedge \dif z \\
+    &= -2\,\dif x\wedge\dif y + 2\,\dif x\wedge\dif z
+    - 3\,\dif x\wedge\dif y + 3\,\dif y\wedge\dif z \\
+    &= -5\,\dif x\wedge\dif y + 2\,\dif x\wedge\dif z + 3\,\dif y\wedge\dif z.
+  \end{align*}
+  （注意 $\dif y\wedge\dif x = -\dif x\wedge\dif y$。）
+\end{solution}
+
+\begin{exercise}[外微分——验证 Green 公式]
+  设 $\omega = (x^2+y)\,\dif x + (xy - y^2)\,\dif y$。
+  计算 $\dif\omega$ 并验证 Green 公式在单位圆盘 $D: x^2+y^2\le 1$ 上成立。
+\end{exercise}
+
+\begin{solution}
+  $P = x^2+y$, $Q = xy-y^2$。
+  $Q_x = y$, $P_y = 1$。故 $\dif\omega = (y-1)\,\dif x\wedge\dif y$。
+
+  左端：
+  $\iint_D (y-1)\,\dif x\wedge\dif y
+  = \iint_D y\,\dif x\,\dif y - \iint_D 1\,\dif x\,\dif y
+  = 0 - \pi = -\pi$。
+  （$y$ 关于 $y$ 为奇函数，对称区域积分为 $0$。）
+
+  右端：参数化 $\partial D$ 为 $x=\cos\theta, y=\sin\theta$（$0\le\theta\le 2\pi$）：
+  \begin{align*}
+    \oint_{\partial D} \omega
+    &= \int_0^{2\pi}\bigl[(\cos^2\theta+\sin\theta)(-\sin\theta)
+    + (\cos\theta\sin\theta-\sin^2\theta)\cos\theta\bigr]\,\dif\theta \\
+    &= \int_0^{2\pi}\bigl[-\sin^2\theta -
+    \sin^2\theta\cos\theta\bigr]\,\dif\theta
+    = -\pi - 0 = -\pi.
+  \end{align*}
+  左端 $=$ 右端 $= -\pi$。$\checkmark$
+\end{solution}
+
+\begin{exercise}[外微分——验证 Stokes 公式]
+  设 $\omega = y\,\dif x + z\,\dif y + x\,\dif z$。
+  计算 $\dif\omega$，并利用 Stokes 公式验证
+  $\oint_\Gamma \omega = -\sqrt{3}\pi a^2$，
+  其中 $\Gamma$ 为 $x^2+y^2+z^2=a^2$ 与 $x+y+z=0$ 的交线（适当方向）。
+\end{exercise}
+
+\begin{solution}
+  $P=y, Q=z, R=x$：
+  $R_y-Q_z = -1$, $P_z-R_x = -1$, $Q_x-P_y = -1$。
+  \[
+    \dif\omega = -\dif y\wedge\dif z - \dif z\wedge\dif x - \dif x\wedge\dif y.
+  \]
+  取 $\Sigma$ 为平面 $x+y+z=0$ 上被 $\Gamma$ 所围的圆盘，
+  法向量 $\mathbf{n} = \frac{1}{\sqrt{3}}(1,1,1)$。
+  \[
+    \iint_\Sigma \dif\omega
+    = \iint_\Sigma (-1,-1,-1)\cdot\frac{1}{\sqrt{3}}(1,1,1)\,\dif S
+    = -\sqrt{3}\cdot\pi a^2.
+  \]
+  由广义 Stokes 公式：$\oint_\Gamma \omega = -\sqrt{3}\pi a^2$。
+\end{solution}
+
+\begin{exercise}[外微分——验证 Gauss 公式]
+  设 $\omega = x^2\,\dif y\wedge\dif z + y^2\,\dif z\wedge\dif x +
+  z^2\,\dif x\wedge\dif y$。
+  计算 $\dif\omega$ 并利用 Gauss 公式计算
+  $\oiint_\Sigma \omega$，$\Sigma$ 为球面 $x^2+y^2+z^2=R^2$ 外侧。
+\end{exercise}
+
+\begin{solution}
+  $\dif\omega = 2(x+y+z)\,\dif x\wedge\dif y\wedge\dif z$。
+
+  由广义 Stokes 公式：
+  \[
+    \oiint_\Sigma \omega = \iiint_\Omega 2(x+y+z)\,\dif x\wedge\dif
+    y\wedge\dif z.
+  \]
+  由对称性，$\iiint_\Omega x\,\dif V = \iiint_\Omega y\,\dif V =
+  \iiint_\Omega z\,\dif V = 0$。
+  故 $\oiint_\Sigma \omega = 0$。
+\end{solution}
+
+\begin{exercise}[$\dif^2 = 0$ 的具体验证]
+  设 $\omega = x^2 y\,\dif x + xyz\,\dif y + yz^2\,\dif z$。
+  计算 $\dif\omega$ 和 $\dif(\dif\omega)$，验证 $\dif^2\omega = 0$。
+\end{exercise}
+
+\begin{solution}
+  $P = x^2y$, $Q = xyz$, $R = yz^2$。
+  \begin{align*}
+    R_y - Q_z &= 2yz - xy, \\
+    P_z - R_x &= 0, \\
+    Q_x - P_y &= yz - x^2.
+  \end{align*}
+  \[
+    \dif\omega = (2yz-xy)\,\dif y\wedge\dif z + (yz-x^2)\,\dif x\wedge\dif y.
+  \]
+
+  $\dif(\dif\omega)$：对 2-形式 $A\,\dif y\wedge\dif z + C\,\dif
+  x\wedge\dif y$ 取外微分：
+  \begin{align*}
+    \dif(A\,\dif y\wedge\dif z) &= A_x\,\dif x\wedge\dif y\wedge\dif
+    z = -y\,\dif x\wedge\dif y\wedge\dif z, \\
+    \dif(C\,\dif x\wedge\dif y) &= C_z\,\dif z\wedge\dif x\wedge\dif
+    y = y\,\dif x\wedge\dif y\wedge\dif z.
+  \end{align*}
+  $\dif(\dif\omega) = (-y + y)\,\dif x\wedge\dif y\wedge\dif z = 0$。$\checkmark$
+\end{solution}
+
+\begin{exercise}[拉回——球坐标的雅可比]
+  利用形式拉回推导球坐标 $\dif x\wedge\dif y\wedge\dif z =
+  \rho^2\sin\varphi\,\dif\rho\wedge\dif\varphi\wedge\dif\theta$。
+\end{exercise}
+
+\begin{solution}
+  $\dif x\wedge\dif y\wedge\dif z$ 作为 3-形式，在 $\R^3$ 上只有
+  $\dif\rho\wedge\dif\varphi\wedge\dif\theta$ 的系数非零，
+  该系数恰好是\textbf{雅可比行列式}：
+  \[
+    \dif x\wedge\dif y\wedge\dif z
+    =
+    \det\frac{\partial(x,y,z)}{\partial(\rho,\varphi,\theta)}\;\dif\rho\wedge\dif\varphi\wedge\dif\theta
+    = \rho^2\sin\varphi\;\dif\rho\wedge\dif\varphi\wedge\dif\theta.
+  \]
+  这体现了楔积与行列式的深层联系：$n$ 个 1-形式的楔积系数就是行列式。
+\end{solution}
+
+\begin{exercise}[综合——用广义 Stokes 视角统一计算]
+  用广义 Stokes 公式 $\int_M\dif\omega = \int_{\partial M}\omega$ 的视角，
+  说明以下三题分别是该公式在什么 $M$ 和 $\omega$ 下的特例：
+  \begin{enumerate}
+    \item $\displaystyle\int_0^1 2t\,\dif t = 1$；
+    \item $\displaystyle\oint_{x^2+y^2=1} -y\,\dif x + x\,\dif y = 2\pi$；
+    \item $\displaystyle\oiint_{x^2+y^2+z^2=R^2} z\,\dif x\wedge\dif
+      y = \frac{4\pi R^3}{3}$
+      （取外侧）。
+  \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+  (1) $\omega = t^2$（0-形式），$\dif\omega = 2t\,\dif t$。
+  $M = [0,1]$，$\partial M = \{1\} - \{0\}$。
+  $\int_0^1 2t\,\dif t = t^2\big|_0^1 = 1$。Newton--Leibniz。
+
+  (2) $\omega = -y\,\dif x + x\,\dif y$（1-形式）。
+  $\dif\omega = 2\,\dif x\wedge\dif y$。
+  $M = D: x^2+y^2\le 1$，$\partial M = S^1$。
+  $\iint_D 2\,\dif x\wedge\dif y = 2\pi$。Green 公式。
+
+  (3) $\omega = z\,\dif x\wedge\dif y$（2-形式）。
+  $\dif\omega = \dif x\wedge\dif y\wedge\dif z$。
+  $M = \Omega: x^2+y^2+z^2\le R^2$，$\partial M = S^2$。
+  $\iiint_\Omega \dif x\wedge\dif y\wedge\dif z = \frac{4}{3}\pi R^3$。Gauss 公式。
+\end{solution}
+
+
+\end{document}

@@ -1,0 +1,369 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{luacode}
+
+% import common macros
+\input{../../common/macros.tex}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Configure listings for Python code highlighting
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,
+  frame=single,
+  framesep=5pt,
+  rulecolor=\color{gray},
+  backgroundcolor=\color{white},
+  captionpos=b,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=5,
+}
+
+\lstnewenvironment{plaintext}[1][]{
+  \lstset{
+    language=none,
+    basicstyle=\ttfamily,
+    keywordstyle=,
+    commentstyle=,
+    stringstyle=,
+    numbers=none,
+    frame=none,
+    backgroundcolor=\color{white},
+    #1                % 允许用户自行覆盖默认设置
+  }
+}{}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{数值代数}
+\newcommand{\hwNum}{11}
+
+\newcommand{\fl}{\mathrm{fl}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name (\uid)}
+\chead{\course \#\hwNum}
+\rhead{\today}
+
+\section{题目 1}
+
+设 $x_k$ 是由最速下降法产生的。证明
+\[
+  \phi(x_{k+1}) + b^T A^{-1} b \leq \left(1 - \frac{1}{\kappa_2(A)}\right)
+  \left(\phi(x_k) + b^T A^{-1} b\right),
+\]
+其中 $\kappa_2(A) = \norm{A}_2 \norm{A^{-1}}_2$。
+
+\begin{solution}
+  考虑：
+  \[
+    \nabla \phi(x) = 2 Ax - 2b = 0
+  \]
+  令 $x^* = A^{-1} b$，则 $\nabla \phi(x^*) = 0$。代入得：
+  \[
+    \phi(x^*) = b^T A^{-1} b - 2b^T A^{-1}b = - b^T A^{-1} b
+  \]
+  于是有：
+  \[
+    \phi(x_k) + b^T A^{-1} b = \phi(x_k) - \phi(x^*)
+  \]
+  令 $e_k = x_k - x^*$，则：
+  \[
+    \phi(x_k) - \phi(x^*) = (e_k)^T A e_k.
+  \]
+  于是只需证明：
+  \[
+    \phi(x_k) - \phi(x_{k+1}) \geq \frac{1}{\kappa_2(A)}
+    (\phi(x_k) - \phi(x^*)) = \frac{1}{\|A\| \|A^{-1}\|}
+    (e_k)^T A e_k.
+  \]
+  令 $r_k = b - Ax_k = -Ae_k$ 于是有：
+  \[
+    \phi(x_k) - \phi(x_{k+1}) =
+    \frac{(r_k^Tr_k)^2}{r_k^TAr_k}=
+    \frac{\|r_k\|^4}{r_k^TAr_k}
+  \]
+  于是只需证明：
+  \[
+    \|r_k\|^4 \|A\|\|A^{-1}\| \geq (r_k^T A r_k) (e_k^TA e_k)
+  \]
+  又由于 $e_k = -A^{-1}r_k$，于是有：
+  \[
+    e_k^T A e_k = r_k^T A^{-1} r_k
+  \]
+  另一方面，$r^T A r \leq \|r\| \|Ar\| \leq \|r\|^2 \|A\|$ 由
+  Cauchy-Schwarz 不等式和矩阵范数性质易证，从而原不等式成立。
+
+\end{solution}
+
+\section{题目 2}
+
+在共轭梯度法中，证明
+\[
+  (r_k, r_k) = -\alpha_{k-1} (r_k, A p_{k-1}),
+\]
+\[
+  (r_k, r_k) = \alpha_k (p_k, A p_k).
+\]
+
+\begin{solution}
+
+  \[
+    \begin{aligned}
+      r^T_k r_k &= r^T_k (r_{k-1} - \alpha_{k-1}Ap_{k-1}) = r^T_k
+      r_{k-1} - \alpha_{k-1} r^T_k A p_{k-1} = -\alpha_{k-1} r^T_k A p_{k-1} \\
+      &= \frac{r^T_{k} r_{k}}{p^T_{k} A p_{k}} p^T_{k} A p_{k} =
+      \alpha_k p^T_k A p_k.
+    \end{aligned}
+  \]
+
+\end{solution}
+
+\section{题目 3}
+
+设
+\[
+  A =
+  \begin{bmatrix} 2 & 1 & 0 \\ 1 & 2 & 1 \\ 0 & 1 & 1
+  \end{bmatrix}, \quad
+  b =
+  \begin{bmatrix} 1 \\ 0 \\ 1
+  \end{bmatrix}.
+\]
+请用共轭梯度法求 $Ax = b$。
+
+\begin{solution}
+  由顺序主子式 $2 > 0$，$\det\matTwoTwo{2}{1}{1}{2} = 3 > 0$，$\det A = 1 > 0$
+  知 $A$ 对称正定。取 $x_0 = (0,0,0)^T$，则 $r_0 = b - Ax_0 = (1,0,1)^T$，
+  $p_0 = r_0 = (1,0,1)^T$。
+
+  \textbf{第 1 步：}
+  \[
+    Ap_0 = \vecThree{2}{2}{1}, \quad r_0^T r_0 = 2, \quad p_0^T A p_0 = 3,
+    \quad \alpha_0 = \frac{2}{3}.
+  \]
+  \[
+    x_1 = x_0 + \alpha_0 p_0 = \vecThree{2/3}{0}{2/3}, \quad
+    r_1 = r_0 - \alpha_0 Ap_0 = \vecThree{-1/3}{-4/3}{1/3}.
+  \]
+  \[
+    r_1^T r_1 = \frac{18}{9} = 2, \quad
+    \beta_0 = \frac{r_1^T r_1}{r_0^T r_0} = 1, \quad
+    p_1 = r_1 + \beta_0 p_0 = \vecThree{2/3}{-4/3}{4/3}.
+  \]
+
+  \textbf{第 2 步：}
+  \[
+    Ap_1 = \vecThree{0}{-2/3}{0}, \quad p_1^T Ap_1 = \frac{8}{9}, \quad
+    \alpha_1 = \frac{2}{8/9} = \frac{9}{4}.
+  \]
+  \[
+    x_2 = x_1 + \alpha_1 p_1 = \vecThree{2/3+3/2}{-3}{2/3+3}
+    = \vecThree{13/6}{-3}{11/3}.
+  \]
+  \[
+    r_2 = r_1 - \alpha_1 Ap_1 = \vecThree{-1/3}{-4/3+3/2}{1/3}
+    = \vecThree{-1/3}{1/6}{1/3}.
+  \]
+  \[
+    r_2^T r_2 = \frac{1}{4}, \quad
+    \beta_1 = \frac{1/4}{2} = \frac{1}{8}, \quad
+    p_2 = r_2 + \beta_1 p_1 = \vecThree{-1/4}{0}{1/2}.
+  \]
+
+  \textbf{第 3 步：}
+  \[
+    Ap_2 = \vecThree{-1/2}{1/4}{1/2}, \quad p_2^T Ap_2 =
+    \frac{1}{8}+\frac{1}{4} =
+    \frac{3}{8}, \quad \alpha_2 = \frac{1/4}{3/8} = \frac{2}{3}.
+  \]
+  \[
+    x_3 = x_2 + \alpha_2 p_2 = \vecThree{13/6-1/6}{-3}{11/3+1/3}
+    = \vecThree{2}{-3}{4}.
+  \]
+
+  故 $Ax = b$ 的解为 $x = (2, -3, 4)^T$。
+\end{solution}
+
+\section{题目 4}
+
+$A$ 为 $n$ 阶对称正定矩阵，$p_1, p_2, \dots, p_n$ 为其共轭向量系。证明
+\[
+  A^{-1} = \sum_{k=1}^{n} \frac{p_k p_k^T}{p_k^T A p_k}.
+\]
+
+\begin{solution}
+  由于 $p_1, \dots, p_n$ 为 $A$-共轭非零向量组，它们线性无关，构成 $\R^n$ 的一组基。
+  对任意 $v \in \R^n$，设 $w = A^{-1}v$，即 $Aw = v$。将 $w$ 在此基下展开：
+  \[
+    w = \sum_{k=1}^n c_k p_k.
+  \]
+  两边左乘 $A$ 得 $v = Aw = \sum_k c_k Ap_k$。由 $A$-共轭性，
+  \[
+    p_k^T v = p_k^T \sum_j c_j Ap_j = c_k \, p_k^T Ap_k,
+  \]
+  故 $c_k = \dfrac{p_k^T v}{p_k^T A p_k}$。于是
+  \[
+    A^{-1}v = w = \sum_{k=1}^n \frac{p_k^T v}{p_k^T A p_k} \, p_k
+    = \sum_{k=1}^n \frac{p_k p_k^T}{p_k^T A p_k} \, v.
+  \]
+  上式对任意 $v \in \R^n$ 成立，因此
+  \[
+    A^{-1} = \sum_{k=1}^n \frac{p_k p_k^T}{p_k^T A p_k}.
+  \]
+\end{solution}
+
+\section{题目 5}
+
+试证：当最速下降法在有限步求得极小值时，最后一步迭代的下降方向必是 $A$ 的一个特征向量。
+
+\begin{solution}
+
+  \[
+    x_{k+1} = x_k + \alpha_{k}p_{k} = x^* = A^{-1} b
+  \]
+  考虑梯度 $\nabla \phi(x_{k+1}) = 0$，于是有：
+  \[
+    Ax_k+\alpha_k A p_k - b = 0
+  \]
+  又有 $p_k = b-Ax_k$，从而有：
+  \[
+    \alpha A p_k = b-Ax_k = p_k \Rightarrow A p_k = \frac{1}{\alpha} p_k,
+  \]
+  即 $p_k$ 是 $A$ 的特征向量。
+
+\end{solution}
+
+\section{题目 6}
+
+设 $A$ 是一个只有 $k$ 个互不相同特征值的 $n \times n$ 实对称矩阵，$r$ 是任一 $n$ 维实向量。
+
+证明：子空间 $\mathrm{span}\{r, Ar, \dots, A^{n-1}r\}$ 的维数至多是 $k$。
+
+\begin{solution}
+  由于 $A$ 是实对称矩阵，由谱定理知 $A$ 可对角化：$A = Q \Lambda Q^T$，其中
+  $\Lambda = \mathrm{diag}(\lambda_1, \dots, \lambda_n)$，$\lambda_i \in
+  \{\mu_1, \dots, \mu_k\}$。$A$ 的最小多项式为
+  \[
+    m_A(t) = \prod_{j=1}^k (t - \mu_j),
+  \]
+  这是因为实对称矩阵可对角化，其最小多项式无重根，且包含所有互不相同特征值对应的因子。于是
+  \[
+    m_A(A) = \prod_{j=1}^k (A - \mu_j I) = 0,
+  \]
+  即 $A^k$ 可表示为 $I, A, \dots, A^{k-1}$ 的线性组合。对任意向量 $r$，有
+  \[
+    A^k r \in \mathrm{span}\{r, Ar, \dots, A^{k-1}r\}.
+  \]
+  由归纳法，$A^j r \in \mathrm{span}\{r, Ar, \dots, A^{k-1}r\}$ 对所有 $j \geq k$ 成立。因此
+  \[
+    \mathrm{span}\{r, Ar, \dots, A^{n-1}r\} = \mathrm{span}\{r, Ar,
+    \dots, A^{k-1}r\},
+  \]
+  至多由 $k$ 个向量张成，维数至多为 $k$。
+\end{solution}
+
+\section{题目 7}
+
+试证：如果系数矩阵 $A$ 至多有 $l$ 个互不相同的特征值，则共轭梯度法至多 $l$ 步就可得到方程组 $Ax = b$ 的精确解。
+
+\begin{solution}
+  设 $A$ 为 $n$ 阶对称正定矩阵，$l$ 个互不相同的特征值为 $\mu_1, \dots, \mu_l$。
+  取初始迭代 $x_0$，令 $r_0 = b - Ax_0$，$e_0 = x_0 - x^*$。
+
+  在共轭梯度法中，误差满足 $e_k = p_k(A) e_0$，其中 $p_k$ 是满足 $p_k(0) = 1$ 的 $k$
+  次多项式。由谱分解 $A = Q\Lambda Q^T$，令 $\hat{e}_0 = Q^T e_0$，则
+  \[
+    \norm{e_k}_A^2 = e_k^T A e_k = \sum_{i=1}^n \lambda_i |p_k(\lambda_i)|^2
+    |\hat{e}_{0,i}|^2.
+  \]
+  构造 $l$ 次多项式
+  \[
+    p_l(t) = \prod_{j=1}^l \left(1 - \frac{t}{\mu_j}\right),
+  \]
+  则 $p_l(0) = 1$，且 $p_l(\mu_j) = 0$（$j = 1, \dots, l$）。由于每个特征值
+  $\lambda_i$ 等于某个 $\mu_j$，故 $p_l(\lambda_i) = 0$，从而
+  \[
+    \norm{e_l}_A^2 = \sum_{i=1}^n \lambda_i \cdot 0 \cdot |\hat{e}_{0,i}|^2 = 0.
+  \]
+  因此 $e_l = 0$，即 $x_l = x^*$，共轭梯度法至多 $l$ 步得到精确解。
+\end{solution}
+
+\section{上机习题}
+
+（教材第 160 页）
+
+（2）用 Hilbert 矩阵测试你所编写的共轭梯度法程序：
+\[
+  a_{ij} = \frac{1}{i+j+1}, \quad b_i = \frac{1}{3} \sum_{j=1}^{n}
+  a_{ij}, \quad 1 \leq i, j \leq n.
+\]
+
+（3）分别用 Jacobi 迭代法、G-S 迭代法和共轭梯度法求解下述方程：
+\[
+  \begin{bmatrix}
+    0.3 & 0.1 & 0 & 0 & 0.2 \\
+    0.1 & 0.3 & 0.1 & 0 & 0 \\
+    0 & 0.1 & 0.3 & 0.1 & 0 \\
+    0 & 0 & 0.1 & 0.3 & 0.1 \\
+    0.2 & 0 & 0 & 0.1 & 0.3
+  \end{bmatrix}
+  \begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5
+  \end{bmatrix}
+  =
+  \begin{bmatrix} 0.6 \\ 0.5 \\ 0.5 \\ 0.5 \\ 0.6
+  \end{bmatrix}.
+\]
+
+\begin{solution}
+  第 (2) 题中，由 $b_i = \frac{1}{3}\sum_j a_{ij}$ 可知精确解为 $x_j =
+  \frac{1}{3}$（$j = 1, \dots, n$）。
+  共轭梯度法实现见 \lstinline{conjugate_gradient}，停机准则为
+  $\norm{x_{k+1} - x_k}_\infty < 10^{-10}$。
+
+  \lstinputlisting[language=Python, firstline=5, lastline=20,
+  caption=共轭梯度法]{exercise.py}
+  \lstinputlisting[language=Python, firstline=52, lastline=63,
+  caption=Hilbert 矩阵测试]{exercise.py}
+  \lstinputlisting[language={},caption=第 (2) 题输出]{output.txt}
+
+  $n$ 较小时 CG 在 $n$ 步以内即可收敛到高精度解。随着 $n$ 增大，Hilbert 矩阵的条件数急剧增长（$n=10$
+  时已超过 $10^{14}$），
+  此时 CG 的收敛精度受浮点误差限制，但迭代次数仍远小于 $n$。
+
+  \bigskip
+
+  第 (3) 题中，该矩阵行和为 $0.5 < 1$，严格对角占优，因此 Jacobi 和 G-S 迭代均收敛。
+  精确解为 $x = (1, 1, 1, 1, 1)^T$。
+
+  \lstinputlisting[language=Python, firstline=68, lastline=91,
+  caption=5$\times$5 方程组求解]{exercise.py}
+
+  从输出可以看到，CG 仅需 4 步即达到机器精度，而 Jacobi 需要 153 步，G-S 需要 51 步。
+  CG 对 $5\times 5$ 的正定系统最多需要 5 步，此处仅用 4 步即达到精确解。
+\end{solution}
+
+\end{document}

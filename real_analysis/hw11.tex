@@ -1,0 +1,382 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+
+% import common macros
+\input{../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Real Analysis}
+\newcommand{\hwNum}{11}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+% ==============================================================================
+% Exercise 10
+% ==============================================================================
+\section{Exercise 10}
+
+设 $f$ 和 $f_k\ (k \ge 1)$ 都属于 $L(\mathbf{R})$ 且 $|f_k(x)| \le f(x)$. 求证：
+\[
+  \int_{\mathbf{R}} \varliminf_{k \to \infty} f_k(x)\,\dif x
+  \le \varliminf_{k \to \infty} \int_{\mathbf{R}} f_k(x)\,\dif x
+  \le \varlimsup_{k \to \infty} \int_{\mathbf{R}} f_k(x)\,\dif x
+  \le \int_{\mathbf{R}} \varlimsup_{k \to \infty} f_k(x)\,\dif x.
+\]
+
+\begin{solution}
+  中间不等式 $\varliminf \le \varlimsup$ 是显然的，只需证第一和第三个不等式。
+
+  \textbf{第一不等式.}\quad
+  由 $|f_k| \le f$ 知 $f_k + f \ge 0$.
+  对非负可测函数列 $\{f_k + f\}_{k \ge 1}$ 应用 Fatou 引理：
+  \[
+    \int_{\mathbf{R}} \varliminf_{k\to\infty}(f_k + f)\,\dif x
+    \le \varliminf_{k\to\infty} \int_{\mathbf{R}} (f_k + f)\,\dif x.
+  \]
+  由于 $f$ 与 $k$ 无关，$\varliminf (f_k + f) = \varliminf f_k + f$，故
+  \[
+    \int_{\mathbf{R}} \varliminf_{k\to\infty} f_k\,\dif x
+    + \int_{\mathbf{R}} f\,\dif x
+    \le \varliminf_{k\to\infty} \int_{\mathbf{R}} f_k\,\dif x
+    + \int_{\mathbf{R}} f\,\dif x.
+  \]
+  因 $f \in L(\mathbf{R})$，$\int f < \infty$，两边消去 $\int f$ 即得
+  \[
+    \int_{\mathbf{R}} \varliminf_{k\to\infty} f_k\,\dif x
+    \le \varliminf_{k\to\infty} \int_{\mathbf{R}} f_k\,\dif x.
+  \]
+
+  \textbf{第三不等式.}\quad
+  由 $|f_k| \le f$ 知 $f - f_k \ge 0$.
+  对非负可测函数列 $\{f - f_k\}_{k \ge 1}$ 应用 Fatou 引理：
+  \[
+    \int_{\mathbf{R}} \varliminf_{k\to\infty}(f - f_k)\,\dif x
+    \le \varliminf_{k\to\infty} \int_{\mathbf{R}} (f - f_k)\,\dif x.
+  \]
+  注意 $\varliminf (f - f_k) = f - \varlimsup f_k$，故
+  \[
+    \int_{\mathbf{R}} f\,\dif x - \int_{\mathbf{R}} \varlimsup_{k\to\infty} f_k\,\dif x
+    \le \int_{\mathbf{R}} f\,\dif x - \varlimsup_{k\to\infty} \int_{\mathbf{R}} f_k\,\dif x.
+  \]
+  消去 $\int f$ 并取负号得
+  \[
+    \varlimsup_{k\to\infty} \int_{\mathbf{R}} f_k\,\dif x
+    \le \int_{\mathbf{R}} \varlimsup_{k\to\infty} f_k\,\dif x. \qed
+  \]
+\end{solution}
+
+% ==============================================================================
+% Exercise 12
+% ==============================================================================
+\section{Exercise 12}
+
+设在可测集 $E$ 上非负可测函数列 $f_k \Rightarrow f$，求证：
+\[
+  \int_E f(x)\,\dif x \le \varliminf_{k \to \infty} \int_E f_k(x)\,\dif x.
+\]
+
+\begin{solution}
+  取子列 $\{f_{k_j}\}_{j \ge 1}$ 使得
+  \[
+    \lim_{j\to\infty} \int_E f_{k_j}(x)\,\dif x = \varliminf_{k\to\infty} \int_E f_k(x)\,\dif x.
+  \]
+  由于 $f_k \Rightarrow f$（依测度收敛），子列 $f_{k_j} \Rightarrow f$ 亦然.
+  由 Riesz 定理，存在进一步子列 $\{f_{k_{j_i}}\}_{i \ge 1}$ 几乎处处收敛于 $f$.
+
+  对非负可测函数列 $\{f_{k_{j_i}}\}$ 应用 Fatou 引理：
+  \[
+    \int_E f(x)\,\dif x
+    = \int_E \lim_{i\to\infty} f_{k_{j_i}}(x)\,\dif x
+    = \int_E \varliminf_{i\to\infty} f_{k_{j_i}}(x)\,\dif x
+    \le \varliminf_{i\to\infty} \int_E f_{k_{j_i}}(x)\,\dif x.
+  \]
+  而 $\{f_{k_{j_i}}\}$ 是 $\{f_{k_j}\}$ 的子列，故
+  $\lim_{i\to\infty} \int_E f_{k_{j_i}} = \lim_{j\to\infty} \int_E f_{k_j} = \varliminf_k \int_E f_k$.
+  因此
+  \[
+    \int_E f(x)\,\dif x \le \varliminf_{k\to\infty} \int_E f_k(x)\,\dif x. \qed
+  \]
+\end{solution}
+
+% ==============================================================================
+% Exercise 13
+% ==============================================================================
+\section{Exercise 13}
+
+设 $\{n_k\}_{k \ge 1}$ 是一列严格单增正整数. 求证：使 $\{\sin n_k x\}_{k \ge 1}$ 收敛的点 $x$ 的全体是零测集.
+
+\begin{solution}
+  记 $E = \{x \in \mathbf{R} : \{\sin n_k x\}_{k \ge 1} \text{ 收敛}\}$，往证 $m(E) = 0$.
+
+  反设 $m(E) > 0$. 对任意 $[a, b]$，在 $E \cap [a,b]$ 上 $\sin n_k x$ 收敛，从而有界，
+  故由有界收敛定理（$|\sin n_k x| \le 1$，$m(E \cap [a,b]) < \infty$）：
+  \[
+    \lim_{k\to\infty} \int_{E \cap [a,b]} \sin n_k x\,\dif x
+    = \int_{E \cap [a,b]} \lim_{k\to\infty} \sin n_k x\,\dif x.
+  \]
+  但由 Riemann--Lebesgue 引理，$\chi_{E \cap [a,b]} \in L(\mathbf{R})$，故
+  \[
+    \int_{E \cap [a,b]} \sin n_k x\,\dif x \to 0 \quad (k \to \infty).
+  \]
+  因此 $\lim_{k\to\infty} \sin n_k x = 0$ a.e.\ 于 $E$，即 $\sin n_k x \to 0$ a.e.\ $x \in E$.
+
+  既然 $\sin n_k x \to 0$ a.e.\ 于 $E$，则 $\sin^2 n_k x \to 0$ a.e.\ 于 $E$.
+  利用 $\sin^2 n_k x = \frac{1 - \cos 2n_k x}{2}$，得 $\cos 2n_k x \to 1$ a.e.\ 于 $E$.
+
+  再由有界收敛定理和 Riemann--Lebesgue 引理：
+  \[
+    \int_{E \cap [a,b]} \cos 2n_k x\,\dif x \to 0,
+  \]
+  \[
+    \int_{E \cap [a,b]} \cos 2n_k x\,\dif x \to \int_{E \cap [a,b]} 1\,\dif x = m(E \cap [a,b]).
+  \]
+  故 $m(E \cap [a,b]) = 0$ 对一切 $[a,b]$ 成立，从而 $m(E) = 0$，与假设矛盾. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 14
+% ==============================================================================
+\section{Exercise 14}
+
+设 $f \in L(\mathbf{R})$，求证：
+\[
+  \int_{x_1}^{x_2} f(ax+b)\,\dif x = \frac{1}{a} \int_{ax_1+b}^{ax_2+b} f(x)\,\dif x,
+\]
+其中 $x_1 < x_2$, $a \ne 0$.
+
+\begin{solution}
+  用典型方法（Standard Machine）证明. 令 $E = [x_1, x_2]$，
+  定义测度 $\nu(A) = \frac{1}{|a|} m(\{t : at + b \in A\} \cap [x_1, x_2])$.
+
+  \textbf{第一步：} $f = \chi_{[\alpha,\beta]}$.
+  \[
+    \int_{x_1}^{x_2} \chi_{[\alpha,\beta]}(ax+b)\,\dif x
+    = m\!\left([x_1,x_2] \cap \frac{[\alpha,\beta] - b}{a}\right).
+  \]
+  另一方面，令 $u = ax + b$，则 $x \in [x_1, x_2]$ 时 $u \in [ax_1+b, ax_2+b]$（若 $a > 0$）
+  或 $u \in [ax_2+b, ax_1+b]$（若 $a < 0$），总之
+  \[
+    \frac{1}{a}\int_{ax_1+b}^{ax_2+b} \chi_{[\alpha,\beta]}(u)\,\dif u
+    = m\!\left([x_1,x_2] \cap \frac{[\alpha,\beta] - b}{a}\right),
+  \]
+  两端相等.
+
+  \textbf{第二步：} 对区间端点的可数并（即开集）成立，由测度的 $\sigma$-可加性推广到 Borel 集，
+  再由完备化推广到 Lebesgue 可测集，即对 $f = \chi_A$（$A$ 可测）成立.
+
+  \textbf{第三步：} 对非负简单函数由线性性成立，对非负可测函数由单调收敛定理成立，
+  对 $L(\mathbf{R})$ 函数由正部、负部分解即得. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 19
+% ==============================================================================
+\section{Exercise 19}
+
+设 $f \in L(\mathbf{R})$. 求证：$\displaystyle\sum_{n=-\infty}^{\infty} f(x+n)$ 几乎处处绝对收敛.
+
+\begin{solution}
+  由于被加项非负，由 Tonelli 定理：
+  \[
+    \int_0^1 \sum_{n=-\infty}^{\infty} |f(x+n)|\,\dif x
+    = \sum_{n=-\infty}^{\infty} \int_0^1 |f(x+n)|\,\dif x.
+  \]
+  对每个 $n$，作变量替换 $t = x + n$：
+  \[
+    \int_0^1 |f(x+n)|\,\dif x = \int_n^{n+1} |f(t)|\,\dif t.
+  \]
+  因此
+  \[
+    \int_0^1 \sum_{n=-\infty}^{\infty} |f(x+n)|\,\dif x
+    = \sum_{n=-\infty}^{\infty} \int_n^{n+1} |f(t)|\,\dif t
+    = \int_{-\infty}^{\infty} |f(t)|\,\dif t < \infty.
+  \]
+  这说明 $\sum_{n=-\infty}^{\infty} |f(x+n)| < \infty$ 对 a.e.\ $x \in [0,1]$ 成立.
+
+  对任意 $x \in \mathbf{R}$，令 $x = [x] + \{x\}$，其中 $\{x\} \in [0,1)$.
+  重新标号 $m = n + [x]$：
+  \[
+    \sum_{n=-\infty}^{\infty} |f(x+n)|
+    = \sum_{n=-\infty}^{\infty} |f(\{x\} + n + [x])|
+    = \sum_{m=-\infty}^{\infty} |f(\{x\} + m)|.
+  \]
+  故级数在 $x$ 处绝对收敛当且仅当在 $\{x\} \in [0,1)$ 处绝对收敛，
+  从而绝对收敛在 $\mathbf{R}$ 上 a.e.\ 成立. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 20
+% ==============================================================================
+\section{Exercise 20}
+
+设 $f$ 是 $\mathbf{R}$ 上可测周期函数，$T$ 是其正周期，$f \in L([0, T])$. 求证：
+\[
+  \frac{1}{x} \int_0^x f(t)\,\dif t \to \frac{1}{T} \int_0^T f(t)\,\dif t \quad (x \to \infty).
+\]
+
+\begin{solution}
+  对 $x > 0$，令 $x = nT + r$，其中 $n = \lfloor x/T \rfloor \in \mathbf{N}$，$0 \le r < T$.
+  由 $f$ 的 $T$-周期性：
+  \[
+    \int_0^{nT} f(t)\,\dif t
+    = \sum_{k=0}^{n-1} \int_{kT}^{(k+1)T} f(t)\,\dif t
+    = n \int_0^T f(t)\,\dif t.
+  \]
+  因此
+  \[
+    \int_0^x f(t)\,\dif t
+    = n \int_0^T f(t)\,\dif t + \int_0^r f(t)\,\dif t.
+  \]
+  于是
+  \[
+    \frac{1}{x} \int_0^x f(t)\,\dif t
+    = \frac{nT}{x} \cdot \frac{1}{T}\int_0^T f(t)\,\dif t
+    + \frac{1}{x}\int_0^r f(t)\,\dif t.
+  \]
+  当 $x \to \infty$ 时，$n \to \infty$，$\frac{nT}{x} = \frac{nT}{nT+r} \to 1$，以及
+  \[
+    \left|\frac{1}{x}\int_0^r f(t)\,\dif t\right|
+    \le \frac{1}{x}\int_0^T |f(t)|\,\dif t \to 0.
+  \]
+  所以
+  \[
+    \frac{1}{x}\int_0^x f(t)\,\dif t \to \frac{1}{T}\int_0^T f(t)\,\dif t. \qed
+  \]
+\end{solution}
+
+% ==============================================================================
+% Exercise 22
+% ==============================================================================
+\section{Exercise 22}
+
+设 $f$ 定义于可测集 $E$ 上，并对任何 $\varepsilon > 0$，有 $g_\varepsilon, h_\varepsilon \in L(E)$，使
+$g_\varepsilon(x) \le f(x) \le h_\varepsilon(x)$ 及 $\int_E [h_\varepsilon(x) - g_\varepsilon(x)]\,\dif x < \varepsilon$.
+求证：$f \in L(E)$.
+
+\begin{solution}
+  \textbf{可测性.}\quad
+  取 $\varepsilon_n = 1/n$，对应的可积函数记为 $g_n, h_n$，满足 $g_n \le f \le h_n$
+  且 $\int_E(h_n - g_n) < 1/n$. 令
+  \[
+    g^*(x) = \sup_{n \ge 1} g_n(x), \quad h^*(x) = \inf_{n \ge 1} h_n(x).
+  \]
+  则 $g^*, h^*$ 可测（可数个可测函数的上确界/下确界），且 $g^* \le f \le h^*$.
+  又 $0 \le h^* - g^* \le h_n - g_n$ 对一切 $n$ 成立，故
+  \[
+    \int_E (h^* - g^*)\,\dif x \le \int_E (h_n - g_n)\,\dif x < \frac{1}{n} \to 0,
+  \]
+  从而 $h^* = g^*$ a.e.\ 于 $E$，即 $f = g^*$ a.e.\ 于 $E$，故 $f$ 可测.
+
+  \textbf{可积性.}\quad
+  由 $g_1 \le g^* \le h_1$：
+  \begin{itemize}
+    \item $g^*(x) \ge 0$ 时，$g^*(x) \le h_1(x) \le |h_1(x)|$；
+    \item $g^*(x) < 0$ 时，$g_1(x) \le g^*(x) < 0$，故
+          $g^*_-(x) = -g^*(x) \le -g_1(x) = g_{1,-}(x) \le |g_1(x)|$.
+  \end{itemize}
+  因此 $|g^*| = g^*_+ + g^*_- \le |h_1| + |g_1|$，于是
+  \[
+    \int_E |g^*|\,\dif x \le \int_E |h_1|\,\dif x + \int_E |g_1|\,\dif x < \infty.
+  \]
+  故 $g^* \in L(E)$，而 $f = g^*$ a.e.，所以 $f \in L(E)$. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 23
+% ==============================================================================
+\section{Exercise 23}
+
+设 $\{r_k\}_{k \ge 1}$ 是 $[0, 1]$ 中有理数全体. 求证：
+\[
+  f(x) = \sum_{k=1}^{\infty} \frac{1}{k^2 \sqrt{|x - r_k|}}
+\]
+在 $[0, 1]$ 上几乎处处收敛.
+
+\begin{solution}
+  由于被加项非负，由 Tonelli 定理：
+  \[
+    \int_0^1 f(x)\,\dif x
+    = \sum_{k=1}^{\infty} \frac{1}{k^2} \int_0^1 \frac{1}{\sqrt{|x - r_k|}}\,\dif x.
+  \]
+  对每个 $k$，$r_k \in [0,1]$：
+  \[
+    \int_0^1 \frac{1}{\sqrt{|x - r_k|}}\,\dif x
+    = \int_0^{r_k} \frac{\dif x}{\sqrt{r_k - x}}
+    + \int_{r_k}^1 \frac{\dif x}{\sqrt{x - r_k}}
+    = 2\sqrt{r_k} + 2\sqrt{1 - r_k} \le 4.
+  \]
+  因此
+  \[
+    \int_0^1 f(x)\,\dif x \le \sum_{k=1}^{\infty} \frac{4}{k^2} = \frac{2\pi^2}{3} < \infty.
+  \]
+  这说明 $f(x) < \infty$ 对 a.e.\ $x \in [0,1]$ 成立，即级数在 $[0,1]$ 上几乎处处收敛. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 24
+% ==============================================================================
+\section{Exercise 24}
+
+设 $f \in L(\mathbf{R})$, $a > 0$，求证：$n^{-a}f(nx) \to 0$, a.e.
+
+\begin{solution}
+  由于 $\sum_{n=1}^{\infty} n^{-a}|f(nx)| \ge 0$，由 Tonelli 定理及第 14 题的变量替换：
+  \[
+    \int_{\mathbf{R}} \sum_{n=1}^{\infty} n^{-a}|f(nx)|\,\dif x
+    = \sum_{n=1}^{\infty} n^{-a} \int_{\mathbf{R}} |f(nx)|\,\dif x
+    = \sum_{n=1}^{\infty} n^{-a} \cdot \frac{1}{n} \int_{\mathbf{R}} |f(t)|\,\dif t
+    = \|f\|_1 \sum_{n=1}^{\infty} \frac{1}{n^{1+a}}.
+  \]
+  因 $a > 0$，$1 + a > 1$，故 $\sum_{n=1}^{\infty} n^{-(1+a)}$ 收敛，
+  从而 $\int_{\mathbf{R}} \sum_{n=1}^{\infty} n^{-a}|f(nx)|\,\dif x < \infty$.
+
+  这表明 $\sum_{n=1}^{\infty} n^{-a}|f(nx)| < \infty$ a.e.\ $x \in \mathbf{R}$，
+  因此通项 $n^{-a}|f(nx)| \to 0$ a.e.，即 $n^{-a}f(nx) \to 0$ a.e. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 25
+% ==============================================================================
+\section{Exercise 25}
+
+设 $\{E_k\}_{1 \le k \le n}$ 是 $[0, 1]$ 中 $n$ 个可测集. 若 $[0, 1]$ 中每一点至少属于这 $n$ 个集中的 $q$ 个集，求证：这些集中至少有一个的测度不小于 $\dfrac{q}{n}$.
+
+\begin{solution}
+  由假设，对每个 $x \in [0,1]$，
+  \[
+    \sum_{k=1}^n \chi_{E_k}(x) \ge q.
+  \]
+  在 $[0,1]$ 上积分：
+  \[
+    \sum_{k=1}^n m(E_k)
+    = \sum_{k=1}^n \int_0^1 \chi_{E_k}(x)\,\dif x
+    = \int_0^1 \sum_{k=1}^n \chi_{E_k}(x)\,\dif x
+    \ge \int_0^1 q\,\dif x = q.
+  \]
+  反设所有 $m(E_k) < q/n$，则
+  \[
+    \sum_{k=1}^n m(E_k) < n \cdot \frac{q}{n} = q,
+  \]
+  与上式矛盾. 故至少存在某个 $k$ 使 $m(E_k) \ge q/n$. \qed
+\end{solution}
+
+\end{document}

@@ -1,0 +1,3682 @@
+\documentclass{ctexart}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+
+\providecommand{\mathdefault}[1]{#1}
+
+\input{../common/macros.tex}
+
+\newtheorem{example}[theorem]{Example}
+
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\area}{area}
+
+% \newcommand{\name}{\getEnv{NAME}{NAME}}
+% \newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{数学分析辅导教案}
+\newcommand{\hwNum}{3}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+% \lhead{\name\ (\uid)}
+\lhead{\course\ 第\hwNum\ 讲}
+\rhead{\today}
+
+% ============================================================
+%  TABLE OF CONTENTS
+% ============================================================
+
+\begin{center}
+  {\Large 数学分析辅导教案 —— 第三讲大纲} \\[6pt]
+  {\large 多重积分 $\cdot$ 换元法与雅可比 $\cdot$ 微分概念辨析 $\cdot$ 级数}
+\end{center}
+
+\tableofcontents
+\newpage
+
+% ============================================================
+%  PART 1: 多重积分的计算
+% ============================================================
+\section{多重积分的计算、常考易错点与核心定理证明}
+
+% ---------- 1.1 基本概念与累次积分 ----------
+\subsection{基本概念与累次积分（Fubini 定理）}
+
+\begin{definition}[Riemann 可积]
+  设 $D \subset \R^n$ 为有界闭区域，$f: D \to \R$ 有界。
+  对 $D$ 的一个分割 $P = \{D_1, \ldots, D_N\}$，定义
+  \textbf{Darboux 上和}与\textbf{下和}：
+  \[
+    U(f, P) = \sum_{i=1}^{N} M_i \cdot \vol(D_i), \quad
+    L(f, P) = \sum_{i=1}^{N} m_i \cdot \vol(D_i),
+  \]
+  其中 $M_i = \sup_{x \in D_i} f(x)$，$m_i = \inf_{x \in D_i} f(x)$。
+  若 $\inf_P U(f,P) = \sup_P L(f,P)$，则称 $f$ 在 $D$ 上 \textbf{Riemann 可积}，
+  公共值记为 $\int_D f \,\dif V$。
+\end{definition}
+
+\begin{remark}[可积的充分条件]
+  以下任一条件成立即可保证 $f$ 在有界闭区域 $D$ 上 Riemann 可积：
+  \begin{enumerate}
+    \item $f$ 在 $D$ 上连续；
+    \item $f$ 在 $D$ 上有界，且不连续点集为零测集（Lebesgue 判据）。
+  \end{enumerate}
+\end{remark}
+
+\begin{theorem}[Fubini]
+  设 $D = [a,b] \times [c,d] \subset \R^2$，$f: D \to \R$ 可积。
+  \begin{enumerate}
+    \item（\textbf{连续情形}）若 $f$ 在 $D$ 上连续，则
+      \[
+        \iint_D f(x,y) \,\dif x\,\dif y
+        = \int_a^b \left( \int_c^d f(x,y) \,\dif y \right) \dif x
+        = \int_c^d \left( \int_a^b f(x,y) \,\dif x \right) \dif y.
+      \]
+    \item（\textbf{一般情形}）若 $f$ 在 $D$ 上可积，且对几乎所有 $x \in [a,b]$，
+      $f(x,\cdot)$ 在 $[c,d]$ 上可积，则
+      \[
+        \iint_D f(x,y) \,\dif x\,\dif y
+        = \int_a^b \left( \int_c^d f(x,y) \,\dif y \right) \dif x.
+      \]
+  \end{enumerate}
+\end{theorem}
+
+\begin{remark}[Fubini 定理的使用要点]
+  \begin{itemize}
+    \item 使用 Fubini 之前必须确认 $f$ 在 $D$ 上可积（如连续或有界且不连续点为零测集）。
+    \item 非负可测函数可以使用 \textbf{Tonelli 定理}（交换积分顺序不需要先验证可积性），
+      这在处理反常积分时非常有用。
+    \item 对于一般区域 $D$（非矩形），先确定 $D$ 的不等式描述，再化为累次积分。
+  \end{itemize}
+\end{remark}
+
+% ---------- 1.2 二重积分的计算 ----------
+\subsection{二重积分的计算技巧}
+
+\subsubsection*{直角坐标下的累次积分}
+
+设积分区域 $D \subset \R^2$。
+
+\textbf{X-型区域}（先 $y$ 后 $x$）：若 $D = \{(x,y) \mid a \le x \le b,\; \varphi_1(x) \le y \le \varphi_2(x)\}$，则
+\[
+  \iint_D f(x,y) \,\dif x\,\dif y
+  = \int_a^b \dif x \int_{\varphi_1(x)}^{\varphi_2(x)} f(x,y) \,\dif y.
+\]
+
+\textbf{Y-型区域}（先 $x$ 后 $y$）：若 $D = \{(x,y) \mid c \le y \le d,\; \psi_1(y) \le x \le \psi_2(y)\}$，则
+\[
+  \iint_D f(x,y) \,\dif x\,\dif y
+  = \int_c^d \dif y \int_{\psi_1(y)}^{\psi_2(y)} f(x,y) \,\dif x.
+\]
+
+\textbf{选择原则}：
+\begin{itemize}
+  \item 优先选择\textbf{内层积分更容易计算}的顺序。
+  \item 若两种顺序内层都可行，选择积分限表达式更简单的。
+  \item 若一种顺序下内层积不出（如 $\int e^{y^2} \,\dif y$），必须换序。
+\end{itemize}
+
+\subsubsection*{极坐标下的二重积分}
+
+令 $x = r\cos\theta$，$y = r\sin\theta$，则
+\[
+  \iint_D f(x,y) \,\dif x\,\dif y
+  = \iint_{D'} f(r\cos\theta, r\sin\theta) \cdot r \,\dif r\,\dif \theta.
+\]
+
+\textbf{何时使用极坐标}：
+\begin{itemize}
+  \item 积分区域 $D$ 为圆、圆环、扇形，或边界含 $x^2+y^2$ 的曲线。
+  \item 被积函数含 $x^2+y^2$、$\sqrt{x^2+y^2}$、$\arctan(y/x)$ 等径向或角度表达式。
+\end{itemize}
+
+\textbf{极坐标下积分限的确定}：
+\begin{itemize}
+  \item 原点在 $D$ 内部：$0 \le \theta \le 2\pi$，$0 \le r \le r(\theta)$。
+  \item 原点在 $D$ 外部：$\alpha \le \theta \le \beta$，$r_1(\theta) \le r \le r_2(\theta)$。
+  \item \textbf{注意}：绝不能遗漏 $r \,\dif r$ 中的 $r$！
+\end{itemize}
+
+\subsubsection*{对称性的利用}
+
+设 $D \subset \R^2$。
+
+\begin{proposition}[对称性与奇偶性]
+  \begin{enumerate}
+    \item 若 $D$ 关于 $x$ 轴对称且 $f(x,-y) = -f(x,y)$，则 $\iint_D f = 0$。
+    \item 若 $D$ 关于 $y$ 轴对称且 $f(-x,y) = -f(x,y)$，则 $\iint_D f = 0$。
+    \item 若 $D$ 关于原点对称且 $f(-x,-y) = -f(x,y)$，则 $\iint_D f = 0$。
+    \item 若 $D$ 关于 $y=x$ 对称且 $f(x,y) = f(y,x)$，则可化简积分。
+  \end{enumerate}
+\end{proposition}
+
+\textbf{使用前提}：\textbf{必须}区域对称与函数奇偶性\textbf{同时}满足。
+仅区域对称而函数无奇偶性，不能直接使用。
+
+% ---------- 1.3 三重积分的计算 ----------
+\subsection{三重积分的计算技巧}
+
+\subsubsection*{投影法（先一后二）}
+
+将积分区域 $\Omega$ 投影到 $xOy$ 面上得到投影区域 $D_{xy}$，
+若 $\Omega = \{(x,y,z) \mid (x,y) \in D_{xy},\; z_1(x,y) \le z \le z_2(x,y)\}$，则
+\[
+  \iiint_\Omega f(x,y,z) \,\dif V
+  = \iint_{D_{xy}} \dif x\,\dif y \int_{z_1(x,y)}^{z_2(x,y)} f(x,y,z) \,\dif z.
+\]
+
+\textbf{适用场景}：$\Omega$ 的上、下边界 $z_2(x,y)$、$z_1(x,y)$ 表达式简单，
+且投影区域 $D_{xy}$ 的形状规则。
+
+\subsubsection*{截面法（先二后一）}
+
+固定 $z$，取截面 $D_z = \{(x,y) \mid (x,y,z) \in \Omega\}$。
+若 $\Omega = \{(x,y,z) \mid c \le z \le d,\; (x,y) \in D_z\}$，则
+\[
+  \iiint_\Omega f(x,y,z) \,\dif V
+  = \int_c^d \dif z \iint_{D_z} f(x,y,z) \,\dif x\,\dif y.
+\]
+
+\textbf{适用场景}：
+\begin{itemize}
+  \item 截面 $D_z$ 随 $z$ 变化规律简单（如都是圆、都是矩形）。
+  \item 被积函数仅依赖 $z$（即 $f(x,y,z) = g(z)$），此时内层化为 $\area(D_z)$。
+\end{itemize}
+
+\subsubsection*{柱坐标}
+
+令 $x = r\cos\theta$，$y = r\sin\theta$，$z = z$，
+则 $\dif V = r \,\dif r\,\dif \theta\,\dif z$。
+\[
+  \iiint_\Omega f \,\dif V
+  = \iiint_{\Omega'} f(r\cos\theta, r\sin\theta, z) \cdot r \,\dif r\,\dif \theta\,\dif z.
+\]
+
+\textbf{适用场景}：投影到 $xOy$ 面后为圆/扇形/环形区域，
+或 $\Omega$ 的边界含 $x^2+y^2$。
+
+\subsubsection*{球坐标}
+
+令 $x = \rho\sin\varphi\cos\theta$，$y = \rho\sin\varphi\sin\theta$，$z = \rho\cos\varphi$，
+其中 $\rho \ge 0$，$0 \le \varphi \le \pi$，$0 \le \theta \le 2\pi$，
+则 $\dif V = \rho^2 \sin\varphi \,\dif \rho\,\dif \varphi\,\dif \theta$。
+
+\[
+  \iiint_\Omega f \,\dif V
+  = \iiint_{\Omega'} f(\rho\sin\varphi\cos\theta, \rho\sin\varphi\sin\theta, \rho\cos\varphi)
+    \cdot \rho^2 \sin\varphi \,\dif \rho\,\dif \varphi\,\dif \theta.
+\]
+
+\textbf{适用场景}：$\Omega$ 为球、球壳、锥体等，或被积函数含 $x^2+y^2+z^2$。
+
+\begin{remark}[球坐标中 $\varphi$ 与 $\theta$ 的约定]
+  本讲义采用\textbf{物理约定}：$\varphi$ 为从 $z$ 轴正方向量起的天顶角（$0 \le \varphi \le \pi$），
+  $\theta$ 为 $xOy$ 面上的方位角。部分教材使用\textbf{数学约定}（$\varphi$ 与 $\theta$ 互换），
+  请注意区分，但 $\dif V = \rho^2 \sin\varphi \,\dif \rho\,\dif \varphi\,\dif \theta$ 的形式不变。
+\end{remark}
+
+% ---------- 1.4 核心定理证明 ----------
+\subsection{核心定理证明}
+
+\begin{theorem}[矩形区域上化重积分为累次积分]
+  设 $f$ 在 $R = [a,b] \times [c,d]$ 上连续。则
+  \[
+    \iint_R f(x,y) \,\dif x\,\dif y
+    = \int_a^b \dif x \int_c^d f(x,y) \,\dif y
+    = \int_c^d \dif y \int_a^b f(x,y) \,\dif x.
+  \]
+\end{theorem}
+
+\begin{proof}[证明思路]
+  对 $[a,b]$ 做分割 $a = x_0 < x_1 < \cdots < x_m = b$，
+  对 $[c,d]$ 做分割 $c = y_0 < y_1 < \cdots < y_n = d$。
+  设 $R_{ij} = [x_{i-1},x_i] \times [y_{j-1},y_j]$，
+  则
+  \[
+    L(f,P) = \sum_{i,j} m_{ij} \Delta x_i \Delta y_j
+    \le \sum_i \left( \int_c^d f(x_i^*, y) \,\dif y \right) \Delta x_i
+    \le U(f,P),
+  \]
+  其中 $x_i^* \in [x_{i-1}, x_i]$。
+  由 $f$ 一致连续性，令分割的模 $\|P\| \to 0$，上式两端分别趋于积分值，
+  由夹逼即得。
+\end{proof}
+
+\begin{theorem}[重积分的变量替换]
+  设 $\Phi: D' \to D$ 是 $C^1$ 的双射，$\det J_\Phi \ne 0$ 在 $D'$ 上成立。
+  若 $f$ 在 $D$ 上连续，则
+  \[
+    \iint_D f(x,y) \,\dif x\,\dif y
+    = \iint_{D'} f(\Phi(u,v)) \cdot \abs{\det J_\Phi(u,v)} \,\dif u\,\dif v.
+  \]
+  证明与雅可比矩阵的详细讨论见第~\ref{sec:jacobian}~节。
+\end{theorem}
+
+% ---------- 1.5 常考易错点 ----------
+\subsection{常考易错点总结}
+
+\begin{enumerate}
+  \item \textbf{积分限的确定}：遗漏边界、不等式链写反。
+    画图！先画出积分区域再写积分限。
+  \item \textbf{换序后积分限未重新计算}：
+    换序 $\ne$ 仅交换积分号。必须根据区域重新确定积分限。
+  \item \textbf{忽略奇点}：
+    被积函数在区域内部或边界上有瑕点时，需要判断积分是否真正存在（反常积分）。
+  \item \textbf{坐标变换时漏掉因子}：
+    极坐标漏 $r$，柱坐标漏 $r$，球坐标漏 $\rho^2 \sin\varphi$。
+    \textbf{建议}：写出雅可比行列式 $\abs{\det J}$，不要死记。
+  \item \textbf{滥用对称性}：
+    必须同时满足"区域对称"和"函数奇偶"两个条件。
+    区域关于 $x$ 轴对称，但 $f$ 关于 $y$ 无奇偶性 → 不能化简。
+  \item \textbf{球坐标 $\varphi$ 的范围}：
+    上半球 $\varphi \in [0, \pi/2]$，全球 $\varphi \in [0, \pi]$，不是 $[0, 2\pi]$。
+\end{enumerate}
+
+% ---------- 1.6 练习题 ----------
+\subsection{练习题}
+
+\begin{exercise}[基本累次积分]
+  计算 $\iint_D xy \,\dif x\,\dif y$，其中 $D$ 由 $y = x^2$ 与 $y = 1$ 围成。
+\end{exercise}
+
+\begin{solution}
+  $D = \{(x,y) \mid -1 \le x \le 1,\; x^2 \le y \le 1\}$。
+  \[
+    \iint_D xy \,\dif x\,\dif y
+    = \int_{-1}^{1} \dif x \int_{x^2}^{1} xy \,\dif y
+    = \int_{-1}^{1} x \cdot \frac{1 - x^4}{2} \,\dif x
+    = \frac{1}{2} \int_{-1}^{1} (x - x^5) \,\dif x = 0.
+  \]
+  （被积函数 $xy$ 关于 $x$ 为奇函数，$D$ 关于 $y$ 轴对称，直接得 $0$。）
+\end{solution}
+
+\begin{exercise}[极坐标]
+  计算 $\iint_D (x^2+y^2) \,\dif x\,\dif y$，其中 $D: x^2+y^2 \le 2x$。
+\end{exercise}
+
+\begin{solution}
+  $D$ 为圆盘 $(x-1)^2 + y^2 \le 1$，用极坐标：$r^2 \le 2r\cos\theta$，即 $0 \le r \le 2\cos\theta$。
+  由 $r \ge 0$ 知 $\cos\theta \ge 0$，故 $\theta \in [-\pi/2, \pi/2]$。
+  \[
+    \iint_D (x^2+y^2) \,\dif x\,\dif y
+    = \int_{-\pi/2}^{\pi/2} \dif \theta \int_0^{2\cos\theta} r^2 \cdot r \,\dif r
+    = \int_{-\pi/2}^{\pi/2} \frac{(2\cos\theta)^4}{4} \,\dif \theta
+    = 4 \int_{-\pi/2}^{\pi/2} \cos^4\theta \,\dif \theta.
+  \]
+  由 $\cos^4\theta = \frac{3}{8} + \frac{1}{2}\cos 2\theta + \frac{1}{8}\cos 4\theta$，
+  \[
+    4 \cdot \pi \cdot \frac{3}{8} = \frac{3\pi}{2}.
+  \]
+\end{solution}
+
+\begin{exercise}[积分换序]
+  交换积分 $\int_0^1 \dif x \int_x^1 e^{y^2} \,\dif y$ 的积分顺序并计算。
+\end{exercise}
+
+\begin{solution}
+  原积分区域 $D = \{(x,y) \mid 0 \le x \le 1,\; x \le y \le 1\}$，
+  即 $0 \le y \le 1$，$0 \le x \le y$。换序后：
+  \[
+    \int_0^1 \dif y \int_0^y e^{y^2} \,\dif x
+    = \int_0^1 y e^{y^2} \,\dif y
+    = \frac{1}{2} e^{y^2} \Big|_0^1
+    = \frac{e-1}{2}.
+  \]
+  （注：$e^{y^2}$ 没有初等原函数，必须换序才能计算。）
+\end{solution}
+
+\begin{exercise}[利用对称性]
+  计算 $\iint_D \abs{y} \,\dif x\,\dif y$，其中 $D: \abs{x} + \abs{y} \le 1$。
+\end{exercise}
+
+\begin{solution}
+  $D$ 关于 $x$ 轴和 $y$ 轴均对称，$\abs{y}$ 关于 $y$ 为偶函数、关于 $x$ 为偶函数。
+  取第一象限部分 $D_1 = \{(x,y) \mid x,y \ge 0,\; x+y \le 1\}$：
+  \[
+    \iint_D \abs{y} \,\dif x\,\dif y
+    = 4 \iint_{D_1} y \,\dif x\,\dif y
+    = 4 \int_0^1 \dif y \int_0^{1-y} y \,\dif x
+    = 4 \int_0^1 y(1-y) \,\dif y
+    = 4 \left( \frac{1}{2} - \frac{1}{3} \right)
+    = \frac{2}{3}.
+  \]
+\end{solution}
+
+\begin{exercise}[三重积分——截面法]
+  计算由抛物面 $z = x^2 + y^2$ 与 $z = 1$ 所围立体的体积。
+\end{exercise}
+
+\begin{solution}
+  用截面法（先二后一）。固定 $z \in [0,1]$，截面为圆盘 $D_z: x^2+y^2 \le z$，
+  面积为 $\pi z$。
+  \[
+    V = \iiint_\Omega \dif V
+    = \int_0^1 \pi z \,\dif z
+    = \frac{\pi}{2}.
+  \]
+  也可用柱坐标验证：
+  \[
+    V = \int_0^{2\pi} \dif \theta \int_0^1 r \,\dif r \int_{r^2}^1 \dif z
+    = 2\pi \int_0^1 r(1-r^2) \,\dif r
+    = 2\pi \left( \frac{1}{2} - \frac{1}{4} \right) = \frac{\pi}{2}.
+  \]
+\end{solution}
+
+\begin{exercise}[球坐标]
+  计算 $\iiint_\Omega (x^2+y^2+z^2) \,\dif V$，
+  其中 $\Omega: x^2+y^2+z^2 \le R^2,\; z \ge 0$。
+\end{exercise}
+
+\begin{solution}
+  用球坐标：$\rho \in [0, R]$，$\varphi \in [0, \pi/2]$（上半球），$\theta \in [0, 2\pi]$。
+  \[
+    \iiint_\Omega \rho^2 \cdot \rho^2 \sin\varphi \,\dif \rho\,\dif \varphi\,\dif \theta
+    = \int_0^{2\pi} \dif \theta \int_0^{\pi/2} \sin\varphi \,\dif \varphi \int_0^R \rho^4 \,\dif \rho
+    = 2\pi \cdot 1 \cdot \frac{R^5}{5}
+    = \frac{2\pi R^5}{5}.
+  \]
+\end{solution}
+
+\begin{exercise}[综合——积分换序+对称性]
+  计算
+  $\iint_D (x^2 + y^2) \,\dif x\,\dif y$，
+  其中 $D$ 由 $y = x$，$y = 2x$，$y = 1$ 围成。
+\end{exercise}
+
+\begin{solution}
+  $D = \{(x,y) \mid 0 \le y \le 1,\; y/2 \le x \le y\}$。
+  \[
+    \iint_D (x^2+y^2) \,\dif x\,\dif y
+    = \int_0^1 \dif y \int_{y/2}^y (x^2+y^2) \,\dif x
+    = \int_0^1 \left[ \frac{x^3}{3} + y^2 x \right]_{y/2}^y \dif y.
+  \]
+  代入上下限：
+  \[
+    = \int_0^1 \left( \frac{y^3}{3} + y^3 - \frac{y^3}{24} - \frac{y^3}{2} \right) \dif y
+    = \int_0^1 y^3 \left( \frac{1}{3} + 1 - \frac{1}{24} - \frac{1}{2} \right) \dif y
+    = \frac{19}{24} \cdot \frac{1}{4}
+    = \frac{19}{96}.
+  \]
+\end{solution}
+
+\begin{exercise}[证明题——积分换序]
+  设 $f$ 在 $[a,b] \times [a,b]$ 上连续。证明：
+  \[
+    \int_a^b \dif x \int_a^x f(x,y) \,\dif y
+    = \int_a^b \dif y \int_y^b f(x,y) \,\dif x.
+  \]
+\end{exercise}
+
+\begin{solution}
+  设 $D = \{(x,y) \mid a \le x \le b,\; a \le y \le x\}$，
+  即 $\{(x,y) \mid a \le y \le b,\; y \le x \le b\}$。
+  两端都是 $\iint_D f(x,y) \,\dif x\,\dif y$，只是积分顺序不同。
+  由 Fubini 定理（$f$ 连续），两者相等。
+\end{solution}
+
+\begin{exercise}[反常重积分——Gauss 积分]
+  计算 $\iint_{\R^2} e^{-(x^2+y^2)} \,\dif x\,\dif y$。
+\end{exercise}
+
+\begin{solution}
+  用极坐标：
+  \[
+    \iint_{\R^2} e^{-(x^2+y^2)} \,\dif x\,\dif y
+    = \int_0^{2\pi} \dif \theta \int_0^{+\infty} e^{-r^2} \cdot r \,\dif r
+    = 2\pi \cdot \left[ -\frac{1}{2} e^{-r^2} \right]_0^{+\infty}
+    = 2\pi \cdot \frac{1}{2}
+    = \pi.
+  \]
+  \textbf{推论}：$\left( \int_{-\infty}^{+\infty} e^{-x^2} \,\dif x \right)^2 = \pi$，
+  故 $\int_{-\infty}^{+\infty} e^{-x^2} \,\dif x = \sqrt{\pi}$。
+\end{solution}
+
+\begin{exercise}[曲面与体积——Steinmetz solid]
+  计算两个圆柱 $x^2+y^2 \le a^2$ 与 $x^2+z^2 \le a^2$ 的公共部分体积。
+\end{exercise}
+
+\begin{solution}
+  由对称性，取第一卦限部分再乘以 $8$。
+  固定 $x \in [0,a]$，截面为正方形
+  $y \in [0, \sqrt{a^2-x^2}]$，$z \in [0, \sqrt{a^2-x^2}]$，
+  面积为 $(a^2-x^2)$。
+  \[
+    V = 8 \int_0^a (a^2 - x^2) \,\dif x
+    = 8 \left[ a^2 x - \frac{x^3}{3} \right]_0^a
+    = 8 \cdot \frac{2a^3}{3}
+    = \frac{16a^3}{3}.
+  \]
+\end{solution}
+
+% ---------- 1.7 反常重积分的换元 ----------
+\subsection{反常重积分与换元法}
+
+\begin{definition}[反常重积分]
+  \textbf{无界区域}：设 $D$ 为无界区域，$D_n = D \cap B(\mathbf{0}, n)$。
+  若 $f$ 在每个 $D_n$ 上可积且
+  $\lim_{n \to \infty} \int_{D_n} f \,\dif V$ 存在（与 $D_n$ 的取法无关），
+  则称 $f$ 在 $D$ 上\textbf{反常可积}。
+
+  \textbf{无界函数}：设 $f$ 在有界区域 $D$ 内某点（或某曲线）附近无界。
+  去掉该点的 $\eps$-邻域后积分，令 $\eps \to 0$ 取极限。
+\end{definition}
+
+\begin{theorem}[反常重积分的比较判别法]
+  设 $f, g \ge 0$ 在无界区域 $D$ 上连续，且 $0 \le f(\mathbf{x}) \le g(\mathbf{x})$。
+  \begin{enumerate}
+    \item 若 $g$ 在 $D$ 上反常可积，则 $f$ 也在 $D$ 上反常可积。
+    \item 若 $f$ 在 $D$ 上不可积，则 $g$ 也不可积。
+  \end{enumerate}
+  常用的比较对象：$\int_1^\infty \frac{1}{r^p} \,\dif r$ 当 $p > 1$ 时收敛。
+\end{theorem}
+
+\begin{theorem}[反常重积分的换元]
+  设 $\Phi: D' \to D$ 是 $C^1$ 双射，$\abs{\det J_\Phi} > 0$，
+  $D$ 为无界区域（或 $f$ 无界）。
+  若 $f \circ \Phi \cdot \abs{\det J_\Phi}$ 在 $D'$ 上反常绝对可积，
+  则换元公式同样成立：
+  \[
+    \int_D f(\mathbf{x}) \,\dif \mathbf{x}
+    = \int_{D'} f(\Phi(\mathbf{u})) \cdot \abs{\det J_\Phi(\mathbf{u})} \,\dif \mathbf{u}.
+  \]
+  \textbf{常用策略}：极坐标/球坐标将 $\R^n$ 上的积分化为关于 $r$ 的广义积分。
+\end{theorem}
+
+\subsubsection*{反常重积分换元的经典技巧}
+
+\subsubsection*{技巧一：极坐标化 $n$ 维 Gauss 积分}
+
+$\R^n$ 上最常见的反常积分是 Gauss 型积分。
+利用球坐标 $\dif V = r^{n-1}\,\dif r\,\dif \sigma$（$\dif \sigma$ 为单位球面面积元）：
+\[
+  \int_{\R^n} e^{-\norm{\mathbf{x}}^2} \,\dif \mathbf{x}
+  = \omega_n \int_0^{+\infty} e^{-r^2} r^{n-1} \,\dif r
+  = \frac{\omega_n}{2} \Gamma\!\left(\frac{n}{2}\right)
+  = \pi^{n/2},
+\]
+其中 $\omega_n = \frac{2\pi^{n/2}}{\Gamma(n/2)}$ 是 $n$ 维单位球面面积。
+
+\subsubsection*{技巧二：通过极坐标/球坐标引入新的广义积分变量}
+
+原积分可能是 $\R^2$ 上的二重积分，无法直接计算，
+但用极坐标后角度部分积出，$r$ 部分变成 Gamma 函数或可识别的广义积分。
+
+\subsubsection*{技巧三：先化重积分为累次积分，再换元}
+
+对无界区域，先确定积分顺序（Fubini-Tonelli 定理适用于非负函数或绝对可积函数），
+在内层积分中做一元换元。
+
+\begin{example}[$\R^2$ 上的 $p$-次可积性]
+  判断 $\iint_{\R^2} \frac{1}{(1+x^2+y^2)^p} \,\dif x\,\dif y$ 的收敛性。
+
+  用极坐标：$\int_0^{2\pi} \dif \theta \int_0^{+\infty} \frac{r}{(1+r^2)^p} \,\dif r$。
+  令 $u = 1+r^2$：$\frac{1}{2}\int_1^{+\infty} \frac{\dif u}{u^p}$。
+  当 $p > 1$ 时收敛，$p \le 1$ 时发散。
+\end{example}
+
+% ---------- 1.8 反常重积分练习题 ----------
+\subsection{反常重积分练习题}
+
+\begin{exercise}[$n$ 维 Gauss 积分]
+  用极坐标计算 $I = \iint_{\R^2} e^{-(x^2+y^2)} \,\dif x\,\dif y$，
+  并由此推导 $\int_{-\infty}^{+\infty} e^{-x^2} \,\dif x = \sqrt{\pi}$。
+\end{exercise}
+
+\begin{solution}
+  极坐标：
+  \[
+    I = \int_0^{2\pi} \dif \theta \int_0^{+\infty} e^{-r^2} \cdot r \,\dif r
+    = 2\pi \cdot \left[-\frac{1}{2}e^{-r^2}\right]_0^{+\infty}
+    = 2\pi \cdot \frac{1}{2} = \pi.
+  \]
+  另一方面，$I = \left(\int_{-\infty}^{+\infty} e^{-x^2}\,\dif x\right)^2$，
+  故 $\int_{-\infty}^{+\infty} e^{-x^2} \,\dif x = \sqrt{\pi}$。
+\end{solution}
+
+\begin{exercise}[含参数的 Gauss 型积分]
+  计算 $\iint_{\R^2} e^{-a(x^2+y^2)} \,\dif x\,\dif y$（$a > 0$），
+  并由此求 $\int_{-\infty}^{+\infty} e^{-ax^2} \,\dif x$。
+\end{exercise}
+
+\begin{solution}
+  极坐标：
+  $\iint_{\R^2} e^{-ar^2} \cdot r \,\dif r\,\dif \theta
+  = 2\pi \cdot \frac{1}{2a} = \frac{\pi}{a}$。
+
+  故 $\left(\int_{-\infty}^{+\infty} e^{-ax^2}\,\dif x\right)^2 = \frac{\pi}{a}$，
+  即 $\int_{-\infty}^{+\infty} e^{-ax^2}\,\dif x = \sqrt{\frac{\pi}{a}}$。
+
+  \textbf{另一方法}：令 $u = \sqrt{a}\,x$，$\int e^{-ax^2}\,\dif x = \frac{1}{\sqrt{a}}\int e^{-u^2}\,\dif u = \sqrt{\frac{\pi}{a}}$。
+\end{solution}
+
+\begin{exercise}[Gamma 函数的极坐标推导]
+  利用极坐标证明 $\Gamma\!\left(\frac{1}{2}\right) = \sqrt{\pi}$。
+\end{exercise}
+
+\begin{solution}
+  $\Gamma(1/2) = \int_0^{+\infty} t^{-1/2} e^{-t} \,\dif t$。
+  令 $t = x^2$：$\Gamma(1/2) = 2\int_0^{+\infty} e^{-x^2}\,\dif x = 2 \cdot \frac{\sqrt{\pi}}{2} = \sqrt{\pi}$。
+
+  也可从 Gauss 积分出发：
+  $\pi = \left(\int_{-\infty}^{+\infty} e^{-x^2}\,\dif x\right)^2
+  = 4\left(\int_0^{+\infty} e^{-x^2}\,\dif x\right)^2$，
+  而 $\int_0^{+\infty} e^{-x^2}\,\dif x
+  = \frac{1}{2}\int_0^{+\infty} t^{-1/2}e^{-t}\,\dif t = \frac{1}{2}\Gamma(1/2)$，
+  故 $\pi = \Gamma(1/2)^2$，$\Gamma(1/2) = \sqrt{\pi}$。
+\end{solution}
+
+\begin{exercise}[Beta 函数的极坐标推导]
+  利用极坐标证明
+  $B(p,q) = \int_0^1 t^{p-1}(1-t)^{q-1}\,\dif t
+  = \frac{\Gamma(p)\,\Gamma(q)}{\Gamma(p+q)}$。
+\end{exercise}
+
+\begin{solution}
+  考虑 $\Gamma(p)\,\Gamma(q)
+  = \int_0^{+\infty} x^{p-1}e^{-x}\,\dif x \cdot \int_0^{+\infty} y^{q-1}e^{-y}\,\dif y$。
+
+  用极坐标 $x = r\cos^2\theta$，$y = r\sin^2\theta$ 并非标准极坐标，
+  这里用\textbf{另一种方法}：
+
+  $\Gamma(p)\Gamma(q) = \iint_{x,y>0} x^{p-1}y^{q-1}e^{-(x+y)}\,\dif x\,\dif y$。
+
+  令 $u = x+y$，$v = x/(x+y)$（$u > 0$，$0 < v < 1$），
+  则 $x = uv$，$y = u(1-v)$，
+  $\abs{\det J} = \begin{vmatrix} v & u \\ 1-v & -u \end{vmatrix} = u$。
+  \begin{align*}
+    \Gamma(p)\Gamma(q)
+    &= \int_0^{+\infty} \dif u \int_0^1 (uv)^{p-1}(u(1-v))^{q-1} e^{-u} \cdot u \,\dif v \\
+    &= \int_0^{+\infty} u^{p+q-1}e^{-u}\,\dif u \cdot \int_0^1 v^{p-1}(1-v)^{q-1}\,\dif v \\
+    &= \Gamma(p+q) \cdot B(p,q).
+  \end{align*}
+  故 $B(p,q) = \frac{\Gamma(p)\,\Gamma(q)}{\Gamma(p+q)}$。
+\end{solution}
+
+\begin{exercise}[反常积分收敛性判定]
+  判断 $\iiint_{\R^3} \frac{1}{(1+x^2+y^2+z^2)^p} \,\dif x\,\dif y\,\dif z$
+  收敛的 $p$ 的范围。
+\end{exercise}
+
+\begin{solution}
+  用球坐标：$\rho \in [0,+\infty)$，$\varphi \in [0,\pi]$，$\theta \in [0,2\pi]$。
+  \[
+    \iiint \frac{\rho^2\sin\varphi}{(1+\rho^2)^p}\,\dif\rho\,\dif\varphi\,\dif\theta
+    = 4\pi \int_0^{+\infty} \frac{\rho^2}{(1+\rho^2)^p}\,\dif\rho.
+  \]
+  当 $\rho \to +\infty$ 时，被积函数 $\sim \rho^{2-2p}$。
+  广义积分 $\int^\infty \rho^{2-2p}\,\dif\rho$ 收敛当且仅当 $2-2p < -1$，即 $p > 3/2$。
+
+  当 $\rho \to 0$ 时无奇点。故 $p > 3/2$ 时收敛。
+
+  \textbf{一般规律}：$\R^n$ 上 $\frac{1}{(1+r^2)^p}$ 可积当且仅当 $p > n/2$。
+\end{solution}
+
+\begin{exercise}[反常积分——先换元再交换]
+  计算 $\iint_{\R^2} \frac{e^{-(x^2+y^2)}}{x^2+y^2+1}\,\dif x\,\dif y$。
+\end{exercise}
+
+\begin{solution}
+  极坐标：
+  \[
+    \int_0^{2\pi}\dif\theta\int_0^{+\infty}\frac{e^{-r^2}}{r^2+1}\cdot r\,\dif r
+    = 2\pi\int_0^{+\infty}\frac{r\,e^{-r^2}}{r^2+1}\,\dif r.
+  \]
+  令 $u = r^2$：$\dif u = 2r\,\dif r$，
+  \[
+    = \pi\int_0^{+\infty}\frac{e^{-u}}{u+1}\,\dif u.
+  \]
+  此积分可用分部积分处理。令 $v = e^{-u}$，$\dif w = \frac{\dif u}{u+1}$：
+  \[
+    = \pi\left[-e^{-u}\ln(u+1)\Big|_0^{+\infty} + \int_0^{+\infty} e^{-u}\ln(u+1)\,\dif u\right]
+    = \pi\left[0 + \int_0^{+\infty} e^{-u}\ln(u+1)\,\dif u\right].
+  \]
+  此积分无初等闭式，但可判定收敛（$e^{-u}\ln(u+1) \le e^{-u}\cdot u$ 当 $u$ 充分大）。
+
+  \textbf{注}：若将题目改为 $\iint\frac{e^{-(x^2+y^2)}}{x^2+y^2}\,\dif x\,\dif y$，
+  则原点处有奇点，需挖去 $B(\mathbf{0},\eps)$ 再取极限，
+  极坐标下 $\int_0^{+\infty}\frac{e^{-r^2}}{r^2}\cdot r\,\dif r = \int_0^{+\infty}\frac{e^{-r^2}}{r}\,\dif r$
+  在 $r=0$ 处发散。
+\end{solution}
+
+\begin{exercise}[综合——概率论中的积分]
+  计算 $I = \iint_{\R^2} e^{-(ax^2+2bxy+cy^2)}\,\dif x\,\dif y$，
+  其中 $a > 0$，$ac - b^2 > 0$。
+\end{exercise}
+
+\begin{solution}
+  写成矩阵形式：$ax^2+2bxy+cy^2 = \mathbf{x}^\T A \mathbf{x}$，
+  $A = \begin{pmatrix} a & b \\ b & c \end{pmatrix}$。
+  由 $a > 0$，$\det A = ac-b^2 > 0$，$A$ 正定。
+
+  做正交变换将 $A$ 对角化：$A = Q^\T \begin{pmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \end{pmatrix} Q$，
+  令 $\mathbf{x} = Q^\T \mathbf{u}$，则 $\det J = \det Q = \pm 1$，$\abs{\det J} = 1$。
+  \[
+    I = \iint_{\R^2} e^{-(\lambda_1 u_1^2 + \lambda_2 u_2^2)}\,\dif u_1\,\dif u_2
+    = \frac{\pi}{\sqrt{\lambda_1\lambda_2}}
+    = \frac{\pi}{\sqrt{\det A}}
+    = \frac{\pi}{\sqrt{ac-b^2}}.
+  \]
+  \textbf{推论}：$n$ 维推广为 $\int_{\R^n} e^{-\mathbf{x}^\T A \mathbf{x}}\,\dif \mathbf{x}
+  = \frac{\pi^{n/2}}{\sqrt{\det A}}$（$A$ 正定）。
+\end{solution}
+
+% ============================================================
+%  APPENDIX: Gamma 函数与 Beta 函数
+% ============================================================
+\section{Gamma 函数与 Beta 函数}
+
+% ---------- A.1 Gamma 函数的定义与性质 ----------
+\subsection{Gamma 函数的定义与性质}
+
+\begin{definition}[Gamma 函数]
+  \[
+    \Gamma(s) = \int_0^{+\infty} t^{s-1} e^{-t} \,\dif t, \quad s > 0.
+  \]
+  收敛域：$s > 0$（在 $t=0$ 附近 $t^{s-1}$ 可积要求 $s > 0$；$t \to +\infty$ 时指数衰减保证收敛）。
+\end{definition}
+
+\begin{theorem}[Gamma 函数的基本性质]
+  \begin{enumerate}
+    \item \textbf{递推公式}：$\Gamma(s+1) = s\,\Gamma(s)$（$s > 0$）。
+      特别地，$n \in \N$ 时 $\Gamma(n+1) = n!$。
+    \item \textbf{特殊值}：$\Gamma(1) = 1$，$\Gamma(1/2) = \sqrt{\pi}$，
+      $\Gamma(3/2) = \frac{\sqrt{\pi}}{2}$，
+      $\Gamma(n+\frac{1}{2}) = \frac{(2n)!\,\sqrt{\pi}}{4^n\,n!}$。
+    \item \textbf{余元公式}（Euler）：
+      $\Gamma(s)\,\Gamma(1-s) = \dfrac{\pi}{\sin(\pi s)}$，$0 < s < 1$。
+    \item \textbf{倍元公式}（Legendre）：
+      $\Gamma(s)\,\Gamma\!\left(s+\frac{1}{2}\right)
+      = \dfrac{\sqrt{\pi}}{2^{2s-1}}\,\Gamma(2s)$，$s > 0$。
+    \item \textbf{Stirling 公式}：
+      $\Gamma(s+1) = \sqrt{2\pi s}\left(\dfrac{s}{e}\right)^{\!s} e^{\theta/(12s)}$，
+      $s > 0$，$0 < \theta < 1$。
+      特别地，$n \in \N$ 时 $n! \approx \sqrt{2\pi n}\left(\frac{n}{e}\right)^n$。
+  \end{enumerate}
+\end{theorem}
+
+\begin{remark}[Gamma 函数的解析延拓]
+  递推公式 $\Gamma(s+1) = s\,\Gamma(s)$ 可以反过来写成
+  $\Gamma(s) = \frac{\Gamma(s+1)}{s}$。
+  利用这个关系，可以将 $\Gamma$ 从 $(0,+\infty)$ 延拓到
+  $\R \setminus \{0, -1, -2, \ldots\}$ 上。
+  例如 $\Gamma(-1/2) = \frac{\Gamma(1/2)}{-1/2} = -2\sqrt{\pi}$。
+  在 $s = 0, -1, -2, \ldots$ 处 $\Gamma$ 有\textbf{一阶极点}。
+\end{remark}
+
+\subsubsection*{Gamma 函数的常见变形}
+
+令 $x = t^2$：
+\[
+  \Gamma(s) = 2\int_0^{+\infty} t^{2s-1} e^{-t^2}\,\dif t.
+\]
+由此立得 $\Gamma(1/2) = 2\int_0^{+\infty} e^{-t^2}\,\dif t = \sqrt{\pi}$。
+
+令 $x = \alpha t$（$\alpha > 0$）：
+\[
+  \Gamma(s) = \alpha^s \int_0^{+\infty} t^{s-1} e^{-\alpha t}\,\dif t,
+\]
+即 $\displaystyle\int_0^{+\infty} t^{s-1} e^{-\alpha t}\,\dif t = \frac{\Gamma(s)}{\alpha^s}$。
+这是一个非常有用的含参积分公式。
+
+\begin{proof}[递推公式的证明]
+  分部积分：
+  \[
+    \Gamma(s+1) = \int_0^{+\infty} t^s e^{-t}\,\dif t
+    = \left[-t^s e^{-t}\right]_0^{+\infty} + s\int_0^{+\infty} t^{s-1}e^{-t}\,\dif t
+    = s\,\Gamma(s).
+  \]
+  边界项在 $t \to +\infty$ 时为 $0$（指数衰减），$t \to 0^+$ 时为 $0$（$s > 0$）。
+\end{proof}
+
+\begin{proof}[$\Gamma(1/2) = \sqrt{\pi}$]
+  $\Gamma(1/2) = \int_0^{+\infty} t^{-1/2}e^{-t}\,\dif t$。
+  令 $t = x^2$，$\dif t = 2x\,\dif x$：
+  \[
+    \Gamma(1/2) = 2\int_0^{+\infty} e^{-x^2}\,\dif x
+    = 2 \cdot \frac{\sqrt{\pi}}{2} = \sqrt{\pi}.
+  \]
+\end{proof}
+
+\begin{proof}[倍元公式的证明思路]
+  左端 $= \Gamma(s)\,\Gamma(s+1/2)$。
+  写成二重积分后令 $u = x+y$，$v = x/(x+y)$，
+  消去一重积分可得 $\Gamma(2s) \cdot B(s, s+1/2)$。
+  再利用 $\Gamma$ 函数与 $B$ 函数的关系以及化简即可。此处省略细节。
+\end{proof}
+
+% ---------- A.2 Beta 函数的定义与性质 ----------
+\subsection{Beta 函数的定义与性质}
+
+\begin{definition}[Beta 函数]
+  \[
+    B(p,q) = \int_0^1 t^{p-1}(1-t)^{q-1}\,\dif t, \quad p, q > 0.
+  \]
+\end{definition}
+
+\begin{theorem}[Beta 函数的基本性质]
+  \begin{enumerate}
+    \item \textbf{对称性}：$B(p,q) = B(q,p)$。
+    \item \textbf{与 Gamma 的关系}：
+      $B(p,q) = \dfrac{\Gamma(p)\,\Gamma(q)}{\Gamma(p+q)}$。
+    \item \textbf{三角积分表示}：
+      $B(p,q) = 2\displaystyle\int_0^{\pi/2} \sin^{2p-1}\theta\,\cos^{2q-1}\theta \,\dif\theta$。
+    \item \textbf{递推公式}：
+      $B(p,q) = \dfrac{p-1}{p+q-1}\,B(p-1,q)$（$p > 1$）。
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}[三角积分表示的推导]
+  令 $t = \sin^2\theta$，$\dif t = 2\sin\theta\cos\theta\,\dif\theta$：
+  \begin{align*}
+    B(p,q) &= \int_0^1 \sin^{2p-2}\theta \cdot \cos^{2q-2}\theta \cdot 2\sin\theta\cos\theta \,\dif\theta \\
+    &= 2\int_0^{\pi/2} \sin^{2p-1}\theta\,\cos^{2q-1}\theta \,\dif\theta.
+  \end{align*}
+\end{proof}
+
+\begin{remark}[常见 Beta 积分的快捷推导]
+  利用 $B(p,q) = \frac{\Gamma(p)\Gamma(q)}{\Gamma(p+q)}$，
+  很多三角积分可以秒杀：
+  \[
+    \int_0^{\pi/2}\sin^{2p-1}\theta\,\cos^{2q-1}\theta\,\dif\theta
+    = \frac{1}{2}B(p,q)
+    = \frac{\Gamma(p)\Gamma(q)}{2\,\Gamma(p+q)}.
+  \]
+\end{remark}
+
+\begin{proof}[递推公式的推导]
+  对 $B(p,q) = \int_0^1 t^{p-1}(1-t)^{q-1}\,\dif t$ 做分部积分，
+  令 $u = (1-t)^{q-1}$，$\dif v = t^{p-1}\,\dif t$：
+  \begin{align*}
+    B(p,q) &= \left[\frac{t^p}{p}(1-t)^{q-1}\right]_0^1
+    + \frac{q-1}{p}\int_0^1 t^p(1-t)^{q-2}\,\dif t \\
+    &= 0 + \frac{q-1}{p}\int_0^1 t^{(p+1)-1}(1-t)^{(q-1)-1}\,\dif t
+    = \frac{q-1}{p}\,B(p+1,q-1).
+  \end{align*}
+  利用对称性和反复递推可得标准形式。
+  也可以写成 $B(p,q) = \frac{q-1}{p+q-1}\,B(p,q-1)$（用 $\Gamma$ 关系直接验证）。
+\end{proof}
+
+\subsubsection*{Beta 函数的常见变形}
+
+令 $t = \frac{1}{1+u}$，则 $1-t = \frac{u}{1+u}$，$\dif t = -\frac{\dif u}{(1+u)^2}$：
+\[
+  B(p,q) = \int_0^{+\infty}\frac{u^{q-1}}{(1+u)^{p+q}}\,\dif u.
+\]
+
+将此积分分为 $[0,1]$ 和 $[1,+\infty)$ 两段，对第二段令 $u = 1/v$：
+\[
+  \int_1^{+\infty}\frac{u^{q-1}}{(1+u)^{p+q}}\,\dif u
+  = \int_0^1 \frac{v^{p-1}}{(1+v)^{p+q}}\,\dif v.
+\]
+两段合并得对称形式：
+\[
+  B(p,q) = \int_0^1 \frac{t^{p-1}+t^{q-1}}{(1+t)^{p+q}}\,\dif t.
+\]
+当 $p = q$ 时被积函数特别简洁：$B(p,p) = 2\int_0^1\frac{t^{p-1}}{(1+t)^{2p}}\,\dif t$。
+
+% ---------- A.3 常用积分表 ----------
+\subsection{由 $\Gamma$/$B$ 函数导出的常用积分}
+
+\begin{proposition}[Wallis 积分]
+  \[
+    \int_0^{\pi/2}\sin^n x\,\dif x
+    = \int_0^{\pi/2}\cos^n x\,\dif x
+    = \frac{\sqrt{\pi}\,\Gamma\!\left(\frac{n+1}{2}\right)}{2\,\Gamma\!\left(\frac{n}{2}+1\right)}.
+  \]
+  特别地：
+  \[
+    \int_0^{\pi/2}\sin^{2m}x\,\dif x = \frac{(2m-1)!!}{(2m)!!}\cdot\frac{\pi}{2}
+    = \frac{(2m)!}{4^m(m!)^2}\cdot\frac{\pi}{2}.
+  \]
+  \[
+    \int_0^{\pi/2}\sin^{2m+1}x\,\dif x = \frac{(2m)!!}{(2m+1)!!}
+    = \frac{4^m(m!)^2}{(2m+1)!}.
+  \]
+\end{proposition}
+
+\begin{proposition}[含参广义积分]
+  \begin{align}
+    \int_0^{+\infty} \frac{x^{s-1}}{(1+x)^{p+q}}\,\dif x
+    &= B(p,q), \quad p,q > 0 \label{eq:B-alt} \\
+    \int_0^{+\infty} \frac{x^{s-1}}{1+x}\,\dif x
+    &= \frac{\pi}{\sin(\pi s)}, \quad 0 < s < 1 \label{eq:res-reflex} \\
+    \int_0^{+\infty} e^{-ax^2} x^{s-1}\,\dif x
+    &= \frac{1}{2}\,a^{-s/2}\,\Gamma\!\left(\frac{s}{2}\right), \quad a > 0, s > 0 \label{eq:gamma-x2}
+  \end{align}
+\end{proposition}
+
+\begin{proof}[\eqref{eq:B-alt} 的推导]
+  在 $B(p,q) = \int_0^1 t^{p-1}(1-t)^{q-1}\,\dif t$ 中令 $t = \frac{x}{1+x}$，
+  则 $1-t = \frac{1}{1+x}$，$\dif t = \frac{\dif x}{(1+x)^2}$：
+  \[
+    B(p,q) = \int_0^{+\infty} \frac{x^{p-1}}{(1+x)^{p+q}}\,\dif x.
+  \]
+\end{proof}
+
+\begin{proof}[\eqref{eq:res-reflex} 的推导]
+  取 $p = s$，$q = 1-s$：
+  $\int_0^{+\infty}\frac{x^{s-1}}{1+x}\,\dif x = B(s, 1-s) = \Gamma(s)\Gamma(1-s) = \frac{\pi}{\sin\pi s}$。
+\end{proof}
+
+\begin{proof}[\eqref{eq:gamma-x2} 的推导]
+  令 $u = ax^2$，$\dif u = 2ax\,\dif x$，$x = \sqrt{u/a}$：
+  \[
+    \int_0^{+\infty} e^{-ax^2}x^{s-1}\,\dif x
+    = \int_0^{+\infty} e^{-u}(u/a)^{(s-1)/2}\cdot\frac{\dif u}{2a^{1/2}\,u^{1/2}}
+    = \frac{a^{-s/2}}{2}\int_0^{+\infty}u^{s/2-1}e^{-u}\,\dif u
+    = \frac{a^{-s/2}}{2}\,\Gamma\!\left(\frac{s}{2}\right).
+  \]
+\end{proof}
+
+% ---------- A.4 练习题 ----------
+\subsection{练习题——Gamma 与 Beta 函数}
+
+\begin{exercise}[基本 Gamma 值计算]
+  计算 $\Gamma(5/2)$ 和 $\Gamma(7/2)$。
+\end{exercise}
+
+\begin{solution}
+  反复利用递推 $\Gamma(s+1) = s\,\Gamma(s)$：
+  \begin{align*}
+    \Gamma(5/2) &= \frac{3}{2}\,\Gamma(3/2)
+    = \frac{3}{2}\cdot\frac{1}{2}\,\Gamma(1/2)
+    = \frac{3}{2}\cdot\frac{1}{2}\cdot\sqrt{\pi}
+    = \frac{3\sqrt{\pi}}{4}. \\
+    \Gamma(7/2) &= \frac{5}{2}\,\Gamma(5/2)
+    = \frac{5}{2}\cdot\frac{3\sqrt{\pi}}{4}
+    = \frac{15\sqrt{\pi}}{8}.
+  \end{align*}
+\end{solution}
+
+\begin{exercise}[利用递推化简]
+  化简 $\dfrac{\Gamma(n+\frac{1}{2})}{\Gamma(\frac{1}{2})}$（$n \in \N$）。
+\end{exercise}
+
+\begin{solution}
+  反复递推：
+  $\Gamma(n+\frac{1}{2}) = (n-\frac{1}{2})(n-\frac{3}{2})\cdots\frac{1}{2}\,\Gamma(\frac{1}{2})$。
+  \[
+    \frac{\Gamma(n+\frac{1}{2})}{\Gamma(\frac{1}{2})}
+    = \prod_{k=0}^{n-1}\left(k+\frac{1}{2}\right)
+    = \frac{1}{2}\cdot\frac{3}{2}\cdot\frac{5}{2}\cdots\frac{2n-1}{2}
+    = \frac{(2n-1)!!}{2^n}
+    = \frac{(2n)!}{4^n\,n!}.
+  \]
+\end{solution}
+
+\begin{exercise}[反射公式应用]
+  利用反射公式求 $\Gamma(1/3)\,\Gamma(2/3)$。
+\end{exercise}
+
+\begin{solution}
+  反射公式：$\Gamma(s)\,\Gamma(1-s) = \frac{\pi}{\sin(\pi s)}$。
+  取 $s = 1/3$：
+  \[
+    \Gamma(1/3)\,\Gamma(2/3) = \frac{\pi}{\sin(\pi/3)} = \frac{\pi}{\sqrt{3}/2} = \frac{2\pi}{\sqrt{3}}.
+  \]
+\end{solution}
+
+\begin{exercise}[三角积分——Wallis 型]
+  计算 $\displaystyle\int_0^{\pi/2}\sin^4 x\,\cos^2 x\,\dif x$。
+\end{exercise}
+
+\begin{solution}
+  对照 Beta 函数的三角形式：
+  $2p-1 = 4$，$2q-1 = 2$，即 $p = 5/2$，$q = 3/2$。
+  \[
+    \int_0^{\pi/2}\sin^4 x\,\cos^2 x\,\dif x
+    = \frac{1}{2}B(5/2, 3/2)
+    = \frac{1}{2}\cdot\frac{\Gamma(5/2)\,\Gamma(3/2)}{\Gamma(4)}.
+  \]
+  $\Gamma(5/2) = \frac{3\sqrt{\pi}}{4}$，$\Gamma(3/2) = \frac{\sqrt{\pi}}{2}$，$\Gamma(4) = 3! = 6$。
+  \[
+    = \frac{1}{2}\cdot\frac{\frac{3\sqrt{\pi}}{4}\cdot\frac{\sqrt{\pi}}{2}}{6}
+    = \frac{1}{2}\cdot\frac{\frac{3\pi}{8}}{6}
+    = \frac{3\pi}{96}
+    = \frac{\pi}{32}.
+  \]
+\end{solution}
+
+\begin{exercise}[含参积分计算]
+  计算 $\displaystyle\int_0^{+\infty} \frac{x^{1/3}}{1+x}\,\dif x$。
+\end{exercise}
+
+\begin{solution}
+  由 $\int_0^{+\infty}\frac{x^{s-1}}{1+x}\,\dif x = \frac{\pi}{\sin\pi s}$（$0 < s < 1$），
+  取 $s-1 = 1/3$，即 $s = 4/3$。
+
+  但 $s = 4/3 > 1$，不满足条件。改写：
+  $\frac{x^{1/3}}{1+x} = \frac{x^{4/3-1}}{1+x}$，
+  对应 $s = 4/3$，超范围。
+
+  改用 $B$ 函数形式：
+  $\int_0^{+\infty}\frac{x^{p-1}}{(1+x)^{p+q}}\,\dif x = B(p,q)$。
+  这里 $p - 1 = 1/3$，$p + q = 1$，即 $p = 4/3$，$q = -1/3 < 0$，不合法。
+
+  正确做法：令 $x = u^3$，$\dif x = 3u^2\,\dif u$：
+  \[
+    \int_0^{+\infty}\frac{u}{1+u^3}\cdot 3u^2\,\dif u
+    = 3\int_0^{+\infty}\frac{u^3}{1+u^3}\,\dif u.
+  \]
+  这也发散。回到原方法：
+
+  $\int_0^{+\infty}\frac{x^{s-1}}{1+x}\,\dif x = \frac{\pi}{\sin\pi s}$，取 $s = 4/3$：
+  积分发散（$s > 1$）。原积分也确实发散——$\frac{x^{1/3}}{1+x} \sim x^{1/3-1} = x^{-2/3}$
+  当 $x \to 0^+$ 时 $x^{-2/3}$ 可积，但 $x \to +\infty$ 时 $\frac{x^{1/3}}{1+x} \sim x^{-2/3}$，
+  $\int^\infty x^{-2/3}\,\dif x$ 发散（$-2/3 > -1$ 不成立，$2/3 < 1$）。
+
+  \textbf{修正题目}：计算 $\int_0^{+\infty}\frac{x^{-1/3}}{1+x}\,\dif x$。
+
+  此时 $s-1 = -1/3$，$s = 2/3 \in (0,1)$：
+  \[
+    \int_0^{+\infty}\frac{x^{-1/3}}{1+x}\,\dif x
+    = \frac{\pi}{\sin(2\pi/3)} = \frac{\pi}{\sqrt{3}/2} = \frac{2\pi}{\sqrt{3}}.
+  \]
+\end{solution}
+
+\begin{exercise}[广义积分——Gauss 型含幂次]
+  计算 $\displaystyle\int_0^{+\infty} x^4\,e^{-x^2}\,\dif x$。
+\end{exercise}
+
+\begin{solution}
+  由 $\int_0^{+\infty}e^{-ax^2}x^{s-1}\,\dif x = \frac{a^{-s/2}}{2}\,\Gamma(s/2)$，
+  取 $a = 1$，$s - 1 = 4$，即 $s = 5$：
+  \[
+    \int_0^{+\infty}x^4 e^{-x^2}\,\dif x
+    = \frac{1}{2}\,\Gamma(5/2)
+    = \frac{1}{2}\cdot\frac{3\sqrt{\pi}}{4}
+    = \frac{3\sqrt{\pi}}{8}.
+  \]
+\end{solution}
+
+\begin{exercise}[倍元公式应用]
+  利用 Legendre 倍元公式计算 $\Gamma(1/4)\,\Gamma(3/4)$。
+\end{exercise}
+
+\begin{solution}
+  反射公式：$\Gamma(1/4)\,\Gamma(3/4) = \frac{\pi}{\sin(\pi/4)} = \frac{\pi}{\sqrt{2}/2} = \sqrt{2}\,\pi$。
+
+  也可用倍元公式：取 $s = 1/4$：
+  $\Gamma(1/4)\,\Gamma(3/4) = \frac{\sqrt{\pi}}{2^{-1/2}}\,\Gamma(1/2) = \sqrt{2\pi}\cdot\sqrt{\pi} = \sqrt{2}\,\pi$。$\checkmark$
+\end{solution}
+
+\begin{exercise}[综合——推导 Wallis 公式]
+  利用 Gamma 函数证明 Wallis 公式：
+  \[
+    \frac{\pi}{2} = \lim_{n \to \infty}
+    \frac{1}{2n+1}\left[\frac{(2n)!!}{(2n-1)!!}\right]^2.
+  \]
+\end{exercise}
+
+\begin{solution}
+  由 Wallis 积分：
+  $I_{2n} = \int_0^{\pi/2}\sin^{2n}x\,\dif x = \frac{(2n-1)!!}{(2n)!!}\cdot\frac{\pi}{2}$，
+  $I_{2n+1} = \int_0^{\pi/2}\sin^{2n+1}x\,\dif x = \frac{(2n)!!}{(2n+1)!!}$。
+
+  由 $I_{2n+1} < I_{2n} < I_{2n-1}$，且 $I_{2n-1}/I_{2n+1} = (2n+1)/(2n) \to 1$，
+  故 $\frac{I_{2n}}{I_{2n+1}} \to 1$。
+  \[
+    \frac{I_{2n}}{I_{2n+1}}
+    = \frac{(2n-1)!!}{(2n)!!}\cdot\frac{\pi}{2}
+      \bigg/ \frac{(2n)!!}{(2n+1)!!}
+    = \frac{\pi}{2}\cdot\frac{(2n-1)!!\cdot(2n+1)!!}{[(2n)!!]^2}
+    = \frac{\pi}{2}\cdot\frac{[(2n)!!]^2}{(2n+1)\cdot[(2n-1)!!]^2\cdot\frac{[(2n)!!]^2}{[(2n)!!]^2}}.
+  \]
+  整理得
+  $\frac{\pi}{2} = \lim_{n\to\infty}\frac{1}{2n+1}\left[\frac{(2n)!!}{(2n-1)!!}\right]^2$。
+\end{solution}
+
+\begin{exercise}[综合——$n$ 维球体积]
+  利用 Gamma 函数证明 $n$ 维单位球的体积为
+  $V_n = \frac{\pi^{n/2}}{\Gamma(n/2+1)}$。
+\end{exercise}
+
+\begin{solution}
+  用球坐标，$n$ 维球的体积为
+  \[
+    V_n = \omega_n \int_0^1 r^{n-1}\,\dif r = \frac{\omega_n}{n},
+  \]
+  其中 $\omega_n$ 为 $n$ 维单位球面面积。
+  由 Gauss 积分：
+  $\pi^{n/2} = \int_{\R^n}e^{-\norm{\mathbf{x}}^2}\,\dif\mathbf{x}
+  = \omega_n\int_0^{+\infty}e^{-r^2}r^{n-1}\,\dif r
+  = \omega_n\cdot\frac{1}{2}\Gamma(n/2)$。
+  故 $\omega_n = \frac{2\pi^{n/2}}{\Gamma(n/2)}$。
+  \[
+    V_n = \frac{\omega_n}{n} = \frac{2\pi^{n/2}}{n\,\Gamma(n/2)}
+    = \frac{\pi^{n/2}}{(n/2)\,\Gamma(n/2)}
+    = \frac{\pi^{n/2}}{\Gamma(n/2+1)}.
+  \]
+  验证：$V_1 = 2$，$V_2 = \pi$，$V_3 = \frac{4\pi}{3}$。$\checkmark$
+\end{solution}
+
+\begin{exercise}[Stirling 公式应用——阶乘估计]
+  利用 Stirling 公式估计 $100!$ 的数量级，并计算 $\displaystyle\lim_{n\to\infty}\frac{(n!)^{1/n}}{n}$。
+\end{exercise}
+
+\begin{solution}
+  Stirling 近似：$n! \approx \sqrt{2\pi n}\left(\frac{n}{e}\right)^n$。
+
+  $100! \approx \sqrt{200\pi}\left(\frac{100}{e}\right)^{100}
+  \approx 25.1 \times (36.79)^{100}
+  \approx 9.33 \times 10^{157}$。
+
+  极限：
+  \[
+    \frac{(n!)^{1/n}}{n}
+    \approx \frac{(2\pi n)^{1/(2n)}}{n}\cdot\frac{n}{e}
+    = \frac{(2\pi n)^{1/(2n)}}{e}
+    \to \frac{1}{e}.
+  \]
+  （因 $(2\pi n)^{1/(2n)} = e^{\frac{\ln(2\pi n)}{2n}} \to e^0 = 1$。）
+\end{solution}
+
+\begin{exercise}[$\alpha$-缩放公式应用]
+  利用 $\displaystyle\int_0^{+\infty} t^{s-1}e^{-\alpha t}\,\dif t = \frac{\Gamma(s)}{\alpha^s}$，
+  求 $\displaystyle\int_0^{+\infty}\frac{e^{-2t}}{\sqrt{t}}\,\dif t$。
+\end{exercise}
+
+\begin{solution}
+  $\int_0^{+\infty}t^{-1/2}e^{-2t}\,\dif t$。
+  对照公式：$s-1 = -1/2$，$s = 1/2$，$\alpha = 2$：
+  \[
+    \int_0^{+\infty}t^{-1/2}e^{-2t}\,\dif t
+    = \frac{\Gamma(1/2)}{2^{1/2}}
+    = \frac{\sqrt{\pi}}{\sqrt{2}}
+    = \sqrt{\frac{\pi}{2}}.
+  \]
+\end{solution}
+
+\begin{exercise}[解析延拓计算]
+  利用递推关系 $\Gamma(s) = \frac{\Gamma(s+1)}{s}$，计算 $\Gamma(-3/2)$。
+\end{exercise}
+
+\begin{solution}
+  $\Gamma(-1/2) = \frac{\Gamma(1/2)}{-1/2} = -2\sqrt{\pi}$。
+
+  $\Gamma(-3/2) = \frac{\Gamma(-1/2)}{-3/2} = \frac{-2\sqrt{\pi}}{-3/2} = \frac{4\sqrt{\pi}}{3}$。
+\end{solution}
+
+
+% ============================================================
+%  PART 2: 换元法与雅可比矩阵
+% ============================================================
+\section{换元法与雅可比矩阵（重点）}
+\label{sec:jacobian}
+
+% ---------- 2.1 雅可比矩阵与雅可比行列式 ----------
+\subsection{雅可比矩阵与雅可比行列式}
+
+\begin{definition}[雅可比矩阵]
+  设 $\Phi: \R^n \to \R^n$，$\Phi(u_1, \ldots, u_n) = (x_1, \ldots, x_n)$，
+  其中每个分量 $x_i = \varphi_i(u_1, \ldots, u_n)$ 可微。
+  $\Phi$ 在点 $\mathbf{u}$ 处的\textbf{雅可比矩阵}定义为
+  \[
+    J_\Phi(\mathbf{u})
+    = \frac{\partial(x_1, \ldots, x_n)}{\partial(u_1, \ldots, u_n)}
+    = \begin{pmatrix}
+        \dfrac{\partial x_1}{\partial u_1} & \cdots & \dfrac{\partial x_1}{\partial u_n} \\[8pt]
+        \vdots & \ddots & \vdots \\[4pt]
+        \dfrac{\partial x_n}{\partial u_1} & \cdots & \dfrac{\partial x_n}{\partial u_n}
+      \end{pmatrix}.
+  \]
+  其行列式 $\det J_\Phi$ 称为\textbf{雅可比行列式}，也记作
+  $\dfrac{\partial(x_1, \ldots, x_n)}{\partial(u_1, \ldots, u_n)}$。
+\end{definition}
+
+\begin{remark}[雅可比行列式的几何意义]
+  $\abs{\det J_\Phi(\mathbf{u})}$ 是映射 $\Phi$ 在 $\mathbf{u}$ 处的
+  \textbf{局部体积伸缩因子}：$\mathbf{u}$ 附近体积为 $\Delta V$ 的小块
+  经 $\Phi$ 映射后体积约为 $\abs{\det J_\Phi} \cdot \Delta V$。
+  \begin{itemize}
+    \item $\abs{\det J_\Phi} > 1$：局部放大；$< 1$：局部缩小。
+    \item $\det J_\Phi > 0$：保持方向；$\det J_\Phi < 0$：反转方向。
+    \item $\det J_\Phi = 0$：映射在局部退化（不可逆）。
+  \end{itemize}
+\end{remark}
+
+% ---------- 2.2 二重积分的换元公式 ----------
+\subsection{二重积分的换元公式}
+
+\begin{theorem}[二重积分换元公式]
+  设 $\Phi: D' \to D$，$(u,v) \mapsto (x(u,v), y(u,v))$ 是 $C^1$ 双射，
+  且 $\det J_\Phi(u,v) \ne 0$ 在 $D'$ 上成立。
+  若 $f$ 在 $D$ 上连续，则
+  \[
+    \iint_D f(x,y) \,\dif x\,\dif y
+    = \iint_{D'} f\bigl(x(u,v), y(u,v)\bigr) \cdot
+      \abs{\frac{\partial(x,y)}{\partial(u,v)}} \,\dif u\,\dif v.
+  \]
+\end{theorem}
+
+\begin{remark}[何时用 $\abs{\cdot}$ 何时不带]
+  公式中取\textbf{绝对值}是因为面积/体积总是非负的。
+  若已知 $\det J_\Phi > 0$（如极坐标 $r > 0$），可直接去掉绝对值。
+\end{remark}
+
+\subsubsection*{换元策略一：极坐标}
+
+令 $x = r\cos\theta$，$y = r\sin\theta$（$r \ge 0$）。
+\[
+  \frac{\partial(x,y)}{\partial(r,\theta)}
+  = \begin{vmatrix} \cos\theta & -r\sin\theta \\ \sin\theta & r\cos\theta \end{vmatrix}
+  = r\cos^2\theta + r\sin^2\theta = r \ge 0.
+\]
+
+\textbf{适用场景}：$D$ 为圆/圆环/扇形，或被积函数含 $x^2+y^2$。
+这是最基本也是最常考的换元。
+
+\subsubsection*{换元策略二：广义极坐标（椭圆区域）}
+
+令 $x = ar\cos\theta$，$y = br\sin\theta$（$a, b > 0$）。
+\[
+  \frac{\partial(x,y)}{\partial(r,\theta)}
+  = \begin{vmatrix} a\cos\theta & -ar\sin\theta \\ b\sin\theta & br\cos\theta \end{vmatrix}
+  = abr.
+\]
+
+\textbf{适用场景}：$D$ 为椭圆 $\frac{x^2}{a^2}+\frac{y^2}{b^2} \le 1$。
+将椭圆映射到单位圆盘，简化积分区域。
+
+\subsubsection*{换元策略三：线性（仿射）变换}
+
+令 $x = au + bv + e$，$y = cu + dv + f$（$ad - bc \ne 0$）。
+\[
+  \frac{\partial(x,y)}{\partial(u,v)}
+  = \begin{vmatrix} a & b \\ c & d \end{vmatrix}
+  = ad - bc.
+\]
+
+\textbf{适用场景}：
+\begin{itemize}
+  \item $D$ 为平行四边形（线性变换将矩形映为平行四边形）。
+  \item 被积函数含 $ax+by$ 和 $cx+dy$ 的线性组合。
+\end{itemize}
+
+\subsubsection*{换元策略四：和差换元}
+
+令 $u = x + y$，$v = x - y$（或类似形式）。
+
+由 $x = \frac{u+v}{2}$，$y = \frac{u-v}{2}$：
+\[
+  \frac{\partial(x,y)}{\partial(u,v)}
+  = \begin{vmatrix} 1/2 & 1/2 \\ 1/2 & -1/2 \end{vmatrix}
+  = -\frac{1}{2}, \quad
+  \abs{\frac{\partial(x,y)}{\partial(u,v)}} = \frac{1}{2}.
+\]
+
+\textbf{适用场景}：
+\begin{itemize}
+  \item 被积函数含 $x+y$、$x-y$ 的表达式。
+  \item 区域 $D$ 的边界由 $x+y = c_1$、$x-y = c_2$ 等直线围成。
+\end{itemize}
+
+\subsubsection*{换元策略五：乘商换元}
+
+令 $u = xy$，$v = y/x$（或 $u = x^2+y^2$，$v = y/x$ 等组合）。
+
+由 $x = \sqrt{u/v}$，$y = \sqrt{uv}$（需讨论符号）：
+\[
+  \frac{\partial(x,y)}{\partial(u,v)}
+  = \frac{1}{2v}.
+\]
+
+\textbf{适用场景}：
+\begin{itemize}
+  \item 被积函数含 $xy$、$y/x$ 的表达式。
+  \item 区域 $D$ 的边界含双曲线 $xy = c$ 或射线 $y/x = k$。
+\end{itemize}
+
+\subsubsection*{换元策略六：根据区域特征设计换元}
+
+\textbf{核心原则}：让新变量的积分区域变得尽可能简单（最好是矩形）。
+
+\begin{example}[根据边界设计换元]
+  设 $D$ 由 $xy = 1$，$xy = 2$，$y = x$，$y = 2x$ 围成。
+  令 $u = xy$（$u \in [1,2]$），$v = y/x$（$v \in [1,2]$），
+  则 $D'$ 为矩形 $[1,2] \times [1,2]$。
+\end{example}
+
+\subsubsection*{换元策略七：倒数换元}
+
+令 $u = 1/x$，$v = y$（或双倒数 $u=1/x$, $v=1/y$）。
+雅可比：$x = 1/u$, $\pdfFrac{x}{u} = -1/u^2$，故
+\[
+  \frac{\partial(x,y)}{\partial(u,v)} = \begin{vmatrix} -1/u^2 & 0 \\ 0 & 1 \end{vmatrix}
+  = -\frac{1}{u^2}, \quad \abs{J} = \frac{1}{u^2}.
+\]
+
+\textbf{适用场景}：
+\begin{itemize}
+  \item 无界区域 $x \ge 1$（或 $x \ge a$）化到有限区间 $0 < u \le 1$。
+  \item 被积函数含 $1/x$ 或 $1/x^2$ 等因子时可能简化。
+  \item \textbf{双倒数}：$u=1/x$, $v=1/y$ 将第一象限的无界区域映射为有限矩形。
+    雅可比 $\abs{J} = 1/(u^2v^2)$。
+\end{itemize}
+
+\begin{example}[倒数换元化无界区域为有界区域]
+  求 $\iint_D \frac{1}{x^2 y}\,\dif x\,\dif y$，其中 $D = \{(x,y) \mid x \ge 1,\; y \ge 1,\; xy \le 2\}$。
+
+  令 $u = 1/x$，$v = 1/y$。则 $x = 1/u$，$y = 1/v$，$\abs{J} = 1/(u^2 v^2)$。
+  条件 $x \ge 1 \Leftrightarrow 0 < u \le 1$，$y \ge 1 \Leftrightarrow 0 < v \le 1$，
+  $xy \le 2 \Leftrightarrow 1/(uv) \le 2 \Leftrightarrow uv \ge 1/2$。
+  新区域 $D' = \{(u,v) \mid 1/2 \le uv \le 1,\; 0 < u,v \le 1\}$。
+
+  被积函数 $\frac{1}{x^2 y} \cdot \frac{1}{u^2 v^2}
+  = u^2 v \cdot \frac{1}{u^2 v^2} = \frac{1}{v}$。
+  积分化为 $\iint_{D'} \frac{1}{v}\,\dif u\,\dif v$。
+\end{example}
+
+\subsubsection*{换元策略八：三角换元（非极坐标）}
+
+在二重积分中，可对\textbf{单个变量}做三角换元，类似一元积分的技巧。
+常见形式：
+
+\begin{itemize}
+  \item $x = a\sec\theta$：消除 $\sqrt{x^2 - a^2}$，$dx = a\sec\theta\tan\theta\,d\theta$。
+  \item $x = a\tan\theta$：消除 $\sqrt{x^2 + a^2}$，$dx = a\sec^2\theta\,d\theta$。
+  \item $x = a\sin\theta$：消除 $\sqrt{a^2 - x^2}$，$dx = a\cos\theta\,d\theta$。
+\end{itemize}
+
+\textbf{注意}：在二重积分中，三角换元通常只对\textbf{一个变量}做，
+另一个变量保持不变，因此雅可比是一维换元的导数。
+
+\begin{example}[含 $\sqrt{x^2 + a^2}$ 的二重积分]
+  求 $\iint_D \frac{1}{\sqrt{x^2+1}}\,\dif x\,\dif y$，
+  $D = \{(x,y) \mid 0 \le y \le x,\; 0 \le x \le 1\}$。
+
+  令 $x = \tan\theta$（$\theta \in [0, \pi/4]$），$\dif x = \sec^2\theta\,\dif\theta$。
+  $\sqrt{x^2+1} = \sec\theta$。
+  \[
+    \int_0^{\pi/4}\int_0^{\tan\theta} \frac{1}{\sec\theta}\,\sec^2\theta\,\dif y\,\dif\theta
+    = \int_0^{\pi/4} \tan\theta \cdot \sec\theta \,\dif\theta
+    = \sec\theta\Big|_0^{\pi/4} = \sqrt{2} - 1.
+  \]
+\end{example}
+
+\subsubsection*{换元策略九：双曲换元}
+
+利用双曲函数 $\cosh t = \frac{e^t+e^{-t}}{2}$，$\sinh t = \frac{e^t-e^{-t}}{2}$，
+满足 $\cosh^2 t - \sinh^2 t = 1$。
+
+\begin{itemize}
+  \item $x = a\cosh t$：消除 $\sqrt{x^2 - a^2}$（$x > a$），
+    $\dif x = a\sinh t\,\dif t$，$\sqrt{x^2-a^2} = a\sinh t$。
+  \item $x = a\sinh t$：消除 $\sqrt{x^2 + a^2}$，
+    $\dif x = a\cosh t\,\dif t$，$\sqrt{x^2+a^2} = a\cosh t$。
+\end{itemize}
+
+\textbf{优势}：与三角换元相比，双曲换元无需讨论正负号，且恒等式更简洁。
+\textbf{适用}：双曲型边界（如 $x^2 - y^2 = a^2$）的区域。
+
+\begin{example}[双曲型边界的积分]
+  求 $\iint_D \frac{1}{\sqrt{x^2-y^2}}\,\dif x\,\dif y$，
+  $D = \{(x,y) \mid 1 \le x \le 2,\; 0 \le y \le \sqrt{x^2-1}\}$。
+
+  令 $x = \cosh u$（$u \ge 0$），$y = \sinh u \cdot v$（$0 \le v \le 1$）。
+  则 $x^2 - y^2 = \cosh^2 u - v^2\sinh^2 u$，取 $v = \sinh w/\sinh u$ 可进一步化简。
+  或者直接对 $y$ 积分后对 $x$ 做双曲换元：
+  \[
+    \int_1^2 \frac{1}{\sqrt{x^2-1}}\left(\int_0^{\sqrt{x^2-1}} \dif y\right)\dif x
+    = \int_1^2 \dif x = 1.
+  \]
+  此题内层积分恰好积出，无需复杂换元，但展示了双曲换元的思路。
+\end{example}
+
+\subsubsection*{换元策略十：齐次函数换元}
+
+若被积函数 $f(x,y)$ 是 $k$ 次齐次的（$f(\lambda x, \lambda y) = \lambda^k f(x,y)$），
+且积分区域 $D$ 关于原点为\textbf{锥形}（即 $(x,y) \in D \Leftrightarrow (tx,ty) \in D$ 对所有 $t > 0$），
+则令
+\[
+  x = r\cos\theta, \quad y = r\sin\theta, \quad\text{或更一般地}\quad
+  u = y/x,\; v = \sqrt{x^2+y^2}.
+\]
+
+此时 $f(x,y) = v^k f(\cos\theta, \sin\theta) = v^k g(\theta)$，
+积分分离为径向和角度两部分。
+
+\begin{example}[齐次被积函数的极坐标分离]
+  求 $\iint_D \frac{x^2 y}{(x^2+y^2)^2}\,\dif x\,\dif y$，
+  $D$ 为单位圆盘 $x^2+y^2 \le 1$ 的第一象限部分。
+
+  被积函数分子 $x^2 y$ 为 3 次，分母 $(x^2+y^2)^2$ 为 4 次，
+  整体为 $-1$ 次齐次。极坐标：
+  \[
+    \frac{r^2\cos^2\theta\cdot r\sin\theta}{r^4}\cdot r
+    = \cos^2\theta\sin\theta.
+  \]
+  积分 $= \int_0^{\pi/2}\cos^2\theta\sin\theta\,\dif\theta\int_0^1 \dif r
+  = \frac{1}{3}\cdot 1 = \frac{1}{3}$。
+\end{example}
+
+\subsubsection*{换元策略十一：复合换元（链式两步换元）}
+
+对复杂积分，可\textbf{分两步}换元：第一步化简区域，第二步化简被积函数。
+链式法则保证 $\abs{J_{\text{总}}} = \abs{J_1}\cdot\abs{J_2}$。
+
+\textbf{典型流程}：
+\begin{enumerate}
+  \item 第一步：令 $u = x+y$, $v = x-y$（和差换元），将区域变为矩形。
+  \item 第二步：在新变量 $(u,v)$ 中再令 $s = u^2$, $t = v$（或根据被积函数选择）。
+\end{enumerate}
+
+\begin{example}[两步换元]
+  求 $\iint_D (x+y)^3 e^{x-y}\,\dif x\,\dif y$，
+  $D$ 由 $x+y=1$, $x+y=2$, $x-y=0$, $x-y=1$ 围成。
+
+  \textbf{第一步}：令 $u = x+y$（$1 \le u \le 2$），$v = x-y$（$0 \le v \le 1$）。
+  $\abs{J_1} = 1/2$。区域化为矩形 $[1,2]\times[0,1]$。
+
+  被积函数变为 $u^3 e^v \cdot \frac{1}{2}$。
+
+  \textbf{第二步}：无需第二步，因为已完全分离。
+  \[
+    \frac{1}{2}\int_1^2 u^3\,\dif u\int_0^1 e^v\,\dif v
+    = \frac{1}{2}\cdot\frac{15}{4}\cdot(e-1)
+    = \frac{15(e-1)}{8}.
+  \]
+
+  若被积函数含 $u^2+v^2$ 等非分离项，则需第二步进一步化简。
+\end{example}
+
+\subsubsection*{换元策略十二：保面积换元（正交变换）}
+
+若 $\Phi$ 是正交变换（旋转、反射），则 $\abs{\det J_\Phi} = 1$，
+积分区域形状改变但面积不变。常用于：
+\begin{itemize}
+  \item \textbf{旋转}：将非轴对齐的区域旋转到轴对齐。
+    令 $\begin{pmatrix} u \\ v \end{pmatrix}
+    = R_\alpha \begin{pmatrix} x \\ y \end{pmatrix}$，
+    $R_\alpha = \begin{pmatrix} \cos\alpha & \sin\alpha \\ -\sin\alpha & \cos\alpha \end{pmatrix}$。
+  \item \textbf{证明积分等式}：若 $f(x,y) = g(x^2+y^2)$ 为径向函数，
+    则 $\iint_D f = \iint_{R_\alpha(D)} f$（旋转不变性）。
+  \item \textbf{对称化}：将积分区域旋转到对称位置，利用对称性简化。
+\end{itemize}
+
+\begin{example}[旋转区域证明积分等式]
+  证明 $\iint_D e^{-(x^2+y^2)}\,\dif x\,\dif y
+  = \iint_{D'} e^{-(x^2+y^2)}\,\dif x\,\dif y$，
+  其中 $D$ 为任意区域，$D' = R_\alpha(D)$ 是 $D$ 旋转 $\alpha$ 后的区域。
+
+  旋转变换 $(u,v) = R_\alpha(x,y)$ 的雅可比 $\abs{J} = 1$，
+  且 $u^2+v^2 = x^2+y^2$（正交变换保范数）。
+  故 $e^{-(u^2+v^2)} = e^{-(x^2+y^2)}$，$\dif u\,\dif v = \dif x\,\dif y$，等式成立。
+\end{example}
+
+% ---------- 2.3 三重积分的换元公式 ----------
+\subsection{三重积分的换元公式}
+
+\begin{theorem}[三重积分换元公式]
+  设 $\Phi: \Omega' \to \Omega$，$(u,v,w) \mapsto (x,y,z)$ 是 $C^1$ 双射，
+  $\det J_\Phi \ne 0$。若 $f$ 在 $\Omega$ 上连续，则
+  \[
+    \iiint_\Omega f(x,y,z) \,\dif x\,\dif y\,\dif z
+    = \iiint_{\Omega'} f(\Phi(u,v,w)) \cdot
+      \abs{\frac{\partial(x,y,z)}{\partial(u,v,w)}} \,\dif u\,\dif v\,\dif w.
+  \]
+\end{theorem}
+
+\subsubsection*{柱坐标的雅可比推导}
+
+令 $x = r\cos\theta$，$y = r\sin\theta$，$z = z$：
+\[
+  \frac{\partial(x,y,z)}{\partial(r,\theta,z)}
+  = \begin{vmatrix}
+      \cos\theta & -r\sin\theta & 0 \\
+      \sin\theta & r\cos\theta & 0 \\
+      0 & 0 & 1
+    \end{vmatrix}
+  = 1 \cdot (r\cos^2\theta + r\sin^2\theta) = r.
+\]
+
+\subsubsection*{球坐标的雅可比推导}
+
+令 $x = \rho\sin\varphi\cos\theta$，$y = \rho\sin\varphi\sin\theta$，$z = \rho\cos\varphi$：
+\[
+  \frac{\partial(x,y,z)}{\partial(\rho,\varphi,\theta)}
+  = \begin{vmatrix}
+      \sin\varphi\cos\theta & \rho\cos\varphi\cos\theta & -\rho\sin\varphi\sin\theta \\
+      \sin\varphi\sin\theta & \rho\cos\varphi\sin\theta & \rho\sin\varphi\cos\theta \\
+      \cos\varphi & -\rho\sin\varphi & 0
+    \end{vmatrix}
+  = \rho^2 \sin\varphi.
+\]
+\textbf{推导技巧}：按第三行展开，
+\[
+  = \cos\varphi \cdot (\rho^2\sin\varphi\cos^2\theta + \rho^2\sin\varphi\sin^2\theta)
+    - (-\rho\sin\varphi) \cdot (\rho\sin\varphi)
+  = \rho^2\sin\varphi\cos^2\varphi + \rho^2\sin^3\varphi
+  = \rho^2\sin\varphi.
+\]
+
+\subsubsection*{广义球坐标（椭球区域）}
+
+令 $x = a\rho\sin\varphi\cos\theta$，$y = b\rho\sin\varphi\sin\theta$，$z = c\rho\cos\varphi$
+（$a,b,c > 0$）：
+\[
+  \abs{\frac{\partial(x,y,z)}{\partial(\rho,\varphi,\theta)}} = abc \cdot \rho^2\sin\varphi.
+\]
+\textbf{适用场景}：椭球体 $\frac{x^2}{a^2}+\frac{y^2}{b^2}+\frac{z^2}{c^2} \le 1$
+上的积分，$\rho \in [0,1]$ 将椭球映为单位球。
+
+\subsubsection*{抛物柱坐标}
+
+令
+\[
+  x = \frac{1}{2}(u^2 - v^2), \quad y = uv, \quad z = w.
+\]
+雅可比行列式：
+\[
+  \frac{\partial(x,y,z)}{\partial(u,v,w)} = \begin{vmatrix} u & -v & 0 \\ v & u & 0 \\ 0 & 0 & 1 \end{vmatrix}
+  = u^2 + v^2.
+\]
+\textbf{适用场景}：被积函数含 $x^2+y^2 = \frac{1}{4}(u^2+v^2)^2$，
+或区域边界为抛物柱面 $x = \frac{y^2}{2u_0^2} - \frac{u_0^2}{2}$。
+
+\subsubsection*{坐标系选择的决策流程}
+
+根据区域和被积函数特征选择最佳坐标系：
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.8cm}
+                >{\raggedright\arraybackslash}p{3.5cm}
+                >{\raggedright\arraybackslash}p{4cm}}
+  \toprule
+  \textbf{区域特征} & \textbf{被积函数特征} & \textbf{推荐坐标系} \\
+  \midrule
+  球/球壳/锥体 & 含 $\sqrt{x^2+y^2+z^2}$ & 球坐标 \\
+  投影为圆的区域 & 含 $x^2+y^2$ & 柱坐标 \\
+  椭球/椭圆柱 & 含 $\frac{x^2}{a^2}+\frac{y^2}{b^2}$ & 广义球/极坐标 \\
+  平行四边形/六面体 & 线性函数 & 仿射变换 \\
+  抛物面边界 & 含 $x^2+y^2$ & 抛物柱坐标 \\
+  双曲边界 & 含 $x^2-y^2$ & 双曲换元 \\
+  含 $x+y$, $x-y$ & 可分离 & 和差换元 \\
+  含 $xy$, $y/x$ & 可分离 & 乘商换元 \\
+  锥形（齐次） & 齐次函数 & 极坐标（角度+径向分离） \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ---------- 2.4 雅可比的链式法则 ----------
+\subsection{雅可比的链式法则与复合映射}
+
+\begin{theorem}[链式法则]
+  设 $\mathbf{y} = \mathbf{g}(\mathbf{u})$，$\mathbf{x} = \mathbf{f}(\mathbf{y})$，
+  则复合映射 $\mathbf{x} = (\mathbf{f} \circ \mathbf{g})(\mathbf{u})$ 的雅可比满足
+  \[
+    \frac{\partial(x_1,\ldots,x_n)}{\partial(u_1,\ldots,u_n)}
+    = \frac{\partial(x_1,\ldots,x_n)}{\partial(y_1,\ldots,y_n)}
+      \cdot \frac{\partial(y_1,\ldots,y_n)}{\partial(u_1,\ldots,u_n)},
+  \]
+  即 $J_{\mathbf{f} \circ \mathbf{g}} = J_{\mathbf{f}} \cdot J_{\mathbf{g}}$。
+\end{theorem}
+
+\begin{proof}
+  由多元链式法则，$(J_{\mathbf{f} \circ \mathbf{g}})_{ij}
+  = \sum_k \pdfFrac{x_i}{y_k} \pdfFrac{y_k}{u_j}$，
+  恰好是矩阵乘积的定义。取行列式即得。
+\end{proof}
+
+\begin{theorem}[逆映射的雅可比]
+  设 $\Phi$ 是 $C^1$ 双射，$\det J_\Phi \ne 0$，则
+  \[
+    \frac{\partial(u_1,\ldots,u_n)}{\partial(x_1,\ldots,x_n)}
+    = \left( \frac{\partial(x_1,\ldots,x_n)}{\partial(u_1,\ldots,u_n)} \right)^{-1}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  对恒等映射 $\Psi \circ \Phi = \mathrm{id}$ 应用链式法则：
+  $J_{\mathrm{id}} = J_\Psi \cdot J_\Phi = I$，
+  故 $J_\Psi = J_\Phi^{-1}$，取行列式得 $\det J_\Psi = 1/\det J_\Phi$。
+\end{proof}
+
+% ---------- 2.5 换元定理的证明思路 ----------
+\subsection{换元定理的证明思路（选讲）}
+
+\begin{theorem}[换元公式——一般情形]
+  设 $\Phi: D' \to D$ 是 $C^1$ 双射，$\det J_\Phi \ne 0$，$f$ 连续。则
+  \[
+    \int_D f(\mathbf{x}) \,\dif \mathbf{x}
+    = \int_{D'} f(\Phi(\mathbf{u})) \cdot \abs{\det J_\Phi(\mathbf{u})} \,\dif \mathbf{u}.
+  \]
+\end{theorem}
+
+\begin{proof}[证明思路（三步走）]
+  \textbf{第一步：线性映射。}
+  设 $\Phi(\mathbf{u}) = A\mathbf{u}$（$A$ 为常数矩阵）。
+  对矩形 $R'$，$\Phi(R')$ 是平行体。
+  由行列式的几何意义：$\vol(\Phi(R')) = \abs{\det A} \cdot \vol(R')$。
+  对简单函数（在矩形上取常值的阶梯函数）直接验证公式成立，
+  再取极限推广到连续函数。
+
+  \textbf{第二步：局部线性化。}
+  对一般 $\Phi$，在每一点 $\mathbf{u}_0$ 附近做一阶逼近：
+  \[
+    \Phi(\mathbf{u}) \approx \Phi(\mathbf{u}_0) + J_\Phi(\mathbf{u}_0)(\mathbf{u} - \mathbf{u}_0).
+  \]
+  对 $D'$ 做充分细的分割，每个小块 $D_i'$ 上的映射近似为线性映射，
+  体积变化近似为 $\abs{\det J_\Phi(\mathbf{u}_i)} \cdot \vol(D_i')$。
+
+  \textbf{第三步：误差控制。}
+  利用 $\Phi \in C^1$，$\det J_\Phi$ 连续从而在紧集上一致连续。
+  分割足够细时，线性逼近的误差是 $o(\mathrm{diam}(D_i'))$，
+  累加后取极限，误差项消失，得到精确等式。
+
+  \textbf{关键引理}：$\det J_\Phi \ne 0$ + $C^1$
+  $\Longrightarrow$ $\Phi$ 是局部微分同胚（反函数定理），
+  保证双射性与可逆性。
+\end{proof}
+
+% ---------- 2.6 常见换元技巧速查表 ----------
+\subsection{常见换元技巧速查表}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.5cm}
+                >{\raggedright\arraybackslash}p{4cm}
+                >{\centering\arraybackslash}p{3.2cm}
+                >{\raggedright\arraybackslash}p{3cm}}
+  \toprule
+  \textbf{换元名称} & \textbf{变换公式} & $\abs{\det J}$ & \textbf{典型区域} \\
+  \midrule
+  极坐标
+    & $x = r\cos\theta,\; y = r\sin\theta$
+    & $r$
+    & 圆、扇形、环形 \\
+  广义极坐标
+    & $x = ar\cos\theta,\; y = br\sin\theta$
+    & $abr$
+    & 椭圆 \\
+  和差换元
+    & $u = x+y,\; v = x-y$
+    & $1/2$
+    & 边界含 $x \pm y$ \\
+  乘商换元
+    & $u = xy,\; v = y/x$
+    & $1/(2v)$
+    & 边界含 $xy$, $y/x$ \\
+  柱坐标
+    & $x = r\cos\theta,\; y = r\sin\theta,\; z = z$
+    & $r$
+    & 投影为圆的区域 \\
+  球坐标
+    & $x = \rho\sin\varphi\cos\theta$ 等
+    & $\rho^2\sin\varphi$
+    & 球、锥体 \\
+  广义球坐标
+    & $x = a\rho\sin\varphi\cos\theta$ 等
+    & $abc\,\rho^2\sin\varphi$
+    & 椭球 \\
+  倒数换元
+    & $u = 1/x,\; v = y$
+    & $1/u^2$
+    & 无界区域 $x \ge a$ \\
+  双倒数换元
+    & $u = 1/x,\; v = 1/y$
+    & $1/(u^2v^2)$
+    & 第一象限无界区域 \\
+  三角换元（单变量）
+    & $x = a\sec\theta$ 或 $x = a\tan\theta$
+    & 导数
+    & 含 $\sqrt{x^2 \pm a^2}$ \\
+  双曲换元
+    & $x = a\cosh t$ 或 $x = a\sinh t$
+    & 导数
+    & 含 $\sqrt{x^2 \pm a^2}$，双曲边界 \\
+  齐次换元
+    & $u = y/x,\; v = \sqrt{x^2+y^2}$
+    & $v/(1+u^2)$
+    & 锥形区域、齐次被积函数 \\
+  仿射/线性换元
+    & $x = au+bv+e,\; y = cu+dv+f$
+    & $\abs{ad-bc}$
+    & 平行四边形 \\
+  正交变换（旋转）
+    & $\left(\begin{smallmatrix} u\\v \end{smallmatrix}\right) = R_\alpha \left(\begin{smallmatrix} x\\y \end{smallmatrix}\right)$
+    & $1$
+    & 证明等式、对称化 \\
+  抛物柱坐标
+    & $x = \frac{1}{2}(u^2-v^2),\; y = uv,\; z = w$
+    & $u^2+v^2$
+    & 抛物柱面边界 \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ---------- 2.7 练习题 ----------
+\subsection{练习题}
+
+\begin{exercise}[基本雅可比计算]
+  计算变换 $u = x+y$，$v = x-y$ 的雅可比行列式
+  $\dfrac{\partial(x,y)}{\partial(u,v)}$ 和 $\dfrac{\partial(u,v)}{\partial(x,y)}$，
+  并验证两者互为倒数。
+\end{exercise}
+
+\begin{solution}
+  $x = \frac{u+v}{2}$，$y = \frac{u-v}{2}$：
+  \[
+    \frac{\partial(x,y)}{\partial(u,v)}
+    = \begin{vmatrix} 1/2 & 1/2 \\ 1/2 & -1/2 \end{vmatrix}
+    = -\frac{1}{2}.
+  \]
+  反方向：
+  \[
+    \frac{\partial(u,v)}{\partial(x,y)}
+    = \begin{vmatrix} 1 & 1 \\ 1 & -1 \end{vmatrix}
+    = -2.
+  \]
+  验证：$(-\frac{1}{2}) \times (-2) = 1$。$\square$
+\end{solution}
+
+\begin{exercise}[二重换元——椭圆区域]
+  计算 $\iint_D (x^2+y^2) \,\dif x\,\dif y$，
+  其中 $D: \frac{x^2}{a^2}+\frac{y^2}{b^2} \le 1$。
+\end{exercise}
+
+\begin{solution}
+  用广义极坐标：$x = ar\cos\theta$，$y = br\sin\theta$，$\abs{\det J} = abr$。
+  $D'$ 为 $0 \le r \le 1$，$0 \le \theta \le 2\pi$。
+  \begin{align*}
+    \iint_D (x^2+y^2) \,\dif x\,\dif y
+    &= \int_0^{2\pi} \dif \theta \int_0^1 (a^2r^2\cos^2\theta + b^2r^2\sin^2\theta) \cdot abr \,\dif r \\
+    &= ab \int_0^{2\pi} (a^2\cos^2\theta + b^2\sin^2\theta) \dif \theta \cdot \int_0^1 r^3 \,\dif r \\
+    &= ab \cdot \pi(a^2 + b^2) \cdot \frac{1}{4} \\
+    &= \frac{\pi ab(a^2+b^2)}{4}.
+  \end{align*}
+  其中 $\int_0^{2\pi} \cos^2\theta \,\dif \theta = \int_0^{2\pi} \sin^2\theta \,\dif \theta = \pi$。
+\end{solution}
+
+\begin{exercise}[换元化简被积函数]
+  计算 $\iint_D \frac{y}{x} \,\dif x\,\dif y$，
+  其中 $D$ 由 $xy = 1$，$xy = 2$，$y = x$，$y = 2x$ 围成（$x, y > 0$）。
+\end{exercise}
+
+\begin{solution}
+  令 $u = xy$，$v = y/x$。则 $x = \sqrt{u/v}$，$y = \sqrt{uv}$。
+  \[
+    \frac{\partial(x,y)}{\partial(u,v)}
+    = \begin{vmatrix} \frac{1}{2\sqrt{uv}} & -\frac{\sqrt{u}}{2v\sqrt{v}} \\
+        \frac{\sqrt{v}}{2\sqrt{u}} & \frac{\sqrt{u}}{2\sqrt{v}} \end{vmatrix}
+    = \frac{1}{4v} + \frac{1}{4v} = \frac{1}{2v}.
+  \]
+  $D'$ 为矩形 $[1,2] \times [1,2]$，被积函数 $\frac{y}{x} = v$。
+  \[
+    \iint_D \frac{y}{x} \,\dif x\,\dif y
+    = \int_1^2 \dif u \int_1^2 v \cdot \frac{1}{2v} \,\dif v
+    = \int_1^2 \dif u \int_1^2 \frac{1}{2} \,\dif v
+    = 1 \cdot \frac{1}{2} = \frac{1}{2}.
+  \]
+\end{solution}
+
+\begin{exercise}[三重换元——椭球体积]
+  计算椭球 $\frac{x^2}{a^2}+\frac{y^2}{b^2}+\frac{z^2}{c^2} \le 1$ 的体积。
+\end{exercise}
+
+\begin{solution}
+  用广义球坐标：$x = a\rho\sin\varphi\cos\theta$，
+  $y = b\rho\sin\varphi\sin\theta$，$z = c\rho\cos\varphi$。
+  $\abs{\det J} = abc\,\rho^2\sin\varphi$。
+  \[
+    V = \int_0^{2\pi} \dif \theta \int_0^\pi \dif \varphi \int_0^1 abc\,\rho^2\sin\varphi \,\dif \rho
+    = abc \cdot 2\pi \cdot 2 \cdot \frac{1}{3}
+    = \frac{4\pi abc}{3}.
+  \]
+\end{solution}
+
+\begin{exercise}[链式法则应用]
+  设先做极坐标变换 $x = r\cos\theta$，$y = r\sin\theta$，
+  再做径向伸缩 $r = 2s$。
+  用链式法则验证复合变换 $x = 2s\cos\theta$，$y = 2s\sin\theta$ 的雅可比。
+\end{exercise}
+
+\begin{solution}
+  第一步：$\dfrac{\partial(x,y)}{\partial(r,\theta)} = r$。
+
+  第二步：$\dfrac{\partial(r,\theta)}{\partial(s,\theta)} = \begin{vmatrix} 2 & 0 \\ 0 & 1 \end{vmatrix} = 2$。
+
+  由链式法则：
+  $\dfrac{\partial(x,y)}{\partial(s,\theta)} = r \cdot 2 = 2 \cdot 2s = 4s$。
+
+  直接验证：$\dfrac{\partial(x,y)}{\partial(s,\theta)} = \begin{vmatrix} 2\cos\theta & -2s\sin\theta \\ 2\sin\theta & 2s\cos\theta \end{vmatrix} = 4s$。$\square$
+\end{solution}
+
+\begin{exercise}[逆映射雅可比]
+  验证球坐标变换的逆映射雅可比：
+  已知 $\dfrac{\partial(x,y,z)}{\partial(\rho,\varphi,\theta)} = \rho^2\sin\varphi$，
+  求 $\dfrac{\partial(\rho,\varphi,\theta)}{\partial(x,y,z)}$。
+\end{exercise}
+
+\begin{solution}
+  由逆映射定理：
+  \[
+    \frac{\partial(\rho,\varphi,\theta)}{\partial(x,y,z)}
+    = \left( \frac{\partial(x,y,z)}{\partial(\rho,\varphi,\theta)} \right)^{-1}
+    = \frac{1}{\rho^2\sin\varphi}.
+  \]
+  也可用 $\rho = \sqrt{x^2+y^2+z^2}$，
+  $\varphi = \arccos\frac{z}{\sqrt{x^2+y^2+z^2}}$，
+  $\theta = \arctan\frac{y}{x}$ 直接计算验证。
+\end{solution}
+
+\begin{exercise}[综合——设计换元]
+  计算 $\iint_D \sqrt{\frac{x-y}{x+y}} \,\dif x\,\dif y$，
+  其中 $D$ 由 $x+y = 1$，$x+y = 4$，$y = 0$，$x = 0$ 围成（$x, y > 0$）。
+\end{exercise}
+
+\begin{solution}
+  令 $u = x - y$，$v = x + y$。
+  则 $x = \frac{u+v}{2}$，$y = \frac{v-u}{2}$，
+  $\abs{\det J} = \frac{1}{2}$。
+
+  区域：$v \in [1,4]$；由 $x, y > 0$ 得 $-v < u < v$。
+  \[
+    \iint_D \sqrt{\frac{u}{v}} \cdot \frac{1}{2} \,\dif u\,\dif v
+    = \frac{1}{2} \int_1^4 v^{-1/2} \,\dif v \int_{-v}^{v} \abs{u}^{1/2} \,\dif u.
+  \]
+  注意 $u^{1/2}$ 在 $u < 0$ 时需取 $\abs{u}^{1/2}$：
+  \[
+    \int_{-v}^v \abs{u}^{1/2} \,\dif u = 2 \int_0^v u^{1/2} \,\dif u
+    = 2 \cdot \frac{2}{3} v^{3/2} = \frac{4}{3} v^{3/2}.
+  \]
+  \[
+    = \frac{1}{2} \cdot \frac{4}{3} \int_1^4 v \,\dif v
+    = \frac{2}{3} \cdot \frac{16-1}{2}
+    = 5.
+  \]
+\end{solution}
+
+\begin{exercise}[证明题——积分等式]
+  设 $f$ 连续。证明：
+  $\iint_D f(x+y) \,\dif x\,\dif y
+  = \int_{-1}^1 f(t)(1-\abs{t}) \,\dif t$，
+  其中 $D: \abs{x}+\abs{y} \le 1$。
+\end{exercise}
+
+\begin{solution}
+  令 $u = x+y$，$v = x-y$，则 $x = \frac{u+v}{2}$，$y = \frac{u-v}{2}$。
+  $\abs{\det J} = 1/2$。
+
+  $\abs{x}+\abs{y} \le 1$ 在 $(u,v)$ 坐标下变为 $\abs{u}+\abs{v} \le 2$（需验证），
+  即对固定 $u$，$v \in [-(2-\abs{u}),\, 2-\abs{u}]$。
+  \[
+    \iint_D f(x+y) \,\dif x\,\dif y
+    = \frac{1}{2} \int_{-2}^2 f(u) \,\dif u \int_{-(2-\abs{u})}^{2-\abs{u}} \dif v
+    = \frac{1}{2} \int_{-2}^2 f(u) \cdot 2(2-\abs{u}) \,\dif u
+    = 2\int_{-2}^2 f(u)(2-\abs{u}) \,\dif u.
+  \]
+  但注意区域描述：$\abs{x}+\abs{y} \le 1$ 是菱形。
+  代入变换后，$u = x+y \in [-1,1]$，
+  对固定 $u$，由 $\abs{\frac{u+v}{2}} + \abs{\frac{u-v}{2}} \le 1$
+  得 $\abs{v} \le 2(1-\abs{u})$，宽度为 $2(1-\abs{u})$。
+  \[
+    = \frac{1}{2} \int_{-1}^1 f(u) \cdot 2(1-\abs{u}) \,\dif u
+    = \int_{-1}^1 f(t)(1-\abs{t}) \,\dif t. \quad\square
+  \]
+\end{solution}
+
+\begin{exercise}[综合应用——转动惯量]
+  求密度为 $\mu$ 的均匀球体 $x^2+y^2+z^2 \le R^2$ 关于 $z$ 轴的转动惯量
+  $I_z = \iiint_\Omega \mu(x^2+y^2) \,\dif V$。
+\end{exercise}
+
+\begin{solution}
+  用球坐标：$x^2+y^2 = \rho^2\sin^2\varphi$。
+  \begin{align*}
+    I_z &= \mu \int_0^{2\pi} \dif \theta \int_0^\pi \dif \varphi
+          \int_0^R \rho^2\sin^2\varphi \cdot \rho^2\sin\varphi \,\dif \rho \\
+        &= \mu \int_0^{2\pi} \dif \theta \int_0^\pi \sin^3\varphi \,\dif \varphi
+          \int_0^R \rho^4 \,\dif \rho \\
+        &= \mu \cdot 2\pi \cdot \frac{4}{3} \cdot \frac{R^5}{5}
+         = \frac{8\mu\pi R^5}{15}
+         = \frac{2}{5} M R^2,
+  \end{align*}
+  其中 $M = \frac{4}{3}\pi R^3\mu$ 为球体总质量，
+  $\int_0^\pi \sin^3\varphi \,\dif\varphi = \frac{4}{3}$。
+\end{solution}
+
+\begin{exercise}[雅可比为零的反例]
+  考虑变换 $x = u^2$，$y = v$。
+  \begin{enumerate}
+    \item 计算 $\det J$，说明它在何处为零。
+    \item 说明为什么这个变换在 $u = 0$ 附近不是双射。
+    \item 解释为什么不能在含 $u = 0$ 的区域上直接使用换元公式。
+  \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+  \begin{enumerate}
+    \item $\det J = \begin{vmatrix} 2u & 0 \\ 0 & 1 \end{vmatrix} = 2u$。
+      当 $u = 0$ 时 $\det J = 0$。
+    \item 当 $u < 0$ 时 $x = u^2 > 0$，与 $u > 0$ 映到同一 $x$ 值。
+      如 $u = 1$ 和 $u = -1$ 都给出 $x = 1$。故在 $u = 0$ 附近非单射。
+    \item 换元公式要求 $\Phi$ 是双射且 $\det J \ne 0$。
+      在 $u = 0$ 处两条件均不满足。
+      如果积分区域包含 $u = 0$，需将区域沿 $u = 0$ 分成 $u > 0$ 和 $u < 0$ 两部分，
+      分别换元后再相加。
+  \end{enumerate}
+\end{solution}
+
+\begin{exercise}[倒数换元——无界区域]
+  利用倒数换元计算 $\iint_D \frac{1}{x^2 y^2}\,\dif x\,\dif y$，
+  其中 $D = \{(x,y) \mid x \ge 1,\; y \ge 1\}$。
+\end{exercise}
+
+\begin{solution}
+  令 $u = 1/x$，$v = 1/y$。则 $x = 1/u$，$y = 1/v$，
+  $\abs{J} = 1/(u^2 v^2)$。
+  $x \ge 1 \Leftrightarrow 0 < u \le 1$，$y \ge 1 \Leftrightarrow 0 < v \le 1$。
+
+  被积函数 $\frac{1}{x^2 y^2} \cdot \frac{1}{u^2 v^2} = u^2 v^2 \cdot \frac{1}{u^2 v^2} = 1$。
+  \[
+    \iint_{D'} 1 \,\dif u\,\dif v = \int_0^1 \dif u\int_0^1 \dif v = 1.
+  \]
+\end{solution}
+
+\begin{exercise}[三角换元——含根号的二重积分]
+  求 $\iint_D \frac{y}{\sqrt{4-x^2}}\,\dif x\,\dif y$，
+  $D = \{(x,y) \mid 0 \le x \le 1,\; 0 \le y \le x\}$。
+\end{exercise}
+
+\begin{solution}
+  对 $x$ 做三角换元：令 $x = 2\sin\theta$（$\theta \in [0, \pi/6]$），
+  $\dif x = 2\cos\theta\,\dif\theta$，$\sqrt{4-x^2} = 2\cos\theta$。
+  \[
+    \int_0^{\pi/6}\int_0^{2\sin\theta} \frac{y}{2\cos\theta}\cdot 2\cos\theta \,\dif y\,\dif\theta
+    = \int_0^{\pi/6}\int_0^{2\sin\theta} y \,\dif y\,\dif\theta
+    = \int_0^{\pi/6} \frac{(2\sin\theta)^2}{2} \,\dif\theta.
+  \]
+  $= \int_0^{\pi/6} 2\sin^2\theta\,\dif\theta
+  = \int_0^{\pi/6}(1-\cos 2\theta)\,\dif\theta
+  = \frac{\pi}{6} - \frac{\sin(\pi/3)}{2}
+  = \frac{\pi}{6} - \frac{\sqrt{3}}{4}$。
+\end{solution}
+
+\begin{exercise}[双曲换元——双曲型边界]
+  求 $\iint_D \frac{1}{x^2+y^2}\,\dif x\,\dif y$，
+  $D$ 由 $x^2 - y^2 = 1$，$x^2 - y^2 = 4$，$xy = 1$，$xy = 2$ 围成的第一象限部分。
+\end{exercise}
+
+\begin{solution}
+  令 $u = x^2 - y^2$（$1 \le u \le 4$），$v = xy$（$1 \le v \le 2$）。
+  区域化为矩形 $[1,4]\times[1,2]$。
+
+  计算 Jacobian：$x^2+y^2 = \sqrt{(x^2-y^2)^2 + 4x^2y^2} = \sqrt{u^2+4v^2}$。
+
+  由 $u = x^2-y^2$，$v = xy$：
+  $\pdfFrac{u}{x} = 2x$，$\pdfFrac{u}{y} = -2y$，$\pdfFrac{v}{x} = y$，$\pdfFrac{v}{y} = x$。
+  \[
+    \frac{\partial(u,v)}{\partial(x,y)} = \begin{vmatrix} 2x & -2y \\ y & x \end{vmatrix}
+    = 2x^2 + 2y^2 = 2(x^2+y^2).
+  \]
+  故 $\abs{\partial(x,y)/\partial(u,v)} = \frac{1}{2(x^2+y^2)}$。
+
+  积分 $= \iint_{D'} \frac{1}{x^2+y^2}\cdot\frac{1}{2(x^2+y^2)}\,\dif u\,\dif v
+  = \iint_{D'} \frac{1}{2(x^2+y^2)^2}\,\dif u\,\dif v$。
+
+  用 $x^2+y^2 = \sqrt{u^2+4v^2}$：
+  \[
+    = \frac{1}{2}\int_1^4\int_1^2 \frac{1}{u^2+4v^2}\,\dif v\,\dif u
+    = \frac{1}{2}\int_1^4 \frac{1}{2u}\arctan\frac{2v}{u}\Big|_1^2 \dif u.
+  \]
+  内层 $= \frac{1}{2u}\left(\arctan\frac{4}{u} - \arctan\frac{2}{u}\right)$。
+  外层需数值计算或进一步化简。
+
+  更简洁的方法：注意到 $x^2+y^2 = \sqrt{u^2+4v^2}$，
+  故 $\frac{1}{(x^2+y^2)^2} = \frac{1}{u^2+4v^2}$。
+  \[
+    I = \frac{1}{2}\int_1^2\int_1^4 \frac{\dif u}{u^2+4v^2}\,\dif v
+    = \frac{1}{2}\int_1^2 \frac{1}{2v}\arctan\frac{u}{2v}\Big|_1^4 \dif v
+    = \frac{1}{4}\int_1^2 \frac{1}{v}\left(\arctan\frac{2}{v} - \arctan\frac{1}{2v}\right)\dif v.
+  \]
+  此积分无初等闭式，展示了换元后仍可能需要数值方法的情况。
+\end{solution}
+
+\begin{exercise}[齐次函数——径向分离]
+  利用齐次函数性质计算 $\iint_D \frac{xy}{(x^2+y^2)^{3/2}}\,\dif x\,\dif y$，
+  其中 $D$ 为环形区域 $1 \le x^2+y^2 \le 4$ 的第一象限部分。
+\end{exercise}
+
+\begin{solution}
+  被积函数：分子 $xy$ 为 2 次，分母 $(x^2+y^2)^{3/2}$ 为 3 次，整体 $-1$ 次齐次。
+  极坐标下：
+  \[
+    \frac{r^2\cos\theta\sin\theta}{r^3}\cdot r = \cos\theta\sin\theta.
+  \]
+  \[
+    I = \int_0^{\pi/2}\cos\theta\sin\theta\,\dif\theta\int_1^2 \dif r
+    = \frac{1}{2}\cdot 1 = \frac{1}{2}.
+  \]
+\end{solution}
+
+\begin{exercise}[复合换元——两步代换]
+  求 $\iint_D (x^2-y^2)\,e^{xy}\,\dif x\,\dif y$，
+  $D$ 由 $xy = 1$，$xy = 2$，$x^2-y^2 = 1$，$x^2-y^2 = 3$ 围成（$x > 0$ 部分）。
+\end{exercise}
+
+\begin{solution}
+  直接令 $u = xy$（$1 \le u \le 2$），$v = x^2-y^2$（$1 \le v \le 3$）。
+
+  计算 Jacobian：
+  $\pdfFrac{u}{x} = y$，$\pdfFrac{u}{y} = x$，
+  $\pdfFrac{v}{x} = 2x$，$\pdfFrac{v}{y} = -2y$。
+  \[
+    \frac{\partial(u,v)}{\partial(x,y)} = \begin{vmatrix} y & x \\ 2x & -2y \end{vmatrix}
+    = -2y^2 - 2x^2 = -2(x^2+y^2).
+  \]
+  由 $u = xy$，$v = x^2-y^2$ 可得 $x^2+y^2 = \sqrt{v^2+4u^2}$。
+
+  故 $\abs{\partial(x,y)/\partial(u,v)} = \frac{1}{2\sqrt{v^2+4u^2}}$。
+
+  积分 $= \iint_{[1,2]\times[1,3]} v \cdot e^u \cdot \frac{1}{2\sqrt{v^2+4u^2}}\,\dif u\,\dif v$。
+
+  这仍较复杂。若改为先积 $v$：对固定的 $u$，$\int_1^3 \frac{v}{\sqrt{v^2+4u^2}}\,\dif v
+  = \sqrt{v^2+4u^2}\Big|_1^3 = \sqrt{9+4u^2} - \sqrt{1+4u^2}$。
+
+  $I = \frac{1}{2}\int_1^2 e^u\bigl(\sqrt{9+4u^2}-\sqrt{1+4u^2}\bigr)\,\dif u$。
+
+  此题展示了即使选择"正确"的换元，结果也可能需要进一步数值处理。
+  在考试中通常会选择 Jacobian 和被积函数都能简化的情形。
+\end{solution}
+
+\begin{exercise}[保面积换元——积分等式证明]
+  利用旋转变换证明：
+  $\iint_D e^{-(x^2+xy+y^2)}\,\dif x\,\dif y
+  = \iint_{D'} e^{-(u^2+v^2)/2}\,\dif u\,\dif v$，
+  其中 $D$ 为适当区域，并指出旋转角度。
+\end{exercise}
+
+\begin{solution}
+  将二次型 $x^2+xy+y^2$ 写成矩阵形式：
+  $x^2+xy+y^2 = \begin{pmatrix} x & y \end{pmatrix}
+  \begin{pmatrix} 1 & 1/2 \\ 1/2 & 1 \end{pmatrix}
+  \begin{pmatrix} x \\ y \end{pmatrix}$。
+
+  特征值：$\det\begin{pmatrix} 1-\lambda & 1/2 \\ 1/2 & 1-\lambda \end{pmatrix}
+  = (1-\lambda)^2 - 1/4 = 0$，$\lambda = 1 \pm 1/2$，即 $\lambda_1 = 3/2$，$\lambda_2 = 1/2$。
+
+  正交矩阵 $Q$（旋转）将二次型对角化：
+  $Q^\T A Q = \mathrm{diag}(3/2, 1/2)$。
+
+  令 $\begin{pmatrix} u \\ v \end{pmatrix} = Q^\T \begin{pmatrix} x \\ y \end{pmatrix}$
+  （正交变换，$\abs{J} = 1$），则
+  $x^2+xy+y^2 = \frac{3}{2}u^2 + \frac{1}{2}v^2$。
+
+  再令 $s = u\sqrt{3/2}$，$t = v\sqrt{1/2}$（仿射变换，$\abs{J} = \sqrt{3}/2$），则
+  \[
+    \iint_D e^{-(x^2+xy+y^2)}\,\dif x\,\dif y
+    = \iint_{D'} e^{-(s^2+t^2)}\cdot\frac{\sqrt{3}}{2}\,\dif s\,\dif t.
+  \]
+  若 $D = \R^2$，则 $D' = \R^2$，
+  $I = \frac{\sqrt{3}}{2}\cdot\pi = \frac{\sqrt{3}\pi}{2}$。
+
+  旋转角度由特征向量确定：
+  $A\mathbf{v} = \frac{3}{2}\mathbf{v}$ 给出 $\mathbf{v} = (1,1)/\sqrt{2}$，
+  故旋转 $\pi/4$。
+\end{solution}
+
+\begin{exercise}[分段函数重积分——换元后分段处理]
+  求 $\iint_D \max(x,y)\,\dif x\,\dif y$，
+  $D = [0,1]^2$。
+\end{exercise}
+
+\begin{solution}
+  $D$ 被 $y = x$ 分为两部分：
+  \begin{itemize}
+    \item $D_1 = \{(x,y) \mid 0 \le x \le 1,\; x \le y \le 1\}$：$\max(x,y) = y$。
+    \item $D_2 = \{(x,y) \mid 0 \le x \le 1,\; 0 \le y \le x\}$：$\max(x,y) = x$。
+  \end{itemize}
+  由对称性，两部分积分相等：
+  \[
+    I = 2\int_0^1\int_x^1 y\,\dif y\,\dif x
+    = 2\int_0^1 \frac{1-x^2}{2}\,\dif x
+    = \int_0^1(1-x^2)\,\dif x
+    = 1 - \frac{1}{3} = \frac{2}{3}.
+  \]
+  换元视角：令 $u = x+y$，$v = y-x$，$\abs{J} = 1/2$。
+  $\max(x,y) = (u+\abs{v})/2$。
+  $D$ 变为 $0 \le u \le 2$，$-u \le v \le u$（截断后 $0 \le u+v \le 2$，$0 \le u-v \le 2$）。
+  \[
+    I = \frac{1}{2}\iint_{D'} \frac{u+\abs{v}}{2}\,\dif u\,\dif v
+    = \frac{1}{4}\int_0^2\int_{-u}^{u}(u+\abs{v})\,\dif v\,\dif u = \frac{2}{3}.
+  \]
+\end{solution}
+
+\begin{exercise}[积分不等式——换元 + Cauchy-Schwarz]
+  设 $D = [0,1]^2$，证明：
+  $\left(\iint_D xy\,\dif x\,\dif y\right)^2
+  \le \iint_D x^2\,\dif x\,\dif y \cdot \iint_D y^2\,\dif x\,\dif y$，
+  并求等号成立的条件。
+\end{exercise}
+
+\begin{solution}
+  这是 Cauchy-Schwarz 不等式在积分形式下的直接应用：
+  $\left(\int fg\right)^2 \le \int f^2 \cdot \int g^2$。
+
+  取 $f = x$，$g = y$：
+  $\left(\iint xy\right)^2 = \left(\frac{1}{4}\right)^2 = \frac{1}{16}$。
+  $\iint x^2 = \frac{1}{3}$，$\iint y^2 = \frac{1}{3}$。
+  $\frac{1}{3}\cdot\frac{1}{3} = \frac{1}{9} > \frac{1}{16}$。$\checkmark$
+
+  等号条件：$f$ 与 $g$ 线性相关，即 $y = cx$，这在 $[0,1]^2$ 上不可能处处成立（$g = y$ 不是 $f = x$ 的常数倍），
+  故严格不等式。
+
+  \textbf{换元视角}：令 $u = x+y$，$v = x-y$。$\abs{J} = 1/2$。
+  $xy = (u^2-v^2)/4$，$x^2+y^2 = (u^2+v^2)/2$。
+  新区域 $D'$ 为正方形旋转 $\pi/4$ 后的菱形。
+  不等式在新坐标下变为 $\left(\iint \frac{u^2-v^2}{8}\right)^2
+  \le \iint\frac{u^2+v^2}{4}\cdot\iint\frac{u^2+v^2}{4}$，
+  展示了换元对不等式形式的简化。
+\end{solution}
+
+\begin{exercise}[面积应用——用换元求曲面面积]
+  用换元法求椭球面 $\frac{x^2}{a^2}+\frac{y^2}{b^2}+\frac{z^2}{c^2} = 1$
+  的表面积。
+\end{exercise}
+
+\begin{solution}
+  参数化：$x = a\sin\varphi\cos\theta$，$y = b\sin\varphi\sin\theta$，$z = c\cos\varphi$
+  （$\varphi \in [0,\pi]$，$\theta \in [0,2\pi]$）。
+
+  计算 $E = \abs{\mathbf{r}_\varphi}^2$，$G = \abs{\mathbf{r}_\theta}^2$，$F = \mathbf{r}_\varphi\cdot\mathbf{r}_\theta$：
+  \begin{align*}
+    \mathbf{r}_\varphi &= (a\cos\varphi\cos\theta,\; b\cos\varphi\sin\theta,\; -c\sin\varphi), \\
+    \mathbf{r}_\theta &= (-a\sin\varphi\sin\theta,\; b\sin\varphi\cos\theta,\; 0).
+  \end{align*}
+  \begin{align*}
+    E &= a^2\cos^2\varphi\cos^2\theta + b^2\cos^2\varphi\sin^2\theta + c^2\sin^2\varphi, \\
+    G &= a^2\sin^2\varphi\sin^2\theta + b^2\sin^2\varphi\cos^2\theta, \\
+    F &= -ab\cos\varphi\sin\varphi\cos\theta\sin\theta + b\cos\varphi\sin\varphi\sin\theta\cos\theta = 0.
+  \end{align*}
+  面积 $S = \iint \sqrt{EG - F^2}\,\dif\varphi\,\dif\theta = \iint \sqrt{EG}\,\dif\varphi\,\dif\theta$。
+
+  一般椭球面积无简洁闭式，需用椭圆积分表示。
+  特殊情形 $a = b$（旋转椭球）：
+  $S = 2\pi a^2 + \frac{2\pi ac}{\eps}\arcsin\eps$，
+  其中 $\eps = \sqrt{1-c^2/a^2}$ 为离心率。
+
+  若 $a = b = c$（球面），$S = 4\pi a^2$。
+\end{solution}
+
+\begin{exercise}[综合——设计换元方案]
+  对以下每个积分，选择最合适的换元方法并简述理由（不需要完整计算）：
+  \begin{enumerate}
+    \item $\iint_D \frac{x-y}{x+y}\,\dif x\,\dif y$，
+      $D$ 由 $x+y=1$，$x+y=3$，$y=0$，$y=x$ 围成。
+    \item $\iint_D e^{(x-y)/(x+y)}\,\dif x\,\dif y$，
+      $D$ 为 $x \ge 0$，$y \ge 0$，$x+y \le 1$。
+    \item $\iint_D (x^2-y^2)\,\dif x\,\dif y$，
+      $D$ 由 $xy=1$，$xy=3$，$y=x$，$y=4x$ 围成。
+    \item $\iint_D \frac{1}{(1+x^2)(1+y^2)}\,\dif x\,\dif y$，
+      $D = [0,\infty)^2$。
+  \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+  \begin{enumerate}
+    \item \textbf{和差换元}：令 $u = x+y$，$v = x-y$。
+      $\frac{x-y}{x+y} = v/u$，$D$ 变为矩形 $[1,3]\times[\text{适当范围}]$。
+      $\abs{J} = 1/2$。
+
+    \item \textbf{和差换元}：令 $u = x+y$（$0 \le u \le 1$），$v = x-y$。
+      $e^{(x-y)/(x+y)} = e^{v/u}$。$\abs{J} = 1/2$。
+      新区域：$u \in [0,1]$，$v$ 的范围由 $x \ge 0, y \ge 0$ 确定，即 $-u \le v \le u$。
+      \[
+        I = \frac{1}{2}\int_0^1\int_{-u}^{u} e^{v/u}\,\dif v\,\dif u
+        = \frac{1}{2}\int_0^1 u\cdot(e-e^{-1})\,\dif u
+        = \frac{e-e^{-1}}{4}.
+      \]
+
+    \item \textbf{乘商换元}：令 $u = xy$（$1 \le u \le 3$），$v = y/x$（$1 \le v \le 4$）。
+      $x^2 - y^2 = x^2(1 - v^2) = (u/v)(1-v^2)$。$\abs{J} = 1/(2v)$。
+      \[
+        I = \int_1^3\int_1^4 \frac{u(1-v^2)}{v}\cdot\frac{1}{2v}\,\dif v\,\dif u.
+      \]
+
+    \item \textbf{倒数换元}：令 $u = 1/x$，$v = 1/y$。
+      $D' = (0,1]^2$，$\abs{J} = 1/(u^2 v^2)$。
+      $\frac{1}{(1+1/u^2)(1+1/v^2)}\cdot\frac{1}{u^2 v^2}
+      = \frac{1}{(u^2+1)(v^2+1)}$。
+      \[
+        I = \int_0^1\int_0^1 \frac{\dif u\,\dif v}{(u^2+1)(v^2+1)}
+        = \left(\frac{\pi}{4}\right)^2 = \frac{\pi^2}{16}.
+      \]
+  \end{enumerate}
+\end{solution}
+
+
+% ============================================================
+%  PART 3: 可微、可偏导等概念的辨析
+% ============================================================
+\section{可微、可偏导、连续等概念的辨析、反例与证明}
+
+% ---------- 3.1 基本定义 ----------
+\subsection{基本定义回顾}
+
+以下设 $f: D \subset \R^n \to \R$，$\mathbf{a} \in D$ 为内点。
+
+\begin{definition}[连续]
+  $f$ 在 $\mathbf{a}$ 处\textbf{连续}，若
+  $\lim_{\mathbf{x} \to \mathbf{a}} f(\mathbf{x}) = f(\mathbf{a})$，
+  即 $\forall\, \eps > 0$，$\exists\, \delta > 0$，
+  使得 $\norm{\mathbf{x} - \mathbf{a}} < \delta \Rightarrow \abs{f(\mathbf{x}) - f(\mathbf{a})} < \eps$。
+\end{definition}
+
+\begin{definition}[偏导数]
+  $f$ 在 $\mathbf{a}$ 处关于 $x_i$ 的\textbf{偏导数}定义为
+  \[
+    \frac{\partial f}{\partial x_i}(\mathbf{a})
+    = \lim_{h \to 0} \frac{f(a_1, \ldots, a_i + h, \ldots, a_n) - f(a_1, \ldots, a_n)}{h},
+  \]
+  若该极限存在。几何意义：固定其余变量，沿第 $i$ 个坐标轴方向的瞬时变化率。
+\end{definition}
+
+\begin{definition}[可微]
+  $f$ 在 $\mathbf{a}$ 处\textbf{可微}，若存在线性映射 $L: \R^n \to \R$，使得
+  \[
+    f(\mathbf{a} + \mathbf{h}) - f(\mathbf{a}) = L(\mathbf{h}) + o(\norm{\mathbf{h}}), \quad \norm{\mathbf{h}} \to 0.
+  \]
+  等价地，$\displaystyle\lim_{\mathbf{h} \to \mathbf{0}}
+  \frac{f(\mathbf{a}+\mathbf{h}) - f(\mathbf{a}) - L(\mathbf{h})}{\norm{\mathbf{h}}} = 0$。
+  若可微，则 $L(\mathbf{h}) = \nabla f(\mathbf{a}) \cdot \mathbf{h}$ 是唯一的。
+\end{definition}
+
+\begin{definition}[方向导数]
+  $f$ 在 $\mathbf{a}$ 处沿方向 $\mathbf{u}$（$\norm{\mathbf{u}} = 1$）的\textbf{方向导数}定义为
+  \[
+    D_{\mathbf{u}} f(\mathbf{a})
+    = \lim_{t \to 0^+} \frac{f(\mathbf{a} + t\mathbf{u}) - f(\mathbf{a})}{t},
+  \]
+  若该极限存在。偏导数是方向导数的特例：
+  $\pdfFrac{f}{x_i} = D_{\mathbf{e}_i} f$。
+\end{definition}
+
+\begin{definition}[梯度]
+  若 $f$ 在 $\mathbf{a}$ 处所有偏导数存在，则\textbf{梯度}定义为
+  \[
+    \nabla f(\mathbf{a})
+    = \left( \frac{\partial f}{\partial x_1}(\mathbf{a}), \ldots,
+              \frac{\partial f}{\partial x_n}(\mathbf{a}) \right).
+  \]
+  若 $f$ 可微，则 $D_{\mathbf{u}} f(\mathbf{a}) = \nabla f(\mathbf{a}) \cdot \mathbf{u}$。
+\end{definition}
+
+% ---------- 3.2 概念之间的关系图 ----------
+\subsection{概念之间的关系与逻辑图}
+
+\begin{center}
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners, minimum width=2.8cm, minimum height=0.7cm,
+              font=\small, align=center},
+  arr/.style={->, thick, >=stealth},
+  noarr/.style={->, thick, >=stealth, dashed, red}
+]
+  \node[box] (C1) at (0,3)   {偏导数连续};
+  \node[box] (D)  at (0,1.5) {可微};
+  \node[box] (C)  at (-3,0)  {连续};
+  \node[box] (P)  at (0,0)   {偏导数存在};
+  \node[box] (Dir) at (3,0)  {方向导数存在\\（所有方向）};
+
+  \draw[arr] (C1) -- (D) node[midway, right, font=\footnotesize] {Thm~\ref{thm:C1-diff}};
+  \draw[arr] (D) -- (C) node[midway, above left, font=\footnotesize] {Thm~\ref{thm:diff-cont}};
+  \draw[arr] (D) -- (P) node[midway, right, font=\footnotesize] {Thm~\ref{thm:diff-pde}};
+  \draw[arr] (D) -- (Dir) node[midway, above right, font=\footnotesize] {Thm~\ref{thm:diff-dir}};
+
+  \draw[noarr] (P) -- (D) node[midway, left, font=\footnotesize, red] {$\times$};
+  \draw[noarr] (Dir) -- (D) node[midway, right, font=\footnotesize, red] {$\times$};
+  \draw[noarr] (C) -- (D) node[midway, left, font=\footnotesize, red] {$\times$};
+\end{tikzpicture}
+\end{center}
+
+\textbf{实线箭头}：蕴含关系成立。\textbf{红色虚线}：反向不成立（有反例）。
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+  \toprule
+  \textbf{蕴含} & \textbf{反例} & \textbf{见} \\
+  \midrule
+  偏导数存在 $\nRightarrow$ 连续
+    & $f = \frac{xy}{x^2+y^2}$, $f(0,0)=0$
+    & 例~\ref{ex:pde-not-cont} \\
+  偏导数存在 $\nRightarrow$ 可微
+    & $f = \frac{xy}{x^2+y^2}$, $f(0,0)=0$
+    & 例~\ref{ex:pde-not-diff} \\
+  连续 $\nRightarrow$ 偏导数存在
+    & $f = \abs{x} + \abs{y}$
+    & （在 $(0,0)$ 处偏导不存在）\\
+  方向导数存在 $\nRightarrow$ 可微
+    & $f = \frac{x^3}{x^2+y^2}$, $f(0,0)=0$
+    & 例~\ref{ex:dir-not-diff} \\
+  可微 $\nRightarrow$ 偏导数连续
+    & $f = (x^2+y^2)\sin\frac{1}{\sqrt{x^2+y^2}}$
+    & 例~\ref{ex:diff-not-C1} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ---------- 3.3 反例汇编 ----------
+\subsection{经典反例}
+
+\begin{example}[偏导数存在但函数不连续]
+  \label{ex:pde-not-cont}
+  设
+  $f(x,y) = \begin{cases} \dfrac{xy}{x^2+y^2} & (x,y) \ne (0,0) \\ 0 & (x,y) = (0,0) \end{cases}$。
+
+  \textbf{偏导数存在}：
+  $f_x(0,0) = \lim_{h \to 0}\frac{f(h,0) - f(0,0)}{h} = \lim_{h \to 0}\frac{0}{h} = 0$。
+  同理 $f_y(0,0) = 0$。
+
+  \textbf{不连续}：沿 $y = x$ 趋于原点，
+  $f(x,x) = \frac{x^2}{2x^2} = \frac{1}{2} \ne 0 = f(0,0)$。
+  故 $f$ 在 $(0,0)$ 不连续。
+\end{example}
+
+\begin{example}[偏导数存在但不可微]
+  \label{ex:pde-not-diff}
+  同上例 $f(x,y) = \frac{xy}{x^2+y^2}$（$f(0,0)=0$）。
+
+  若 $f$ 在 $(0,0)$ 可微，由 $f_x(0,0) = f_y(0,0) = 0$，
+  应有 $f(h,k) = 0 \cdot h + 0 \cdot k + o(\sqrt{h^2+k^2})$，
+  即 $\frac{hk}{h^2+k^2} \to 0$。但沿 $h = k$，$\frac{h^2}{2h^2} = \frac{1}{2} \not\to 0$。
+  矛盾。故 $f$ 在 $(0,0)$ 不可微。
+
+  \textbf{注}：实际上此例中 $f$ 在 $(0,0)$ 不连续，自然不可微。
+  但即使 $f$ 连续且偏导存在，也未必可微——见下面的例~\ref{ex:cont-pde-not-diff}。
+\end{example}
+
+\begin{example}[连续+偏导存在，但仍不可微]
+  \label{ex:cont-pde-not-diff}
+  设
+  $f(x,y) = \begin{cases} \dfrac{xy}{\sqrt{x^2+y^2}} & (x,y) \ne (0,0) \\ 0 & (x,y) = (0,0) \end{cases}$。
+
+  \textbf{连续}：$\abs{f(x,y)} = \frac{\abs{xy}}{\sqrt{x^2+y^2}}
+  \le \frac{(x^2+y^2)/2}{\sqrt{x^2+y^2}} = \frac{\sqrt{x^2+y^2}}{2} \to 0$。
+
+  \textbf{偏导存在}：$f_x(0,0) = \lim_{h \to 0}\frac{0}{h} = 0$，同理 $f_y(0,0) = 0$。
+
+  \textbf{不可微}：
+  $\frac{f(h,k) - 0 - 0 \cdot h - 0 \cdot k}{\sqrt{h^2+k^2}}
+  = \frac{hk}{h^2+k^2}$。
+  沿 $h = k$ 趋于 $1/2 \ne 0$，故不可微。
+\end{example}
+
+\begin{example}[可微但偏导数不连续]
+  \label{ex:diff-not-C1}
+  设
+  $f(x,y) = \begin{cases} (x^2+y^2)\sin\dfrac{1}{\sqrt{x^2+y^2}} & (x,y) \ne (0,0) \\
+    0 & (x,y) = (0,0) \end{cases}$。
+
+  \textbf{在 $(0,0)$ 可微}：
+  $\frac{f(h,k) - 0 - 0}{\sqrt{h^2+k^2}}
+  = \sqrt{h^2+k^2}\sin\frac{1}{\sqrt{h^2+k^2}} \to 0$
+  （有界 $\times$ 无穷小），故 $f$ 在 $(0,0)$ 可微且 $f_x(0,0) = f_y(0,0) = 0$。
+
+  \textbf{偏导数在 $(0,0)$ 不连续}：
+  $(x,y) \ne (0,0)$ 时，
+  $f_x(x,y) = 2x\sin\frac{1}{r} - \frac{x}{r}\cos\frac{1}{r}$
+  （$r = \sqrt{x^2+y^2}$）。
+  沿 $x$ 轴（$y=0$）：$f_x(x,0) = 2x\sin\frac{1}{\abs{x}} - \mathrm{sgn}(x)\cos\frac{1}{\abs{x}}$。
+  当 $x \to 0$ 时，$\cos\frac{1}{\abs{x}}$ 振荡，极限不存在。
+  故 $f_x$ 在 $(0,0)$ 不连续。
+\end{example}
+
+\begin{example}[所有方向导数存在但不可微]
+  \label{ex:dir-not-diff}
+  设
+  $f(x,y) = \begin{cases} \dfrac{x^3}{x^2+y^2} & (x,y) \ne (0,0) \\ 0 & (x,y) = (0,0) \end{cases}$。
+
+  \textbf{方向导数}：沿 $(\cos\theta, \sin\theta)$，
+  $D_{\mathbf{u}}f(0,0) = \lim_{t \to 0^+}\frac{t^3\cos^3\theta}{t^2} = \cos^3\theta$。
+  对所有方向均存在。
+
+  \textbf{不可微}：若可微，则 $D_{\mathbf{u}}f = \nabla f \cdot \mathbf{u}$。
+  由 $\cos\theta$ 方向得 $f_x = 1$，由 $\sin\theta$ 方向得 $f_y = 0$。
+  那么 $D_{\mathbf{u}}f$ 应为 $\cos\theta$，
+  但实际为 $\cos^3\theta \ne \cos\theta$（当 $\theta \ne 0,\pi$）。矛盾。
+\end{example}
+
+\begin{example}[沿所有直线的极限相同，但整体极限不存在]
+  设
+  $f(x,y) = \begin{cases} \dfrac{x^2 y}{x^4+y^2} & (x,y) \ne (0,0) \\ 0 & (x,y) = (0,0) \end{cases}$。
+
+  沿直线 $y = kx$：$f(x,kx) = \frac{kx^3}{x^4+k^2x^2} = \frac{kx}{x^2+k^2} \to 0$。
+  沿 $y$ 轴（$x=0$）：$f(0,y) = 0$。
+
+  故沿\textbf{所有直线}趋于原点极限都是 $0$。
+
+  但沿 $y = x^2$：$f(x,x^2) = \frac{x^4}{x^4+x^4} = \frac{1}{2} \ne 0$。
+
+  \textbf{教训}：验证极限存在时，仅检查直线方向是不够的，必须考虑所有路径。
+\end{example}
+
+% ---------- 3.4 互推关系的形式化证明 ----------
+\subsection{互推关系的形式化证明}
+
+\begin{theorem}[可微 $\Rightarrow$ 连续]
+  \label{thm:diff-cont}
+  若 $f$ 在 $\mathbf{a}$ 处可微，则 $f$ 在 $\mathbf{a}$ 处连续。
+\end{theorem}
+
+\begin{proof}
+  可微意味着 $f(\mathbf{a}+\mathbf{h}) - f(\mathbf{a}) = L(\mathbf{h}) + o(\norm{\mathbf{h}})$。
+  令 $\mathbf{h} \to \mathbf{0}$：
+  $L(\mathbf{h}) = \nabla f(\mathbf{a}) \cdot \mathbf{h} \to 0$（线性映射连续），
+  $o(\norm{\mathbf{h}}) \to 0$。
+  故 $f(\mathbf{a}+\mathbf{h}) \to f(\mathbf{a})$。
+\end{proof}
+
+\begin{theorem}[可微 $\Rightarrow$ 偏导数存在]
+  \label{thm:diff-pde}
+  若 $f$ 在 $\mathbf{a}$ 处可微，则所有偏导数存在，且
+  $L(\mathbf{h}) = \nabla f(\mathbf{a}) \cdot \mathbf{h}$。
+\end{theorem}
+
+\begin{proof}
+  取 $\mathbf{h} = h\mathbf{e}_i$。由可微性：
+  \[
+    \frac{f(\mathbf{a}+h\mathbf{e}_i) - f(\mathbf{a})}{h}
+    = \frac{L(h\mathbf{e}_i)}{h} + \frac{o(\abs{h})}{h}.
+  \]
+  令 $h \to 0$：左端趋于 $\pdfFrac{f}{x_i}(\mathbf{a})$，右端趋于 $L(\mathbf{e}_i)$。
+  故 $\pdfFrac{f}{x_i}(\mathbf{a}) = L(\mathbf{e}_i)$，
+  即 $L(\mathbf{h}) = \sum_i \pdfFrac{f}{x_i}(\mathbf{a}) h_i = \nabla f(\mathbf{a}) \cdot \mathbf{h}$。
+\end{proof}
+
+\begin{theorem}[可微 $\Rightarrow$ 沿所有方向的方向导数存在]
+  \label{thm:diff-dir}
+  若 $f$ 在 $\mathbf{a}$ 可微，则对任意 $\mathbf{u}$（$\norm{\mathbf{u}}=1$），
+  $D_{\mathbf{u}}f(\mathbf{a}) = \nabla f(\mathbf{a}) \cdot \mathbf{u}$。
+\end{theorem}
+
+\begin{proof}
+  由可微性：$f(\mathbf{a}+t\mathbf{u}) - f(\mathbf{a}) = t\,\nabla f(\mathbf{a})\cdot\mathbf{u} + o(\abs{t})$。
+  除以 $t$ 并令 $t \to 0^+$：
+  $D_{\mathbf{u}}f(\mathbf{a}) = \nabla f(\mathbf{a}) \cdot \mathbf{u}$。
+\end{proof}
+
+\begin{theorem}[偏导数连续 $\Rightarrow$ 可微（充分条件）]
+  \label{thm:C1-diff}
+  若 $f$ 的所有偏导数在 $\mathbf{a}$ 的某邻域内\textbf{存在且连续}，
+  则 $f$ 在 $\mathbf{a}$ 处可微。
+\end{theorem}
+
+\begin{proof}
+  以 $n=2$ 为例。设 $\mathbf{a} = (a,b)$，$\mathbf{h} = (h,k)$。
+  利用\textbf{一元中值定理}，将增量拆为两步：
+  \begin{align*}
+    &f(a+h,b+k) - f(a,b) \\
+    &= \bigl[f(a+h,b+k) - f(a,b+k)\bigr] + \bigl[f(a,b+k) - f(a,b)\bigr] \\
+    &= f_x(a+\theta_1 h,\, b+k) \cdot h + f_y(a,\, b+\theta_2 k) \cdot k,
+  \end{align*}
+  其中 $\theta_1, \theta_2 \in (0,1)$。
+
+  由 $f_x, f_y$ 在 $(a,b)$ 处连续：
+  \[
+    f_x(a+\theta_1 h, b+k) = f_x(a,b) + \eps_1, \quad
+    f_y(a, b+\theta_2 k) = f_y(a,b) + \eps_2,
+  \]
+  其中 $\eps_1, \eps_2 \to 0$ 当 $(h,k) \to (0,0)$。
+  因此
+  \[
+    f(a+h,b+k) - f(a,b)
+    = f_x(a,b)\,h + f_y(a,b)\,k + \eps_1 h + \eps_2 k,
+  \]
+  而 $\abs{\eps_1 h + \eps_2 k} \le (\abs{\eps_1}+\abs{\eps_2})\norm{\mathbf{h}} = o(\norm{\mathbf{h}})$。
+  故 $f$ 在 $(a,b)$ 可微。
+\end{proof}
+
+% ---------- 3.5 隐函数存在性定理 ----------
+\subsection{隐函数存在性定理}
+
+\begin{theorem}[隐函数存在性定理——一元情形]
+  \label{thm:implicit-1d}
+  设 $F: \R^2 \to \R$ 在 $(x_0, y_0)$ 的某邻域内 $C^1$，
+  $F(x_0, y_0) = 0$，且 $F_y(x_0, y_0) \ne 0$。
+  则存在 $(x_0, y_0)$ 的邻域 $U \times V$ 和唯一的 $C^1$ 函数 $f: U \to V$，使得
+  \begin{enumerate}
+    \item $f(x_0) = y_0$；
+    \item $F(x, f(x)) = 0$，$\forall x \in U$；
+    \item $f'(x) = -\dfrac{F_x(x, f(x))}{F_y(x, f(x))}$。
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}[证明思路]
+  不妨设 $F_y(x_0, y_0) > 0$。
+  由 $F_y$ 连续，在 $(x_0, y_0)$ 附近 $F_y > 0$，
+  故 $F(x_0, \cdot)$ 关于 $y$ 严格递增。
+  由 $F(x_0, y_0) = 0$ 知 $F(x_0, y_0-\eps) < 0 < F(x_0, y_0+\eps)$。
+  由 $F$ 连续，对 $x_0$ 附近的每个 $x$，存在唯一的 $y = f(x)$ 使得 $F(x,y) = 0$。
+  求导公式对 $F(x, f(x)) = 0$ 关于 $x$ 求全导数即得。
+\end{proof}
+
+\begin{theorem}[隐函数存在性定理——多元情形]
+  设 $F: \R^{n+1} \to \R$ 在 $(\mathbf{x}_0, y_0)$ 的邻域内 $C^1$，
+  $F(\mathbf{x}_0, y_0) = 0$，$\pdfFrac{F}{y}(\mathbf{x}_0, y_0) \ne 0$。
+  则在 $(\mathbf{x}_0, y_0)$ 附近唯一确定 $C^1$ 函数 $y = f(\mathbf{x})$，且
+  \[
+    \pdfFrac{f}{x_i} = -\frac{\pdfFrac{F}{x_i}}{\pdfFrac{F}{y}}.
+  \]
+\end{theorem}
+
+\begin{theorem}[隐函数组定理]
+  \label{thm:implicit-sys}
+  设 $\mathbf{F} = (F_1, \ldots, F_m): \R^{n+m} \to \R^m$ 在
+  $(\mathbf{x}_0, \mathbf{y}_0)$ 的邻域内 $C^1$，
+  $\mathbf{F}(\mathbf{x}_0, \mathbf{y}_0) = \mathbf{0}$，且
+  \[
+    \det\frac{\partial(F_1, \ldots, F_m)}{\partial(y_1, \ldots, y_m)}
+    \bigg|_{(\mathbf{x}_0, \mathbf{y}_0)} \ne 0.
+  \]
+  则在 $(\mathbf{x}_0, \mathbf{y}_0)$ 附近唯一确定 $C^1$ 映射
+  $\mathbf{y} = \mathbf{f}(\mathbf{x})$。
+
+  \textbf{求导公式}（雅可比方法）：
+  \[
+    \frac{\partial \mathbf{y}}{\partial \mathbf{x}}
+    = -\left( \frac{\partial \mathbf{F}}{\partial \mathbf{y}} \right)^{-1}
+      \frac{\partial \mathbf{F}}{\partial \mathbf{x}}.
+  \]
+\end{theorem}
+
+\begin{remark}[隐函数定理与反函数定理的关系]
+  \begin{itemize}
+    \item \textbf{反函数定理} $\Rightarrow$ \textbf{隐函数定理}：
+      由 $F(\mathbf{x}, \mathbf{y}) = \mathbf{0}$ 定义
+      $\Phi(\mathbf{x}, \mathbf{y}) = (\mathbf{x}, F(\mathbf{x}, \mathbf{y}))$，
+      应用反函数定理于 $\Phi$。
+    \item \textbf{隐函数定理} $\Rightarrow$ \textbf{反函数定理}：
+      由 $\mathbf{y} = \Phi(\mathbf{x})$ 令
+      $F(\mathbf{x}, \mathbf{y}) = \Phi(\mathbf{x}) - \mathbf{y} = \mathbf{0}$。
+    \item 两者等价，核心条件都是某个雅可比行列式非零。
+  \end{itemize}
+\end{remark}
+
+% ---------- 3.6 练习题 ----------
+\subsection{练习题}
+
+\begin{exercise}[判断可微性——综合]
+  设
+  $f(x,y) = \begin{cases} \dfrac{x^2 y}{x^2+y^2} & (x,y) \ne (0,0) \\ 0 & (x,y) = (0,0) \end{cases}$。
+  判断 $f$ 在 $(0,0)$ 处是否：
+  (a) 连续；(b) 偏导数存在；(c) 可微。
+\end{exercise}
+
+\begin{solution}
+  \textbf{(a) 连续}：$\abs{f(x,y)} = \frac{x^2\abs{y}}{x^2+y^2} \le \abs{y} \le \sqrt{x^2+y^2} \to 0$。
+  连续。
+
+  \textbf{(b) 偏导存在}：
+  $f_x(0,0) = \lim_{h\to 0}\frac{0}{h} = 0$，
+  $f_y(0,0) = \lim_{k\to 0}\frac{0}{k} = 0$。
+
+  \textbf{(c) 可微}：
+  $\frac{f(h,k) - 0 - 0 - 0}{\sqrt{h^2+k^2}}
+  = \frac{h^2 k}{(h^2+k^2)^{3/2}}$。
+  取 $h = k$：$\frac{h^3}{(2h^2)^{3/2}} = \frac{h^3}{2\sqrt{2}\abs{h}^3} = \frac{1}{2\sqrt{2}} \ne 0$。
+  故不可微。
+\end{solution}
+
+\begin{exercise}[用定义验证可微]
+  用定义证明 $f(x,y) = x^2 y$ 在 $(1,2)$ 处可微，并求 $\dif f(1,2)$。
+\end{exercise}
+
+\begin{solution}
+  $f(1,2) = 2$。$f_x = 2xy$，$f_y = x^2$，故 $f_x(1,2) = 4$，$f_y(1,2) = 1$。
+  需验证
+  $E(h,k) = f(1+h,2+k) - f(1,2) - 4h - k = o(\sqrt{h^2+k^2})$。
+  \begin{align*}
+    E(h,k) &= (1+h)^2(2+k) - 2 - 4h - k \\
+    &= (1+2h+h^2)(2+k) - 2 - 4h - k \\
+    &= 2+k+4h+2hk+2h^2+h^2k - 2 - 4h - k \\
+    &= 2hk + 2h^2 + h^2k.
+  \end{align*}
+  $\abs{E(h,k)} \le 2\abs{hk} + 2h^2 + \abs{h^2k} \le C(h^2+k^2) = o(\sqrt{h^2+k^2})$。
+  故可微，$\dif f(1,2) = 4\,\dif x + \dif y$。
+\end{solution}
+
+\begin{exercise}[隐函数求导——基本]
+  设方程 $x^2 + y^2 + z^2 = R^2$ 确定隐函数 $z = f(x,y)$，
+  求 $\pdfFrac{z}{x}$ 和 $\pdfFrac{z}{y}$。
+\end{exercise}
+
+\begin{solution}
+  令 $F(x,y,z) = x^2+y^2+z^2 - R^2$。$F_z = 2z$。
+  当 $z \ne 0$ 时：
+  \[
+    \pdfFrac{z}{x} = -\frac{F_x}{F_z} = -\frac{2x}{2z} = -\frac{x}{z}, \quad
+    \pdfFrac{z}{y} = -\frac{F_y}{F_z} = -\frac{y}{z}.
+  \]
+\end{solution}
+
+\begin{exercise}[隐函数求导——进阶]
+  设 $F(x,y,z) = 0$ 确定隐函数 $z = f(x,y)$。
+  已知 $\pdfFrac{z}{x} = -F_x/F_z$，$\pdfFrac{z}{y} = -F_y/F_z$，
+  求 $\dfrac{\partial^2 z}{\partial x^2}$。
+\end{exercise}
+
+\begin{solution}
+  $\dfrac{\partial^2 z}{\partial x^2} = \pdfFrac{}{x}\left(-\frac{F_x}{F_z}\right)$，
+  其中 $F_x, F_z$ 中的 $z$ 要视为 $x,y$ 的函数：
+  \[
+    = -\frac{(F_{xx} + F_{xz}\,z_x)\,F_z - F_x\,(F_{zx} + F_{zz}\,z_x)}{F_z^2},
+  \]
+  代入 $z_x = -F_x/F_z$：
+  \[
+    = -\frac{F_{xx}F_z^2 - 2F_{xx}F_xF_z + F_{zz}F_x^2}{F_z^3}.
+  \]
+  简记为：
+  $\dfrac{\partial^2 z}{\partial x^2} = -\dfrac{F_{xx}F_z^2 - 2F_{xz}F_xF_z + F_{zz}F_x^2}{F_z^3}$。
+\end{solution}
+
+\begin{exercise}[隐函数组求导]
+  设方程组
+  $\begin{cases} x + y + u + v = 1 \\ x^2 + y^2 + u^2 + v^2 = 2 \end{cases}$
+  确定 $u, v$ 为 $x, y$ 的函数。求 $\pdfFrac{u}{x}$ 和 $\pdfFrac{v}{x}$。
+\end{exercise}
+
+\begin{solution}
+  对两个方程关于 $x$ 求偏导（视 $u, v$ 为 $x,y$ 的函数）：
+  \[
+    \begin{cases}
+      1 + u_x + v_x = 0 \\
+      2x + 2u\, u_x + 2v\, v_x = 0
+    \end{cases}
+    \implies
+    \begin{cases}
+      u_x + v_x = -1 \\
+      u\, u_x + v\, v_x = -x
+    \end{cases}
+  \]
+  Cramer 法则：
+  \[
+    u_x = \frac{\begin{vmatrix} -1 & 1 \\ -x & v \end{vmatrix}}{\begin{vmatrix} 1 & 1 \\ u & v \end{vmatrix}}
+    = \frac{-v+x}{v-u} = \frac{x-v}{v-u},
+    \quad
+    v_x = \frac{\begin{vmatrix} 1 & -1 \\ u & -x \end{vmatrix}}{v-u}
+    = \frac{-x+u}{v-u} = \frac{u-x}{v-u}.
+  \]
+  验证：$u_x + v_x = \frac{x-v+u-x}{v-u} = \frac{u-v}{v-u} = -1$。$\checkmark$
+\end{solution}
+
+\begin{exercise}[验证隐函数定理条件]
+  验证方程 $F(x,y) = x^2 + y^2 - 1 = 0$ 在 $(0,1)$ 附近满足隐函数定理的条件，
+  并求隐函数的导数。
+\end{exercise}
+
+\begin{solution}
+  \begin{enumerate}
+    \item $F(0,1) = 0 + 1 - 1 = 0$。$\checkmark$
+    \item $F$ 在 $\R^2$ 上 $C^1$：$F_x = 2x$，$F_y = 2y$。$\checkmark$
+    \item $F_y(0,1) = 2 \ne 0$。$\checkmark$
+  \end{enumerate}
+  三条件均满足。存在唯一的 $C^1$ 函数 $y = f(x)$，在 $x = 0$ 附近满足 $x^2 + f(x)^2 = 1$。
+  \[
+    f'(x) = -\frac{F_x}{F_y} = -\frac{2x}{2y} = -\frac{x}{y}.
+  \]
+  在 $x = 0$ 处：$f'(0) = 0$。（几何上即圆在 $(0,1)$ 处切线水平。）
+\end{solution}
+
+\begin{exercise}[综合——反例构造]
+  构造函数 $f: \R^2 \to \R$，使得在 $(0,0)$ 处所有方向导数存在，但 $f$ 不连续。
+\end{exercise}
+
+\begin{solution}
+  设
+  $f(x,y) = \begin{cases} 1 & y = x^2,\; x \ne 0 \\ 0 & \text{其他} \end{cases}$。
+
+  \textbf{所有方向导数为 $0$}：
+  沿射线 $(t\cos\theta, t\sin\theta)$，
+  当 $t$ 充分小时，$t\sin\theta \ne (t\cos\theta)^2$
+  （因 $\sin\theta \ne t\cos^2\theta$ 对充分小 $t$），
+  故 $f(t\cos\theta, t\sin\theta) = 0$，
+  $D_{\mathbf{u}}f(0,0) = 0$。
+
+  \textbf{不连续}：沿 $y = x^2$，$f(x, x^2) = 1 \ne 0 = f(0,0)$。
+\end{solution}
+
+\begin{exercise}[证明题——隐函数存在性]
+  证明方程 $F(x,y) = y^3 + y - x = 0$ 在 $x = 0$ 附近唯一确定 $y = f(x)$，
+  并求 $f'(0)$。
+\end{exercise}
+
+\begin{solution}
+  $F(0,0) = 0$。$F_x = -1$，$F_y = 3y^2 + 1$。
+  $F_y(0,0) = 1 \ne 0$。$F$ 在 $\R^2$ 上 $C^1$。
+  由隐函数定理，在 $x = 0$ 附近唯一确定 $y = f(x)$，$f(0) = 0$。
+  \[
+    f'(x) = -\frac{F_x}{F_y} = \frac{1}{3y^2+1}, \quad f'(0) = \frac{1}{0+1} = 1.
+  \]
+  （也可验证 $F_y = 3y^2 + 1 > 0$ 对所有 $y$ 成立，
+  故 $F(0,\cdot)$ 严格递增，$y = 0$ 是唯一零点，全局唯一。）
+\end{solution}
+
+\begin{exercise}[多元 Taylor 公式应用——极值判定]
+  求 $f(x,y) = x^3 - 12xy + 8y^3$ 的极值。
+\end{exercise}
+
+\begin{solution}
+  $f_x = 3x^2 - 12y$，$f_y = -12x + 24y^2$。
+  令 $f_x = f_y = 0$：
+  $\begin{cases} x^2 = 4y \\ x = 2y^2 \end{cases}
+  \implies 4y^2 = 4y \implies y(y-1) = 0$。
+
+  驻点：$(0,0)$ 和 $(2,1)$。
+
+  二阶偏导：$f_{xx} = 6x$，$f_{xy} = -12$，$f_{yy} = 48y$。
+  判别式 $\Delta = f_{xx}f_{yy} - f_{xy}^2$。
+
+  \textbf{在 $(0,0)$}：$f_{xx} = 0$，$f_{yy} = 0$，$f_{xy} = -12$。
+  $\Delta = 0 \cdot 0 - 144 = -144 < 0$。
+  $(0,0)$ 为\textbf{鞍点}，非极值。
+
+  \textbf{在 $(2,1)$}：$f_{xx} = 12 > 0$，$f_{yy} = 48$。
+  $\Delta = 12 \times 48 - 144 = 432 > 0$。
+  且 $f_{xx} = 12 > 0$，故 $(2,1)$ 为\textbf{极小值点}，$f(2,1) = 8 - 24 + 8 = -8$。
+\end{solution}
+
+
+% ============================================================
+%  PART 4: Taylor 级数与 Fourier 级数
+% ============================================================
+\section{Taylor 级数与 Fourier 级数}
+
+% ---------- 4.1 一元 Taylor 展开速查 ----------
+\subsection{一元 Taylor 展开速查}
+
+\begin{theorem}[常见 Taylor 展开]
+  以下展开均在 $x = 0$ 处（Maclaurin 级数）：
+  \begin{align}
+    e^x &= \sum_{n=0}^\infty \frac{x^n}{n!}, && \text{收敛域 } \R; \label{eq:exp} \\
+    \sin x &= \sum_{n=0}^\infty \frac{(-1)^n}{(2n+1)!} x^{2n+1}, && \text{收敛域 } \R; \label{eq:sin} \\
+    \cos x &= \sum_{n=0}^\infty \frac{(-1)^n}{(2n)!} x^{2n}, && \text{收敛域 } \R; \label{eq:cos} \\
+    \ln(1+x) &= \sum_{n=1}^\infty \frac{(-1)^{n+1}}{n} x^n, && \text{收敛域 } (-1,1]; \label{eq:ln} \\
+    \frac{1}{1-x} &= \sum_{n=0}^\infty x^n, && \text{收敛域 } (-1,1); \label{eq:geo} \\
+    (1+x)^a &= \sum_{n=0}^\infty \binom{a}{n} x^n, && \text{收敛域视 } a \text{ 而定}; \label{eq:binom} \\
+    \arctan x &= \sum_{n=0}^\infty \frac{(-1)^n}{2n+1} x^{2n+1}, && \text{收敛域 } [-1,1]. \label{eq:arctan}
+  \end{align}
+\end{theorem}
+
+% ---------- 4.1b Taylor 级数计算技巧 ----------
+\subsection{Taylor 级数计算技巧}
+
+\subsubsection*{技巧一：直接求导法}
+求 $f^{(n)}(0)$，代入 $f(x) = \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!} x^n$。
+适用于求导规律明显的函数（如多项式、指数函数）。
+
+\subsubsection*{技巧二：代入法（复合函数展开）}
+将已知展开中的 $x$ 替换为 $g(x)$。
+如 $\sin(x^2)$：将 \eqref{eq:sin} 中 $x$ 换为 $x^2$。
+
+\subsubsection*{技巧三：逐项求导与逐项积分}
+$\displaystyle \frac{\dif}{\dif x} \sum a_n x^n = \sum n a_n x^{n-1}$，
+$\displaystyle \int_0^x \sum a_n t^n \,\dif t = \sum \frac{a_n}{n+1} x^{n+1}$。
+如由 \eqref{eq:geo} 积分得 $\ln(1+x)$，由 \eqref{eq:geo} 中 $-x$ 代入再积分得 $\arctan x$。
+
+\subsubsection*{技巧四：待定系数法}
+设 $f(x) = \sum_{n=0}^N a_n x^n + o(x^N)$，利用恒等式比较两边同次幂系数。
+常用于求乘积的展开。
+
+\subsubsection*{技巧五：利用已知展开求级数和}
+识别给定级数为某个已知展开在特定点的值。
+\[
+  \text{例：} \sum_{n=0}^\infty \frac{1}{n!} = e^1 = e, \quad
+  \sum_{n=0}^\infty \frac{(-1)^n}{(2n+1)!} = \sin 1.
+\]
+
+\subsubsection*{技巧六：ODE 递推法}
+很多函数满足简单的 ODE，将 Taylor 级数设为 $f(x) = \sum a_n x^n$ 代入 ODE，
+比较同次幂系数即可得到系数的\textbf{递推关系}，无需逐阶求导。
+这种方法在系数递推规律清晰时非常高效。
+
+\begin{example}[$\tan x$ 的 Taylor 展开]
+  $\tan x$ 满足 $y' = 1 + y^2$（因为 $(\tan x)' = \sec^2 x = 1 + \tan^2 x$）。
+  又 $\tan x$ 为奇函数，故设 $y = \sum_{k=1}^\infty a_{2k-1} x^{2k-1}$。
+
+  代入 ODE：$y' = \sum_{k=1}^\infty (2k-1)a_{2k-1}x^{2k-2}$，
+  $1 + y^2 = 1 + \left(\sum a_{2k-1}x^{2k-1}\right)^2
+  = 1 + \sum_{n=1}^\infty\left(\sum_{i+j=n+1}a_{2i-1}a_{2j-1}\right)x^{2n}$。
+
+  比较系数：
+  \begin{align*}
+    x^0:& \quad a_1 = 1 \implies a_1 = 1; \\
+    x^2:& \quad 3a_3 = a_1^2 = 1 \implies a_3 = \frac{1}{3}; \\
+    x^4:& \quad 5a_5 = 2a_1 a_3 = \frac{2}{3} \implies a_5 = \frac{2}{15}; \\
+    x^6:& \quad 7a_7 = 2a_1 a_5 + a_3^2 = \frac{4}{15} + \frac{1}{9}
+    = \frac{17}{45} \implies a_7 = \frac{17}{315}.
+  \end{align*}
+  故 $\tan x = x + \frac{x^3}{3} + \frac{2x^5}{15} + \frac{17x^7}{315} + \cdots$。
+\end{example}
+
+\begin{example}[$\tanh x$ 的 Taylor 展开]
+  $\tanh x$ 满足 $y' = 1 - y^2$（因为 $(\tanh x)' = 1 - \tanh^2 x$）。
+  设 $y = \sum_{k=1}^\infty a_{2k-1}x^{2k-1}$（奇函数），代入后：
+  比较系数与 $\tan x$ 完全类似，但 $y^2$ 项前面是减号，所以递推为
+  \[
+    (2k-1)a_{2k-1} = -\!\!\sum_{\substack{i+j=k+1 \\ i,j \ge 1}} a_{2i-1}\,a_{2j-1}
+    \quad (k \ge 2).
+  \]
+  得 $a_1=1$，$a_3 = -\frac{1}{3}$，$a_5 = \frac{2}{15}$，$a_7 = -\frac{17}{315}$，$\ldots$
+  即 $\tanh x = x - \frac{x^3}{3} + \frac{2x^5}{15} - \frac{17x^7}{315} + \cdots$。
+  系数的绝对值与 $\tan x$ 相同，符号交替。
+\end{example}
+
+\begin{example}[$\sec x$ 的 Taylor 展开——由 $\tan x$ 推出]
+  $\sec x = 1/\cos x$ 为偶函数。注意到 $\sec' x = \sec x \tan x$，
+  即 $y' = y \cdot \tan x$。
+  设 $\sec x = 1 + \sum_{k=1}^\infty b_{2k}x^{2k}$，
+  将已知的 $\tan x$ 级数代入：
+  \[
+    y' = \sum_{k=1}^\infty 2k\,b_{2k}\,x^{2k-1},
+    \quad
+    y\cdot\tan x = \left(1 + \sum b_{2k}x^{2k}\right)\!\left(x + \frac{x^3}{3} + \cdots\right).
+  \]
+  比较奇次幂系数：
+  \begin{align*}
+    x^1:& \quad 2b_2 = 1 \implies b_2 = \frac{1}{2}; \\
+    x^3:& \quad 4b_4 = b_2 + \frac{1}{3} = \frac{5}{6} \implies b_4 = \frac{5}{24}; \\
+    x^5:& \quad 6b_6 = b_4 + \frac{b_2}{3} + \frac{2}{15} = \frac{5}{24}+\frac{1}{6}+\frac{2}{15} = \frac{61}{120}
+    \implies b_6 = \frac{61}{720}.
+  \end{align*}
+  故 $\sec x = 1 + \frac{x^2}{2} + \frac{5x^4}{24} + \frac{61x^6}{720} + \cdots$。
+  系数 $1, 1, 5, 61, 1385, \ldots$ 即 \textbf{Euler 数} $E_{2n}$，有 $b_{2n} = \frac{E_{2n}}{(2n)!}$。
+\end{example}
+
+\begin{example}[$\ln\cos x$ 的 Taylor 展开——逐项积分法]
+  $(\ln\cos x)' = -\tan x$。
+  将 $\tan x$ 的展开逐项积分（常数由 $\ln\cos 0 = \ln 1 = 0$ 确定）：
+  \[
+    \ln\cos x = -\int_0^x \tan t \,\dif t
+    = -\int_0^x \left(t + \frac{t^3}{3} + \frac{2t^5}{15} + \cdots\right)\dif t
+    = -\frac{x^2}{2} - \frac{x^4}{12} - \frac{x^6}{45} - \cdots.
+  \]
+  \textbf{注}：此展开仅在 $\abs{x} < \pi/2$ 时成立（$\cos x$ 的零点处 $\ln$ 发散）。
+\end{example}
+
+\begin{example}[$e^x\sin x$ 的 Taylor 展开——复数法]
+  利用 $e^{(1+i)x} = e^x\cos x + i\,e^x\sin x$：
+  \[
+    e^{(1+i)x} = \sum_{n=0}^\infty \frac{(1+i)^n}{n!}x^n.
+  \]
+  取虚部即得 $e^x\sin x = \sum_{n=0}^\infty \frac{\Im[(1+i)^n]}{n!}x^n$。
+
+  $(1+i)^n = (\sqrt{2})^n e^{in\pi/4} = 2^{n/2}(\cos\frac{n\pi}{4} + i\sin\frac{n\pi}{4})$。
+  故
+  \[
+    e^x\sin x = \sum_{n=0}^\infty \frac{2^{n/2}\sin\frac{n\pi}{4}}{n!}x^n
+    = x + x^2 + \frac{x^3}{3} - \frac{x^5}{30} - \frac{x^6}{90} - \frac{x^7}{630} + \cdots.
+  \]
+
+  \textbf{另一方法}：$y = e^x\sin x$ 满足 $y'' - 2y' + 2y = 0$，
+  代入级数同样可得递推关系。
+\end{example}
+
+\subsubsection*{技巧七：Cauchy 乘积（级数乘法）}
+若 $f(x) = \sum a_n x^n$，$g(x) = \sum b_n x^n$，则
+\[
+  f(x)g(x) = \sum_{n=0}^\infty c_n x^n, \quad
+  c_n = \sum_{k=0}^n a_k b_{n-k}.
+\]
+\textbf{适用场景}：被积函数是两个已知展开之积，或需要由乘积构造新展开。
+
+\begin{example}[由 Cauchy 乘积求 $\frac{x}{e^x-1}$ 的展开]
+  已知 $\frac{e^x-1}{x} = \sum_{n=0}^\infty \frac{x^n}{(n+1)!}$，
+  设 $\frac{x}{e^x-1} = \sum_{n=0}^\infty \frac{B_n}{n!}x^n$（Bernoulli 数）。
+  由 $\frac{x}{e^x-1}\cdot\frac{e^x-1}{x} = 1$，
+  Cauchy 乘积要求
+  $\sum_{k=0}^n \frac{B_k}{k!}\cdot\frac{1}{(n-k+1)!} = \delta_{n0}$。
+  乘以 $(n+1)!$ 即得递推
+  $\sum_{k=0}^n \binom{n+1}{k}B_k = \delta_{n0}$，
+  由此可依次求出 $B_0=1, B_1=-\frac{1}{2}, B_2=\frac{1}{6}, \ldots$。
+\end{example}
+
+\subsubsection*{技巧八：级数除法（长除法）}
+已知 $f(x) = \sum a_n x^n$ 且 $a_0 \ne 0$，求 $1/f(x) = \sum c_n x^n$。
+由 $f(x)\cdot(1/f(x)) = 1$，用 Cauchy 乘积展开后逐项比较系数，
+得到 $c_n$ 的递推：
+$c_0 = 1/a_0$，$c_n = -\frac{1}{a_0}\sum_{k=1}^n a_k c_{n-k}$。
+
+\begin{example}[$1/\cos x$ 的展开——级数除法]
+  $\cos x = 1 - \frac{x^2}{2} + \frac{x^4}{24} - \cdots$。
+  设 $\sec x = 1/\cos x = \sum c_{2n}x^{2n}$（偶函数）。
+  $c_0 = 1$；$c_2 = \frac{1}{2}$；$c_4 = \frac{1}{2}\cdot\frac{1}{2}+\frac{1}{24} = \frac{5}{24}$。
+  与前面 ODE 法结果一致。
+\end{example}
+
+\subsubsection*{技巧九：Lagrange 反演（反函数展开）}
+若 $y = f(x)$ 在 $x=0$ 附近解析，$f(0)=0$，$f'(0) \ne 0$，
+则反函数 $x = f^{-1}(y)$ 的展开为
+\[
+  f^{-1}(y) = \sum_{n=1}^\infty \frac{y^n}{n!}
+  \left[\frac{\dif^{n-1}}{\dif x^{n-1}}\!\left(\frac{x}{f(x)}\right)^{\!n}\right]_{x=0}\!.
+\]
+实际使用时常取特殊形式：若 $y = x\cdot\phi(x)$（$\phi(0) \ne 0$），则
+\[
+  x = \sum_{n=1}^\infty \frac{y^n}{n}\cdot\frac{1}{(n-1)!}
+  \left[\frac{\dif^{n-1}}{\dif x^{n-1}}\phi(x)^{-n}\right]_{x=0}\!.
+\]
+
+\begin{example}[$W$ Lambert 函数的展开]
+  $W(z)$ 满足 $W e^W = z$。令 $W = z\phi(z)$，
+  则 $z\phi(z)\cdot e^{z\phi(z)} = z$，即 $\phi(z)\cdot e^{z\phi(z)} = 1$。
+  由 Lagrange 反演：
+  \[
+    W(z) = \sum_{n=1}^\infty \frac{(-n)^{n-1}}{n!}\,z^n
+    = z - z^2 + \frac{3}{2}z^3 - \frac{8}{3}z^4 + \cdots.
+  \]
+\end{example}
+
+\subsubsection*{技巧十：含参积分法}
+将待展函数写成含参积分，对积分核做展开后逐项积分。
+\[
+  \text{例：} \int_0^x \frac{e^t - 1}{t}\,\dif t
+  = \int_0^x \sum_{n=1}^\infty\frac{t^{n-1}}{n!}\,\dif t
+  = \sum_{n=1}^\infty\frac{x^n}{n\cdot n!}.
+\]
+这在概率论（指数积分、不完全 Gamma 函数等）中经常出现。
+
+% ---------- 4.2 多元 Taylor 公式 ----------
+\subsection{多元 Taylor 公式}
+
+\begin{theorem}[多元 Taylor 公式——Peano 余项]
+  设 $f: \R^n \to \R$ 在 $\mathbf{a}$ 的某邻域内有直到 $k$ 阶的连续偏导数，则
+  \[
+    f(\mathbf{a} + \mathbf{h})
+    = \sum_{\abs{\alpha} \le k} \frac{D^\alpha f(\mathbf{a})}{\alpha!} \mathbf{h}^\alpha
+    + o(\norm{\mathbf{h}}^k),
+  \]
+  其中多重指标 $\alpha = (\alpha_1,\ldots,\alpha_n)$，
+  $\abs{\alpha} = \alpha_1 + \cdots + \alpha_n$，
+  $\alpha! = \alpha_1! \cdots \alpha_n!$，
+  $D^\alpha = \frac{\partial^{\abs{\alpha}}}{\partial x_1^{\alpha_1} \cdots \partial x_n^{\alpha_n}}$，
+  $\mathbf{h}^\alpha = h_1^{\alpha_1} \cdots h_n^{\alpha_n}$。
+\end{theorem}
+
+\begin{remark}[二元情形的实用公式]
+  对于 $f(x,y)$ 在 $(a,b)$ 处的二阶 Taylor 展开：
+  \begin{align*}
+    f(a+h, b+k) &= f(a,b) + (h\,f_x + k\,f_y)\big|_{(a,b)} \\
+    &\quad + \frac{1}{2!}\bigl(h^2 f_{xx} + 2hk\, f_{xy} + k^2 f_{yy}\bigr)\big|_{(a,b)}
+    + o(h^2+k^2).
+  \end{align*}
+  \textbf{矩阵形式}：
+  $f(\mathbf{a}+\mathbf{h}) \approx f(\mathbf{a})
+  + \nabla f(\mathbf{a})^\T \mathbf{h}
+  + \frac{1}{2} \mathbf{h}^\T H_f(\mathbf{a})\, \mathbf{h}$，
+  其中 $H_f$ 为 Hesse 矩阵。
+\end{remark}
+
+% ---------- 4.3 Fourier 级数 ----------
+\subsection{Fourier 级数的定义与收敛定理}
+
+\begin{definition}[Fourier 系数与 Fourier 级数]
+  设 $f$ 在 $[-\pi, \pi]$ 上 Riemann 可积（或绝对可积）。
+  \textbf{Fourier 系数}定义为
+  \[
+    a_0 = \frac{1}{\pi} \int_{-\pi}^{\pi} f(x) \,\dif x, \quad
+    a_n = \frac{1}{\pi} \int_{-\pi}^{\pi} f(x)\cos(nx) \,\dif x, \quad
+    b_n = \frac{1}{\pi} \int_{-\pi}^{\pi} f(x)\sin(nx) \,\dif x.
+  \]
+  \textbf{Fourier 级数}为
+  \[
+    f(x) \sim \frac{a_0}{2} + \sum_{n=1}^\infty \bigl( a_n\cos(nx) + b_n\sin(nx) \bigr).
+  \]
+  （记号 $\sim$ 表示形式上的对应，不保证逐点收敛。）
+\end{definition}
+
+\begin{theorem}[Dirichlet 收敛定理]
+  若 $f$ 在 $[-\pi,\pi]$ 上\textbf{分段光滑}（即分段连续可微），则其 Fourier 级数在每点 $x$ 收敛于
+  \[
+    \frac{f(x^+) + f(x^-)}{2}.
+  \]
+  在 $f$ 的连续点，级数收敛到 $f(x)$；
+  在跳跃间断点，级数收敛到左、右极限的平均值。
+\end{theorem}
+
+\begin{remark}[周期延拓]
+  通常 $f$ 定义在 $[-\pi,\pi]$（或 $[0,\pi]$）上，
+  Fourier 级数实际给出的是 $f$ 的 \textbf{$2\pi$-周期延拓}的展开。
+  在端点 $x = \pm\pi$ 处，级数收敛到 $\frac{f(-\pi^+) + f(\pi^-)}{2}$。
+\end{remark}
+
+% ---------- 4.3b Fourier 级数计算技巧 ----------
+\subsection{Fourier 级数计算技巧}
+
+\subsubsection*{技巧一：奇偶性简化}
+\begin{itemize}
+  \item $f$ 为偶函数 $\Rightarrow$ 所有 $b_n = 0$（只有余弦项），且
+    $a_n = \frac{2}{\pi}\int_0^\pi f(x)\cos(nx) \,\dif x$。
+  \item $f$ 为奇函数 $\Rightarrow$ 所有 $a_n = 0$（只有正弦项），且
+    $b_n = \frac{2}{\pi}\int_0^\pi f(x)\sin(nx) \,\dif x$。
+\end{itemize}
+
+\subsubsection*{技巧二：半区间展开——正弦级数与余弦级数}
+$f$ 定义在 $[0,\pi]$ 上时：
+\begin{itemize}
+  \item \textbf{余弦展开}：将 $f$ 偶延拓到 $[-\pi,\pi]$，
+    $a_n = \frac{2}{\pi}\int_0^\pi f(x)\cos(nx) \,\dif x$。
+  \item \textbf{正弦展开}：将 $f$ 奇延拓到 $[-\pi,\pi]$，
+    $b_n = \frac{2}{\pi}\int_0^\pi f(x)\sin(nx) \,\dif x$。
+\end{itemize}
+
+\subsubsection*{技巧三：分部积分法}
+计算 $a_n = \frac{1}{\pi}\int_{-\pi}^\pi f(x)\cos(nx) \,\dif x$ 时，
+若 $f$ 是多项式，反复分部积分直到被积函数变为常数或 $\sin(nx)$/$\cos(nx)$。
+每分部积分一次，出现 $1/n$ 因子，可用于判断衰减速度。
+
+\subsubsection*{技巧四：利用已知展开求新展开}
+若已知 $f$ 的 Fourier 级数，可通过逐项积分得到 $\int f$ 的展开。
+逐项积分\textbf{不需要额外条件}，总是合法的。
+
+\subsubsection*{技巧五：复数形式 $c_n$ 与 Euler 公式}
+利用 $e^{inx} = \cos(nx) + i\sin(nx)$，可将 Fourier 级数写成\textbf{复数形式}：
+\[
+  f(x) \sim \sum_{n=-\infty}^{\infty} c_n e^{inx}, \quad
+  c_n = \frac{1}{2\pi}\int_{-\pi}^{\pi} f(x)\,e^{-inx} \,\dif x.
+\]
+实系数与复系数的关系：
+$a_n = c_n + c_{-n}$，$b_n = i(c_n - c_{-n})$，$c_0 = a_0/2$。
+
+\textbf{优势}：复数形式在计算卷积、平移、伸缩时更方便，且一个公式代替三个积分。
+
+\subsubsection*{技巧六：平移与伸缩性质}
+\begin{itemize}
+  \item \textbf{平移}：若 $f(x) \sim \sum c_n e^{inx}$，则
+    $f(x - x_0) \sim \sum c_n e^{-inx_0} e^{inx}$。
+    即平移只对每个系数乘以 $e^{-inx_0}$，模长不变（$\abs{c_n}$ 不变）。
+  \item \textbf{伸缩}：若 $f(x)$ 以 $2\pi$ 为周期，则 $f(ax)$ 以 $2\pi/\abs{a}$ 为周期。
+    设 $g(x) = f(ax)$（$a > 0$），$g$ 的 Fourier 系数为
+    $c_n^{(g)} = \frac{1}{2\pi}\int_{-\pi}^{\pi} f(ax)\,e^{-inx}\,\dif x$。
+    令 $u = ax$，则当 $a > 0$ 时积分区间变为 $[-a\pi, a\pi]$，需注意伸缩后周期变化。
+\end{itemize}
+
+\subsubsection*{技巧七：逐项求导的条件与方法}
+若 $f$ 在 $[-\pi,\pi]$ 上\textbf{连续}且\textbf{分段 $C^1$}，
+且 $f(-\pi) = f(\pi)$，则可对 Fourier 级数逐项求导：
+\[
+  f'(x) \sim \sum_{n=1}^{\infty} n\bigl(-a_n\sin(nx) + b_n\cos(nx)\bigr)
+  = \sum_{n=-\infty}^{\infty} in\,c_n\,e^{inx}.
+\]
+\textbf{注意}：逐项求导后系数多了一个 $n$ 因子，收敛速度降低一阶。
+不满足条件时（如 $f$ 有跳跃间断点），逐项求导会得到错误的 Gibbs 现象加剧的级数。
+
+\subsubsection*{技巧八：卷积与 Parseval 等式的推广}
+若 $f, g$ 在 $[-\pi,\pi]$ 上平方可积，Fourier 系数分别为 $c_n^{(f)}, c_n^{(g)}$，则
+\begin{itemize}
+  \item \textbf{Parseval 等式}（推广）：
+    $\frac{1}{2\pi}\int_{-\pi}^{\pi} f(x)\overline{g(x)} \,\dif x = \sum_{n=-\infty}^{\infty} c_n^{(f)}\overline{c_n^{(g)}}$。
+  \item 取 $f = g$ 即得标准 Parseval：
+    $\frac{1}{2\pi}\int_{-\pi}^{\pi} \abs{f(x)}^2 \,\dif x = \sum_{n=-\infty}^{\infty} \abs{c_n}^2$。
+  \item \textbf{卷积}：$(f * g)(x) = \frac{1}{2\pi}\int_{-\pi}^{\pi} f(t)g(x-t)\,\dif t$
+    的 Fourier 系数为 $c_n^{(f*g)} = c_n^{(f)} \cdot c_n^{(g)}$。
+\end{itemize}
+
+\subsubsection*{Parseval 等式}
+
+\begin{theorem}[Parseval 等式]
+  设 $f$ 在 $[-\pi,\pi]$ 上分段连续，Fourier 系数为 $a_0, a_n, b_n$。则
+  \[
+    \frac{1}{\pi} \int_{-\pi}^{\pi} \abs{f(x)}^2 \,\dif x
+    = \frac{a_0^2}{2} + \sum_{n=1}^\infty (a_n^2 + b_n^2).
+  \]
+  \textbf{用途}：通过已知的 Fourier 系数求某些数项级数的和（如 $\sum 1/n^2$）。
+\end{theorem}
+
+\subsubsection*{任意周期与一般区间}
+
+若 $f$ 以 $2L$ 为周期，令 $t = \frac{\pi x}{L}$ 化为 $2\pi$-周期：
+\[
+  f(x) \sim \frac{a_0}{2} + \sum_{n=1}^\infty
+  \left( a_n \cos\frac{n\pi x}{L} + b_n \sin\frac{n\pi x}{L} \right),
+\]
+其中
+\[
+  a_n = \frac{1}{L} \int_{-L}^{L} f(x)\cos\frac{n\pi x}{L} \,\dif x, \quad
+  b_n = \frac{1}{L} \int_{-L}^{L} f(x)\sin\frac{n\pi x}{L} \,\dif x.
+\]
+
+% ---------- 4.4 Taylor vs Fourier ----------
+\subsection{Taylor 级数与 Fourier 级数的比较}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.5cm}
+                >{\raggedright\arraybackslash}p{5cm}
+                >{\raggedright\arraybackslash}p{5cm}}
+  \toprule
+  & \textbf{Taylor 级数} & \textbf{Fourier 级数} \\
+  \midrule
+  性质
+    & 局部（在某点附近展开）
+    & 全局（在整个区间上展开） \\
+  对 $f$ 的要求
+    & $f$ 在展开点附近无穷次可微
+    & $f$ 可积即可（分段连续） \\
+  收敛速度
+    & 快（几何级数级别 $O(r^n)$）
+    & 慢（$O(1/n)$，与光滑度有关） \\
+  基函数
+    & $\{1, x, x^2, \ldots\}$（多项式）
+    & $\{1, \cos nx, \sin nx\}$（三角函数） \\
+  典型用途
+    & 局部逼近、求极限、求近似值
+    & 周期函数分析、求级数和、PDE 求解 \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ---------- 4.5 练习题——Taylor 级数 ----------
+\subsection{练习题——Taylor 级数}
+
+\begin{exercise}[代入法]
+  求 $f(x) = \sin(x^2)$ 在 $x=0$ 处的 Maclaurin 展开到 $x^{10}$ 项，并确定收敛域。
+\end{exercise}
+
+\begin{solution}
+  由 $\sin t = t - \frac{t^3}{6} + \frac{t^5}{120} - \cdots$，令 $t = x^2$：
+  \[
+    \sin(x^2) = x^2 - \frac{x^6}{6} + \frac{x^{10}}{120} - \cdots
+    = \sum_{n=0}^\infty \frac{(-1)^n}{(2n+1)!} x^{4n+2}.
+  \]
+  收敛域：$\sin t$ 对一切 $t \in \R$ 收敛，故对一切 $x \in \R$ 收敛。
+\end{solution}
+
+\begin{exercise}[逐项求导/积分]
+  利用 $\frac{1}{1-x} = \sum_{n=0}^\infty x^n$（$\abs{x} < 1$），
+  求 $f(x) = \frac{1}{(1-x)^2}$ 的 Maclaurin 展开。
+\end{exercise}
+
+\begin{solution}
+  对 $\frac{1}{1-x} = \sum_{n=0}^\infty x^n$ 逐项求导：
+  \[
+    \frac{1}{(1-x)^2} = \sum_{n=1}^\infty n x^{n-1}
+    = \sum_{n=0}^\infty (n+1) x^n, \quad \abs{x} < 1.
+  \]
+\end{solution}
+
+\begin{exercise}[级数求和——基本]
+  求 $\sum_{n=0}^\infty \frac{n^2}{n!}$ 的值。
+\end{exercise}
+
+\begin{solution}
+  由 $e^x = \sum_{n=0}^\infty \frac{x^n}{n!}$，逐项求导：
+  $xe^x = \sum_{n=0}^\infty \frac{n\, x^n}{n!}$，再求导：
+  \[
+    \frac{\dif}{\dif x}(xe^x) = (1+x)e^x = \sum_{n=0}^\infty \frac{n^2 x^{n-1}}{n!}.
+  \]
+  乘以 $x$：$(x+x^2)e^x = \sum_{n=0}^\infty \frac{n^2 x^n}{n!}$。
+  令 $x = 1$：
+  $\sum_{n=0}^\infty \frac{n^2}{n!} = (1+1)e = 2e$。
+\end{solution}
+
+\begin{exercise}[级数求和——进阶]
+  求 $\sum_{n=1}^\infty \frac{(-1)^{n-1}}{n(2n-1)}$ 的值。
+\end{exercise}
+
+\begin{solution}
+  考虑 $f(x) = \sum_{n=1}^\infty \frac{(-1)^{n-1}}{n(2n-1)} x^{2n}$。
+  求导：$f'(x) = \sum_{n=1}^\infty \frac{(-1)^{n-1} \cdot 2}{2n-1} x^{2n-1}
+  = 2\sum_{n=1}^\infty \frac{(-1)^{n-1}}{2n-1} x^{2n-1} = 2\arctan x$。
+
+  故 $f(x) = 2\int_0^x \arctan t \,\dif t
+  = 2\bigl[x\arctan x - \frac{1}{2}\ln(1+x^2)\bigr]$。
+
+  令 $x=1$：$f(1) = 2\bigl[\frac{\pi}{4} - \frac{1}{2}\ln 2\bigr] = \frac{\pi}{2} - \ln 2$。
+\end{solution}
+
+\begin{exercise}[多元 Taylor 展开]
+  求 $f(x,y) = e^{xy}$ 在 $(0,0)$ 处的二阶 Taylor 展开。
+\end{exercise}
+
+\begin{solution}
+  $f(0,0)=1$。各阶偏导：
+  \begin{align*}
+    f_x &= ye^{xy}, & f_y &= xe^{xy}, \\
+    f_x(0,0) &= 0, & f_y(0,0) &= 0, \\
+    f_{xx} &= y^2 e^{xy}, & f_{yy} &= x^2 e^{xy}, & f_{xy} &= (1+xy)e^{xy}, \\
+    f_{xx}(0,0) &= 0, & f_{yy}(0,0) &= 0, & f_{xy}(0,0) &= 1.
+  \end{align*}
+  二阶展开：
+  \[
+    e^{xy} \approx 1 + 0 + 0 + \frac{1}{2}(0 \cdot x^2 + 2 \cdot 1 \cdot xy + 0 \cdot y^2)
+    = 1 + xy + o(x^2+y^2).
+  \]
+  也可直接从 $e^t = 1 + t + \frac{t^2}{2} + \cdots$ 令 $t=xy$ 得到：
+  $e^{xy} = 1 + xy + \frac{x^2y^2}{2} + \cdots$。
+\end{solution}
+
+\begin{exercise}[Taylor 展开求极限]
+  利用 Taylor 展开求 $\displaystyle\lim_{(x,y)\to(0,0)} \frac{e^{xy}-1-xy}{x^2 y^2}$。
+\end{exercise}
+
+\begin{solution}
+  $e^{xy} = 1 + xy + \frac{x^2y^2}{2} + \frac{x^3y^3}{6} + \cdots$，故
+  \[
+    \frac{e^{xy} - 1 - xy}{x^2 y^2}
+    = \frac{\frac{x^2y^2}{2} + O(x^3y^3)}{x^2y^2}
+    = \frac{1}{2} + O(xy) \to \frac{1}{2}.
+  \]
+\end{solution}
+
+\begin{exercise}[Taylor 余项估计]
+  用 $\sin x$ 的 Taylor 展开近似计算 $\sin 1$，
+  误差不超过 $10^{-6}$，至少需要多少项？
+\end{exercise}
+
+\begin{solution}
+  $\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots
+  + \frac{(-1)^n}{(2n+1)!} x^{2n+1} + R_{2n+2}$。
+
+  Lagrange 余项 $\abs{R_{2n+2}} \le \frac{\abs{x}^{2n+3}}{(2n+3)!}$。
+  取 $x = 1$，需 $\frac{1}{(2n+3)!} < 10^{-6}$。
+
+  $(2n+3)!$：$9! = 362880$，$10! = 3628800 > 10^6$。
+  故 $2n+3 = 10$，$n = 3.5$，取 $n = 4$（即取到 $x^9/9!$ 项），余项 $\le 1/10! < 3 \times 10^{-7}$。
+
+  实际只需取到 $n=3$（即取到 $x^7/7!$），余项 $\le 1/9! \approx 2.75 \times 10^{-6}$，差一点。
+  取 $n=4$ 安全。
+\end{solution}
+
+\begin{exercise}[ODE 递推——$\arcsin x$ 的展开]
+  利用 $(\arcsin x)' = \frac{1}{\sqrt{1-x^2}}$，求 $\arcsin x$ 的 Taylor 展开到 $x^7$。
+\end{exercise}
+
+\begin{solution}
+  设 $y = \arcsin x = \sum_{n=0}^\infty a_n x^n$。
+  由 $y' = (1-x^2)^{-1/2} = \sum_{k=0}^\infty \binom{-1/2}{k}(-x^2)^k$：
+  \[
+    y' = 1 + \frac{1}{2}x^2 + \frac{3}{8}x^4 + \frac{5}{16}x^6 + \cdots
+  \]
+  逐项积分（$a_0 = \arcsin 0 = 0$）：
+  \[
+    \arcsin x = x + \frac{x^3}{6} + \frac{3x^5}{40} + \frac{5x^7}{112} + \cdots
+    = \sum_{n=0}^\infty \frac{(2n)!}{4^n(n!)^2(2n+1)}x^{2n+1}.
+  \]
+  收敛域：$\abs{x} \le 1$。
+\end{solution}
+
+\begin{exercise}[ODE 递推——$\ln\sec x$ 的展开]
+  利用 $(\ln\sec x)' = \tan x$ 和已知的 $\tan x$ 展开，
+  求 $\ln\sec x$ 的 Taylor 展开到 $x^6$。
+\end{exercise}
+
+\begin{solution}
+  $\ln\sec x = \int_0^x \tan t\,\dif t$（因为 $\ln\sec 0 = 0$）。
+  \[
+    = \int_0^x\left(t + \frac{t^3}{3} + \frac{2t^5}{15} + \cdots\right)\dif t
+    = \frac{x^2}{2} + \frac{x^4}{12} + \frac{x^6}{45} + \cdots.
+  \]
+  注意 $\ln\sec x = -\ln\cos x$，与前面的结果符号相反。$\checkmark$
+\end{solution}
+
+\begin{exercise}[复数法——$e^x\cos x$ 的展开]
+  利用 $e^{(1+i)x} = e^x\cos x + i\,e^x\sin x$，
+  取\textbf{实部}求 $e^x\cos x$ 的 Taylor 展开到 $x^4$。
+\end{exercise}
+
+\begin{solution}
+  $(1+i)^n = 2^{n/2}e^{in\pi/4}$，取实部 $2^{n/2}\cos\frac{n\pi}{4}$。
+  \begin{align*}
+    n=0:& \quad \cos 0 = 1; \\
+    n=1:& \quad \sqrt{2}\cos\frac{\pi}{4} = 1; \\
+    n=2:& \quad 2\cos\frac{\pi}{2} = 0; \\
+    n=3:& \quad 2\sqrt{2}\cos\frac{3\pi}{4} = -2; \\
+    n=4:& \quad 4\cos\pi = -4.
+  \end{align*}
+  \[
+    e^x\cos x = 1 + x - \frac{2x^3}{6} - \frac{4x^4}{24} + \cdots
+    = 1 + x - \frac{x^3}{3} - \frac{x^4}{6} + \cdots.
+  \]
+\end{solution}
+
+\begin{exercise}[ODE 递推——$1/\Gamma(1+x)$ 与 Bernoulli 数]
+  （选做）利用 $\dfrac{x}{e^x - 1} = \sum_{n=0}^\infty \dfrac{B_n}{n!}x^n$
+  定义 Bernoulli 数 $B_n$。
+  将 $x = \left(\sum B_n x^n/n!\right)\!\left(\sum x^n/(n+1)!\right)$ 展开，
+  比较系数求 $B_0, B_1, B_2, B_3, B_4$。
+\end{exercise}
+
+\begin{solution}
+  恒等式 $x = \frac{x}{e^x-1}\cdot(e^x-1) = \frac{x}{e^x-1}\cdot\sum_{k=1}^\infty\frac{x^k}{k!}$。
+  即 $x = \left(\sum_{n=0}^\infty\frac{B_n}{n!}x^n\right)\!\left(\sum_{k=1}^\infty\frac{x^k}{k!}\right)$。
+
+  右边 $x^0$ 系数：$B_0/0! \cdot$（无常数项）$= 0$，无需处理。
+  $x^1$ 系数：$B_0 \cdot 1 = 1 \implies B_0 = 1$。
+  $x^2$ 系数：$B_0 \cdot \frac{1}{2} + B_1 \cdot 1 = 0 \implies B_1 = -\frac{1}{2}$。
+  $x^3$ 系数：$B_0 \cdot \frac{1}{6} + B_1 \cdot \frac{1}{2} + B_2 \cdot 1 = 0$
+  $\implies B_2 = -\frac{1}{6}+\frac{1}{4} = \frac{1}{6}$。
+  $x^4$ 系数：$\frac{B_0}{6}+\frac{B_1}{6}+\frac{B_2}{2}+\frac{B_3}{1}=0$
+  $\implies B_3 = -\frac{1}{6}+\frac{1}{12}-\frac{1}{12} = 0$。
+  $x^5$ 系数：$\frac{B_0}{24}+\frac{B_1}{6}+\frac{B_2}{4}+\frac{B_3}{2}+\frac{B_4}{1}=0$
+  $\implies B_4 = -\frac{1}{24}+\frac{1}{12}-\frac{1}{24} = -\frac{1}{30}$。
+
+  一般规律：$B_{2k+1} = 0$（$k \ge 1$）。
+  $\tan x$ 的展开可通过 $B_n$ 表示：
+  $\tan x = \sum_{n=1}^\infty \frac{(-1)^{n-1}2^{2n}(2^{2n}-1)B_{2n}}{(2n)!}x^{2n-1}$。
+\end{solution}
+
+\begin{exercise}[Cauchy 乘积——$e^x\cos x$]
+  利用 Cauchy 乘积将 $e^x$ 和 $\cos x$ 的 Maclaurin 级数相乘，
+  求 $e^x\cos x$ 展开到 $x^4$，并与复数法结果对照。
+\end{exercise}
+
+\begin{solution}
+  $e^x = \sum_{n=0}^\infty \frac{x^n}{n!}$，$\cos x = \sum_{m=0}^\infty \frac{(-1)^m}{(2m)!}x^{2m}$。
+  Cauchy 乘积：$e^x\cos x = \sum_{k=0}^\infty c_k x^k$，其中
+  $c_k = \sum_{j=0}^{k} \frac{1}{j!}\cdot\frac{(-1)^{(k-j)/2}}{((k-j)!)}$（仅当 $k-j$ 为偶数时非零）。
+  \begin{align*}
+    c_0 &= 1 \cdot 1 = 1; \\
+    c_1 &= \frac{1}{1!}\cdot 1 + \frac{1}{0!}\cdot 0 = 1; \\
+    c_2 &= \frac{1}{2!}\cdot 1 + \frac{1}{1!}\cdot 0 + 1\cdot\frac{-1}{2} = \frac{1}{2} - \frac{1}{2} = 0; \\
+    c_3 &= \frac{1}{3!}\cdot 1 + \frac{1}{2!}\cdot 0 + \frac{1}{1!}\cdot\frac{-1}{2} + 1\cdot 0 = \frac{1}{6} - \frac{1}{2} = -\frac{1}{3}; \\
+    c_4 &= \frac{1}{4!}\cdot 1 + \frac{1}{3!}\cdot 0 + \frac{1}{2!}\cdot\frac{-1}{2} + \frac{1}{1!}\cdot 0 + 1\cdot\frac{1}{24}
+    = \frac{1}{24} - \frac{1}{4} + \frac{1}{24} = -\frac{1}{6}.
+  \end{align*}
+  故 $e^x\cos x = 1 + x - \frac{x^3}{3} - \frac{x^4}{6} + \cdots$，与复数法一致。$\checkmark$
+\end{solution}
+
+\begin{exercise}[级数除法——$\tan x$ 的展开]
+  利用 $\tan x = \frac{\sin x}{\cos x}$，通过长除法求 $\tan x$ 的 Maclaurin 展开到 $x^5$。
+\end{exercise}
+
+\begin{solution}
+  设 $\tan x = \frac{x - \frac{x^3}{6} + \frac{x^5}{120} - \cdots}{1 - \frac{x^2}{2} + \frac{x^4}{24} - \cdots}$。
+  用待定系数法设 $\tan x = a_1 x + a_3 x^3 + a_5 x^5 + \cdots$（奇函数），则
+  \[
+    (a_1 x + a_3 x^3 + a_5 x^5 + \cdots)(1 - \tfrac{x^2}{2} + \tfrac{x^4}{24} - \cdots)
+    = x - \tfrac{x^3}{6} + \tfrac{x^5}{120} - \cdots.
+  \]
+  比较系数：
+  \begin{itemize}
+    \item $x^1$：$a_1 = 1$。
+    \item $x^3$：$a_3 - \frac{a_1}{2} = -\frac{1}{6}$ $\Rightarrow$ $a_3 = -\frac{1}{6} + \frac{1}{2} = \frac{1}{3}$。
+    \item $x^5$：$a_5 - \frac{a_3}{2} + \frac{a_1}{24} = \frac{1}{120}$
+      $\Rightarrow$ $a_5 = \frac{1}{120} + \frac{1}{6} - \frac{1}{24} = \frac{1+20-5}{120} = \frac{16}{120} = \frac{2}{15}$。
+  \end{itemize}
+  $\tan x = x + \frac{x^3}{3} + \frac{2x^5}{15} + \cdots$。
+\end{solution}
+
+\begin{exercise}[Lagrange 反演——$W$ 函数]
+  Lambert $W$ 函数定义为 $W(x)e^{W(x)} = x$ 的满足 $W(0) = 0$ 的分支。
+  利用 Lagrange 反演求 $W(x)$ 的 Maclaurin 展开到 $x^4$。
+\end{exercise}
+
+\begin{solution}
+  令 $w = W(x)$，则 $x = we^w$。设 $w = \sum_{n=1}^\infty a_n x^n$。
+  由 Lagrange 反演公式：
+  \[
+    a_n = \frac{1}{n}[t^{n-1}]\left(\frac{t}{\phi(t)}\right)^{-n}
+    = \frac{1}{n}[t^{n-1}]\left(\frac{1}{e^t}\right)^{-n}
+    = \frac{1}{n}[t^{n-1}]e^{nt}
+    = \frac{n^{n-1}}{n!}.
+  \]
+  其中 $\phi(t) = e^t$ 是反函数关系 $x = t\phi(t)$ 中的因子。
+
+  展开前几项：
+  $a_1 = 1$，$a_2 = \frac{2}{2!} = 1$，$a_3 = \frac{9}{6} = \frac{3}{2}$，
+  $a_4 = \frac{64}{24} = \frac{8}{3}$。
+  \[
+    W(x) = x - x^2 + \frac{3}{2}x^3 - \frac{8}{3}x^4 + \cdots
+    = \sum_{n=1}^\infty \frac{(-1)^{n-1}n^{n-2}}{(n-1)!}x^n.
+  \]
+  注意：$W(x)e^{W(x)} = x$ 的 $W$ 定义使得展开中符号交替出现。
+\end{solution}
+
+\begin{exercise}[含参积分法——指数积分]
+  利用含参积分法求 $\displaystyle\int_0^x \frac{e^t - 1}{t}\,\dif t$ 的 Maclaurin 展开。
+\end{exercise}
+
+\begin{solution}
+  $\frac{e^t - 1}{t} = \frac{1}{t}\sum_{n=1}^\infty \frac{t^n}{n!}
+  = \sum_{n=1}^\infty \frac{t^{n-1}}{n!}
+  = \sum_{n=0}^\infty \frac{t^n}{(n+1)!}$。
+  逐项积分：
+  \[
+    \int_0^x \frac{e^t - 1}{t}\,\dif t
+    = \sum_{n=0}^\infty \frac{1}{(n+1)!}\int_0^x t^n \,\dif t
+    = \sum_{n=0}^\infty \frac{x^{n+1}}{(n+1)(n+1)!}.
+  \]
+  收敛域：$x \in \R$（因为 $e^t$ 的展开对一切 $t$ 收敛，且逐项积分不改变收敛性）。
+\end{solution}
+
+% ---------- 4.6 练习题——Fourier 级数 ----------
+\subsection{练习题——Fourier 级数}
+
+\begin{exercise}[基本 Fourier 系数——方波]
+  求方波函数
+  $f(x) = \begin{cases} 1 & 0 < x < \pi \\ -1 & -\pi < x < 0 \end{cases}$
+  的 Fourier 级数。
+\end{exercise}
+
+\begin{solution}
+  $f$ 为奇函数 $\Rightarrow a_0 = a_n = 0$。
+  \[
+    b_n = \frac{2}{\pi}\int_0^\pi \sin(nx) \,\dif x
+    = \frac{2}{\pi}\cdot\frac{1-\cos(n\pi)}{n}
+    = \frac{2}{\pi}\cdot\frac{1-(-1)^n}{n}.
+  \]
+  当 $n$ 为偶数时 $b_n = 0$；当 $n = 2k-1$ 时 $b_{2k-1} = \frac{4}{(2k-1)\pi}$。
+  \[
+    f(x) \sim \frac{4}{\pi}\sum_{k=1}^\infty \frac{\sin((2k-1)x)}{2k-1}
+    = \frac{4}{\pi}\left( \sin x + \frac{\sin 3x}{3} + \frac{\sin 5x}{5} + \cdots \right).
+  \]
+\end{solution}
+
+\begin{exercise}[Parseval 等式求 $\sum 1/n^2$]
+  利用 $f(x) = x$（$x \in [-\pi,\pi]$）的 Fourier 级数与 Parseval 等式，
+  求 $\sum_{n=1}^\infty \frac{1}{n^2}$。
+\end{exercise}
+
+\begin{solution}
+  $f(x)=x$ 为奇函数，$a_n = 0$。
+  $b_n = \frac{1}{\pi}\int_{-\pi}^\pi x\sin(nx) \,\dif x
+  = \frac{2}{\pi}\int_0^\pi x\sin(nx) \,\dif x$。
+  分部积分：
+  \[
+    b_n = \frac{2}{\pi}\left[ -\frac{x\cos(nx)}{n}\Big|_0^\pi + \frac{1}{n}\int_0^\pi\cos(nx)\,\dif x \right]
+    = \frac{2}{\pi}\cdot\frac{(-1)^{n+1}\pi}{n}
+    = \frac{2(-1)^{n+1}}{n}.
+  \]
+  Parseval：
+  $\frac{1}{\pi}\int_{-\pi}^\pi x^2 \,\dif x = \sum_{n=1}^\infty b_n^2$，
+  即 $\frac{2\pi^2}{3} = \sum_{n=1}^\infty \frac{4}{n^2}$。
+  \[
+    \sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}.
+  \]
+\end{solution}
+
+\begin{exercise}[半区间展开——余弦级数]
+  在 $[0,\pi]$ 上将 $f(x) = x$ 展开为余弦级数。
+\end{exercise}
+
+\begin{solution}
+  偶延拓：$a_0 = \frac{2}{\pi}\int_0^\pi x \,\dif x = \pi$。
+  \[
+    a_n = \frac{2}{\pi}\int_0^\pi x\cos(nx) \,\dif x
+    = \frac{2}{\pi}\left[ \frac{x\sin(nx)}{n}\Big|_0^\pi - \frac{1}{n}\int_0^\pi\sin(nx)\,\dif x \right].
+  \]
+  第一项为 $0$。第二项：
+  $a_n = \frac{2}{\pi}\cdot\frac{\cos(n\pi)-1}{n^2}
+  = \frac{2((-1)^n-1)}{\pi n^2}$。
+  \begin{itemize}
+    \item $n$ 为偶数：$a_n = 0$。
+    \item $n = 2k-1$：$a_{2k-1} = \frac{-4}{\pi(2k-1)^2}$。
+  \end{itemize}
+  \[
+    x = \frac{\pi}{2} - \frac{4}{\pi}\sum_{k=1}^\infty \frac{\cos((2k-1)x)}{(2k-1)^2}, \quad x \in [0,\pi].
+  \]
+\end{solution}
+
+\begin{exercise}[半区间展开——正弦级数]
+  在 $[0,\pi]$ 上将 $f(x) = 1$ 展开为正弦级数。
+\end{exercise}
+
+\begin{solution}
+  奇延拓后 $f$ 在 $(-\pi,0)$ 上为 $-1$。
+  \[
+    b_n = \frac{2}{\pi}\int_0^\pi \sin(nx) \,\dif x
+    = \frac{2}{\pi}\cdot\frac{1-\cos(n\pi)}{n}
+    = \frac{2(1-(-1)^n)}{\pi n}.
+  \]
+  $n$ 为偶数时 $b_n=0$；$n=2k-1$ 时 $b_{2k-1} = \frac{4}{(2k-1)\pi}$。
+  \[
+    1 \sim \frac{4}{\pi}\sum_{k=1}^\infty \frac{\sin((2k-1)x)}{2k-1}, \quad x \in (0,\pi).
+  \]
+  注意：在 $x=0$ 和 $x=\pi$ 处级数收敛到 $0$（左、右极限平均值为 $(1+(-1))/2 = 0$）。
+\end{solution}
+
+\begin{exercise}[Parseval 等式——求 $\sum 1/n^4$]
+  利用 $f(x) = x^2$（$x \in [-\pi,\pi]$）的 Fourier 级数与 Parseval 等式，
+  求 $\sum_{n=1}^\infty \frac{1}{n^4}$。
+\end{exercise}
+
+\begin{solution}
+  $f(x) = x^2$ 为偶函数，$b_n = 0$。
+  \[
+    a_0 = \frac{2}{\pi}\int_0^\pi x^2 \,\dif x = \frac{2\pi^2}{3}.
+  \]
+  \[
+    a_n = \frac{2}{\pi}\int_0^\pi x^2\cos(nx) \,\dif x
+    = \frac{2}{\pi}\cdot\frac{2\pi(-1)^n}{n^2}
+    = \frac{4(-1)^n}{n^2}.
+  \]
+  Parseval：
+  $\frac{1}{\pi}\int_{-\pi}^\pi x^4 \,\dif x
+  = \frac{a_0^2}{2} + \sum_{n=1}^\infty a_n^2$。
+
+  左端 $= \frac{2\pi^4}{5}$。右端 $= \frac{1}{2}\cdot\frac{4\pi^4}{9} + 16\sum_{n=1}^\infty\frac{1}{n^4}$。
+  \[
+    \frac{2\pi^4}{5} = \frac{2\pi^4}{9} + 16\sum_{n=1}^\infty\frac{1}{n^4}
+    \implies 16\sum_{n=1}^\infty\frac{1}{n^4} = \frac{2\pi^4}{5} - \frac{2\pi^4}{9}
+    = \frac{8\pi^4}{45}.
+  \]
+  \[
+    \sum_{n=1}^\infty \frac{1}{n^4} = \frac{\pi^4}{90}.
+  \]
+\end{solution}
+
+\begin{exercise}[Fourier 级数求和]
+  利用 Fourier 级数方法求 $\sum_{n=1}^\infty \frac{(-1)^{n+1}}{n^2}$ 的值。
+\end{exercise}
+
+\begin{solution}
+  由上题知 $x^2 = \frac{\pi^2}{3} + 4\sum_{n=1}^\infty \frac{(-1)^n}{n^2}\cos(nx)$。
+  令 $x = 0$：$0 = \frac{\pi^2}{3} + 4\sum_{n=1}^\infty \frac{(-1)^n}{n^2}$。
+  \[
+    \sum_{n=1}^\infty \frac{(-1)^n}{n^2} = -\frac{\pi^2}{12}
+    \implies \sum_{n=1}^\infty \frac{(-1)^{n+1}}{n^2} = \frac{\pi^2}{12}.
+  \]
+\end{solution}
+
+\begin{exercise}[逐项积分]
+  已知方波 $f(x)$ 的 Fourier 级数为 $\frac{4}{\pi}\sum_{k=1}^\infty \frac{\sin((2k-1)x)}{2k-1}$，
+  通过逐项积分求 $g(x) = \int_0^x f(t) \,\dif t$ 的 Fourier 级数，并验证。
+\end{exercise}
+
+\begin{solution}
+  逐项积分（总是合法的）：
+  \[
+    g(x) = \frac{4}{\pi}\sum_{k=1}^\infty \frac{1}{2k-1}\int_0^x \sin((2k-1)t) \,\dif t
+    = \frac{4}{\pi}\sum_{k=1}^\infty \frac{1-\cos((2k-1)x)}{(2k-1)^2}.
+  \]
+  验证：$f(t) = \begin{cases} 1 & t > 0 \\ -1 & t < 0 \end{cases}$，
+  $g(x) = \abs{x}$（$x \in [-\pi,\pi]$）。
+  由 $g$ 为偶函数，其 Fourier 级数为
+  $\frac{a_0}{2} + \sum a_n\cos(nx)$，$a_n = \frac{4((-1)^n-1)}{\pi n^2}$，
+  这与上面逐项积分结果一致。
+\end{solution}
+
+\begin{exercise}[任意周期 $2L$]
+  求 $f(x) = x$（$x \in [-l, l]$）的 Fourier 级数（周期 $2l$），
+  并利用 Parseval 等式求 $\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}$。
+\end{exercise}
+
+\begin{solution}
+  $f$ 为奇函数，$a_n = 0$。
+  \[
+    b_n = \frac{2}{l}\int_0^l x\sin\frac{n\pi x}{l} \,\dif x
+    = \frac{2l(-1)^{n+1}}{n\pi}.
+  \]
+  Fourier 级数：
+  $x \sim \frac{2l}{\pi}\sum_{n=1}^\infty \frac{(-1)^{n+1}}{n}\sin\frac{n\pi x}{l}$。
+
+  Parseval：
+  $\frac{1}{l}\int_{-l}^l x^2 \,\dif x = \sum_{n=1}^\infty b_n^2$，
+  即 $\frac{2l^2}{3} = \frac{4l^2}{\pi^2}\sum_{n=1}^\infty\frac{1}{n^2}$。
+  \[
+    \sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6}.
+  \]
+\end{solution}
+
+\begin{exercise}[综合——从 Fourier 级数到数项级数]
+  求 $f(x) = x^2$ 在 $[-1,1]$ 上的 Fourier 级数（周期 $2$），
+  并由此求 $\sum_{n=1}^\infty \frac{1}{n^2}$ 和 $\sum_{n=1}^\infty \frac{(-1)^n}{n^2}$。
+\end{exercise}
+
+\begin{solution}
+  $f$ 为偶函数，$b_n = 0$。$L = 1$。
+  \[
+    a_0 = \frac{2}{1}\int_0^1 x^2 \,\dif x = \frac{2}{3}.
+  \]
+  \[
+    a_n = 2\int_0^1 x^2\cos(n\pi x) \,\dif x.
+  \]
+  分部积分两次：
+  \[
+    a_n = 2\left[\frac{x^2\sin(n\pi x)}{n\pi}\Big|_0^1
+    - \frac{2}{n\pi}\int_0^1 x\sin(n\pi x)\,\dif x\right]
+    = -\frac{4}{n\pi}\left[-\frac{x\cos(n\pi x)}{n\pi}\Big|_0^1
+    + \frac{1}{n\pi}\int_0^1\cos(n\pi x)\,\dif x\right].
+  \]
+  \[
+    = -\frac{4}{n\pi}\left[-\frac{(-1)^n}{n\pi} + 0\right]
+    = \frac{4(-1)^n}{n^2\pi^2}.
+  \]
+  故 $x^2 = \frac{1}{3} + \frac{4}{\pi^2}\sum_{n=1}^\infty\frac{(-1)^n}{n^2}\cos(n\pi x)$。
+
+  令 $x=0$：$0 = \frac{1}{3} + \frac{4}{\pi^2}\sum\frac{(-1)^n}{n^2}$
+  $\Rightarrow \sum\frac{(-1)^{n+1}}{n^2} = \frac{\pi^2}{12}$。
+
+  令 $x=1$：$1 = \frac{1}{3} + \frac{4}{\pi^2}\sum\frac{(-1)^n(-1)^n}{n^2}
+  = \frac{1}{3} + \frac{4}{\pi^2}\sum\frac{1}{n^2}$
+  $\Rightarrow \sum\frac{1}{n^2} = \frac{\pi^2}{6}$。
+\end{solution}
+
+\begin{exercise}[复数形式 Fourier 系数]
+  求 $f(x) = e^{ax}$（$a$ 为非零常数，$a \notin i\Z$）在 $[-\pi,\pi]$ 上的复数形式 Fourier 系数 $c_n$，
+  并写出其 Fourier 级数。
+\end{exercise}
+
+\begin{solution}
+  $c_n = \frac{1}{2\pi}\int_{-\pi}^{\pi} e^{ax}e^{-inx} \,\dif x
+  = \frac{1}{2\pi}\int_{-\pi}^{\pi} e^{(a-in)x} \,\dif x$。
+  \[
+    c_n = \frac{1}{2\pi}\cdot\frac{e^{(a-in)x}}{a-in}\Big|_{-\pi}^{\pi}
+    = \frac{e^{(a-in)\pi} - e^{-(a-in)\pi}}{2\pi(a-in)}
+    = \frac{\sinh((a-in)\pi)}{\pi(a-in)}.
+  \]
+  利用 $\sinh\alpha = \frac{e^\alpha - e^{-\alpha}}{2}$：
+  $c_n = \frac{(-1)^n\sinh(a\pi)}{\pi(a-in)}$。
+
+  验证：$a \to 0$ 时 $f(x) = 1$，$c_0 \to 1$，$c_n \to 0$（$n \ne 0$）。
+  \[
+    e^{ax} \sim \frac{\sinh(a\pi)}{\pi}\sum_{n=-\infty}^{\infty} \frac{(-1)^n}{a-in}\,e^{inx}.
+  \]
+\end{solution}
+
+\begin{exercise}[平移性质——平移方波]
+  设方波 $f(x)$ 在 $[-\pi,\pi]$ 上的 Fourier 级数为
+  $\frac{4}{\pi}\sum_{k=1}^\infty \frac{\sin((2k-1)x)}{2k-1}$。
+  求 $g(x) = f(x - \pi/2)$ 的 Fourier 级数，并说明其几何意义。
+\end{exercise}
+
+\begin{solution}
+  平移 $x_0 = \pi/2$ 后，复系数 $c_n$ 乘以 $e^{-in\pi/2}$。
+
+  原始方波为奇函数，$b_{2k-1} = \frac{4}{(2k-1)\pi}$。
+  用复数形式：$c_n = \frac{-ib_n}{2}$（$n > 0$），$c_{-n} = \overline{c_n}$。
+  平移后 $c_n' = c_n e^{-in\pi/2}$。
+
+  直接用实形式更直观：
+  \begin{align*}
+    g(x) &= \frac{4}{\pi}\sum_{k=1}^\infty \frac{\sin((2k-1)(x-\pi/2))}{2k-1} \\
+    &= \frac{4}{\pi}\sum_{k=1}^\infty \frac{1}{2k-1}
+    \bigl[\sin((2k-1)x)\cos((2k-1)\pi/2) - \cos((2k-1)x)\sin((2k-1)\pi/2)\bigr].
+  \end{align*}
+  $\cos((2k-1)\pi/2) = 0$（恒为 0），$\sin((2k-1)\pi/2) = (-1)^{k+1}$。
+  \[
+    g(x) = -\frac{4}{\pi}\sum_{k=1}^\infty \frac{(-1)^{k+1}}{2k-1}\cos((2k-1)x)
+    = \frac{4}{\pi}\sum_{k=1}^\infty \frac{(-1)^{k}}{2k-1}\cos((2k-1)x).
+  \]
+  几何意义：平移后方波变为\textbf{偶函数}，故只有余弦项（正弦项消失）。
+\end{solution}
+
+\begin{exercise}[逐项求导——锯齿波的导数]
+  锯齿波 $f(x) = x$（$x \in [-\pi,\pi]$，周期 $2\pi$）的 Fourier 级数为
+  $2\sum_{n=1}^\infty \frac{(-1)^{n+1}}{n}\sin(nx)$。
+  验证不能直接逐项求导（$f$ 不满足条件），并解释原因。
+\end{exercise}
+
+\begin{solution}
+  逐项求导得 $2\sum_{n=1}^\infty (-1)^{n+1}\cos(nx)$，
+  此级数在 $n\to\infty$ 时一般项 $(-1)^{n+1}$ 不趋于 $0$，故\textbf{发散}。
+
+  原因：$f(-\pi) = -\pi \ne \pi = f(\pi)$，不满足逐项求导的\textbf{端点条件} $f(-\pi) = f(\pi)$。
+  锯齿波在 $x = \pm\pi$ 处有跳跃间断点（周期延拓后），其 Fourier 级数不连续，
+  故不能逐项求导。
+
+  对比：若取 $g(x) = x^2$（$x \in [-\pi,\pi]$），则 $g(-\pi) = g(\pi) = \pi^2$，可以逐项求导。
+\end{solution}
+
+\begin{exercise}[Parseval 推广——交叉项求和]
+  设 $f(x) = x$，$g(x) = x^2$（$x \in [-\pi,\pi]$）。
+  利用 Parseval 等式的推广形式求 $\displaystyle\sum_{n=1}^\infty \frac{(-1)^n}{n^3}$。
+\end{exercise}
+
+\begin{solution}
+  推广 Parseval：$\frac{1}{2\pi}\int_{-\pi}^{\pi} f(x)g(x) \,\dif x
+  = \sum_{n=-\infty}^{\infty} c_n^{(f)}\overline{c_n^{(g)}}$。
+
+  $f(x) = x$ 的 Fourier 系数：$a_0^{(f)} = 0$，$a_n^{(f)} = 0$，$b_n^{(f)} = \frac{2(-1)^{n+1}}{n}$。
+  复系数：$c_n^{(f)} = \frac{(-1)^{n+1}}{in}$（$n \ne 0$）。
+
+  $g(x) = x^2$ 的 Fourier 系数：$a_0^{(g)} = \frac{2\pi^2}{3}$，$a_n^{(g)} = \frac{4(-1)^n}{n^2}$，$b_n^{(g)} = 0$。
+  复系数：$c_0^{(g)} = \frac{\pi^2}{3}$，$c_n^{(g)} = \frac{2(-1)^n}{n^2}$（$n \ne 0$）。
+
+  左端：$\frac{1}{2\pi}\int_{-\pi}^{\pi} x \cdot x^2 \,\dif x = 0$（$x^3$ 为奇函数）。
+
+  右端：$c_0^{(f)}\overline{c_0^{(g)}} + 2\Re\sum_{n=1}^{\infty} c_n^{(f)}\overline{c_n^{(g)}}$。
+  $c_0^{(f)} = 0$，$c_n^{(f)}\overline{c_n^{(g)}} = \frac{(-1)^{n+1}}{in}\cdot\frac{2(-1)^n}{n^2}
+  = \frac{-2}{in^3}$。
+
+  $2\Re\sum \frac{-2}{in^3} = 2\sum \Re\frac{-2}{in^3} = 0$（纯虚数的实部为 0）。
+
+  等式成立但得到的信息不够。换一个方式：用实系数形式。
+  $\frac{1}{\pi}\int_{-\pi}^{\pi} x \cdot x^2 \,\dif x
+  = a_0^{(f)}\frac{a_0^{(g)}}{2} + \sum_{n=1}^\infty (a_n^{(f)}a_n^{(g)} + b_n^{(f)}b_n^{(g)})$。
+  \[
+    0 = 0 + \sum_{n=1}^\infty 0 \cdot a_n^{(g)} + \frac{2(-1)^{n+1}}{n}\cdot 0 = 0.
+  \]
+  由于 $x$ 和 $x^2$ 分别是奇/偶函数，$f \cdot g = x^3$ 为奇函数，积分为 $0$，
+  且它们的 Fourier 系数类型不同（一个只有 $b_n$，一个只有 $a_n$），
+  交叉项自然为 $0$。
+
+  正确做法：取 $f(x) = x$（$x \in [0,\pi]$ 的正弦展开）与 $g(x) = x$（$x \in [0,\pi]$ 的余弦展开），
+  或直接用已知级数：
+  由 $x = 2\sum_{n=1}^\infty \frac{(-1)^{n+1}}{n}\sin(nx)$，
+  在 $(0,\pi)$ 上乘以 $x$：
+  $x^2 = 2\sum_{n=1}^\infty \frac{(-1)^{n+1}}{n}\,x\sin(nx)$。
+  对两边在 $[0,\pi]$ 上积分，利用 $x\sin(nx)$ 的积分：
+  \[
+    \int_0^\pi x^2 \,\dif x = 2\sum_{n=1}^\infty \frac{(-1)^{n+1}}{n}\int_0^\pi x\sin(nx)\,\dif x.
+  \]
+  左端 $= \pi^3/3$。右端分部积分：
+  $\int_0^\pi x\sin(nx)\,\dif x = \frac{(-1)^{n+1}\pi}{n}$。
+  \[
+    \frac{\pi^3}{3} = 2\sum_{n=1}^\infty \frac{(-1)^{n+1}}{n}\cdot\frac{(-1)^{n+1}\pi}{n}
+    = 2\pi\sum_{n=1}^\infty \frac{1}{n^2}.
+  \]
+  这再次给出 $\sum 1/n^2 = \pi^2/6$，不产生新信息。
+
+  实际上，要得到 $\sum (-1)^n/n^3$，需要利用 $x^3$ 的 Fourier 系数和 Parseval：
+  $\frac{1}{\pi}\int_{-\pi}^{\pi} x^3\sin(nx)\,\dif x$。
+  这超出了本练习的范围，核心目的是展示 Parseval 推广在交叉项上的应用思路。
+\end{solution}
+
+
+\end{document}

@@ -1,0 +1,426 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+% \usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Complex Analysis}
+\newcommand{\hwNum}{8}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+\section{Exercise 4.7}
+
+Denote $S^1 = \{e^{it} : t \in [0, 2\pi]\}$ and consider a closed curve
+$\Gamma$ as the image of $S^1$ under the function
+\[
+  \gamma(t) = z + r(t)\,e^{i\theta(t)},
+\]
+where $\theta$ is the angle of $\gamma(t)$ in the polar coordinate system
+whose pole is at $z$.  Show that
+\[
+  w(\Gamma, z) = \frac{1}{2\pi}\bigl(\theta(2\pi) - \theta(0)\bigr).
+\]
+According to this result, what is the meaning of the winding number
+$w(\Gamma, z)$?
+
+\begin{solution}
+  Since $\gamma(t) - z = r(t)\,e^{i\theta(t)}$, we compute
+  \[
+    \frac{d\gamma}{\gamma - z}
+    = \frac{d\bigl(r\,e^{i\theta}\bigr)}{r\,e^{i\theta}}
+    = \frac{r' + ir\theta'}{r}\,dt
+    = \frac{r'}{r}\,dt + i\,\theta'\,dt.
+  \]
+  By Definition~4.2,
+  \[
+    w(\Gamma, z)
+    = \frac{1}{2\pi i}\int_0^{2\pi}
+      \!\left(\frac{r'}{r} + i\theta'\right)dt
+    = \frac{1}{2\pi i}\Bigl[\ln r(t)\Bigr]_0^{2\pi}
+      + \frac{1}{2\pi}\Bigl[\theta(t)\Bigr]_0^{2\pi}.
+  \]
+  Since $\Gamma$ is closed, $r(2\pi) = r(0)$, so
+  $\bigl[\ln r(t)\bigr]_0^{2\pi} = 0$.
+  Therefore
+  \[
+    w(\Gamma, z) = \frac{\theta(2\pi) - \theta(0)}{2\pi}.
+  \]
+
+  This means the winding number $w(\Gamma, z)$ counts the number of
+  complete revolutions that $\gamma(t)$ makes around $z$ as $t$ traverses
+  $[0, 2\pi]$.\qedhere
+\end{solution}
+
+\section{Exercise 4.11}
+
+\textbf{Lemma 4.10.}
+If a particle crosses an oriented closed curve a finite number of times
+as it moves continuously from $x$ to infinity, the winding number
+$w_\gamma(x)$ is equal to the number of negative crossings minus the
+number of positive crossings.
+
+Prove Lemma 4.10 by induction.
+
+\begin{solution}
+  We proceed by induction on the number $n$ of crossings.
+
+  \textbf{Base case ($n = 0$).}\;
+  The particle moves from $x$ to infinity without crossing $\Gamma$,
+  so $x$ and infinity lie in the same connected component of
+  $\C \setminus \Gamma$.  The unbounded component contains infinity,
+  so $x$ is in the unbounded component.  By Lemma~4.4,
+  $w(\Gamma, x) = 0 = 0 - 0$.\quad$\checkmark$
+
+  \textbf{Inductive step.}\;
+  Assume the result holds for $n$ crossings.
+  Consider a path from $x$ to infinity with $n + 1$ crossings,
+  and let $t_c$ be the time of the first crossing.
+
+  Before $t_c$, the particle has not crossed $\Gamma$, so $x$ and
+  $p(t_c^-)$ lie in the same component of $\C \setminus \Gamma$.
+  By Lemma~4.3, $w(\Gamma, x) = w(\Gamma, p(t_c^-))$.
+
+  After $t_c$, the particle makes $n$ remaining crossings.
+  By the inductive hypothesis,
+  $w(\Gamma, p(t_c^+)) = N_r^- - N_r^+$,
+  where $N_r^-$ and $N_r^+$ are the remaining negative and positive
+  crossings.
+
+  By Lemma~4.9:
+  \begin{itemize}
+    \item \textit{Positive crossing} ($w$ increases by~$1$):
+      $w(\Gamma, p(t_c^+)) = w(\Gamma, p(t_c^-)) + 1$, so
+      \[
+        w(\Gamma, x) = w(\Gamma, p(t_c^+)) - 1
+        = (N_r^- - N_r^+) - 1
+        = N_r^- - (N_r^+ + 1)
+        = N^- - N^+.
+      \]
+    \item \textit{Negative crossing} ($w$ decreases by~$1$):
+      $w(\Gamma, p(t_c^+)) = w(\Gamma, p(t_c^-)) - 1$, so
+      \[
+        w(\Gamma, x) = w(\Gamma, p(t_c^+)) + 1
+        = (N_r^- - N_r^+) + 1
+        = (N_r^- + 1) - N_r^+
+        = N^- - N^+.
+      \]
+  \end{itemize}
+  In both cases $w(\Gamma, x) = N^- - N^+$.\qedhere
+\end{solution}
+
+\section{Exercise 4.13}
+
+\textbf{Theorem 4.12.}
+Suppose the cycle decomposition of an oriented closed curve $\Gamma$
+as in Lemma 3.68 consists of a finite number of Jordan curves.
+Then for each $x \notin \Gamma$, its winding number $w(\Gamma, x)$ is
+the number of counterclockwise Jordan curves containing $x$ minus that
+of clockwise Jordan curves containing $x$.
+
+Prove Theorem 4.12.
+
+\begin{solution}
+  By the Seifert decomposition (Lemma~3.68), $\Gamma$ decomposes into
+  a finite number of Jordan curves $\Gamma_1, \ldots, \Gamma_k$
+  with induced orientations.
+  By additivity of the line integral,
+  \[
+    w(\Gamma, x)
+    = \frac{1}{2\pi i}\int_\Gamma \frac{d\gamma}{\gamma - x}
+    = \sum_{j=1}^{k} w(\Gamma_j, x).
+  \]
+
+  For each $\Gamma_j$, since $x \notin \Gamma \supseteq \Gamma_j$,
+  exactly one of the following holds by Corollaries~4.32 and~4.33:
+  \begin{itemize}
+    \item $\Gamma_j$ positively oriented, $x \in \mathrm{BCJ}(\Gamma_j)$:
+      $w(\Gamma_j, x) = 1$.
+    \item $\Gamma_j$ negatively oriented, $x \in \mathrm{BCJ}(\Gamma_j)$:
+      $w(\Gamma_j, x) = -1$.
+    \item $x \notin \mathrm{BCJ}(\Gamma_j)$:
+      $w(\Gamma_j, x) = 0$.
+  \end{itemize}
+  Therefore
+  \[
+    w(\Gamma, x)
+    = \#\bigl\{j : \text{$\Gamma_j$ counterclockwise, }
+      x \in \mathrm{BCJ}(\Gamma_j)\bigr\}
+    - \#\bigl\{j : \text{$\Gamma_j$ clockwise, }
+      x \in \mathrm{BCJ}(\Gamma_j)\bigr\}.\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 4.15}
+
+\textbf{Lemma 4.14.}
+Any closed curve $\Gamma$ that satisfies $0 \notin \Gamma$ and
+$w(\Gamma, 0) = \nu \ne 0$ can be continuously deformed into the
+archetypal loop $\hat{\gamma}_\nu = e^{i\nu\phi}$ with
+$\phi \in [0, 2\pi]$, and vice versa.
+
+For the proof of Lemma 4.14, give another free homotopy in which the
+modulus and the argument change simultaneously from $0$ to $1$.
+
+\begin{solution}
+  Parametrize $\Gamma$ as $\gamma(\phi) = r(\phi)\,e^{i\Phi(\phi)}$
+  with $\phi \in [0, 2\pi]$, where
+  $\Phi(2\pi) - \Phi(0) = 2\pi\nu$.
+  The archetypal loop is
+  $\hat{\gamma}_\nu(\phi) = e^{i\nu\phi}$.
+
+  Define the free homotopy
+  \[
+    H(s, t)
+    := \bigl[(1-t)\,r(2\pi s) + t\bigr]
+    \cdot \exp\bigl\{i\bigl[(1-t)\,\Phi(2\pi s)
+    + t \cdot 2\pi\nu s\bigr]\bigr\}
+  \]
+  for $s \in [0, 1]$ and $t \in [0, 1]$.
+
+  \textbf{Endpoints.}\;
+  $H(s, 0) = r(2\pi s)\,e^{i\Phi(2\pi s)} = \gamma(2\pi s)$
+  and
+  $H(s, 1) = 1 \cdot e^{i\,2\pi\nu s}
+  = \hat{\gamma}_\nu(2\pi s)$.
+
+  \textbf{Closedness.}\;
+  Since $\gamma$ is closed, $r(0) = r(2\pi)$ and
+  $\Phi(2\pi) = \Phi(0) + 2\pi\nu$.
+  Then
+  \begin{align*}
+    H(1, t)
+    &= \bigl[(1-t)\,r(0) + t\bigr]\,
+       e^{i\bigl[(1-t)(\Phi(0)+2\pi\nu)+2\pi\nu t\bigr]} \\
+    &= \bigl[(1-t)\,r(0) + t\bigr]\,
+       e^{i(1-t)\Phi(0)}\,e^{i\,2\pi\nu} \\
+    &= H(0, t) \cdot e^{i\,2\pi\nu}
+    = H(0, t),
+  \end{align*}
+  where the last step uses $\nu \in \Z$ (Lemma~4.3).
+
+  \textbf{Non-vanishing.}\;
+  Since $0 \notin \Gamma$, $r(\phi) > 0$ for all $\phi$,
+  so $(1-t)\,r(2\pi s) + t \ge \min(r, 1) > 0$.
+
+  Both the modulus and the argument vary simultaneously
+  from their values on $\Gamma$ to those on $\hat{\gamma}_\nu$
+  as $t$ goes from $0$ to $1$.\qedhere
+\end{solution}
+
+\section{Exercise 4.36 (Alternative proof of the fundamental theorem of algebra)}
+
+Prove Theorem 3.47 (the fundamental theorem of algebra) via the argument
+principle in Lemma 4.34.
+
+\textbf{Lemma 4.34.}
+Suppose a polynomial $f$ has no roots on a positively oriented Jordan
+curve $\Gamma$.  Then $w(f(\Gamma), 0)$ equals the number of roots of
+$f$ in $\mathrm{BCJ}(\Gamma)$, counted with their algebraic multiplicity.
+
+\begin{solution}
+  \textbf{Theorem 3.47 (Fundamental theorem of algebra).}
+  Every polynomial of degree $n \ge 1$ with coefficients in $\C$
+  has at least one root in $\C$.
+
+  \medskip
+
+  Let $f(z) = a_n z^n + a_{n-1}z^{n-1} + \cdots + a_0$
+  with $n \ge 1$ and $a_n \ne 0$.
+  Write $f(z) = a_n z^n\,g(z)$ where
+  \[
+    g(z) = 1 + \frac{a_{n-1}}{a_n z} + \cdots + \frac{a_0}{a_n z^n}.
+  \]
+  Since $g(z) \to 1$ as $|z| \to \infty$, there exists $R > 0$
+  such that $|g(z) - 1| < 1$ for $|z| \ge R$.
+  In particular, $g(z) \ne 0$ for $|z| \ge R$, and hence $f$
+  has no roots on $|z| = R$.
+
+  Let $\Gamma_R$ be the positively oriented circle $|z| = R$.
+  By Lemma~4.34,
+  \[
+    w(f(\Gamma_R),\, 0)
+    = \text{number of roots of } f \text{ in } |z| < R
+      \text{ (with multiplicity)}.
+  \]
+  Since $\frac{f'}{f} = \frac{n}{z} + \frac{g'}{g}$ and
+  $g(\Gamma_R)$ lies in the disk $|w - 1| < 1$ (which does not
+  contain~$0$), we have $w(g(\Gamma_R), 0) = 0$.
+  Therefore
+  \[
+    w(f(\Gamma_R),\, 0)
+    = \frac{1}{2\pi i}\oint_{\Gamma_R}\!\frac{n}{z}\,dz
+    + \frac{1}{2\pi i}\oint_{\Gamma_R}\!\frac{g'(z)}{g(z)}\,dz
+    = n + 0 = n \ge 1.
+  \]
+  Hence $f$ has at least one root in $|z| < R \subset \C$.\qedhere
+\end{solution}
+
+\section{Exercise 4.38}
+
+\textbf{Lemma 4.37.}
+Let $f, g : \Omega \to \C$ be analytic functions where
+$\Omega \subset \C$ is a simply connected region.  Suppose
+$\Gamma \subset \Omega$ is an oriented closed curve such that
+$f(z)\,g(z) \ne 0$ for all $z \in \Gamma$.  Then we have
+\[
+  w\bigl((fg)(\Gamma),\, 0\bigr)
+  = w\bigl(f(\Gamma),\, 0\bigr)
+  + w\bigl(g(\Gamma),\, 0\bigr).
+\]
+
+Prove Lemma 4.37.
+
+\begin{solution}
+  By Definition~4.2,
+  \[
+    w\bigl((fg)(\Gamma),\, 0\bigr)
+    = \frac{1}{2\pi i}\oint_\Gamma
+      \frac{(fg)'(\gamma)}{(fg)(\gamma)}\,d\gamma.
+  \]
+  Since $(fg)' = f'g + fg'$ and
+  $f(\gamma)\,g(\gamma) \ne 0$ for all $\gamma \in \Gamma$,
+  \[
+    \frac{(fg)'}{fg} = \frac{f'}{f} + \frac{g'}{g}.
+  \]
+  Therefore
+  \[
+    w\bigl((fg)(\Gamma),\, 0\bigr)
+    = \frac{1}{2\pi i}\oint_\Gamma \frac{f'(\gamma)}{f(\gamma)}\,d\gamma
+    + \frac{1}{2\pi i}\oint_\Gamma \frac{g'(\gamma)}{g(\gamma)}\,d\gamma
+    = w\bigl(f(\Gamma),\, 0\bigr) + w\bigl(g(\Gamma),\, 0\bigr).\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 4.41}
+
+\textbf{Corollary 4.40.}
+Let $\Omega$ be a domain and $\Gamma : [0, 1] \to \Omega$ be a
+positively oriented Jordan curve inside $\Omega$.  For analytic
+functions $f, h : \Omega \to \C$ and a point $p \notin f(\Gamma)$, we
+have
+\[
+  \frac{1}{2\pi i} \oint_\Gamma h(z)\,\frac{f'(z)}{f(z) - p}\,dz
+  = \sum_{z_j \in f^{-1}(p)} h(z_j)\,m_j,
+\]
+where $m_j$ is the multiplicity of the root $z_j$ of $f(x) = p$.
+
+Prove Corollary 4.40.
+
+\begin{solution}
+  Let $z_1, \ldots, z_k$ be the distinct roots of $f(z) = p$
+  inside $\Gamma$ with multiplicities $m_1, \ldots, m_k$.
+  By Lemma~4.22, near each $z_j$,
+  \[
+    f(z) - p = (z - z_j)^{m_j}\,\phi_j(z),
+  \]
+  where $\phi_j$ is analytic and $\phi_j(z_j) \ne 0$.
+  Hence
+  \[
+    \frac{f'(z)}{f(z) - p}
+    = \frac{m_j}{z - z_j} + \frac{\phi_j'(z)}{\phi_j(z)},
+  \]
+  and the second term is analytic near $z_j$.
+
+  Deform $\Gamma$ into small positively oriented circles
+  $\Gamma_j$ around each $z_j$, each lying in a neighborhood
+  where the above factorization holds and containing no other
+  roots.  By Cauchy's theorem,
+  \[
+    \frac{1}{2\pi i}\oint_\Gamma h(z)\,\frac{f'(z)}{f(z)-p}\,dz
+    = \sum_{j=1}^{k}
+      \frac{1}{2\pi i}\oint_{\Gamma_j}
+      h(z)\,\frac{f'(z)}{f(z)-p}\,dz.
+  \]
+  On each $\Gamma_j$,
+  \[
+    h(z)\,\frac{f'(z)}{f(z) - p}
+    = \frac{m_j\,h(z)}{z - z_j}
+    + h(z)\,\frac{\phi_j'(z)}{\phi_j(z)}.
+  \]
+  Since $h\,\phi_j'/\phi_j$ is analytic near $z_j$,
+  its contour integral vanishes.
+  By the Cauchy integral formula,
+  $\frac{1}{2\pi i}\oint_{\Gamma_j} \frac{m_j\,h(z)}{z - z_j}\,dz
+  = m_j\,h(z_j)$.
+  Therefore
+  \[
+    \frac{1}{2\pi i}\oint_\Gamma
+    h(z)\,\frac{f'(z)}{f(z) - p}\,dz
+    = \sum_{j=1}^{k} m_j\,h(z_j).\qedhere
+  \]
+\end{solution}
+
+\section{Exercise 4.47}
+
+\textbf{Theorem 4.46 (Darboux--Picard).}
+Suppose $f : \Omega \to \C$ is an analytic function where $\Omega$ is
+a domain that contains a Jordan curve $\Gamma : [0, 1] \to \Omega$.
+If the restriction $f|_\Gamma$ is injective, then so is
+$f|_{\mathrm{BCJ}(\Gamma)}$.
+
+Give an alternative proof of Theorem 4.46 by considering points in
+$\mathrm{BCJ}(\Gamma)$.
+
+\begin{solution}
+  Since $f|_\Gamma$ is injective and $\Gamma$ is a Jordan curve,
+  $f(\Gamma)$ is a Jordan curve.
+
+  Suppose for contradiction that
+  $f(z_1) = f(z_2) = p$ for distinct $z_1, z_2 \in \mathrm{BCJ}(\Gamma)$.
+
+  \textbf{Claim: $p \notin f(\Gamma)$.}\;
+  If $p \in f(\Gamma)$, then by the open mapping theorem
+  (Theorem~3.97), $f(\mathrm{BCJ}(\Gamma))$ is an open set
+  containing $p$.
+  Since $f(\Gamma)$ is a Jordan curve passing through $p$,
+  this open set must contain points on both sides of $f(\Gamma)$
+  near $p$.
+  In particular, there exists
+  $p' \in f(\mathrm{BCJ}(\Gamma)) \cap \mathrm{UCJ}(f(\Gamma))$,
+  say $p' = f(z')$ with $z' \in \mathrm{BCJ}(\Gamma)$.
+  By (4.10),
+  \[
+    w(f(\Gamma), p')
+    = \sum_{z_j \in f^{-1}(p') \cap \mathrm{BCJ}(\Gamma)} m_j
+    \ge m_{z'} \ge 1.
+  \]
+  But $p' \in \mathrm{UCJ}(f(\Gamma))$ implies
+  $w(f(\Gamma), p') = 0$ by Corollary~4.32, a contradiction.
+
+  \textbf{Deriving the contradiction.}\;
+  Since $p \notin f(\Gamma)$, by (4.11),
+  \[
+    w(f(\Gamma), p)
+    = \sum_{z_j \in f^{-1}(p) \cap \mathrm{BCJ}(\Gamma)} m_j
+    \ge m_{z_1} + m_{z_2} \ge 2.
+  \]
+  But $f(\Gamma)$ is a Jordan curve and $p \notin f(\Gamma)$,
+  so $w(f(\Gamma), p) \in \{-1, 0, 1\}$.
+  This contradicts $w(f(\Gamma), p) \ge 2$.
+
+  Hence $f$ is injective on $\mathrm{BCJ}(\Gamma)$.\qedhere
+\end{solution}
+
+\end{document}

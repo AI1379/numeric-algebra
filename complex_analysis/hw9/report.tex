@@ -1,0 +1,186 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+% \usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Complex Analysis}
+\newcommand{\hwNum}{9}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+\section{Exercise 4.17}
+
+Show that the sickle-shaped domain
+$D = U_1(0) \setminus U_{1/2}(1/2)
+= \{z \in \C : |z| < 1,\ |z - \tfrac{1}{2}| > \tfrac{1}{2}\}$
+is an elementary domain.
+
+\textit{Hint:} Consider the conformal map $z \mapsto \frac{1}{1-z}$.
+What is the image of $D$ under this map?
+
+\begin{solution}
+  Consider the boundary of $D$. It contains two circles:
+  \[
+    \begin{aligned}
+      &\{z = e^{i\theta} : \theta \in [0, 2\pi)\} \\
+      &\{z = \frac{1}{2} + \frac{1}{2}e^{i\phi} : \phi \in [0, 2\pi)\}
+    \end{aligned}
+  \]
+  We apply the conformal map $z \mapsto \frac{1}{1-z}$ to the
+  first circle:
+  \[
+    \begin{aligned}
+      &\left\{\frac{1}{1-e^{i\theta}} : \theta \in [0, 2\pi)\right\} \\
+      =& \left\{\frac{1-e^{-i\theta}}{|1-e^{i\theta}|^2} : \theta \in
+      [0, 2\pi)\right\} \\
+      =& \left\{\frac{1-\cos\theta}{2(1-\cos\theta)} +
+      i\frac{\sin\theta}{2(1-\cos\theta)} : \theta \in [0, 2\pi)\right\} \\
+      =& \left\{\frac{1}{2} + i\frac{\sin\theta}{2(1-\cos\theta)} :
+      \theta \in [0, 2\pi)\right\} \\
+      =& \left\{\frac{1}{2} + i\frac{1}{2}\cot\frac{\theta}{2} :
+      \theta \in [0, 2\pi)\right\}
+    \end{aligned}
+  \]
+  which is a vertical line.  Similarly, we apply the conformal map
+  to the second circle:
+  \[
+    \begin{aligned}
+      &\left\{\frac{1}{1-\frac{1}{2} - \frac{1}{2}e^{i\phi}} : \phi
+      \in [0, 2\pi)\right\} \\
+      =& \left\{\frac{1}{\frac{1}{2}(1+e^{i\phi})} : \phi \in [0,
+      2\pi)\right\} \\
+      =& \left\{\frac{2}{1+e^{i\phi}} : \phi \in [0, 2\pi) \right\}
+      % TODO: simplify the above expression.
+    \end{aligned}
+  \]
+  which is the same vertical line.
+\end{solution}
+
+\section{Exercise 4.21}
+
+Let $f$ be an analytic function in $U_R(0)$ with $R > 0$.
+Show that if there exist constants $\rho \in (0,1)$ and $C > 0$
+such that for sufficiently large $n \in \N$,
+$|f(\tfrac{1}{n})| \le C\rho^n$,
+then $f \equiv 0$.
+
+\begin{solution}
+
+\end{solution}
+
+\section{Exercise 4.33}
+
+Decide whether there are analytic functions
+$f, g : U_R(0) \to \C$ with
+\begin{enumerate}[(a)]
+  \item $f(\tfrac{1}{n}) = f(-\tfrac{1}{n}) = \tfrac{1}{n^2}$,
+    $n \ge 1$;
+  \item $g(-\tfrac{1}{2n}) = g(\tfrac{1}{2n}) = \tfrac{1}{2n}$,
+    $n \ge 1$.
+\end{enumerate}
+
+\begin{solution}
+
+\end{solution}
+
+\section{Exercise 4.34}
+
+Let $f$ be an analytic function on a domain $D$ satisfying that for
+any $z \in D$, there exists an integer $n = n(z) \ge 0$ such that
+$f^{(n)}(z) = 0$.  Show that $f$ is a polynomial.
+
+\textit{Hint:} $D$ can be represented as
+$\bigcup_{n=0}^{\infty} g_n^{-1}(\{0\})$,
+where $g_n(z) = f^{(n)}(z)$.
+
+\begin{solution}
+
+\end{solution}
+
+\section{Exercise 4.36}
+
+If $D$ is not connected, then $H(D)$ might have divisors of zero.
+Give one such example.
+
+\begin{solution}
+
+\end{solution}
+
+\section{Exercise 4.43}
+
+Show that if $f : D \to D$ is analytic on a domain and satisfies
+$f \circ f = f$, then $f$ is either constant or the identity map.
+
+\begin{solution}
+
+\end{solution}
+
+\section{Exercise 4.46}
+
+Let $w_1, \ldots, w_n$ be points on the unit circle.
+Prove that there exists a point $z$ on the unit circle such that
+the product of the distances from $z$ to the points $w_j$ is at
+least~$1$, i.e.,
+$\prod_{j=1}^{n} |z - w_j| \ge 1$.
+Conclude that there exists a point $w_u$ on the circle such that
+$\prod_{j=1}^{n} |w_u - w_j| = 1$.
+
+\begin{solution}
+
+\end{solution}
+
+\section{Exercise 4.47}
+
+Show that if the real part of an entire function $f$ is bounded,
+then $f$ is constant.
+
+\begin{solution}
+
+\end{solution}
+
+\section{Exercise 4.49}
+
+Prove the fundamental theorem of algebra by Theorem~4.48
+(Minimum modulus).
+
+\begin{solution}
+
+\end{solution}
+
+\section{Exercise 4.50}
+
+Let $f$ be nonconstant and analytic in an open set containing
+$\overline{D}$.  Show that if $|f(z)| = 1$ for all $|z| = 1$,
+then $D \subseteq f(D)$.
+
+\textit{Hint:} One must show that $f(z) = w_0$ has a root for
+every $w_0 \in D$.  Then it suffices to consider the case
+$w_0 = 0$.  Why?
+
+\begin{solution}
+
+\end{solution}
+
+\end{document}
