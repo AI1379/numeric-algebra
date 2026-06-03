@@ -1,0 +1,79 @@
+% ch3b_powerseries.tex — 幂级数与解析函数的表示
+
+\subsection{幂级数与收敛半径}
+
+\begin{theorem}[Cauchy--Hadamard 定理 \eng{Cauchy--Hadamard theorem}]
+幂级数 $\sum_{n=0}^{\infty} a_n z^n$ 的收敛半径 \eng{radius of convergence} 为
+\[
+  R = \frac{1}{\limsup_{n\to\infty} |a_n|^{1/n}}.
+\]
+级数在 $|z| < R$ 内绝对收敛，在 $|z| > R$ 处发散。
+\end{theorem}
+
+\begin{remark}
+$R$ 也常用比值判别法 \eng{ratio test} 计算：$R = \lim_{n\to\infty} |a_n/a_{n+1}|$（若极限存在）。
+\end{remark}
+
+\subsection{解析函数的幂级数展开}
+
+\begin{theorem}[Taylor 展开定理]
+设 $f$ 在 $|z - a| < R$ 内解析。则 $f$ 可唯一展开为
+\[
+  f(z) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(z-a)^n,
+\]
+且该级数在 $|z-a| < R$ 内\textbf{局部一致收敛} \eng{locally uniformly convergent}。
+\end{theorem}
+
+\begin{remark}
+Taylor 展开在收敛圆内一致收敛，但一般不在整个收敛圆上一致收敛。
+例如 $\sum z^n$ 在 $|z| < 1$ 内不一致收敛。
+\end{remark}
+
+\subsection{一致收敛与逐项运算}
+
+\begin{theorem}[Weierstrass 定理 \eng{Weierstrass convergence theorem}]
+设 $f_n$ 在区域 $D$ 上解析，$f_n \to f$ 在 $D$ 上局部一致收敛。则：
+\begin{enumerate}  \item $f$ 在 $D$ 上解析；
+  \item 对每个 $k \geq 1$，$f_n^{(k)} \to f^{(k)}$ 在 $D$ 上局部一致收敛。
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+这是实分析中没有的：实的一致收敛函数列的极限未必可微。
+在复分析中，解析性 + 一致收敛直接保证了极限的解析性以及各阶导数的一致收敛。
+\end{remark}
+
+\subsection{Gutzmer 不等式与 Parseval 等式}
+
+\begin{theorem}[Gutzmer 不等式]
+设 $f(z) = \sum a_n z^n$ 在 $|z| < R$ 内解析。则对 $0 < r < R$：
+\[
+  \sum_{n=0}^{\infty} |a_n|^2 r^{2n} \leq M(r)^2,
+\]
+其中 $M(r) = \max_{|z|=r} |f(z)|$。
+\end{theorem}
+
+\begin{theorem}[Parseval 等式]
+若 $f(e^{i\theta}) = \sum a_n e^{in\theta}$，则
+\[
+  \frac{1}{2\pi}\int_0^{2\pi} |f(e^{i\theta})|^2\,d\theta = \sum_{n=-\infty}^{\infty} |a_n|^2.
+\]
+\end{theorem}
+
+\subsection{特殊函数}
+
+\begin{definition}[Bessel 函数 \eng{Bessel function}]
+\[
+  J_n(z) = \frac{1}{2\pi}\int_0^{2\pi} e^{i(z\sin\theta - n\theta)}\,d\theta
+  = \sum_{k=0}^{\infty} \frac{(-1)^k}{k!(n+k)!}\left(\frac{z}{2}\right)^{n+2k}.
+\]
+由 Cauchy--Hadamard 定理可知 $J_n$ 是整函数。
+\end{definition}
+
+\begin{definition}[超几何级数 \eng{hypergeometric series}]
+\[
+  {}_2F_1(a,b;c;z) = \sum_{n=0}^{\infty}
+  \frac{(a)_n (b)_n}{(c)_n}\frac{z^n}{n!},
+\]
+其中 $(a)_n = a(a+1)\cdots(a+n-1)$ 为 Pochhammer 符号。收敛半径为 $1$。
+\end{definition}

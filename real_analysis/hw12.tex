@@ -1,0 +1,418 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+
+% import common macros
+\input{../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Real Analysis}
+\newcommand{\hwNum}{12}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+% ==============================================================================
+% Exercise 29
+% ==============================================================================
+\section{Exercise 29}
+
+设 $f \in L([0, 1])$ 并且只取正值, $0 < \lambda < 1$. 求证:
+\[
+  \inf\left\{\int_E f \,\dif x : E \subset [0, 1],\, m(E) \ge \lambda \right\} > 0.
+\]
+
+\begin{solution}
+  反设 $\inf = 0$. 则存在可测集列 $\{E_n\}_{n \ge 1} \subset [0,1]$，$m(E_n) \ge \lambda$，使得
+  \[
+    \int_{E_n} f(x)\,\dif x \to 0 \quad (n \to \infty).
+  \]
+  记 $A_k = \{x \in [0,1] : f(x) \ge 1/k\}$。由于 $f>0$ a.e.，有 $A_k \nearrow [0,1]$ a.e.，故
+  $m(A_k) \to 1$。取 $K$ 使 $m(A_K) > 1 - \lambda/2$.
+
+  对任意可测集 $E \subset [0,1]$，$m(E) \ge \lambda$：
+  \[
+    m(E \cap A_K) = m(E) - m(E \setminus A_K) \ge \lambda - m([0,1] \setminus A_K) > \lambda - \frac{\lambda}{2} = \frac{\lambda}{2}.
+  \]
+  因此
+  \[
+    \int_E f(x)\,\dif x \ge \int_{E \cap A_K} f(x)\,\dif x \ge \frac{1}{K} \cdot m(E \cap A_K) > \frac{\lambda}{2K} > 0.
+  \]
+  这表明 $\inf_E \int_E f \ge \lambda/(2K) > 0$. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 30
+% ==============================================================================
+\section{Exercise 30}
+
+设 $f$ 是 $[a, b]$ 上非负可积函数, $\{F_\lambda\}_{\lambda \in \Lambda}$ 是 $[a, b]$ 中的一族闭子集, 使得对任何 $\lambda_1, \lambda_2 \in \Lambda$ 或者 $F_{\lambda_1} \subset F_{\lambda_2}$, 或者 $F_{\lambda_1} \supset F_{\lambda_2}$. 今若对任何 $\lambda \in \Lambda$ 有 $\int_{F_\lambda} f(x)\,\dif x \ge 1$, 求证:
+\[
+  \int_{\bigcap F_\lambda} f(x)\,\dif x \ge 1.
+\]
+
+\begin{solution}
+  记 $F = \bigcap_{\lambda \in \Lambda} F_\lambda$. 由于 $f \ge 0$ 且 $f \in L([a,b])$，对任意 $\varepsilon > 0$，存在开集 $U \supset F$ 使
+  \[
+    \int_{U \setminus F} f(x)\,\dif x < \varepsilon.
+  \]
+  又 $[a,b] \setminus U$ 是紧集，而 $\{F_\lambda^c\}_{\lambda\in\Lambda}$ 覆盖它，故存在有限多个指标 $\lambda_1,\dots,\lambda_n$ 使
+  \[
+    [a,b] \setminus U \subset \bigcup_{j=1}^n F_{\lambda_j}^c.
+  \]
+  因族 $\{F_\lambda\}$ 关于包含关系全序，有限个 $F_{\lambda_j}$ 的交等于其中最小的那个，故存在 $\lambda_0$ 使
+  \[
+    F_{\lambda_0} \subset \bigcap_{j=1}^n F_{\lambda_j} \subset U.
+  \]
+  因而
+  \[
+    1 \le \int_{F_{\lambda_0}} f
+      = \int_F f + \int_{F_{\lambda_0} \setminus F} f
+      \le \int_F f + \int_{U \setminus F} f
+      < \int_F f + \varepsilon.
+  \]
+  令 $\varepsilon \to 0$，即得 $\int_F f(x)\,\dif x \ge 1$. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 31
+% ==============================================================================
+\section{Exercise 31}
+
+设 $f \in L([0, 1]), 0 < \lambda < 1$, 若对 $[0, 1]$ 中任何测度为 $\lambda$ 的集 $E$ 有 $\int_E f(x)\,\dif x = 0$, 求证: $f(x) = 0$, a.e.
+
+\begin{solution}
+  反设 $f$ 不是几乎处处常数。则存在实数 $c$ 使
+  \[
+    A = \{x \in [0,1] : f(x) > c\}, \qquad B = \{x \in [0,1] : f(x) < c\}
+  \]
+  都有正测度。
+  取
+  \[
+    0 < \delta < \min\{m(A),\, m(B),\, 1-\lambda\}.
+  \]
+  选可测集 $A_1 \subset A$, $B_1 \subset B$ 满足 $m(A_1) = m(B_1) = \delta$。
+  又因 $1 - 2\delta > \lambda - \delta$, 可取可测集 $D \subset [0,1] \setminus (A_1 \cup B_1)$ 使 $m(D) = \lambda - \delta$.
+  令 $E_A = D \cup A_1$, $E_B = D \cup B_1$. 则 $m(E_A) = m(E_B) = \lambda$，故
+  \[
+    \int_{E_A} f(x)\,\dif x = \int_{E_B} f(x)\,\dif x = 0.
+  \]
+  另一方面，$\int_{A_1} f > c\delta$ 且 $\int_{B_1} f < c\delta$，故
+  \[
+    \int_{E_A} f - \int_{E_B} f = \int_{A_1} f - \int_{B_1} f > 0,
+  \]
+  矛盾。
+  故 $f$ 几乎处处为常数；再由题设知该常数只能为 $0$. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 33
+% ==============================================================================
+\section{Exercise 33}
+
+设 $m(E) < \infty, f$ 在 $E$ 上非负可测. 求证下列 3 个命题等价:
+\begin{enumerate}[(i)]
+  \item $f \in L(E)$;
+  \item $\sum_{k=1}^{\infty} 2^k \cdot m(\{f \ge 2^k\}) < \infty$;
+  \item $\sum_{k=1}^{\infty} m(\{f \ge k\}) < \infty$.
+\end{enumerate}
+
+\begin{solution}
+  记 $E_k = \{x \in E : f(x) \ge k\}$.
+
+  \textbf{(i) $\Rightarrow$ (iii).}\quad
+  注意到 $k \cdot \chi_{E_k}(x) \le f(x)$（在 $E_k$ 上 $f \ge k$），故
+  \[
+    \sum_{k=1}^{N} m(E_k) = \sum_{k=1}^{N} \int_E \chi_{E_k}(x)\,\dif x
+    = \int_E \sum_{k=1}^{N} \chi_{E_k}(x)\,\dif x.
+  \]
+  注意 $\sum_{k=1}^{N} \chi_{E_k}(x) = \min(N, \lfloor f(x) \rfloor) \cdot \chi_{\{f \ge 1\}}(x) \le \min(N, f(x))$.
+  由单调收敛定理，令 $N \to \infty$：
+  \[
+    \sum_{k=1}^{\infty} m(E_k) = \int_E \sum_{k=1}^{\infty} \chi_{E_k}(x)\,\dif x \le \int_E f(x)\,\dif x < \infty.
+  \]
+
+  \textbf{(iii) $\Rightarrow$ (i).}\quad
+  由 $\sum_{k=1}^{\infty} m(E_k) < \infty$ 知 $m(E_k) \to 0$.
+  利用 $\lfloor f(x) \rfloor \cdot \chi_{\{f \ge 1\}}(x) = \sum_{k=1}^{\infty} \chi_{E_k}(x)$（对 $f(x) < \infty$ 的点），
+  而 $f(x) \le \lfloor f(x) \rfloor + 1$，故
+  \[
+    \int_E f(x)\,\dif x \le \int_E (\lfloor f \rfloor + 1)\,\dif x
+    \le m(E) + \sum_{k=1}^{\infty} m(E_k) < \infty.
+  \]
+
+  \textbf{(ii) $\Leftrightarrow$ (iii).}\quad
+  记 $A_k = \{f \ge 2^k\}$. 注意 $A_k = E_{2^k}$.
+  对 $k \ge 1$，将 (iii) 中级数按 $2^{k-1} \le j < 2^k$ 分组：
+  \[
+    \sum_{j=2^{k-1}}^{2^k - 1} m(E_j) \ge \sum_{j=2^{k-1}}^{2^k - 1} m(A_k) = 2^{k-1} \cdot m(A_k).
+  \]
+  故 $\sum_{k=1}^{\infty} m(E_k) \ge \sum_{k=1}^{\infty} 2^{k-1} m(A_k) = \frac{1}{2}\sum_{k=1}^{\infty} 2^k m(A_k)$.
+  所以 (iii) $\Rightarrow$ (ii).
+
+  反之，将 $\{j \ge 1\}$ 按 $2^k \le j < 2^{k+1}$ 分组（$k \ge 0$），利用 $E_j \subset E_{2^k}$ 当 $j \ge 2^k$ 时：
+  \[
+    \sum_{j=1}^{\infty} m(E_j)
+    = \sum_{k=0}^{\infty} \sum_{j=2^k}^{2^{k+1}-1} m(E_j)
+    \le \sum_{k=0}^{\infty} 2^k \cdot m(E_{2^k})
+    = \sum_{k=0}^{\infty} 2^k \cdot m(A_k).
+  \]
+  故 (ii) $\Rightarrow$ (iii).
+
+  综上 (i), (ii), (iii) 等价. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 35
+% ==============================================================================
+\section{Exercise 35}
+
+设 $f$ 和 $f_k\ (k \ge 1)$ 都是 $L(E)$ 中的非负函数, 此外, $f_k(x) \to f(x)$, a.e.\ 及 $\int_E f_k(x)\,\dif x \to \int_E f(x)\,\dif x$. 求证: 对 $E$ 的任一可测子集 $e$, 有 $\int_e f_k(x)\,\dif x \to \int_e f(x)\,\dif x$.
+
+\begin{solution}
+  对可测子集 $e \subset E$，记 $e^c = E \setminus e$.
+
+  由 Fatou 引理，在 $e$ 上：
+  \[
+    \int_e f(x)\,\dif x = \int_e \varliminf_{k\to\infty} f_k(x)\,\dif x
+    \le \varliminf_{k\to\infty} \int_e f_k(x)\,\dif x.
+  \]
+  同理在 $e^c$ 上：
+  \[
+    \int_{e^c} f(x)\,\dif x \le \varliminf_{k\to\infty} \int_{e^c} f_k(x)\,\dif x.
+  \]
+  两式相加：
+  \[
+    \int_E f = \int_e f + \int_{e^c} f
+    \le \varliminf_{k\to\infty} \int_e f_k + \varliminf_{k\to\infty} \int_{e^c} f_k
+    \le \varliminf_{k\to\infty} \left(\int_e f_k + \int_{e^c} f_k\right)
+    = \varliminf_{k\to\infty} \int_E f_k = \int_E f.
+  \]
+  因此上式中等号处处成立. 由 $\int_e f = \varliminf_{k\to\infty} \int_e f_k$，以及对 $e^c$ 同理
+  $\int_{e^c} f = \varliminf_{k\to\infty} \int_{e^c} f_k$.
+
+  另一方面，$\int_e f_k \le \int_E f_k$，$\int_{e^c} f_k \le \int_E f_k$，且
+  \[
+    \varlimsup_{k\to\infty} \int_e f_k + \varliminf_{k\to\infty} \int_{e^c} f_k
+    \le \lim_{k\to\infty} \int_E f_k = \int_E f = \int_e f + \int_{e^c} f.
+  \]
+  结合 $\varliminf \int_{e^c} f_k = \int_{e^c} f$，得 $\varlimsup \int_e f_k \le \int_e f$.
+  又 $\varliminf \int_e f_k \ge \int_e f$（Fatou），故 $\lim_{k\to\infty} \int_e f_k = \int_e f$. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 40
+% ==============================================================================
+\section{Exercise 40}
+
+设 $f \in L((a-1, b+1))$. 求证: $\int_a^b |f(x+h) - f(x)|\,\dif x \to 0\ (h \to 0)$.
+（注意 $a = -\infty, b = \infty$ 时的情形.）
+
+\begin{solution}
+  \textbf{情形一：$a, b$ 有限.}\quad
+  当 $|h| < 1$ 时，$x + h \in (a-1, b+1)$，故 $f(x+h)$ 有意义.
+
+  对任意 $\eps > 0$，由 $f \in L((a-1,b+1))$，存在连续函数 $g$ 在 $(a-1,b+1)$ 上具有紧支集，
+  使得 $\int_{a-1}^{b+1} |f - g|\,\dif x < \eps/3$.
+
+  $g$ 在 $[a-1/2, b+1/2]$ 上一致连续，故存在 $\delta \in (0, 1/2)$ 使得 $|h| < \delta$ 时
+  $|g(x+h) - g(x)| < \eps/(3(b-a))$ 对所有 $x \in [a, b]$ 成立. 于是
+  \[
+    \int_a^b |g(x+h) - g(x)|\,\dif x < \frac{\eps}{3}.
+  \]
+  由平移的积分不变性（$|h| < 1$ 时 $\int_a^b |f(x+h)|\,\dif x = \int_{a+h}^{b+h} |f(t)|\,\dif t \le \int_{a-1}^{b+1} |f|$）：
+  \begin{align*}
+    \int_a^b |f(x+h) - f(x)|\,\dif x
+    &\le \int_a^b |f(x+h) - g(x+h)|\,\dif x + \int_a^b |g(x+h) - g(x)|\,\dif x \\
+    &\quad + \int_a^b |g(x) - f(x)|\,\dif x \\
+    &< \int_{a+h}^{b+h} |f - g| + \frac{\eps}{3} + \int_a^b |f - g| \\
+    &< \frac{\eps}{3} + \frac{\eps}{3} + \frac{\eps}{3} = \eps.
+  \end{align*}
+
+  \textbf{情形二：$a = -\infty$ 或 $b = \infty$.}\quad
+  此时 $(a-1, b+1) = (-\infty, \infty)$.
+  对任意 $\eps > 0$，取 $N$ 充分大使 $\int_{|x| > N} |f(x)|\,\dif x < \eps/4$.
+  由情形一，存在 $\delta > 0$ 使得 $|h| < \delta$ 时 $\int_{-N}^N |f(x+h)-f(x)|\,\dif x < \eps/2$.
+  而
+  \[
+    \int_N^{\infty} |f(x+h)-f(x)|\,\dif x \le \int_{N+h}^{\infty} |f| + \int_N^{\infty} |f| < \frac{\eps}{4} + \frac{\eps}{4} = \frac{\eps}{2},
+  \]
+  对 $(-\infty, -N)$ 部分类似. 合并即得 $\int_a^b |f(x+h)-f(x)|\,\dif x < \eps$. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 48
+% ==============================================================================
+\section{Exercise 48}
+
+\textbf{(i)} 求证: 对任何实数 $\alpha$, $\{(x, y) : xy = \alpha\}$ 是 $\R^2$ 中的零测集.
+
+\textbf{(ii)} 求所有实数 $p$, 使 $(1 - xy)^p$ 在 $[0, 1] \times [0, 1]$ 上 $L$ 可积.
+
+\begin{solution}
+  \textbf{(i)}\quad
+  固定 $\alpha \in \R$，记 $L_\alpha = \{(x,y) \in \R^2 : xy = \alpha\}$.
+
+  若 $\alpha = 0$，则 $L_0 = (\R \times \{0\}) \cup (\{0\} \times \R)$，是两条坐标轴，故 $m_2(L_0)=0$.
+
+  若 $\alpha \ne 0$，则对每个 $x \in \R$，截面 $\{y \in \R : xy=\alpha\}$ 至多含一个点，故其一维测度为 $0$.
+  由 Fubini 定理，
+  \[
+    m_2(L_\alpha)
+    = \int_\R m_1(\{y : xy=\alpha\})\,\dif x
+    = 0.
+  \]
+
+  \textbf{(ii)}\quad
+  函数 $(1-xy)^p$ 在 $[0,1]^2$ 上可能的奇点出现在 $1 - xy = 0$ 即 $xy = 1$ 处，
+  也就是点 $(1,1)$. 令 $u = 1 - x$，$v = 1 - y$，则当 $(x,y) \to (1,1)$ 时 $u, v \to 0^+$，
+  $1 - xy = 1 - (1-u)(1-v) = u + v - uv$.
+
+  在 $(1,1)$ 附近，$(1-xy)^p \sim (u+v)^p$.
+  用极坐标 $u = r\cos\theta$，$v = r\sin\theta$（$r > 0$，$\theta \in [0, \pi/2]$）：
+  \[
+    \int_0^\delta \int_0^\delta (u+v)^p\,\dif u\,\dif v \sim \int_0^{C} r^{p+1}\,\dif r \cdot \int_0^{\pi/2} (\cos\theta + \sin\theta)^p\,\dif\theta.
+  \]
+  此积分收敛当且仅当 $p + 1 > -1$ 即 $p > -2$.
+
+  当 $p \ge 0$ 时 $(1-xy)^p$ 有界连续，显然可积. 故 $p > -2$ 时可积.
+
+  当 $p \le -2$ 时，$\int_0^1\!\int_0^1 (1-xy)^p\,\dif x\,\dif y = \infty$（在 $(1,1)$ 附近发散），不可积.
+
+  综上，$(1-xy)^p$ 在 $[0,1]^2$ 上 $L$ 可积当且仅当 $p > -2$. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 51
+% ==============================================================================
+\section{Exercise 51}
+
+设 $f \in L(\R)$, 求证: 当下两条件之一满足时, $f(x) = 0$, a.e.
+
+\textbf{(i)} 对任何测度为 1 的开集 $G$ 有 $\int_G f(x)\,\dif x = 0$;
+
+\textbf{(ii)} 对任何开集 $G$ 有 $\int_G f(x)\,\dif x = \int_{\overline{G}} f(x)\,\dif x$.
+
+\begin{solution}
+  \textbf{(i)}\quad
+  设 $A = \{x \in \R : f(x) > 0\}$。若 $m(A) > 0$，则可取 $c>0$ 和紧集 $K \subset \{f>c\}$，使 $0<m(K)<1$.
+  由外正则性与积分的绝对连续性，可取有界开集 $U \supset K$ 使 $m(U)<1$ 且
+  \[
+    \int_{U\setminus K} |f|\,\dif x < \frac12 c\,m(K).
+  \]
+  再取与 $U$ 不交的开集 $V$，使 $m(V)=1-m(U)$ 且
+  \[
+    \int_V |f|\,\dif x < \frac12 c\,m(K).
+  \]
+  则 $G = U \cup V$ 是测度为 $1$ 的开集，并且
+  \[
+    \int_G f \ge \int_K f - \int_{U\setminus K}|f| - \int_V |f| > 0,
+  \]
+  与假设矛盾. 故 $m(\{f>0\})=0$. 对 $-f$ 同理，得 $m(\{f<0\})=0$.
+  因而 $f=0$ a.e.
+
+  \textbf{(ii)}\quad
+  若 $m(\{f>0\}) > 0$，则由正则性可在 $\{f>0\}$ 中取到闭且无内点的子集 $C$，并且 $m(C)>0$.
+  令 $G = \R \setminus C$，则 $G$ 开且稠密，所以 $\overline{G} = \R$.
+  由题设
+  \[
+    \int_C f = \int_{\overline{G}} f - \int_G f = 0,
+  \]
+  但 $f>0$ 在 $C$ 上，故 $\int_C f > 0$，矛盾.
+  因此 $m(\{f>0\}) = 0$. 对 $-f$ 同理，得 $m(\{f<0\}) = 0$，所以 $f = 0$ a.e. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 55
+% ==============================================================================
+\section{Exercise 55}
+
+设 $f \in L([0, 1])$ 且非负, $\int_0^1 f(x)\,\dif x > 0, 0 < \alpha \le 1$, 试求极限 $\lim_{n \to \infty} \int_0^1 n \ln\!\left[1 + \left(\frac{f(x)}{n}\right)^\alpha\right] \dif x$.
+
+\begin{solution}
+  记 $g_n(x) = n\ln\!\left(1 + \left(\frac{f(x)}{n}\right)^\alpha\right)$.
+
+  \textbf{当 $\alpha = 1$ 时.}\quad
+  $g_n(x) = n\ln(1+f(x)/n) \to f(x)$，且由 $\ln(1+u)\le u$ 得 $0\le g_n(x)\le f(x)$.
+  由控制收敛定理，
+  \[
+    \lim_{n\to\infty}\int_0^1 g_n(x)\,\dif x = \int_0^1 f(x)\,\dif x.
+  \]
+
+  \textbf{当 $0<\alpha<1$ 时.}\quad
+  若 $f(x)=0$，则 $g_n(x)=0$；若 $f(x)>0$，则 $g_n(x)\to +\infty$.
+  又 $\int_0^1 f>0$ 蕴含 $m(\{f>0\})>0$，故由 Fatou 引理
+  \[
+    \varliminf_{n\to\infty}\int_0^1 g_n(x)\,\dif x
+    \ge \int_0^1 \varliminf_{n\to\infty} g_n(x)\,\dif x
+    = +\infty.
+  \]
+
+  综上，
+  \[
+    \lim_{n\to\infty}\int_0^1 n\ln\!\left(1 + \left(\frac{f(x)}{n}\right)^\alpha\right)\dif x
+    = \begin{cases}
+      \displaystyle\int_0^1 f(x)\,\dif x, & \alpha = 1, \\[6pt]
+      +\infty, & 0<\alpha<1.
+    \end{cases}
+  \]
+  \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 56
+% ==============================================================================
+\section{Exercise 56}
+
+设 $f \in L([0, 1])$, 极限 $\lim_{n \to \infty} \frac{1}{n} \int_0^1 \ln(1 + e^{nf(x)})\,\dif x$ 是否存在? 存在时求此极限.
+
+\begin{solution}
+  记
+  \[
+    h_n(x) = \frac{1}{n}\ln(1+e^{nf(x)}).
+  \]
+  若 $f(x)>0$，则
+  \[
+    h_n(x)=f(x)+\frac1n\ln(1+e^{-nf(x)})\to f(x).
+  \]
+  若 $f(x)\le 0$，则 $0\le h_n(x)\le \ln 2/n \to 0$. 因而 $h_n(x)\to f^+(x)$ a.e.
+
+  另一方面，
+  \[
+    1+e^{nf(x)} \le 2e^{n f^+(x)},
+  \]
+  故
+  \[
+    0\le h_n(x)\le f^+(x)+\frac{\ln 2}{n}\le f^+(x)+\ln 2.
+  \]
+  由于 $f^+ + \ln 2 \in L([0,1])$，由控制收敛定理得
+  \[
+    \lim_{n\to\infty} \frac{1}{n}\int_0^1 \ln(1+e^{nf(x)})\,\dif x
+    = \int_0^1 f^+(x)\,\dif x.
+  \]
+
+  因此极限存在，且
+  \[
+    \lim_{n \to \infty} \frac{1}{n} \int_0^1 \ln(1 + e^{nf(x)})\,\dif x = \int_0^1 f^+(x)\,\dif x = \int_0^1 \max(f(x), 0)\,\dif x.
+  \]
+  \qed
+\end{solution}
+
+\end{document}

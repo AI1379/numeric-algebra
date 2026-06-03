@@ -1,0 +1,276 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{luacode}
+
+% import common macros
+\input{../../common/macros.tex}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Configure listings for Python code highlighting
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,
+  frame=single,
+  framesep=5pt,
+  rulecolor=\color{gray},
+  backgroundcolor=\color{white},
+  captionpos=b,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=5,
+}
+
+\lstnewenvironment{plaintext}[1][]{
+  \lstset{
+    language=none,
+    basicstyle=\ttfamily,
+    keywordstyle=,
+    commentstyle=,
+    stringstyle=,
+    numbers=none,
+    frame=none,
+    backgroundcolor=\color{white},
+    #1                % 允许用户自行覆盖默认设置
+  }
+}{}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{数值代数}
+\newcommand{\hwNum}{12}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name (\uid)}
+\chead{\course \#\hwNum}
+\rhead{\today}
+
+\section{题目 1}
+
+分别应用幂法于矩阵
+\[
+  A =
+  \begin{pmatrix} \lambda & 1 \\ 0 & \lambda
+  \end{pmatrix} \quad \text{和} \quad B =
+  \begin{pmatrix} \lambda & 1 \\ 0 & -\lambda
+  \end{pmatrix} \quad (\lambda > 0)
+\]
+并考虑所得序列的特性, 求出特征值和特征向量.
+
+\begin{solution}
+
+  \textbf{矩阵 $A$ 的幂法分析.}
+
+  取初始向量 $\boldsymbol{v}^{(0)} = (1, \delta)^\T$ ($\delta \neq 0$).
+  注意到 $A = \lambda I + N$，其中
+  \[
+    N =
+    \begin{pmatrix} 0 & 1 \\ 0 & 0
+    \end{pmatrix}, \quad N^2 = 0.
+  \]
+  由二项式展开（因 $N^2 = 0$，高次项消失）：
+  \[
+    A^k = (\lambda I + N)^k = \lambda^k I + k\lambda^{k-1}N
+    = \lambda^k
+    \begin{pmatrix} 1 & k/\lambda \\ 0 & 1
+    \end{pmatrix}.
+  \]
+  对初始向量 $\boldsymbol{v}^{(0)} = (1, \delta)^\T$：
+  \[
+    A^k \boldsymbol{v}^{(0)} = \lambda^k
+    \begin{pmatrix} 1 + k\delta/\lambda \\ \delta
+    \end{pmatrix}.
+  \]
+
+  在幂法中，按首个分量归一化。
+  设归一化后的向量 $\boldsymbol{v}^{(k)} = (1, c_k)^\T$，则迭代关系为
+  \[
+    \boldsymbol{y}^{(k+1)} = A\boldsymbol{v}^{(k)}
+    =
+    \begin{pmatrix} \lambda + c_k \\ \lambda c_k
+    \end{pmatrix},
+    \quad \mu_{k+1} = \lambda + c_k,
+    \quad c_{k+1} = \frac{\lambda c_k}{\lambda + c_k}.
+  \]
+  由数学归纳法可得
+  \[
+    c_k = \frac{\lambda\delta}{\lambda + k\delta} \xrightarrow{k\to\infty} 0.
+  \]
+
+  因此：
+  \begin{itemize}
+    \item 特征值估计：$\mu_k = \lambda + c_{k-1} = \lambda +
+      \dfrac{\lambda\delta}{\lambda + (k-1)\delta} \to \lambda$，
+      误差为 $O(1/k)$；
+    \item 特征向量：$\boldsymbol{v}^{(k)} = (1, c_k)^\T \to (1, 0)^\T$。
+  \end{itemize}
+
+  \textbf{序列特性：}
+  $A$ 的特征值 $\lambda$ 的代数重数为 2，但几何重数为 1（亏损特征值），
+  导致幂法收敛速度为 $O(1/k)$，慢于正常的几何收敛速度。
+
+  \medskip
+
+  \textbf{矩阵 $B$ 的幂法分析.}
+
+  注意到
+  \[
+    B^2 =
+    \begin{pmatrix} \lambda & 1 \\ 0 & -\lambda
+    \end{pmatrix}^2
+    =
+    \begin{pmatrix} \lambda^2 & 0 \\ 0 & \lambda^2
+    \end{pmatrix}
+    = \lambda^2 I.
+  \]
+  因此 $B^{2m} = \lambda^{2m}I$，$B^{2m+1} = \lambda^{2m}B$。
+
+  取初始向量 $\boldsymbol{v}^{(0)} = (1, \delta)^\T$ ($\delta \neq 0$)。
+  按首个分量归一化：
+  \begin{align*}
+    \boldsymbol{y}^{(1)} &= B\boldsymbol{v}^{(0)}
+    =
+    \begin{pmatrix} \lambda + \delta \\ -\lambda\delta
+    \end{pmatrix},
+    &\mu_1 &= \lambda + \delta,
+    &\boldsymbol{v}^{(1)} &= \left(1,\;
+    \frac{-\lambda\delta}{\lambda+\delta}\right)^\T. \\[6pt]
+    \boldsymbol{y}^{(2)} &= B\boldsymbol{v}^{(1)}
+    =
+    \begin{pmatrix} \lambda^2/(\lambda+\delta)
+      \\ \lambda^2\delta/(\lambda+\delta)
+    \end{pmatrix},
+    &\mu_2 &= \frac{\lambda^2}{\lambda+\delta},
+    &\boldsymbol{v}^{(2)} &= (1,\; \delta)^\T = \boldsymbol{v}^{(0)}.
+  \end{align*}
+
+  因此序列以周期 2 振荡：
+  $\boldsymbol{v}^{(0)}, \boldsymbol{v}^{(1)}, \boldsymbol{v}^{(0)},
+  \boldsymbol{v}^{(1)}, \ldots$，不收敛。
+
+  \textbf{特征值：}两个振荡的 $\mu$ 值之积为
+  \[
+    \mu_1 \cdot \mu_2 = (\lambda+\delta) \cdot
+    \frac{\lambda^2}{\lambda+\delta} = \lambda^2,
+  \]
+  故 $|\lambda| = \sqrt{\mu_1\mu_2}$。
+  由 $\lambda > 0$ 知 $\lambda = \sqrt{\mu_1\mu_2}$。
+  又由 $\mathrm{tr}\, B = 0$ 知两特征值之和为 0，故另一特征值为 $-\lambda$。
+
+  \textbf{特征向量：}
+  \begin{itemize}
+    \item 对 $\lambda_1 = \lambda$：$(B - \lambda I)\boldsymbol{v} =
+      \boldsymbol{0}$，
+      即 $
+      \begin{pmatrix} 0 & 1 \\ 0 & -2\lambda
+      \end{pmatrix}\boldsymbol{v} = \boldsymbol{0}$，
+      解得 $\boldsymbol{v}_1 = (1,\; 0)^\T$；
+    \item 对 $\lambda_2 = -\lambda$：$(B + \lambda I)\boldsymbol{v} =
+      \boldsymbol{0}$，
+      即 $
+      \begin{pmatrix} 2\lambda & 1 \\ 0 & 0
+      \end{pmatrix}\boldsymbol{v} = \boldsymbol{0}$，
+      解得 $\boldsymbol{v}_2 = (1,\; -2\lambda)^\T$。
+  \end{itemize}
+
+  \textbf{序列特性：}
+  $B$ 的两个特征值 $\lambda$ 和 $-\lambda$ 具有相同的模 $|\lambda|$，
+  幂法无法收敛至单一特征值，序列以周期 2 振荡。
+  但通过 $\sqrt{\mu_1\mu_2}$ 仍可恢复 $|\lambda|$。
+
+\end{solution}
+
+\section{题目 2}
+
+求多项式方程的模最大根.
+
+(1) 用你所熟悉的计算机语言编制利用幂法求多项式方程
+\[
+  f(x) = x^n + \alpha_{n-1}x^{n-1} + \dots + \alpha_1x + \alpha_0 = 0
+\]
+的模最大根的通用子程序.
+
+(2) 利用你所编制的子程序求下列各高次方程的模最大根:
+
+(i) $x^3 + x^2 - 5x + 3 = 0$;
+
+(ii) $x^3 - 3x - 1 = 0$;
+
+(iii) $x^8 + 101x^7 + 208.01x^6 + 10891.01x^5 + 9802.08x^4 +
+79108.9x^3 - 99902x^2 + 790x - 1000 = 0$.
+
+\begin{solution}
+
+  \textbf{方法.}
+  设多项式方程
+  \[
+    f(x) = x^n + a_{n-1}x^{n-1} + \dots + a_1 x + a_0 = 0,
+  \]
+  则其根恰为友矩阵 (companion matrix)
+  \[
+    C =
+    \begin{pmatrix}
+      0 & 0 & \cdots & 0 & -a_0 \\
+      1 & 0 & \cdots & 0 & -a_1 \\
+      0 & 1 & \cdots & 0 & -a_2 \\
+      \vdots & \vdots & \ddots & \vdots & \vdots \\
+      0 & 0 & \cdots & 1 & -a_{n-1}
+    \end{pmatrix}
+  \]
+  的特征值。因此求模最大根等价于求 $C$ 的模最大特征值，可用幂法求解。
+
+  幂法迭代格式：取初始向量 $\boldsymbol{v}^{(0)}$，对 $k = 0, 1, 2, \dots$ 计算
+  \[
+    \boldsymbol{y}^{(k+1)} = C\boldsymbol{v}^{(k)}, \quad
+    \mu_{k+1} = y_j^{(k+1)} \quad (j = \arg\max_i |y_i^{(k+1)}|), \quad
+    \boldsymbol{v}^{(k+1)} = \boldsymbol{y}^{(k+1)} / \mu_{k+1}.
+  \]
+  当 $|\mu_k|$ 收敛后，通过 Rayleigh 商
+  $\lambda = \boldsymbol{v}^\T C \boldsymbol{v} / (\boldsymbol{v}^\T
+  \boldsymbol{v})$
+  确定特征值的符号。
+
+  代码与运行结果如下：
+
+  \lstinputlisting[language=Python, caption={幂法求多项式模最大根}]{exercise.py}
+  \lstinputlisting[language={}, caption={运行结果}]{output.txt}
+
+  \textbf{结果分析.}
+  \begin{enumerate}[(i)]
+    \item $x^3 + x^2 - 5x + 3 = (x-1)^2(x+3) = 0$，
+      模最大根为 $x = -3$，幂法经 28 次迭代收敛至 $-3.0000000000$。
+      由于 $\lambda_1/\lambda_2 = -3/1 = -3$，收敛比为 $1/3$。
+    \item $x^3 - 3x - 1 = 0$，
+      模最大根为 $x \approx 1.8793852416$，
+      经 120 次迭代收敛。
+      收敛比为 $|\lambda_2/\lambda_1| = 1.5321/1.8794 \approx 0.8154$，收敛较慢。
+    \item 八次多项式的模最大根为 $x = -100$，
+      经 15 次迭代即收敛。
+      该多项式的 8 个根为 $-100,\; \pm 10i,\; -1\pm 3i,\; 1,\; \pm 0.1i$，
+      收敛比为 $10/100 = 0.1$，收敛很快。
+  \end{enumerate}
+
+\end{solution}
+
+\end{document}

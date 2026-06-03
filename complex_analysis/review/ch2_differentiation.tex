@@ -1,0 +1,152 @@
+% ch2_differentiation.tex — 复微分与 Cauchy--Riemann 方程
+
+\subsection{Cauchy--Riemann 方程}
+
+将 $f(z) = u(x,y) + iv(x,y)$ 看作 $\mathbb{R}^2 \to \mathbb{R}^2$ 的映射，其 Jacobian 矩阵为
+\[
+  J_f = \begin{pmatrix} u_x & u_y \\ v_x & v_y \end{pmatrix}.
+\]
+
+$f$ 复可微 $\Longleftrightarrow$ $f$ 实可微且 $J_f$ 表示 $\mathbb{C}$-线性映射（而非仅仅是 $\mathbb{R}$-线性）。
+
+\begin{theorem}[Cauchy--Riemann 方程 \eng{Cauchy--Riemann equations}]
+$f = u + iv$ 在 $z_0 = x_0 + iy_0$ 处复可微的充要条件是 $u, v$ 在 $(x_0, y_0)$ 处可微，且
+\[
+  u_x = v_y, \quad u_y = -v_x.
+\]
+此时 $f'(z_0) = u_x + iv_x$。
+\end{theorem}
+
+\begin{corollary}
+若 $f$ 解析，则 Jacobian 行列式
+\[
+  \det J_f = u_x v_y - u_y v_x = u_x^2 + v_x^2 = |f'(z)|^2 \geq 0.
+\]
+当 $f'(z) \neq 0$ 时，$f$ 局部保持定向 \eng{orientation-preserving}。
+\end{corollary}
+
+\subsection{复可微的等价刻画}
+
+\begin{theorem}[复可微的等价条件]
+设 $f: D \to \mathbb{C}$ 在 $z_0 \in D$ 处实可微，则以下等价：
+\begin{enumerate}
+  \item $f$ 在 $z_0$ 处复可微；
+  \item $u, v$ 满足 Cauchy--Riemann 方程 $u_x = v_y,\; u_y = -v_x$；
+  \item Wirtinger 导数 $\displaystyle\frac{\partial f}{\partial \bar{z}}(z_0) = 0$；
+  \item $J_f(z_0)$ 是 $\mathbb{C}$-线性映射，即存在复数 $c$ 使得
+    $J_f(z_0) = \begin{pmatrix} a & -b \\ b & a \end{pmatrix}$，其中 $c = a + ib = f'(z_0)$；
+  \item 存在复数 $L$ 使得 $f(z_0 + h) = f(z_0) + Lh + o(|h|)$（$h \to 0$），
+    此时 $L = f'(z_0)$；
+  \item 方向导数 $\lim_{h \to 0} \frac{f(z_0+h)-f(z_0)}{h}$ 存在且与 $h \to 0$ 的路径无关；
+  \item （Carathéodory 形式 / "Lagrange 中值" 形式）存在函数 $\psi(z)$ 在 $z_0$ 处连续，使得
+    \[
+      f(z) - f(z_0) = \psi(z)(z - z_0) \quad (\forall z \in D),
+    \]
+    此时 $\psi(z_0) = f'(z_0)$。
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+Carathéodory 形式的直观是：将差商"修补"成一个连续函数。
+在实分析中，Lagrange 中值定理断言 $f(b)-f(a) = f'(\xi)(b-a)$ 对某个 $\xi$ 成立；
+复分析中没有完全对应的中值定理，但 Carathéodory 形式
+$f(z)-f(z_0) = \psi(z)(z-z_0)$（$\psi$ 连续于 $z_0$）在形式上起到了同样的作用。
+利用这一形式，乘积法则、商法则、链式法则的证明都可以直接化为连续函数的四则运算，
+无需回到差商极限的定义。
+\end{remark}
+
+\begin{remark}
+Wirtinger 导数 \eng{Wirtinger derivatives} 定义为
+\[
+  \frac{\partial}{\partial z} = \frac12\left(\frac{\partial}{\partial x} - i\frac{\partial}{\partial y}\right), \quad
+  \frac{\partial}{\partial \bar{z}} = \frac12\left(\frac{\partial}{\partial x} + i\frac{\partial}{\partial y}\right).
+\]
+条件 $\partial f / \partial \bar{z} = 0$ 是对 C-R 方程最紧凑的写法：
+\[
+  \frac{\partial f}{\partial \bar{z}} = \frac12\big((u_x - v_y) + i(u_y + v_x)\big) = 0
+  \;\Longleftrightarrow\; u_x = v_y,\; u_y = -v_x.
+\]
+当 $f$ 解析时，$f'(z) = \partial f / \partial z$。
+\end{remark}
+
+\subsection{极坐标下的 Cauchy--Riemann 方程}
+
+设 $z = re^{i\theta}$，$f(z) = u(r,\theta) + iv(r,\theta)$，则 C-R 方程等价于
+\[
+  \frac{\partial u}{\partial r} = \frac{1}{r}\frac{\partial v}{\partial \theta},
+  \qquad
+  \frac{1}{r}\frac{\partial u}{\partial \theta} = -\frac{\partial v}{\partial r}.
+\]
+此时 $f'(z) = e^{-i\theta}(u_r + iv_r)$。
+
+\subsection{共形映射与保角性}
+
+\begin{definition}[共形映射 \eng{conformal mapping}]
+设 $f: D \to \mathbb{C}$ 在 $z_0$ 处实可微。若 $f$ 在 $z_0$ 处保持两条曲线之间的夹角（大小与方向均保持），则称 $f$ 在 $z_0$ 处\textbf{共形}（或\textbf{保角}）。
+\end{definition}
+
+\begin{theorem}[解析性与共形]
+设 $f$ 在 $z_0$ 处解析。
+\begin{enumerate}
+  \item 若 $f'(z_0) \neq 0$，则 $f$ 在 $z_0$ 处共形——
+    $f$ 将过 $z_0$ 的曲线旋转 $\arg f'(z_0)$ 并缩放 $|f'(z_0)|$ 倍；
+  \item 若 $f'(z_0) = 0$，则 $f$ 在 $z_0$ 处不保角（$z^n$ 在原点将角度放大 $n$ 倍）。
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+上述定理的逆也成立：若 $f$ 在 $z_0$ 处实可微、保持定向且共形，则 $f$ 在 $z_0$ 处解析且 $f'(z_0) \neq 0$。因此，在保定向的前提下：
+\[
+  \text{解析且 } f' \neq 0 \;\Longleftrightarrow\; \text{共形}.
+\]
+这就是为什么在复分析中"全纯"和"共形"常常互换使用的原因。
+\end{remark}
+
+\begin{theorem}[共形映射的局部形式]
+设 $f$ 在 $z_0$ 处解析且 $f'(z_0) \neq 0$，则在 $z_0$ 附近
+\[
+  f(z) \approx f(z_0) + f'(z_0)(z - z_0),
+\]
+即 $f$ 局部近似于一个旋转（$\arg f'(z_0)$）+ 缩放（$|f'(z_0)|$）+ 平移（$f(z_0)$）。
+因此 $f$ 将无穷小圆映为无穷小圆（而非椭圆），这是共形映射的几何特征。
+\end{theorem}
+
+\subsection{调和函数}
+
+\begin{definition}[调和函数 \eng{harmonic function}]
+若实值函数 $u$ 满足 $\Delta u = 0$，即
+\[
+  \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0,
+\]
+则称 $u$ 为调和函数。Laplace 算子可用复坐标表示为 $\Delta = 4\,\frac{\partial}{\partial z}\frac{\partial}{\partial \bar{z}}$。
+\end{definition}
+
+\begin{theorem}
+若 $f = u + iv$ 解析，则 $u$ 和 $v$ 都是调和函数。
+\end{theorem}
+
+\begin{definition}[调和共轭 \eng{harmonic conjugate}]
+若 $u$ 调和，且存在调和函数 $v$ 使得 $u + iv$ 解析，则称 $v$ 为 $u$ 的调和共轭。
+\end{definition}
+
+\begin{theorem}
+在\textbf{单连通区域} \eng{simply connected domain} 上，每个调和函数都存在调和共轭。
+\end{theorem}
+
+\begin{remark}
+调和共轭在相差一个常数的意义下唯一（因为连通区域上导数为零的解析函数为常数）。
+\end{remark}
+
+\subsection{连通性与局部常数}
+
+\begin{corollary}
+设 $D$ 为区域（非空连通开集），$f: D \to \mathbb{C}$ 解析。
+\begin{enumerate}  \item 若 $f$ 取值全为实数或全为纯虚数，则 $f$ 为常数。
+  \item 若 $|f|$ 为常数，则 $f$ 为常数。
+\end{enumerate}
+\end{corollary}
+
+\begin{remark}
+连通性 \eng{connectedness} 在此扮演关键角色：$D$ 连通等价于"每个局部常数函数都是常数"。
+在复分析中，"区域"默认指非空连通开集。
+\end{remark}

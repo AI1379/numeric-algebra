@@ -1,0 +1,65 @@
+% ch4_winding.tex — 环绕数与辐角原理
+
+\subsection{环绕数}
+
+\begin{definition}[环绕数 / 卷绕数 \eng{winding number}]
+设 $\gamma$ 为闭曲线，$a \notin \gamma$。定义
+\[
+  n(\gamma, a) = \frac{1}{2\pi i}\oint_\gamma \frac{dz}{z - a}.
+\]
+$n(\gamma, a)$ 表示 $\gamma$ 绕 $a$ 的\textbf{净圈数}（逆时针为正）。
+\end{definition}
+
+\begin{remark}
+环绕数的几何含义：它是 $\gamma$ 的像关于 $a$ 的辐角总变化量除以 $2\pi$。
+$n(\gamma, a)$ 是整数取值的，且关于 $a$ 在 $\mathbb{C}\setminus\gamma$ 的每个连通分支上为常数。
+\end{remark}
+
+\subsection{辐角原理}
+
+\begin{theorem}[辐角原理 \eng{argument principle}]
+设 $f$ 在闭曲线 $\gamma$ 及其内部解析，在 $\gamma$ 上 $f(z) \neq 0$。则
+\[
+  n(f \circ \gamma, 0) = \sum_{k} n(\gamma, z_k),
+\]
+其中 $\{z_k\}$ 是 $f$ 在 $\gamma$ 内部的零点（计重数）。
+
+等价地：$f$ 在 $\gamma$ 内部的零点个数（计重数）等于
+$\displaystyle\frac{1}{2\pi i}\oint_\gamma \frac{f'(z)}{f(z)}\,dz$。
+\end{theorem}
+
+\begin{remark}
+辐角原理将"零点的代数信息"（个数与重数）转化为"环绕的拓扑信息"。
+这是\textbf{代数}与\textbf{拓扑}之间的一座桥梁。
+\end{remark}
+
+\begin{corollary}[加权辐角原理]
+设 $g$ 也在 $\gamma$ 及其内部解析。则
+\[
+  \frac{1}{2\pi i}\oint_\gamma g(z)\,\frac{f'(z)}{f(z)}\,dz
+  = \sum_{k} g(z_k)\,n(\gamma, z_k),
+\]
+其中 $z_k$ 为 $f$ 的零点。
+\end{corollary}
+
+\subsection{开映射定理}
+
+\begin{theorem}[开映射定理 \eng{open mapping theorem}]
+非常数的解析函数将开集映为开集。
+\end{theorem}
+
+\begin{remark}
+这是一个全局性结论。它蕴含：非常数解析函数 $f$ 的 $|f|$ 在内部不能取到局部极大值
+（否则 $f$ 将某开集映入一个闭圆盘内部，矛盾于开映射性）。
+\end{remark}
+
+\subsection{Darboux--Picard 定理}
+
+\begin{theorem}[Darboux--Picard]
+设 $f$ 在有界域 $D$ 上解析且在 $\overline{D}$ 上连续。若 $f$ 在 $\partial D$ 上单射，
+则 $f$ 在 $D$ 内也单射。
+\end{theorem}
+
+\begin{remark}
+边界上的单射性蕴含内部的单射性——这在保形映射 \eng{conformal mapping} 理论中非常有用。
+\end{remark}

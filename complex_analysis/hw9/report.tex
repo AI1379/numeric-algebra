@@ -41,41 +41,40 @@ is an elementary domain.
 What is the image of $D$ under this map?
 
 \begin{solution}
-  Consider the boundary of $D$. It contains two circles:
+  Consider the M\"obius transformation $w = \frac{1}{1-z}$, which is a
+  biholomorphism on $\C \setminus \{1\}$.
+
+  \textbf{Image of the outer circle $|z| = 1$.}
+  Write $z = e^{i\theta}$. Then
   \[
-    \begin{aligned}
-      &\{z = e^{i\theta} : \theta \in [0, 2\pi)\} \\
-      &\{z = \frac{1}{2} + \frac{1}{2}e^{i\phi} : \phi \in [0, 2\pi)\}
-    \end{aligned}
+    w = \frac{1}{1 - e^{i\theta}}
+    = \frac{1 - e^{-i\theta}}{|1 - e^{i\theta}|^2}
+    = \frac{1 - \cos\theta + i\sin\theta}{2(1 - \cos\theta)}
+    = \frac{1}{2} + \frac{i}{2}\cot\frac{\theta}{2},
   \]
-  We apply the conformal map $z \mapsto \frac{1}{1-z}$ to the
-  first circle:
+  which traces the vertical line $\Re(w) = \frac{1}{2}$.
+  Testing $z = 0$ (inside the unit disk): $w = 1$, so
+  $\{|z| < 1\}$ maps to $\{\Re(w) > \frac{1}{2}\}$.
+
+  \textbf{Image of the inner circle $|z - \tfrac{1}{2}| = \tfrac{1}{2}$.}
+  Write $z = \frac{1}{2} + \frac{1}{2}e^{i\phi}$. Then
   \[
-    \begin{aligned}
-      &\left\{\frac{1}{1-e^{i\theta}} : \theta \in [0, 2\pi)\right\} \\
-      =& \left\{\frac{1-e^{-i\theta}}{|1-e^{i\theta}|^2} : \theta \in
-      [0, 2\pi)\right\} \\
-      =& \left\{\frac{1-\cos\theta}{2(1-\cos\theta)} +
-      i\frac{\sin\theta}{2(1-\cos\theta)} : \theta \in [0, 2\pi)\right\} \\
-      =& \left\{\frac{1}{2} + i\frac{\sin\theta}{2(1-\cos\theta)} :
-      \theta \in [0, 2\pi)\right\} \\
-      =& \left\{\frac{1}{2} + i\frac{1}{2}\cot\frac{\theta}{2} :
-      \theta \in [0, 2\pi)\right\}
-    \end{aligned}
+    w = \frac{1}{1 - \frac{1}{2} - \frac{1}{2}e^{i\phi}}
+    = \frac{1}{\frac{1}{2}(1 - e^{i\phi})}
+    = \frac{2}{1 - e^{i\phi}}
+    = \frac{2(1 - e^{-i\phi})}{|1 - e^{i\phi}|^2}
+    = 1 + i\cot\frac{\phi}{2},
   \]
-  which is a vertical line.  Similarly, we apply the conformal map
-  to the second circle:
-  \[
-    \begin{aligned}
-      &\left\{\frac{1}{1-\frac{1}{2} - \frac{1}{2}e^{i\phi}} : \phi
-      \in [0, 2\pi)\right\} \\
-      =& \left\{\frac{1}{\frac{1}{2}(1+e^{i\phi})} : \phi \in [0,
-      2\pi)\right\} \\
-      =& \left\{\frac{2}{1+e^{i\phi}} : \phi \in [0, 2\pi) \right\}
-      % TODO: simplify the above expression.
-    \end{aligned}
-  \]
-  which is the same vertical line.
+  which traces the vertical line $\Re(w) = 1$.
+  Testing $z = \frac{1}{2}$ (inside the inner disk): $w = 2$, so
+  $\{|z - \frac{1}{2}| < \frac{1}{2}\}$ maps to $\{\Re(w) > 1\}$.
+
+  Therefore the image of
+  $D = \{|z| < 1\} \cap \{|z - \tfrac{1}{2}| > \tfrac{1}{2}\}$
+  under $w = \frac{1}{1-z}$ is the vertical strip
+  $\{\frac{1}{2} < \Re(w) < 1\}$, which is simply connected
+  (indeed, conformally equivalent to the upper half-plane via
+  $w \mapsto e^{\pi i w}$). Hence $D$ is an elementary domain.
 \end{solution}
 
 \section{Exercise 4.21}
@@ -87,7 +86,30 @@ $|f(\tfrac{1}{n})| \le C\rho^n$,
 then $f \equiv 0$.
 
 \begin{solution}
+  Since $|f(1/n)| \le C\rho^n \to 0$ as $n \to \infty$ and $f$ is
+  continuous at $0$, we have $f(0) = 0$.
 
+  Suppose $f \not\equiv 0$. Then $f$ has a zero of some finite order
+  $m \ge 1$ at $z = 0$, so near $z = 0$,
+  \[
+    f(z) = a_m z^m + a_{m+1} z^{m+1} + \cdots, \quad a_m \ne 0.
+  \]
+  Evaluating at $z = 1/n$ and multiplying by $n^m$:
+  \[
+    n^m f\!\left(\frac{1}{n}\right)
+    = a_m + \frac{a_{m+1}}{n} + \frac{a_{m+2}}{n^2} + \cdots
+    \;\longrightarrow\; a_m \quad \text{as } n \to \infty.
+  \]
+  On the other hand,
+  \[
+    \left|n^m f\!\left(\frac{1}{n}\right)\right|
+    \le n^m \cdot C\rho^n
+    = C \cdot e^{m\ln n + n\ln\rho}
+    \;\longrightarrow\; 0 \quad \text{as } n \to \infty,
+  \]
+  since $\ln\rho < 0$ and $n\ln\rho$ dominates $m\ln n$.
+  Therefore $|a_m| = 0$, contradicting $a_m \ne 0$.
+  Hence $f \equiv 0$.
 \end{solution}
 
 \section{Exercise 4.33}
@@ -102,7 +124,19 @@ $f, g : U_R(0) \to \C$ with
 \end{enumerate}
 
 \begin{solution}
+  (a) Yes. Take $f(z) = z^2$. Then
+  $f(1/n) = 1/n^2$ and $f(-1/n) = (-1/n)^2 = 1/n^2$
+  for all $n \ge 1$, as required.
 
+  \medskip
+  (b) No. Suppose $g$ is analytic on $U_R(0)$ with
+  $g(1/(2n)) = 1/(2n)$ for all $n \ge 1$.
+  The set $\{1/(2n) : n \ge 1\}$ has the accumulation point $0$
+  in $U_R(0)$. The function $h(z) = z$ also satisfies
+  $h(1/(2n)) = 1/(2n)$ for all $n$.
+  By the identity theorem, $g(z) = z$ on $U_R(0)$.
+  But then $g(-1/(2n)) = -1/(2n) \ne 1/(2n)$, a contradiction.
+  Hence no such analytic $g$ exists.
 \end{solution}
 
 \section{Exercise 4.34}
@@ -116,7 +150,19 @@ $\bigcup_{n=0}^{\infty} g_n^{-1}(\{0\})$,
 where $g_n(z) = f^{(n)}(z)$.
 
 \begin{solution}
+  Define $E_n = \{z \in D : f^{(n)}(z) = 0\}$ for each $n \ge 0$.
+  Since $f^{(n)}$ is continuous, each $E_n$ is closed in $D$.
+  By hypothesis, $D = \bigcup_{n=0}^{\infty} E_n$.
 
+  Since $D$ is an open subset of $\C$ (a complete metric space),
+  $D$ is a Baire space. By Baire's category theorem, not all $E_n$
+  can be nowhere dense. So there exists $N \ge 0$ such that $E_N$
+  has nonempty interior: there is an open disk $B \subset E_N$.
+
+  On $B$, we have $f^{(N)} \equiv 0$. Since $f^{(N)}$ is analytic
+  on the domain $D$ and vanishes on an open subset, by the identity
+  theorem $f^{(N)} \equiv 0$ on all of $D$.
+  Integrating $N$ times, $f$ is a polynomial of degree at most $N - 1$.
 \end{solution}
 
 \section{Exercise 4.36}
@@ -125,7 +171,16 @@ If $D$ is not connected, then $H(D)$ might have divisors of zero.
 Give one such example.
 
 \begin{solution}
-
+  Let $D = D_1 \cup D_2$ where $D_1$ and $D_2$ are disjoint open
+  sets. Define
+  \[
+    f(z) = \begin{cases} 0 & z \in D_1 \\ 1 & z \in D_2 \end{cases},
+    \qquad
+    g(z) = \begin{cases} 1 & z \in D_1 \\ 0 & z \in D_2. \end{cases}
+  \]
+  Both $f$ and $g$ are analytic (constant on each connected component),
+  so $f, g \in H(D)$. Their product $f \cdot g \equiv 0$ on $D$,
+  yet neither $f$ nor $g$ is the zero function.
 \end{solution}
 
 \section{Exercise 4.43}
@@ -134,7 +189,17 @@ Show that if $f : D \to D$ is analytic on a domain and satisfies
 $f \circ f = f$, then $f$ is either constant or the identity map.
 
 \begin{solution}
+  Suppose $f$ is not constant. By the open mapping theorem,
+  $f(D)$ is an open subset of $D$.
 
+  For any $w \in f(D)$, write $w = f(z_0)$ for some $z_0 \in D$.
+  Then
+  \[
+    f(w) = f(f(z_0)) = f(z_0) = w.
+  \]
+  So $f(z) = z$ for all $z$ in the open set $f(D) \subset D$.
+  By the identity theorem, $f(z) = z$ for all $z \in D$.
+  Hence $f$ is the identity map.
 \end{solution}
 
 \section{Exercise 4.46}
@@ -148,7 +213,28 @@ Conclude that there exists a point $w_u$ on the circle such that
 $\prod_{j=1}^{n} |w_u - w_j| = 1$.
 
 \begin{solution}
+  Let $p(z) = \prod_{j=1}^{n}(z - w_j)$, a monic polynomial of
+  degree $n$. Write $p(z) = z^n + c_{n-1}z^{n-1} + \cdots + c_0$.
 
+  By Parseval's identity, on the unit circle $z = e^{i\theta}$:
+  \[
+    \frac{1}{2\pi}\int_0^{2\pi} |p(e^{i\theta})|^2 \, d\theta
+    = |1|^2 + |c_{n-1}|^2 + \cdots + |c_0|^2
+    \ge 1.
+  \]
+  Since the average of $|p(e^{i\theta})|^2$ is at least $1$, there
+  exists $z_0 = e^{i\theta_0}$ on the unit circle with
+  $|p(z_0)|^2 \ge 1$, hence
+  \[
+    \prod_{j=1}^{n} |z_0 - w_j| = |p(z_0)| \ge 1.
+  \]
+
+  For the second claim: the function
+  $\varphi(z) = \prod_{j=1}^n |z - w_j|$ is continuous on the unit
+  circle. At $z = w_j$ (for any $j$), we have $\varphi(w_j) = 0$.
+  We have shown $\varphi(z_0) \ge 1$ for some $z_0$.
+  By the intermediate value theorem on the arc from $w_j$ to $z_0$,
+  there exists $w_u$ on the unit circle with $\varphi(w_u) = 1$.
 \end{solution}
 
 \section{Exercise 4.47}
@@ -157,7 +243,15 @@ Show that if the real part of an entire function $f$ is bounded,
 then $f$ is constant.
 
 \begin{solution}
-
+  Suppose $\Re(f(z)) \le M$ for all $z \in \C$. Define
+  $g(z) = e^{f(z)}$, which is entire. Then
+  \[
+    |g(z)| = e^{\Re(f(z))} \le e^M
+  \]
+  for all $z$, so $g$ is bounded.
+  By Liouville's theorem, $g$ is constant.
+  Therefore $g'(z) = f'(z)\,e^{f(z)} = 0$ for all $z$,
+  which gives $f'(z) = 0$ for all $z$. Hence $f$ is constant.
 \end{solution}
 
 \section{Exercise 4.49}
@@ -166,7 +260,23 @@ Prove the fundamental theorem of algebra by Theorem~4.48
 (Minimum modulus).
 
 \begin{solution}
+  Let $p(z)$ be a nonconstant polynomial. Suppose for contradiction
+  that $p$ has no root, i.e., $p(z) \ne 0$ for all $z \in \C$.
 
+  Then $p$ is analytic and nonvanishing on all of $\C$.
+  By the minimum modulus principle (Theorem~4.48),
+  $|p|$ cannot attain a local minimum unless $p$ is constant.
+  Since $p$ is nonconstant, for any $R > 0$, the minimum of $|p|$
+  on $\overline{U_R(0)}$ must occur on the boundary $|z| = R$.
+
+  In particular, $|p(0)| \ge \min_{|z|=R} |p(z)|$ for every $R > 0$.
+  Since $p$ is a nonconstant polynomial, $|p(z)| \to \infty$
+  as $|z| \to \infty$, so
+  \[
+    |p(0)| \ge \lim_{R \to \infty} \min_{|z|=R} |p(z)| = \infty,
+  \]
+  which contradicts $|p(0)| < \infty$.
+  Hence $p$ must have at least one root.
 \end{solution}
 
 \section{Exercise 4.50}
@@ -180,7 +290,32 @@ every $w_0 \in D$.  Then it suffices to consider the case
 $w_0 = 0$.  Why?
 
 \begin{solution}
+  \textbf{Reduction to $w_0 = 0$.}
+  For any $w_0 \in D$, the map
+  $\varphi(z) = \frac{z - w_0}{1 - \overline{w_0}z}$
+  is an automorphism of $D$ sending $w_0$ to $0$.
+  Moreover, $\varphi$ maps the unit circle to itself.
+  So $h = \varphi \circ f$ is analytic, nonconstant, and satisfies
+  $|h(z)| = 1$ for $|z| = 1$.
+  If $h$ has a zero in $D$, say $h(z_0) = 0$, then
+  $\varphi(f(z_0)) = 0$, hence $f(z_0) = w_0$.
+  Thus it suffices to show $f$ has a zero in $D$.
 
+  \medskip
+  \textbf{$f$ has a zero in $D$.}
+  Suppose $f(z) \ne 0$ for all $z \in D$.
+  Then $1/f$ is analytic on $D$. On $|z| = 1$, $|f(z)| = 1$,
+  so by the maximum modulus principle (applied to $f$, which is
+  nonconstant), $|f(z)| < 1$ for all $z \in D$.
+  Hence $|1/f(z)| > 1$ for $z \in D$.
+
+  On the other hand, $|1/f(z)| = 1$ on $|z| = 1$.
+  By the maximum modulus principle applied to $1/f$,
+  $\max_{\overline{D}} |1/f| = \max_{|z|=1} |1/f| = 1$,
+  so $|1/f(z)| \le 1$ for all $z \in D$.
+  This contradicts $|1/f(z)| > 1$.
+
+  Therefore $f$ has a zero in $D$, and $D \subseteq f(D)$.
 \end{solution}
 
 \end{document}

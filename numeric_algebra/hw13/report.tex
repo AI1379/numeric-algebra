@@ -1,0 +1,296 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{luacode}
+
+% import common macros
+\input{../../common/macros.tex}
+
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\rk}{\operatorname{rk}}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Configure listings for Python code highlighting
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,
+  frame=single,
+  framesep=5pt,
+  rulecolor=\color{gray},
+  backgroundcolor=\color{white},
+  captionpos=b,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=5,
+}
+
+\lstnewenvironment{plaintext}[1][]{
+  \lstset{
+    language=none,
+    basicstyle=\ttfamily,
+    keywordstyle=,
+    commentstyle=,
+    stringstyle=,
+    numbers=none,
+    frame=none,
+    backgroundcolor=\color{white},
+    #1                % 允许用户自行覆盖默认设置
+  }
+}{}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{数值代数}
+\newcommand{\hwNum}{13}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name (\uid)}
+\chead{\course \#\hwNum}
+\rhead{\today}
+
+\section{题目 14}
+
+应用 QR 算法的基本迭代格式 (6.4.1) 于矩阵
+\[
+  A =
+  \begin{bmatrix}
+    1 & 0 \\
+    1 & -1
+  \end{bmatrix},
+\]
+并考察所得矩阵序列的特点. 它是否收敛?
+
+\begin{solution}
+
+  我们计算 $A_1 = A$ 的 QR 分解.
+  令 $Q_1 = \frac{1}{\sqrt{2}}
+  \begin{bmatrix} 1 & 1 \\ 1 & -1
+  \end{bmatrix}$，显然 $Q_1$ 为正交矩阵. 则：
+  \[
+    R_1 = Q_1^\T A_1 = \frac{1}{\sqrt{2}}
+    \begin{bmatrix} 1 & 1 \\ 1 & -1
+    \end{bmatrix}
+    \begin{bmatrix} 1 & 0 \\ 1 & -1
+    \end{bmatrix} = \frac{1}{\sqrt{2}}
+    \begin{bmatrix} 2 & -1 \\ 0 & 1
+    \end{bmatrix}.
+  \]
+  从而进行下一次迭代：
+  \[
+    A_2 = R_1 Q_1 = \frac{1}{2}
+    \begin{bmatrix} 2 & -1 \\ 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix} 1 & 1 \\ 1 & -1
+    \end{bmatrix} = \frac{1}{2}
+    \begin{bmatrix} 1 & 3 \\ 1 & -1
+    \end{bmatrix} =
+    \begin{bmatrix} 1/2 & 3/2 \\ 1/2 & -1/2
+    \end{bmatrix}.
+  \]
+
+  接下来对 $A_2$ 进行第二步 QR 迭代.
+  取 $Q_2 = \frac{1}{\sqrt{2}}
+  \begin{bmatrix} 1 & -1 \\ 1 & 1
+  \end{bmatrix}$，它是正交矩阵. 则：
+  \[
+    R_2 = Q_2^\T A_2 = \frac{1}{2\sqrt{2}}
+    \begin{bmatrix} 1 & 1 \\ -1 & 1
+    \end{bmatrix}
+    \begin{bmatrix} 1 & 3 \\ 1 & -1
+    \end{bmatrix} = \frac{1}{2\sqrt{2}}
+    \begin{bmatrix} 2 & 2 \\ 0 & -4
+    \end{bmatrix} = \frac{1}{\sqrt{2}}
+    \begin{bmatrix} 1 & 1 \\ 0 & -2
+    \end{bmatrix}.
+  \]
+  由此得到：
+  \[
+    A_3 = R_2 Q_2 = \frac{1}{2}
+    \begin{bmatrix} 1 & 1 \\ 0 & -2
+    \end{bmatrix}
+    \begin{bmatrix} 1 & -1 \\ 1 & 1
+    \end{bmatrix} = \frac{1}{2}
+    \begin{bmatrix} 2 & 0 \\ -2 & -2
+    \end{bmatrix} =
+    \begin{bmatrix} 1 & 0 \\ -1 & -1
+    \end{bmatrix}.
+  \]
+
+  继续对 $A_3$ 进行第三步 QR 迭代.
+  取 $Q_3 = \frac{1}{\sqrt{2}}
+  \begin{bmatrix} 1 & 1 \\ -1 & 1
+  \end{bmatrix}$，它是正交阵. 则：
+  \[
+    R_3 = Q_3^\T A_3 = \frac{1}{\sqrt{2}}
+    \begin{bmatrix} 1 & -1 \\ 1 & 1
+    \end{bmatrix}
+    \begin{bmatrix} 1 & 0 \\ -1 & -1
+    \end{bmatrix} = \frac{1}{\sqrt{2}}
+    \begin{bmatrix} 2 & 1 \\ 0 & -1
+    \end{bmatrix}.
+  \]
+  随后计算：
+  \[
+    A_4 = R_3 Q_3 = \frac{1}{2}
+    \begin{bmatrix} 2 & 1 \\ 0 & -1
+    \end{bmatrix}
+    \begin{bmatrix} 1 & 1 \\ -1 & 1
+    \end{bmatrix} = \frac{1}{2}
+    \begin{bmatrix} 1 & 3 \\ 1 & -1
+    \end{bmatrix} =
+    \begin{bmatrix} 1/2 & 3/2 \\ 1/2 & -1/2
+    \end{bmatrix} = A_2.
+  \]
+
+  \textbf{特点与收敛性分析：}
+  由上述计算可知，从 $k \ge 2$ 开始，序列 $\{A_k\}$ 出现循环振荡：$A_2 = A_4 = A_6 =
+  \dots$，以及 $A_3 = A_5 = A_7 = \dots$。
+  因此，该\textbf{矩阵序列不收敛}。
+
+  产生这一现象的原因是 $A$ 的特征值方程为 $\operatorname{det}(\lambda I - A) =
+  \lambda^2 - 1 = 0$，解得两个特征值为 $\lambda_{1, 2} = \pm 1$。因为满足
+  $|\lambda_1| = |\lambda_2|$，两个特征值模长相等，打破了基本 QR
+  算法收敛性定理所需的“特征值按模长严格分离”（即 $|\lambda_1| > |\lambda_2| >
+  \dots$）这一前提条件，导致迭代序列产生震荡而不收敛。
+
+\end{solution}
+
+\section{题目 15}
+
+设 $A \in \mathbf{R}^{n \times n}$. 证明: 存在初等置换矩阵 $P$ 和初等下三角阵 $M$, 使得
+$(MP)A(MP)^{-1}$ 具有如下形状:
+\[
+  (MP)A(MP)^{-1} =
+  \begin{bmatrix}
+    \alpha_{11} & \alpha_{12} & \cdots & \alpha_{1n} \\
+    \alpha_{21} & \alpha_{22} & \cdots & \alpha_{2n} \\
+    0 & \alpha_{32} & \cdots & \alpha_{3n} \\
+    \vdots & \vdots & & \vdots \\
+    0 & \alpha_{n2} & \cdots & \alpha_{nn}
+  \end{bmatrix}.
+\]
+
+\begin{solution}
+  考虑分类：
+
+  \textbf{情况 1：} $a_{21}, a_{31}, \ldots, a_{n1}$ 全为零. 则 $P = I$，$M = I$ 即可满足要求。
+
+  \textbf{情况 2：} $a_{21}, a_{31}, \ldots, a_{n1}$ 中至少存在一个非零元素。 设
+  $a_{k1}$ 是其中第一个非零元素，则我们可以通过交换第二行和第 $k$ 行来得到一个新的矩阵 $PA$，使得 $PA$ 的
+  $(2, 1)$ 元素非零。设 $PA = (b_{ij})$ 此时，我们可以构造一个初等下三角矩阵
+  $M$，其第二列为 $[0, 1, -\frac{b_{31}}{b_{21}}, -\frac{b_{41}}{b_{21}},
+  \ldots, -\frac{b_{n1}}{b_{21}}]^\T$，其余部分为单位矩阵。 则 $(MP)A$
+  的第一列将满足题目要求的形状。而右乘 $(MP)^{-1}$ 不会改变第一列的结构，因此 $(MP)A(MP)^{-1}$ 的第一列也满足题目要求的形状。
+\end{solution}
+
+\section{题目 17}
+
+设 $A \in \mathbf{C}^{n \times n}$, $x \in \mathbf{C}^n$, $X = [x, Ax,
+\cdots, A^{n-1}x]$. 证明: 如果 $X$ 是非奇异的，则 $X^{-1}AX$ 是上 Hessenberg 矩阵.
+
+\begin{solution}
+  \[
+    AX = A[x, Ax, \cdots, A^{n-1}x] = [Ax, A^2x, \cdots, A^nx].
+  \]
+  从而有 $X[:, 2:n] = [Ax, A^2x, \cdots, A^{n-1}x] = (AX)[:, 1:n-1]$，从而有：
+  \[
+    X^{-1}AX[i,j] = X^{-1}[i,:] (AX)[:, j] = X^{-1}[i,:]X[:,j+1],
+    \quad \text{for } j < n.
+  \]
+  又由逆矩阵，于是有当 $j \le n-1$ 时，当且仅当 $i = j+1$ 时，$X^{-1}AX[i,j] = 1 \neq
+  0$，其余位置均为零。因此 $X^{-1}AX$ 是上 Hessenberg 矩阵。
+\end{solution}
+
+\section{题目 19}
+
+设 $H$ 是一个不可约的上 Hessenberg 矩阵. 证明: 存在一个对角阵 $D$, 使得 $D^{-1}HD$ 的次对角元均为
+1. $\kappa_2(D) = \|D\|_2\|D^{-1}\|_2$ 是多少?
+
+\begin{solution}
+  令 $D = \diag(d_1, d_2, \ldots, d_n)$，于是 $D^{-1} = \diag(d_1^{-1},
+  d_2^{-1}, \ldots, d_n^{-1})$。设 $H = (h_{ij})$，于是有：
+  \[
+    (D^{-1}HD)[i+1, i] = d_{i}d_{i+1}^{-1}h_{i+1, i}
+  \]
+  因为 $H$ 是不可约的上 Hessenberg 矩阵，所以 $h_{i+1, i} \neq 0$，因此令 $d_1 =
+  1$，$d_{i+1} = d_i h_{i+1, i}$ 来使得 $(D^{-1}HD)[i+1, i] = 1$。从而这样的
+  $D$ 存在，且在相差一个常数倍的意义下唯一。
+
+  由于 $D$ 是对角阵，所以 $\|D\|_2 = \max_i |d_i|$，$\|D^{-1}\|_2 = \max_i
+  |d_i^{-1}|$，因此
+  \[
+    \kappa_2(D) = \max_i |d_i| \cdot \max_i |d_i^{-1}| = \frac{\max_i
+    |d_i|}{\min_i |d_i|}
+  \]
+\end{solution}
+
+\section{题目 21}
+
+设 $H$ 是一个奇异的不可约上 Hessenberg 矩阵. 证明: 进行一次基本的 QR 迭代后, $H$ 的零特征值将出现.
+
+\begin{solution}
+  考虑矩阵的秩。由于 $H$ 奇异，于是 $\rk(H) \le n-1$ 。又考虑 $H[:,
+  1:n-1]$，由于不可约，于是次对角线元素均非 $0$，从而前 $n-1$ 列线性无关，于是 $\rk(H) \ge
+  \rk(H[:, 1:n-1]) = n-1$。从而 $\rk(H) = n-1$。
+
+  考虑 $H = QR$，由于 $H$ 的前 $n-1$ 列线性无关，且 $Q$ 正交，于是 $R$ 的前 $n-1$ 列线性无关，从而
+  $R[n,n] = 0$，即 $R$ 的最后一行全为 $0$，从而 $RQ$ 的最后一行全为 $0$，从而 $RQ$ 的零特征值出现。
+\end{solution}
+
+\section{题目 22}
+
+证明: 若给定 $H = H_0$, 并由
+\[
+  H_k - \mu_k I = U_k R_k \quad \text{和} \quad H_{k+1} = R_k U_k + \mu_k I
+\]
+产生矩阵 $H_k$, 则
+\[
+  (U_0 \cdots U_j)(R_j \cdots R_0) = (H - \mu_0 I) \cdots (H - \mu_j I).
+\]
+
+\begin{solution}
+  首先有：
+  \[
+    U_k^T H_k U_k = U_k^T(U_k R_k + \mu_k I)U_k = R_k U_k + \mu_k I = H_{k+1}
+  \]
+  从而得到：
+  \[
+    (U_0 U_1 \cdots U_k)H_k = H(U_0 U_1 \cdots U_k)
+  \]
+  左右同时减去 $\mu_k (U_0 U_1 \cdots U_k)$ ，得到 $(U_0 \cdots U_k)(H_k -
+  \mu_k I) = (H - \mu_k I)(U_0 \cdots U_k)$。
+  考虑归纳法。 当 $j = 0$ 时，等式显然成立。假设当 $j < m$ 时等式成立，则当 $j = m$ 时：
+  \[
+    \begin{aligned}
+      (U_0 \cdots U_m)(R_m \cdots R_0) &= (U_0 \cdots U_{m-1})(H_m - \mu_m
+      I)(R_{m-1} \cdots R_0) \\
+      &= (H - \mu_m I)(U_0 \cdots U_{m-1})(R_{m-1} \cdots R_0)\\
+      &= (H - \mu_m I) \cdots (H - \mu_0 I) \\
+      &= (H - \mu_0 I) \cdots (H - \mu_m I)
+    \end{aligned}
+  \]
+
+\end{solution}
+
+\end{document}

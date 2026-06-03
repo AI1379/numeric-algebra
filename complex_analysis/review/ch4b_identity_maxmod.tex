@@ -1,0 +1,71 @@
+% ch4b_identity_maxmod.tex — 恒等定理与最大模原理
+
+\subsection{恒等定理}
+
+\begin{theorem}[恒等定理 \eng{identity theorem}]
+设 $D$ 为区域，$f$ 在 $D$ 上解析。若存在 $D$ 中点列 $\{z_n\}$ 满足
+\begin{enumerate}  \item $z_n \to z_0 \in D$（聚点在 $D$ 内）；
+  \item 对所有 $n$，$f(z_n) = 0$，
+\end{enumerate}
+则 $f \equiv 0$ 在 $D$ 上。
+\end{theorem}
+
+\begin{remark}
+恒等定理是复分析中最具代表性的结果之一，体现了"解析函数的刚性" \eng{rigidity}：
+\begin{itemize}
+  \item 解析函数在其定义域上由一个有聚点的集合上的值完全确定；
+  \item 两个解析函数若在一个有聚点的集合上相等，则处处相等；
+  \item 实分析中没有对应结论：$C^\infty$ 函数可以在无穷多个点上为零而不恒为零。
+\end{itemize}
+\end{remark}
+
+\begin{corollary}
+若 $f$ 解析且在某点 $a$ 的各阶导数 $f^{(n)}(a) = 0$（对所有 $n \geq 0$），
+则 $f$ 在其定义域的连通分支上恒为零。
+\end{corollary}
+
+\subsection{最大模原理}
+
+\begin{theorem}[最大模原理 \eng{maximum modulus principle}]
+设 $f$ 在区域 $D$ 上解析且非常数。则 $|f|$ 在 $D$ \textbf{内部}不能取到最大值。
+\end{theorem}
+
+\begin{proof}[证明思路]
+由开映射定理，$f$ 将开集映为开集。若 $|f|$ 在内点 $z_0$ 处取最大值 $M$，
+则 $f(z_0)$ 是 $f(D)$ 的内点，因此 $f(D)$ 中有模大于 $M$ 的点，矛盾。
+\end{proof}
+
+\begin{remark}
+最大模原理等价于说：若 $|f|$ 在 $D$ 的内部某点取到最大值，则 $f$ 为常数。
+这个原理在证明保形映射的存在性、Schwarz 引理等方面有广泛应用。
+\end{remark}
+
+\subsection{最小模原理}
+
+\begin{theorem}[最小模原理 \eng{minimum modulus principle}]
+设 $f$ 在区域 $D$ 上解析且非零、非常数。则 $|f|$ 在 $D$ \textbf{内部}不能取到最小值。
+\end{theorem}
+
+\begin{remark}
+注意额外条件 $f \neq 0$：若 $f$ 有零点，$|f|$ 显然在零点处取到最小值 $0$。
+
+最小模原理可以给出代数基本定理的另一证明：
+若多项式 $p(z)$ 无零点，则 $1/|p(z)|$ 为整函数且在 $\mathbb{C}$ 上有下界，
+但由 $|p(z)| \to \infty$ 知 $1/|p|$ 在某个大圆上取最小值，由最小模原理知 $p$ 为常数。
+\end{remark}
+
+\subsection{Blaschke 因子}
+
+\begin{definition}[Blaschke 因子 \eng{Blaschke factor}]
+对 $a \in \mathbb{D}$，定义
+\[
+  B_a(z) = \frac{z - a}{1 - \bar{a}z}.
+\]
+$B_a$ 是 $\mathbb{D}$ 上的解析自同构 \eng{analytic automorphism}：
+$B_a: \mathbb{D} \to \mathbb{D}$ 为双射，$|B_a(e^{i\theta})| = 1$。
+\end{definition}
+
+\begin{remark}
+Blaschke 因子在证明单位圆盘上的函数性质时非常有用。例如，若 $f: \mathbb{D} \to \mathbb{D}$
+解析且 $f(0) = 0$，则 $|f(z)| \leq |z|$（Schwarz 引理）。
+\end{remark}

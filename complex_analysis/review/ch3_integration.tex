@@ -1,0 +1,245 @@
+% ch3_integration.tex — 围道积分与 Cauchy 积分定理
+
+\subsection{围道积分}
+
+\begin{definition}[围道积分 \eng{contour integral}]
+设 $\gamma: [a,b] \to \mathbb{C}$ 为分段 $C^1$ 曲线，$f$ 在 $\gamma$ 上连续。定义
+\[
+  \int_\gamma f(z)\,dz = \int_a^b f(\gamma(t))\,\gamma'(t)\,dt.
+\]
+\end{definition}
+
+\begin{lemma}[ML 不等式 \eng{ML inequality}]
+若 $|f(z)| \leq M$ 对 $z \in \gamma$ 成立，$L = \text{length}(\gamma)$，则
+\[
+  \left|\int_\gamma f(z)\,dz\right| \leq M \cdot L.
+\]
+\end{lemma}
+
+这是估计围道积分最基本的工具。
+
+\subsection{原函数与路径无关性}
+
+\begin{definition}[原函数 \eng{primitive}]
+若 $F' = f$ 在区域 $D$ 上成立，则称 $F$ 为 $f$ 在 $D$ 上的原函数。
+\end{definition}
+
+\begin{theorem}
+设 $f$ 在区域 $D$ 上连续。以下等价：
+\begin{enumerate}  \item $f$ 在 $D$ 上有原函数；
+  \item 对 $D$ 中任意闭曲线 $\gamma$，$\displaystyle\oint_\gamma f(z)\,dz = 0$；
+  \item $\displaystyle\int_\gamma f(z)\,dz$ 只依赖 $\gamma$ 的端点（路径无关）。
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+$1/z$ 在 $\mathbb{C}\setminus\{0\}$ 上没有全局原函数，因为
+$\displaystyle\oint_{|z|=1} \frac{dz}{z} = 2\pi i \neq 0$。
+这个非零积分是复分析中几乎所有深刻结果的根源。
+\end{remark}
+
+\subsection{Cauchy 积分定理}
+
+\begin{theorem}[Cauchy 积分定理 \eng{Cauchy's integral theorem}]
+设 $D$ 为单连通区域，$f$ 在 $D$ 上解析，$\gamma$ 是 $D$ 中的可缩闭曲线
+\eng{null-homotopic closed curve}。则
+\[
+  \oint_\gamma f(z)\,dz = 0.
+\]
+\end{theorem}
+
+\begin{remark}
+单连通性是关键假设。Cauchy 定理的逆也成立（Morera 定理），
+因此"沿闭曲线积分为零"可作为解析性的刻画。
+\end{remark}
+
+\subsection{Cauchy 积分公式}
+
+\begin{theorem}[Cauchy 积分公式 \eng{Cauchy integral formula}]
+设 $f$ 在闭圆盘 $\overline{D}(a,r)$ 的邻域内解析，则对 $|z-a| < r$：
+\[
+  f(z) = \frac{1}{2\pi i}\oint_{|\zeta - a| = r} \frac{f(\zeta)}{\zeta - z}\,d\zeta.
+\]
+\end{theorem}
+
+这是复分析中最重要的公式之一。它的意义在于：
+\textbf{解析函数在其定义域内部的值完全由边界值决定}。
+
+\begin{theorem}[Cauchy 积分公式的推广形式 \eng{generalized Cauchy integral formula}]
+在同样条件下，$f$ 的 $n$ 阶导数为
+\[
+  f^{(n)}(z) = \frac{n!}{2\pi i}\oint_{|\zeta - a| = r}
+  \frac{f(\zeta)}{(\zeta - z)^{n+1}}\,d\zeta.
+\]
+\end{theorem}
+
+\begin{proof}
+对 $n$ 用数学归纳法。
+
+\textbf{基础步骤}（$n=0$）：即 Cauchy 积分公式本身，已证。
+
+\textbf{归纳步骤}：设公式对 $n$ 成立，即
+\[
+  f^{(n)}(z) = \frac{n!}{2\pi i}\oint_{|\zeta-a|=r}
+  \frac{f(\zeta)}{(\zeta-z)^{n+1}}\,d\zeta,
+\]
+往证对 $n+1$ 也成立。关键在于验证可以\textbf{在积分号下对 $z$ 求导}。
+
+固定 $z_0$ 满足 $|z_0 - a| < r$。取 $\delta > 0$ 使得 $|z_0 - a| + \delta < r$，
+则对 $|z - z_0| \leq \delta$ 及 $|\zeta - a| = r$ 有 $|\zeta - z| \geq \delta$，于是
+\[
+  \left|\frac{f(\zeta)}{(\zeta-z)^{n+2}}\right|
+  \leq \frac{M}{\delta^{n+2}},
+\]
+其中 $M = \max_{|\zeta-a|=r}|f(\zeta)|$。因此被积函数关于 $z$ 在 $|z-z_0| \leq \delta$
+上一致有界，允许在积分号下逐项求导：
+\[
+  f^{(n+1)}(z) = \frac{d}{dz}f^{(n)}(z)
+  = \frac{n!}{2\pi i}\oint_{|\zeta-a|=r}
+    \frac{(n+1)\,f(\zeta)}{(\zeta-z)^{n+2}}\,d\zeta
+  = \frac{(n+1)!}{2\pi i}\oint_{|\zeta-a|=r}
+    \frac{f(\zeta)}{(\zeta-z)^{n+3}}\,d\zeta.
+  \qedhere
+\]
+\end{proof}
+
+\begin{corollary}[Cauchy 不等式]
+若 $|f(z)| \leq M$ 在 $|z-a| = r$ 上成立，则
+\[
+  |f^{(n)}(a)| \leq \frac{n!\,M}{r^n}.
+\]
+\end{corollary}
+
+\begin{remark}
+Cauchy 不等式将 $n$ 阶导数的大小与函数在圆周上的最大值联系起来，
+这是证明许多全局性质（如 Liouville 定理）的基础。
+\end{remark}
+
+\subsection{Poisson 积分公式}
+
+Cauchy 积分公式在单位圆盘上的实部版本：若 $f$ 在 $\overline{\mathbb{D}}$ 上解析，
+$f(e^{i\theta}) = u(\theta) + iv(\theta)$，则
+\[
+  u(re^{i\varphi}) = \frac{1}{2\pi}\int_0^{2\pi}
+  \frac{1 - r^2}{1 - 2r\cos(\theta - \varphi) + r^2}\,u(\theta)\,d\theta.
+\]
+其中核 $P_r(\theta - \varphi) = \dfrac{1 - r^2}{1 - 2r\cos(\theta-\varphi)+r^2}$
+称为 \textbf{Poisson 核} \eng{Poisson kernel}。
+
+\subsection{Liouville 定理}
+
+\begin{theorem}[Liouville 定理 \eng{Liouville's theorem}]
+有界整函数必为常数。
+\end{theorem}
+
+\begin{proof}[证明思路]
+设 $|f(z)| \leq M$。对 $n=1$ 应用 Cauchy 不等式：
+$|f'(a)| \leq M/r$，令 $r \to \infty$ 得 $f'(a) = 0$。
+\end{proof}
+
+\begin{corollary}[代数基本定理 \eng{fundamental theorem of algebra}]
+非常数复系数多项式在 $\mathbb{C}$ 中至少有一个根。
+\end{corollary}
+
+\begin{proof}[证明思路]
+若 $p(z)$ 无根，则 $1/p(z)$ 为整函数。因 $|p(z)| \to \infty$（$|z| \to \infty$），
+$1/p(z)$ 有界，由 Liouville 定理知 $1/p(z)$ 为常数，矛盾。
+\end{proof}
+
+\begin{remark}
+Liouville 定理还有更多推论：
+\begin{itemize}
+  \item 多项式增长的整函数必为多项式；
+  \item 双周期整函数必为常数；
+  \item 非常数整函数的像在 $\mathbb{C}$ 中稠密。
+\end{itemize}
+\end{remark}
+
+\subsection{Morera 定理与解析性的积分刻画}
+
+\begin{theorem}[Morera 定理 \eng{Morera's theorem}]
+设 $f$ 在区域 $D$ 上连续。若对 $D$ 中任意可缩闭曲线 $\gamma$ 都有
+$\displaystyle\oint_\gamma f(z)\,dz = 0$，则 $f$ 在 $D$ 上解析。
+\end{theorem}
+
+\begin{remark}
+Morera 定理是 Cauchy 积分定理的逆命题。它表明"沿闭曲线积分为零"不仅是解析性的\textbf{推论}，
+在连续性假设下也是解析性的\textbf{充分条件}。
+\end{remark}
+
+\begin{proof}[证明思路]
+由于积分为零，$f$ 在 $D$ 上存在原函数 $F$（$F' = f$）。$F$ 解析，从而 $F$ 无穷次可微，
+故 $f = F'$ 也解析。
+\end{proof}
+
+Morera 定理提供了一种判断函数解析性的纯积分方法，特别适用于
+由积分或极限定义的函数。
+
+\subsection{全纯函数的等价刻画——总结}
+
+以下是一张贯穿本课程的核心等价关系图。设 $f$ 在区域 $D$ 上连续，则：
+
+\begin{theorem}[全纯性的等价刻画]
+设 $D \subset \mathbb{C}$ 为区域，$f: D \to \mathbb{C}$ 连续。以下等价：
+\begin{enumerate}
+  \item $f$ 在 $D$ 上全纯（解析）—— $f'$ 在每点存在；
+  \item $f$ 在 $D$ 上实可微且满足 Cauchy--Riemann 方程；
+  \item $\partial f / \partial \bar{z} = 0$ 在 $D$ 上成立（Wirtinger 形式）；
+  \item 对 $D$ 中任意可缩闭曲线 $\gamma$，$\displaystyle\oint_\gamma f(z)\,dz = 0$（Morera / Cauchy）；
+  \item $f$ 在 $D$ 上\textbf{局部}有原函数：每点 $z_0 \in D$ 有邻域 $U$ 及 $F$ 使 $F' = f$ 在 $U$ 上；
+  \item $f$ 在 $D$ 上每点附近可展开为收敛幂级数（解析 = 全纯）；
+  \item $f$ 满足 Cauchy 积分公式：对每个充分小的圆盘 $\overline{D}(a,r) \subset D$，
+    \[
+      f(z) = \frac{1}{2\pi i}\oint_{|\zeta-a|=r} \frac{f(\zeta)}{\zeta - z}\,d\zeta
+    \]
+    对 $|z-a| < r$ 成立。
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+这是复分析区别于实分析最本质的特征：在实分析中，$C^1$、$C^\infty$、实解析、可积分为零
+是\textbf{互不蕴含}的。但在复分析中，以上所有概念在"连续 + 复可微"的假设下全部等价。
+这体现了复可微条件的极度刚性 \eng{rigidity}。
+\end{remark}
+
+\subsection{Goursat 定理}
+
+\begin{theorem}[Goursat 定理 \eng{Goursat's theorem}]
+设 $f$ 在区域 $D$ 上复可微（仅假设导数存在，不假设 $f'$ 连续）。则对 $D$ 中任意三角形边界 $\triangle$，
+\[
+  \oint_{\partial\triangle} f(z)\,dz = 0.
+\]
+由此可推出 Cauchy 积分定理（无需假设 $f \in C^1$）。
+\end{theorem}
+
+\begin{remark}
+Goursat 定理的重要性在于：它告诉我们 Cauchy 积分定理的成立\textbf{不需要}假设 $f'$ 连续。
+复可微本身（仅用差商极限的定义）就蕴含了 Cauchy 定理，进而蕴含 $f$ 无穷次可微——
+这与实分析中 $C^1 \not\Rightarrow C^2$ 形成鲜明对比。
+\end{remark}
+
+\subsection{Cauchy 积分公式与幂级数}
+
+\begin{theorem}[解析 $\Longleftrightarrow$ 全纯]
+若 $f$ 在 $z_0$ 的一个邻域内复可微，则 $f$ 在该邻域内可展开为 Taylor 级数：
+\[
+  f(z) = \sum_{n=0}^{\infty} \frac{f^{(n)}(z_0)}{n!}(z - z_0)^n,
+\]
+收敛半径至少为 $z_0$ 到 $\partial D$ 的距离。
+\end{theorem}
+
+\begin{proof}[证明思路]
+对 $z$ 在 $z_0$ 附近，在 Cauchy 积分公式中对核 $1/(\zeta-z)$ 作几何级数展开：
+\[
+  \frac{1}{\zeta - z}
+  = \frac{1}{\zeta - z_0}\cdot\frac{1}{1 - \frac{z-z_0}{\zeta-z_0}}
+  = \sum_{n=0}^{\infty} \frac{(z - z_0)^n}{(\zeta - z_0)^{n+1}},
+\]
+逐项积分并与广义 Cauchy 积分公式比较即得 Taylor 系数。
+\end{proof}
+
+\begin{remark}
+这条定理证实了"全纯 = 解析"——从复可微出发，经过 Cauchy 积分公式这座桥梁，
+抵达幂级数展开。这在实分析中是单向不可逆的，
+但在复分析中却构成了完美的等价闭环。
+\end{remark}

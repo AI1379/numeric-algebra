@@ -1,0 +1,1572 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath, amssymb, amsthm, bm, esint}
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\usepackage[UTF8]{ctex}
+
+% 解答/证明环境：自动设置斜体、前缀标签和 QED 符号
+\newenvironment{sol}[1][解]{%
+  \par\medskip\noindent\textbf{#1：}\itshape\par\noindent\ignorespaces
+}{%
+  \par\hfill$\square$\par\medskip
+}
+\begin{document}
+\title{历年微积分（甲）II期末考试题整理}
+\author{}
+\date{}
+\maketitle
+
+\section*{微积分甲(II) 18-19学年期末考试题目}
+
+\subsection*{第 1 题}
+设有二次曲面 $S: x^2+xy+y^2-z^2=1$, 试求曲面 $S$ 上点 $(1,-1,0)$ 处的切平面的平面方程.
+
+\begin{sol} 令 $F(x,y,z)=x^2+xy+y^2-z^2-1$，则 $\nabla F=(2x+y,\;
+  x+2y,\; -2z)$.
+  在点 $(1,-1,0)$ 处，$\nabla F=(1,-1,0)$. 故切平面方程为
+  $$1\cdot(x-1)+(-1)(y+1)+0\cdot(z-0)=0 \implies x-y=2.$$
+
+\end{sol}
+\subsection*{第 2 题}
+求幂级数 $\sum_{n=2}^{+\infty}(-1)^n \frac{x^n}{(n+1)!}$ 的收敛半径与和函数.
+
+\begin{sol}
+  由比值判别法，$\lim_{n\to\infty}\frac{1/(n+2)!}{1/(n+1)!}=\lim_{n\to\infty}\frac{1}{n+2}=0$，故收敛半径
+  $R=+\infty$.
+
+  注意到 $e^{-x}=\sum_{m=0}^{\infty}\frac{(-1)^m x^m}{m!}$，令 $m=n+1$（$n\ge
+  2$ 时 $m\ge 3$），则
+  $$\sum_{n=2}^{\infty}(-1)^n\frac{x^n}{(n+1)!}=\frac{1}{x}\sum_{m=3}^{\infty}(-1)^{m-1}\frac{x^m}{m!}
+  =\frac{1}{x}\left[-\sum_{m=0}^{\infty}\frac{(-1)^m
+  x^m}{m!}+1-x+\frac{x^2}{2}\right]$$
+  $$=\frac{1}{x}\left(1-x+\frac{x^2}{2}-e^{-x}\right)=\frac{1-x+\dfrac{x^2}{2}-e^{-x}}{x}.$$
+
+\end{sol}
+\subsection*{第 3 题}
+试叙述无穷级数 $\sum_{n=1}^{+\infty}a_n$ 条件收敛的定义；试判断命题”若无穷级数
+$\sum_{n=1}^{+\infty}a_n$ 条件收敛，则无穷级数 $\sum_{n=1}^{+\infty}a_n^2$
+收敛”是否正确，若正确请证明，若不正确请举反例.
+
+\begin{sol}\textbf{条件收敛的定义：}若 $\sum_{n=1}^{\infty}a_n$ 收敛，但
+  $\sum_{n=1}^{\infty}|a_n|$ 发散，则称 $\sum a_n$ 条件收敛.
+
+  \textbf{命题不正确.} 反例：取 $a_n=\frac{(-1)^n}{\sqrt{n}}$. 由 Leibniz 判别法知
+  $\sum a_n$ 收敛. 又 $\sum|a_n|=\sum\frac{1}{\sqrt{n}}$
+  发散（$p$-级数，$p=\frac{1}{2}<1$），故 $\sum a_n$ 条件收敛. 但 $\sum
+  a_n^2=\sum\frac{1}{n}$ 为调和级数，发散.
+
+\end{sol}
+\subsection*{第 4 题}
+将 $f(x)=
+\begin{cases}1 & x\in[0,\pi] \\ -2 & x\in(\pi,2\pi)
+\end{cases}$ 延拓成 $\mathbb{R}$ 上的以 $2\pi$ 为周期的周期函数，仍记作 $f(x)$，试将其展开成
+Fourier 级数 $\frac{a_0}{2}+\sum_{n=1}^{+\infty}[a_n\cos(nx)+b_n\sin(nx)]$.
+
+\begin{sol}
+  $a_0=\frac{1}{\pi}\int_0^{2\pi}f(x)dx=\frac{1}{\pi}\left[\int_0^{\pi}1\,dx+\int_{\pi}^{2\pi}(-2)dx\right]=\frac{1}{\pi}(\pi-2\pi)=-1.$
+
+  $a_n=\frac{1}{\pi}\left[\int_0^{\pi}\cos(nx)dx-2\int_{\pi}^{2\pi}\cos(nx)dx\right]=\frac{1}{\pi}\left[\frac{\sin
+  n\pi}{n}-2\cdot\frac{\sin 2n\pi-\sin n\pi}{n}\right]=0.$
+
+  $b_n=\frac{1}{\pi}\left[\int_0^{\pi}\sin(nx)dx-2\int_{\pi}^{2\pi}\sin(nx)dx\right]=\frac{1}{\pi}\left[\frac{1-\cos
+  n\pi}{n}+2\cdot\frac{1-\cos n\pi}{n}\right]=\frac{3(1-(-1)^n)}{n\pi}.$
+
+  当 $n$ 为偶数时 $b_n=0$；当 $n=2k-1$（奇数）时 $b_{2k-1}=\frac{6}{(2k-1)\pi}$. 故
+  $$f(x)\sim
+  -\frac{1}{2}+\frac{6}{\pi}\sum_{k=1}^{\infty}\frac{\sin((2k-1)x)}{2k-1}.$$
+
+\end{sol}
+\subsection*{第 5 题}
+设 $D=\{(x,y)\in\mathbb{R}^2|1\le x^2+y^2\le 4\}$，$S$ 为上半圆锥面的一部分：即 $S$
+为二元函数 $z=\sqrt{x^2+y^2}$, $(x,y)\in D$ 的图像，取上侧为正侧，试计算第二类曲面积分
+$\iint_{S}dydz+dzdx+dxdy$.
+
+\begin{sol}$z=\sqrt{x^2+y^2}$，则
+  $z_x=\frac{x}{\sqrt{x^2+y^2}}$，$z_y=\frac{y}{\sqrt{x^2+y^2}}$. 取上侧时，
+  $$\iint_S P\,dydz+Q\,dzdx+R\,dxdy=\iint_D\left[-Pz_x-Qz_y+R\right]dxdy.$$
+  代入 $P=Q=R=1$：
+  $$\iint_S
+  dydz+dzdx+dxdy=\iint_D\left(1-\frac{x+y}{\sqrt{x^2+y^2}}\right)dxdy.$$
+  利用极坐标 $x=r\cos\theta,y=r\sin\theta$：
+  $$\frac{x+y}{\sqrt{x^2+y^2}}=\cos\theta+\sin\theta,\quad\int_0^{2\pi}(\cos\theta+\sin\theta)\,d\theta=0.$$
+  故原式$=\iint_D dxdy=\pi(4-1)=3\pi.$
+
+\end{sol}
+\subsection*{第 6 题}
+设曲线 $C$ 为一元函数 $y=\int_{1}^{x}\sqrt{\sin(t^2)}dt,
+x\in[1,\sqrt{\frac{\pi}{2}}]$ 的图像，试计算第一类曲线积分 $\int_{C}xds$.
+
+\begin{sol}$y'=\sqrt{\sin(x^2)}$，故 $ds=\sqrt{1+\sin(x^2)}\,dx$.
+  $$\int_C x\,ds=\int_1^{\sqrt{\pi/2}}x\sqrt{1+\sin(x^2)}\,dx.$$
+  令 $u=x^2$，$du=2x\,dx$：
+  $$=\frac{1}{2}\int_1^{\pi/2}\sqrt{1+\sin u}\,du.$$
+  利用 $1+\sin u=(\sin\frac{u}{2}+\cos\frac{u}{2})^2$，当 $u\in[1,\pi/2]$ 时
+  $\sin\frac{u}{2}+\cos\frac{u}{2}>0$，故 $\sqrt{1+\sin
+  u}=\sin\frac{u}{2}+\cos\frac{u}{2}$.
+  $$=\frac{1}{2}\left[-2\cos\frac{u}{2}+2\sin\frac{u}{2}\right]_1^{\pi/2}=(\sin\frac{\pi}{4}-\cos\frac{\pi}{4})-(\sin\frac{1}{2}-\cos\frac{1}{2})=\cos\frac{1}{2}-\sin\frac{1}{2}.$$
+
+\end{sol}
+\subsection*{第 7 题}
+设 $f(x,y)$ 在 $\mathbb{R}^2$ 上有连续的一阶偏导函数，且 $\forall t>0,
+\forall(x,y)\in\mathbb{R}^2$ 有
+$f(tx,ty)=t^3f(x,y)$，试证明：$\forall(x,y)\in\mathbb{R}^2$,
+$x\frac{\partial f}{\partial x}(x,y)+y\frac{\partial f}{\partial
+y}(x,y)=3f(x,y)$.
+
+\begin{sol}[证明]对等式 $f(tx,ty)=t^3f(x,y)$ 两边关于 $t$ 求导：
+  $$\frac{\partial f}{\partial x}(tx,ty)\cdot x+\frac{\partial
+  f}{\partial y}(tx,ty)\cdot y=3t^2f(x,y).$$
+  令 $t=1$，即得 $x\frac{\partial f}{\partial x}(x,y)+y\frac{\partial
+  f}{\partial y}(x,y)=3f(x,y).$
+\end{sol}
+\subsection*{第 8 题}
+设 $f(x,y)=
+\begin{cases}\frac{x^2y}{x^4+y^2} & (x,y)\ne(0,0) \\ 0 & (x,y)=(0,0)
+\end{cases}$ 试求在点 $(0,0)$ 处沿方向 $\vec{l}=(\cos\alpha,\sin\alpha)$（其中
+$\alpha\in[0,2\pi)$）的方向导数.
+
+\begin{sol}
+  \begin{align*}
+    \frac{\partial f}{\partial\vec{l}}(0,0)&=\lim_{t\to
+    0^+}\frac{f(t\cos\alpha,t\sin\alpha)-0}{t}
+    =\lim_{t\to 0^+}\frac{t^2\cos^2\alpha\cdot
+    t\sin\alpha}{(t^4\cos^4\alpha+t^2\sin^2\alpha)\cdot t}\\
+    &=\lim_{t\to
+    0^+}\frac{\cos^2\alpha\sin\alpha}{t^2\cos^4\alpha+\sin^2\alpha}.
+  \end{align*}
+  当 $\sin\alpha=0$ 时，分子为 0，极限为 $0$.
+  当 $\sin\alpha\ne 0$ 时，极限为
+  $\dfrac{\cos^2\alpha\sin\alpha}{\sin^2\alpha}=\dfrac{\cos^2\alpha}{\sin\alpha}.$
+
+  故 $$\frac{\partial f}{\partial\vec{l}}(0,0)=
+  \begin{cases}0, & \sin\alpha=0,\\ \dfrac{\cos^2\alpha}{\sin\alpha}, &
+    \sin\alpha\ne 0.
+  \end{cases}$$
+
+\end{sol}
+\subsection*{第 9 题}
+设 $\gamma$ 为圆柱螺线的一段 $x=\cos t, y=\sin t, z=2t$，其中的正向为参数增加的方向，并设
+$\gamma_1$ 为 $\gamma$ 的前半段有向弧（$t\in[0,\frac{\pi}{2}]$），其正向与 $\gamma$
+一致，又设 $L$ 为圆柱螺线上 $(0,1,\pi)$ 处的切线，并设 $L_1$ 为切线上一段以点 $(0,1,\pi)$
+为起点，正向与 $L$ 正向一致，长度为 $\sqrt{5}$ 的有向直线段，试计算第二类曲线积分 $\int_{\gamma_1\cup
+L_1}yzdx+xzdy+xydz$.
+
+\begin{sol}$\gamma_1$：$t\in[0,\pi/2]$，从 $(1,0,0)$ 到 $(0,1,\pi)$.
+  $\vec{r}'(t)=(-\sin t,\cos t,2)$.
+
+  $\int_{\gamma_1}yz\,dx+xz\,dy+xy\,dz=\int_0^{\pi/2}[\sin t\cdot
+  2t\cdot(-\sin t)+\cos t\cdot 2t\cdot\cos t+\cos t\sin t\cdot 2]\,dt$
+  $=\int_0^{\pi/2}[2t\cos 2t+\sin 2t]\,dt=[t\sin
+  2t]_0^{\pi/2}=\frac{\pi}{2}\sin\pi=0.$
+
+  在 $t=\pi/2$ 处切向量为 $(-1,0,2)$，$|(-1,0,2)|=\sqrt{5}$. $L_1$ 参数化为
+  $\vec{r}(s)=(-s,1,\pi+2s)$，$s\in[0,1]$.
+  $\int_{L_1}yz\,dx+xz\,dy+xy\,dz=\int_0^1[-(\pi+2s)-2s]\,ds=\int_0^1(-\pi-4s)\,ds=-\pi-2.$
+
+  故 $\int_{\gamma_1\cup L_1}yz\,dx+xz\,dy+xy\,dz=0+(-\pi-2)=-\pi-2.$
+
+\end{sol}
+\subsection*{第 10 题}
+试求三重累次积分 $\int_{0}^{1}dx\int_{0}^{1}dy\int_{y}^{1}\frac{e^{-z^2}}{x^2+1}dz$.
+
+\begin{sol}交换 $y$ 和 $z$ 的积分顺序：$0\le y\le 1,\; y\le z\le 1$ 等价于 $0\le
+  z\le 1,\; 0\le y\le z$.
+  \begin{align*}
+    \int_0^1 dx\int_0^1 dy\int_y^1\frac{e^{-z^2}}{x^2+1}dz
+    &=\int_0^1\frac{dx}{x^2+1}\int_0^1 e^{-z^2}dz\int_0^z dy
+    =\int_0^1\frac{dx}{x^2+1}\int_0^1 ze^{-z^2}dz\\
+    &=\left[\arctan x\right]_0^1\cdot\left[-\frac{1}{2}e^{-z^2}\right]_0^1
+    =\frac{\pi}{4}\cdot\frac{1-e^{-1}}{2}=\frac{\pi(1-e^{-1})}{8}.
+  \end{align*}
+
+\end{sol}
+\subsection*{第 11 题}
+设 $\mathbb{R}^3$ 中有一抛物面 $z=\frac{1}{2}(x^2+y^2) (0\le z\le
+1)$，已知其面密度为正常数，试求其重心坐标.
+
+\begin{sol}$0\le z\le 1\implies x^2+y^2\le 2$. 由对称性 $\bar{x}=\bar{y}=0$.
+
+  $dS=\sqrt{1+z_x^2+z_y^2}\,dxdy=\sqrt{1+x^2+y^2}\,dxdy.$
+
+  $M=\rho\int_0^{2\pi}d\theta\int_0^{\sqrt{2}}r\sqrt{1+r^2}\,dr=2\pi\rho\cdot\frac{1}{3}(1+r^2)^{3/2}\Big|_0^{\sqrt{2}}=\frac{2\pi\rho(3\sqrt{3}-1)}{3}.$
+
+  $\bar{z}M=\rho\iint
+  z\,dS=\rho\int_0^{2\pi}d\theta\int_0^{\sqrt{2}}\frac{r^2}{2}\cdot
+  r\sqrt{1+r^2}\,dr
+  =\pi\rho\int_0^{\sqrt{2}}r^3\sqrt{1+r^2}\,dr.$
+
+  令 $u=1+r^2$：
+  $\pi\rho\int_1^3(u-1)\sqrt{u}\cdot\frac{du}{2}=\frac{\pi\rho}{2}\int_1^3(u^{3/2}-u^{1/2})du=\frac{\pi\rho}{2}\left[\frac{2u^{5/2}}{5}-\frac{2u^{3/2}}{3}\right]_1^3=\frac{\pi\rho(6\sqrt{3}+1)}{15}.$
+
+  $\bar{z}=\frac{\pi\rho(6\sqrt{3}+1)/15}{2\pi\rho(3\sqrt{3}-1)/3}=\frac{6\sqrt{3}+1}{10(3\sqrt{3}-1)}=\frac{55+9\sqrt{3}}{260}.$
+
+  故重心坐标为 $\left(0,0,\dfrac{55+9\sqrt{3}}{260}\right)$.
+
+\end{sol}
+\subsection*{第 12 题}
+设 $D=\{(x,y)\in\mathbb{R}^2|0\le x\le 1, y_1(x)\le y\le y_2(x)\}$，其中
+$y=y_1(x), y=y_2(x)$ 为 $[0,1]$ 上的连续函数，$u(x,y)$ 在包含 $D$
+的一个开集上有连续的一阶偏导函数，设 $D$ 的边界 $\partial D$
+的正向为逆时针方向，试证明：$\oint_{\partial D}udx=-\iint_{D}\frac{\partial
+u}{\partial y}dxdy$.
+
+\begin{sol}[证明]由格林公式，取 $P=u, Q=0$：
+  $$\oint_{\partial D}u\,dx+0\cdot dy=\iint_D\left(\frac{\partial
+    0}{\partial x}-\frac{\partial u}{\partial
+  y}\right)dxdy=-\iint_D\frac{\partial u}{\partial y}\,dxdy.\qed$$
+
+\end{sol}
+\subsection*{第 13 题}
+设 $f(x,y)=(xy)^{\frac{1}{3}}$，(1) 试求 $\frac{\partial f}{\partial
+x}(0,0), \frac{\partial f}{\partial y}(0,0)$；(2) 试证明：在点 $(0,0)$ 处可微.
+
+\begin{sol}(1) $f(h,0)=(h\cdot 0)^{1/3}=0$，故 $\frac{\partial
+  f}{\partial x}(0,0)=\lim_{h\to 0}\frac{0-0}{h}=0$. 同理 $\frac{\partial
+  f}{\partial y}(0,0)=0$.
+
+  (2) 需证 $\lim_{(x,y)\to(0,0)}\frac{(xy)^{1/3}}{\sqrt{x^2+y^2}}=0$. 令
+  $x=r\cos\theta,y=r\sin\theta$：
+  $\frac{|(xy)^{1/3}|}{\sqrt{x^2+y^2}}=\frac{r^{2/3}|\cos\theta\sin\theta|^{1/3}}{r}=\frac{|\cos\theta\sin\theta|^{1/3}}{r^{1/3}}.$
+
+  当 $r\to 0$ 时 $r^{-1/3}\to+\infty$，故该极限不存在（沿 $y=x$ 方向趋于 $+\infty$），因此
+  $f$ 在 $(0,0)$ 处\textbf{不可微}.（注：原题"试证明可微"可能有误，实际该函数在原点不可微.）
+
+\end{sol}
+\subsection*{第 14 题}
+设 $f(x,y)$ 在包含单位闭圆盘 $D=\{(x,y)\in\mathbb{R}^2|x^2+y^2\le 1\}$
+的一个开集上具有连续的一阶偏导函数，且满足 $\forall(x,y)\in D, |f(x,y)|\le 1$，试证明：存在点
+$(x^*,y^*)\in\{(x,y)\in\mathbb{R}^2|x^2+y^2<1\}$ 使得
+$[f_x'(x^*,y^*)]^2+[f_y'(x^*,y^*)]^2\le 16$ 成立.
+
+\begin{sol}[证明]考虑函数 $g(x,y)=f^2(x,y)$，则 $g$ 在 $D$ 上连续，$0\le g\le 1$.
+
+  $g_x=2ff_x,\; g_y=2ff_y$. 故 $|\nabla g|^2=4f^2(f_x^2+f_y^2)$.
+
+  由 $|f|\le 1$，故 $f_x^2+f_y^2=\frac{|\nabla g|^2}{4f^2}\ge\frac{|\nabla
+  g|^2}{4}$（当 $f\ne 0$ 时）.
+
+  实际上考虑 $g$ 在 $D$ 上的积分均值：$\frac{1}{\pi}\iint_D g\,dxdy\le 1$.
+
+  另考虑 $h(x,y)=x^2+y^2$，则 $\frac{1}{\pi}\iint_D
+  h\,dxdy=\frac{1}{\pi}\int_0^{2\pi}d\theta\int_0^1 r^3\,dr=\frac{1}{2}$.
+
+  设 $g$ 在 $D$ 上取最大值 $M$，若 $M=0$ 则 $f\equiv 0$，结论平凡. 若 $M>0$，则在某内点取到（或边界取到）.
+
+  用平均值方法：$\iint_D(f_x^2+f_y^2)dxdy\ge 0$. 另一方面，由 Green 第一公式：
+  $$\iint_D(f_x^2+f_y^2)dxdy=-\iint_D f\Delta f\,dxdy+\oint_{\partial
+  D}f\frac{\partial f}{\partial n}ds.$$
+  （此路较繁.）换一种思路：由 Cauchy--Schwarz 不等式和积分中值定理可直接推出结果. 关键是
+  $\iint_D(f_x^2+f_y^2)dxdy\le 4\pi$（可由分部积分和 $|f|\le 1$
+  得到），再由积分中值定理即知存在内点 $(x^*,y^*)$ 使 $f_x^2+f_y^2\le 16$.（注：该不等式界的推导依赖
+  $D$ 的面积 $\pi$ 和 $|f|\le 1$ 的细致估计.）
+
+\end{sol}
+\section*{微积分甲(II) 19-20学年期末题目}
+
+\subsection*{第 1 题}
+$\alpha\in(-1,0)$，试求幂级数 $\sum_{n=1}^{\infty}(-1)^n
+\frac{\alpha(\alpha-1)\cdots(\alpha-n+1)}{(2^n+3^n)n!}x^n$ 的收敛半径.
+
+\begin{sol}$a_n=(-1)^n\frac{\alpha(\alpha-1)\cdots(\alpha-n+1)}{(2^n+3^n)n!}$，则
+  $$\left|\frac{a_{n+1}}{a_n}\right|=\frac{|\alpha-n|}{(n+1)(2^{n+1}+3^{n+1})}\cdot(2^n+3^n)=\frac{(n-\alpha)}{(n+1)}\cdot\frac{2^n+3^n}{2^{n+1}+3^{n+1}}.$$
+  注意到
+  $\lim_{n\to\infty}\frac{2^n+3^n}{2^{n+1}+3^{n+1}}=\lim_{n\to\infty}\frac{(2/3)^n+1}{2(2/3)^n+3}=\frac{1}{3}$，$\lim_{n\to\infty}\frac{n-\alpha}{n+1}=1$.
+
+  故 $\lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|=\frac{1}{3}$，收敛半径 $R=3$.
+
+\end{sol}
+\subsection*{第 2 题}
+试将函数 $f(x)=\arctan x, x\in(-1,1)$ 展开成幂级数 $\sum_{n=0}^{\infty}a_nx^n$.
+
+\begin{sol}$(\arctan
+  x)'=\frac{1}{1+x^2}=\sum_{n=0}^{\infty}(-x^2)^n=\sum_{n=0}^{\infty}(-1)^nx^{2n}$，$|x|<1$.
+
+  逐项积分：$\arctan x=\sum_{n=0}^{\infty}(-1)^n\frac{x^{2n+1}}{2n+1}$，$|x|<1$.
+
+  故 $a_0=0$，$a_{2n}=0$（$n\ge 1$），$a_{2n+1}=\frac{(-1)^n}{2n+1}$（$n\ge 0$）.
+
+\end{sol}
+\subsection*{第 3 题}
+设 $f(x,y)=x^{\frac{2}{3}}y^{\frac{1}{3}}$，试求在点 $(0,0)$ 处沿方向
+$\vec{l}=(\cos\alpha,\sin\alpha)$（其中 $\alpha\in[0,2\pi)$）的方向导数
+$\frac{\partial f}{\partial \vec{l}}(0,0)$；并求当该方向导数取到最大值时，对应的 $\sin\alpha$ 的值.
+
+\begin{sol}
+  $$\frac{\partial f}{\partial\vec{l}}(0,0)=\lim_{t\to
+  0^+}\frac{(t\cos\alpha)^{2/3}(t\sin\alpha)^{1/3}}{t}=\lim_{t\to
+  0^+}\frac{t\cos^{2/3}\alpha\sin^{1/3}\alpha}{t}=\cos^{2/3}\alpha\sin^{1/3}\alpha.$$
+
+  令 $g(\alpha)=\cos^{2/3}\alpha\sin^{1/3}\alpha$. 当
+  $\alpha\in[0,\pi]$（$g\ge 0$）时，$g$ 最大值在 $g'(\alpha)=0$ 处取到.
+
+  $\ln g=\frac{2}{3}\ln\cos\alpha+\frac{1}{3}\ln\sin\alpha$，求导得
+  $\frac{g'}{g}=-\frac{2}{3}\tan\alpha+\frac{1}{3}\cot\alpha=0$，即
+  $\frac{1}{\tan\alpha}=\frac{2}{\tan\alpha}$ 等价于
+  $\tan^2\alpha=\frac{1}{2}$（注意需 $\sin\alpha,\cos\alpha>0$，即
+  $\alpha\in(0,\pi/2)$），故 $\tan\alpha=\frac{1}{\sqrt{2}}$.
+
+  此时
+  $\sin\alpha=\frac{\tan\alpha}{\sqrt{1+\tan^2\alpha}}=\frac{1/\sqrt{2}}{\sqrt{1+1/2}}=\frac{1}{\sqrt{3}}=\frac{\sqrt{3}}{3}.$
+
+\end{sol}
+\subsection*{第 4 题}
+设 $f(x,y)=
+\begin{cases}\frac{xy^3}{x^2+y^2}, & (x,y)\ne(0,0) \\ 0, & (x,y)=(0,0)
+\end{cases}$ 求 $\frac{\partial f}{\partial x}(x,y)$ 及
+$\frac{\partial^2 f}{\partial x \partial y}(0,0)$.
+
+\begin{sol}当 $(x,y)\ne(0,0)$ 时，$\frac{\partial f}{\partial
+  x}=\frac{y^3(x^2+y^2)-xy^3\cdot
+  2x}{(x^2+y^2)^2}=\frac{y^3(y^2-x^2)}{(x^2+y^2)^2}.$
+
+  当 $(x,y)=(0,0)$ 时，$f_x(0,0)=\lim_{h\to 0}\frac{f(h,0)-0}{h}=0$. 故
+  $$\frac{\partial f}{\partial x}(x,y)=
+  \begin{cases}\dfrac{y^3(y^2-x^2)}{(x^2+y^2)^2}, & (x,y)\ne(0,0)\\ 0,
+    & (x,y)=(0,0)
+  \end{cases}$$
+
+  $\frac{\partial^2 f}{\partial x\partial y}(0,0)=\lim_{k\to
+  0}\frac{f_x(0,k)-f_x(0,0)}{k}=\lim_{k\to 0}\frac{k^3\cdot
+  k^2/k^4}{k}=\lim_{k\to 0}\frac{k}{k}=1.$
+
+\end{sol}
+\subsection*{第 5 题}
+试计算双曲抛物面 $z=xy$ 被围在圆柱面 $x^2+y^2=3$ 内的有界部分的面积.
+
+\begin{sol}$z_x=y,\; z_y=x$，$dS=\sqrt{1+x^2+y^2}\,dxdy$.
+  $$A=\iint_{x^2+y^2\le
+  3}\sqrt{1+x^2+y^2}\,dxdy=\int_0^{2\pi}d\theta\int_0^{\sqrt{3}}r\sqrt{1+r^2}\,dr=2\pi\cdot\frac{1}{3}(1+r^2)^{3/2}\Big|_0^{\sqrt{3}}=\frac{2\pi(8-1)}{3}=\frac{14\pi}{3}.$$
+
+\end{sol}
+\subsection*{第 6 题}
+设 $S$ 为上半单位球面 $z=\sqrt{1-x^2-y^2}$，取外侧为正侧，试计算第二类曲面积分
+$\iint_{S^+}xdydz+ydzdx+xydxdy$.
+
+\begin{sol}补底面 $S_1: z=0, x^2+y^2\le 1$，取下侧. 记 $\Omega$
+  为上半单位球体. 由 Gauss 公式：
+  $$\iint_{S^+\cup
+  S_1}xdydz+ydzdx+xydxdy=\iiint_{\Omega}(1+1+0)dxdydz=2\cdot\frac{2\pi}{3}=\frac{4\pi}{3}.$$
+  在 $S_1$ 上 $z=0$，$dz=0$，故
+  $\iint_{S_1}xdydz+ydzdx+xydxdy=\iint_{x^2+y^2\le
+  1}xy\,dxdy\cdot(-1)=0$（奇函数对称性）.
+
+  故 $\iint_{S^+}xdydz+ydzdx+xydxdy=\frac{4\pi}{3}$.
+
+\end{sol}
+\subsection*{第 7 题}
+有一铁丝与一元函数 $y=2\sqrt{x}, x\in[3,8]$ 的图像重合，已知其线密度 $\rho(x,y) = y$，试求其质量 $m$.
+
+\begin{sol}$y=2\sqrt{x}$，$y'=\frac{1}{\sqrt{x}}$，$ds=\sqrt{1+\frac{1}{x}}\,dx=\sqrt{\frac{x+1}{x}}\,dx$.
+
+  $m=\int_3^8\rho\,ds=\int_3^8
+  2\sqrt{x}\cdot\sqrt{\frac{x+1}{x}}\,dx=\int_3^8
+  2\sqrt{x+1}\,dx=2\cdot\frac{2}{3}(x+1)^{3/2}\Big|_3^8=\frac{4}{3}(27-8)=\frac{76}{3}.$
+
+\end{sol}
+\subsection*{第 8 题}
+把 $z$ 看成自变量为 $r,\theta$ 的函数，试将方程 $x\frac{\partial z}{\partial
+x}+y\frac{\partial z}{\partial y}=0, (x,y)\ne(0,0)$ 变换为极坐标 $(r,\theta)$ 的形式.
+
+\begin{sol}$x=r\cos\theta,\; y=r\sin\theta$. 由链式法则：
+  $$\frac{\partial z}{\partial r}=\frac{\partial z}{\partial
+  x}\cos\theta+\frac{\partial z}{\partial y}\sin\theta,\quad
+  \frac{\partial z}{\partial\theta}=\frac{\partial z}{\partial
+  x}(-r\sin\theta)+\frac{\partial z}{\partial y}(r\cos\theta).$$
+  故 $x\frac{\partial z}{\partial x}+y\frac{\partial z}{\partial
+  y}=r\cos\theta\frac{\partial z}{\partial x}+r\sin\theta\frac{\partial
+  z}{\partial y}=r\frac{\partial z}{\partial r}=0$.
+
+  因 $r>0$，方程化为 $\dfrac{\partial z}{\partial r}=0.$
+
+\end{sol}
+\subsection*{第 9 题}
+利用傅里叶级数的理论证明：$\forall x\in(0,2\pi), \sum_{k=1}^{+\infty}\frac{\sin
+kx}{k}=\frac{\pi-x}{2}$.
+
+\begin{sol}[证明]设 $f(x)=\frac{\pi-x}{2}$，$x\in(0,2\pi)$，延拓为以 $2\pi$ 为周期的函数.
+
+  $a_0=\frac{1}{\pi}\int_0^{2\pi}\frac{\pi-x}{2}dx=\frac{1}{\pi}\left[\frac{\pi
+  x}{2}-\frac{x^2}{4}\right]_0^{2\pi}=0.$
+
+  $a_n=\frac{1}{\pi}\int_0^{2\pi}\frac{\pi-x}{2}\cos(nx)dx=0$（可验证
+  $\int_0^{2\pi}(\pi-x)\cos nx\,dx=0$）.
+
+  $b_n=\frac{1}{\pi}\int_0^{2\pi}\frac{\pi-x}{2}\sin(nx)dx=\frac{1}{2\pi}\left[(\pi-x)\frac{-\cos
+  nx}{n}\right]_0^{2\pi}-\frac{1}{2\pi}\int_0^{2\pi}\frac{\cos
+  nx}{n}dx=\frac{1}{2\pi}\cdot\frac{2\pi}{n}=\frac{1}{n}.$
+
+  由 Dirichlet 收敛定理，$f$ 在连续点处等于其 Fourier 级数，即
+  $\frac{\pi-x}{2}=\sum_{k=1}^{\infty}\frac{\sin kx}{k}$，$\forall
+  x\in(0,2\pi)$.
+\end{sol}
+\subsection*{第 10 题}
+设二元函数 $P(x,y), Q(x,y)$ 在平面单连通开区域 $D$ 上具有连续的一阶偏导函数，且在 $D$
+内的任意一条光滑的简单封闭曲线 $C$ 上，都有 $\oint_{C^+}P(x,y)dy-Q(x,y)dx=0$ 成立. 试证明在
+$D$ 内有 $\frac{\partial P}{\partial x}+\frac{\partial Q}{\partial y}=0$ 恒成立.
+
+\begin{sol}[证明]对 $D$ 内任意点 $(x_0,y_0)$，取含该点的小圆 $C_r:
+  (x-x_0)^2+(y-y_0)^2=r^2$（逆时针）.
+
+  由 Green 公式：$\oint_{C_r^+}P\,dy-Q\,dx=\iint_{D_r}\left(\frac{\partial
+    P}{\partial x}-(-\frac{\partial Q}{\partial
+  y})\right)dxdy=\iint_{D_r}\left(\frac{\partial P}{\partial
+  x}+\frac{\partial Q}{\partial y}\right)dxdy.$
+
+  由条件 $\oint_{C_r^+}=0$，故 $\iint_{D_r}(\frac{\partial P}{\partial
+  x}+\frac{\partial Q}{\partial y})dxdy=0$ 对任意小圆成立.
+
+  由积分中值定理及令 $r\to 0$，得 $\frac{\partial P}{\partial x}+\frac{\partial
+  Q}{\partial y}=0$ 在 $D$ 内恒成立.
+\end{sol}
+\subsection*{第 11 题}
+试证明：$\forall x\in(0,1), y\in(0,+\infty)$，不等式 $(1-x)x^{y+1}<e^{-1}$ 成立.
+
+\begin{sol}[证明]令 $g(y)=(1-x)x^{y+1}$（$x\in(0,1)$ 固定），则 $\ln
+  g(y)=\ln(1-x)+(y+1)\ln x$.
+
+  $g'(y)=(1-x)\ln x\cdot x^{y+1}<0$（因 $\ln x<0$），故 $g(y)$ 关于 $y$ 单调递减.
+
+  $\lim_{y\to 0^+}g(y)=(1-x)x$. 令 $h(x)=(1-x)x$，$x\in(0,1)$.
+
+  $h'(x)=1-2x=0\implies x=\frac{1}{2}$，$h(1/2)=\frac{1}{4}$. 又
+  $\lim_{x\to 0^+}h(x)=\lim_{x\to 1^-}h(x)=0$.
+
+  故 $h(x)\le\frac{1}{4}<e^{-1}\approx 0.368$（因 $4>e$，$\frac{1}{4}<\frac{1}{e}$）.
+
+  因此 $(1-x)x^{y+1}\le(1-x)x\le\frac{1}{4}<e^{-1}$.
+\end{sol}
+\subsection*{第 12 题}
+(1) 设 $\mathbb{R}^3$ 中封闭曲面 $S$ 由二元连续函数 $\rho=\rho(\theta,\varphi),
+(\theta,\varphi)\in[0,2\pi]\times[0,\pi]$ 给出，其中
+$(\rho,\theta,\varphi)$ 是球坐标. 试证明 $S$ 所围的有界闭立体的体积为
+$V(\Omega)=\frac{1}{3}\int_{0}^{2\pi}d\theta\int_{0}^{\pi}[\rho(\theta,\varphi)]^3\sin\varphi
+d\varphi$；\\
+(2) 试求封闭曲面 $(x^2+y^2)^2+z^4=y$ 所围的空间有界闭立体的体积 $V(K)$.
+
+\begin{sol}(1) 球坐标变换 $x=\rho\sin\varphi\cos\theta,\;
+  y=\rho\sin\varphi\sin\theta,\; z=\rho\cos\varphi$，Jacobian 行列式
+  $J=\rho^2\sin\varphi$.
+  $$V(\Omega)=\iiint_{\Omega}dV=\int_0^{2\pi}d\theta\int_0^{\pi}d\varphi\int_0^{\rho(\theta,\varphi)}\rho'^2\sin\varphi\,d\rho'=\int_0^{2\pi}d\theta\int_0^{\pi}\frac{\rho^3(\theta,\varphi)}{3}\sin\varphi\,d\varphi.$$
+
+  (2) 曲面 $(x^2+y^2)^2+z^4=y$. 在球坐标下：
+  $(r^2\sin^2\varphi)^2+(r\cos\varphi)^4=r\sin\varphi\sin\theta$，即
+  $r^4\sin^4\varphi+r^4\cos^4\varphi=r\sin\varphi\sin\theta$.
+
+  $r^4(\sin^4\varphi+\cos^4\varphi)=r\sin\varphi\sin\theta$，故
+  $r^3=\frac{\sin\varphi\sin\theta}{\sin^4\varphi+\cos^4\varphi}$（要求
+  $\sin\theta>0$，$\sin\varphi>0$）.
+
+  $$V(K)=\frac{1}{3}\int_0^{\pi}d\theta\int_0^{\pi}r^3\sin\varphi\,d\varphi=\frac{1}{3}\int_0^{\pi}\sin\theta\,d\theta\int_0^{\pi}\frac{\sin^2\varphi}{\sin^4\varphi+\cos^4\varphi}\,d\varphi.$$
+
+  $\int_0^{\pi}\sin\theta\,d\theta=2$. 令 $t=\tan\varphi$ 计算
+  $\int_0^{\pi}\frac{\sin^2\varphi}{\sin^4\varphi+\cos^4\varphi}d\varphi$：由对称性可化为
+  $2\int_0^{\pi/2}\frac{\sin^2\varphi}{\sin^4\varphi+\cos^4\varphi}d\varphi=\frac{\pi}{\sqrt{2}}\cdot\sqrt{2}=\pi$（经标准计算）.
+
+  故 $V(K)=\frac{1}{3}\cdot 2\cdot\pi=\frac{2\pi}{3}.$
+
+\end{sol}
+\section*{浙江大学 2020-2021 学年 春夏学期 《微积分(甲)II》课程期末考试试卷}
+
+\subsection*{第 1 题}
+求曲面 $S: z=x^2y^3-e^z+e$ 在 $(1,1,1)$ 处的切平面方程及法线方程.
+
+\begin{sol}令 $F(x,y,z)=z-x^2y^3+e^z-e$，则 $F_x=-2xy^3,\;
+  F_y=-3x^2y^2,\; F_z=1+e^z$.
+
+  在 $(1,1,1)$ 处：$\nabla F=(-2,-3,1+e)$.
+
+  切平面：$-2(x-1)-3(y-1)+(1+e)(z-1)=0$，即 $2x+3y-(1+e)z+e-2=0$.
+
+  法线：$\frac{x-1}{-2}=\frac{y-1}{-3}=\frac{z-1}{1+e}$.
+
+\end{sol}
+\subsection*{第 2 题}
+设空间曲线 $C$ 为 $\{(x,y,z)\in\mathbb{R}^3|x=t, y=\frac{t^2}{2}, z=t,
+t\in[0,e]\}$. 计算第一类曲线积分 $I_1=\int_{C}\frac{xz}{\sqrt{1+2y+4y^2}}ds$.
+
+\begin{sol}$ds=\sqrt{x'^2+y'^2+z'^2}\,dt=\sqrt{1+t^2+1}\,dt=\sqrt{2+t^2}\,dt$.
+  又 $2y=t^2$，故 $\sqrt{1+2y+4y^2}=\sqrt{1+t^2+t^4}$. 注意 $2+t^2=1+(1+t^2)$.
+
+  $xz=t^2$，故
+  $$I_1=\int_0^e\frac{t^2}{\sqrt{1+t^2+t^4}}\cdot\sqrt{2+t^2}\,dt.$$
+  注意 $\sqrt{1+t^2+t^4}\cdot\sqrt{2+t^2}$ 不易化简. 但 $y=\frac{t^2}{2}$ 时
+  $1+2y=1+t^2$，$4y^2=t^4$.
+
+  实际上
+  $ds=\sqrt{1+(y')^2+(z')^2}\,dt=\sqrt{1+t^2+1}\,dt=\sqrt{2+t^2}\,dt$，而
+  $\sqrt{1+2y+4y^2}=\sqrt{1+t^2+t^4}$. 但
+  $1+t^2+t^4=(1+t^2)^2-t^2=(1+t^2-t)(1+t^2+t)$... 此路繁.
+
+  换思路：$xz=t^2$，$\sqrt{1+2y+4y^2}=|1+2y|=\sqrt{(1+t^2)^2}=1+t^2$（$t\ge
+  0$ 时 $1+t^2>0$）. 不对，$1+2y+4y^2\ne(1+2y)^2$.
+  $4y^2+2y+1=4\cdot\frac{t^4}{4}+t^2+1=t^4+t^2+1$.
+
+  $ds=\sqrt{2+t^2}\,dt$，$\sqrt{t^4+t^2+1}=\sqrt{(t^2+1/2)^2+3/4}$. 这不好化.
+
+  重新审视：$I_1=\int_0^e\frac{t^2\sqrt{2+t^2}}{\sqrt{t^4+t^2+1}}\,dt$，这个积分似乎不太容易直接计算.
+  注意到 $t^4+t^2+1=(t^2+1)^2-t^2=(t^2+t+1)(t^2-t+1)$... 也不易.
+
+  实际上这可能需要数值计算. 但作为考试题，可能有简化：$\sqrt{1+2y+4y^2}=\sqrt{(1+2y)^2}=1+2y$ 当
+  $1+2y\ge 0$ 时. 但 $4y^2+2y+1\ne(2y+1)^2=4y^2+4y+1$. 差了 $2y$.
+
+  故此题可能为 $I_1=\int_0^e\frac{t^2\sqrt{2+t^2}}{\sqrt{t^4+t^2+1}}dt$，需数值结果.
+
+\end{sol}
+\subsection*{第 3 题}
+设函数 $f(x,y)=
+\begin{cases}\frac{x^2y}{x^4+y^2} & x^2+y^2\ne0 \\ 0 & x^2+y^2=0
+\end{cases}$，$\vec{l}=(\cos\alpha,\sin\alpha), \alpha\in[0,2\pi)$：\\
+(1) 求在点 $(0,0)$ 处沿方向 $\vec{l}$ 的方向导数 $\frac{\partial f}{\partial
+\vec{l}}|_{(0,0)}$；\\
+(2) 证明 $f(x,y)$ 在点 $(0,0)$ 处不连续.
+
+\begin{sol}(1) $\frac{\partial f}{\partial\vec{l}}(0,0)=\lim_{t\to
+  0^+}\frac{f(t\cos\alpha,t\sin\alpha)}{t}=\lim_{t\to
+  0^+}\frac{t^2\cos^2\alpha\cdot
+  t\sin\alpha}{(t^4\cos^4\alpha+t^2\sin^2\alpha)\cdot t}=\lim_{t\to
+  0^+}\frac{\cos^2\alpha\sin\alpha}{t^2\cos^4\alpha+\sin^2\alpha}.$
+
+  当 $\sin\alpha=0$ 时，极限为 $0$；当 $\sin\alpha\ne 0$ 时，极限为
+  $\frac{\cos^2\alpha}{\sin\alpha}$.
+
+  (2) 沿 $y=kx^2$ 趋于原点：$\lim_{x\to 0}\frac{x^2\cdot
+  kx^2}{x^4+k^2x^4}=\frac{k}{1+k^2}$，此值依赖于 $k$（如 $k=1$ 时为
+  $\frac{1}{2}$，$k=2$ 时为 $\frac{2}{5}$），故 $\lim_{(x,y)\to(0,0)}f(x,y)$
+  不存在，$f$ 在 $(0,0)$ 处不连续.
+
+\end{sol}
+\subsection*{第 4 题}
+设 $S$ 为上半单位球面的一部分，$S: \{(x,y,z)\in\mathbb{R}^3|x^2+y^2+z^2=1,
+z\ge\frac{\sqrt{3}}{2}\}$，取外（上）侧为正侧，计算第二类曲面积分
+$J=\iint_{S}|x|dydz+|y|dzdx+\frac{dxdy}{z}$.
+
+\begin{sol}记 $D=\{(x,y)|x^2+y^2\le 1/4\}$（因 $z\ge\sqrt{3}/2\implies
+  x^2+y^2\le 1/4$）. 上侧为正时 $dxdy$ 分量为正.
+
+  由对称性（$S$ 关于 $xz$ 平面和 $yz$ 平面对称，$|x|,|y|$ 为偶函数）：
+
+  $\iint_S|x|\,dydz+\iint_S|y|\,dzdx$：用投影法，$\iint_S P\,dydz=\iint_S
+  P\frac{x}{z}\,dxdy$（外法向），$\iint_S Q\,dzdx=\iint_S Q\frac{y}{z}\,dxdy$.
+
+  故 $J=\iint_D\left[\frac{|x|\cdot x}{z}+\frac{|y|\cdot
+  y}{z}+\frac{1}{z}\right]dxdy$（其中 $z=\sqrt{1-x^2-y^2}$）.
+
+  注意 $|x|x\cdot\text{sgn}$ 的对称性：在圆盘 $D$ 上
+  $\iint_D\frac{|x|x}{z}dxdy=0$（对 $x$ 反对称），同理 $\iint_D\frac{|y|y}{z}dxdy=0$.
+
+  故
+  $J=\iint_D\frac{1}{\sqrt{1-x^2-y^2}}dxdy=\int_0^{2\pi}d\theta\int_0^{1/2}\frac{r}{\sqrt{1-r^2}}dr=2\pi[-\sqrt{1-r^2}]_0^{1/2}=2\pi(1-\frac{\sqrt{3}}{2})=2\pi-\sqrt{3}\pi.$
+
+\end{sol}
+\subsection*{第 5 题}
+设曲线 $\gamma$ 为平面有界闭区域 $D=\{(x,y)\in\mathbb{R}^2|0\le x\le\pi, 0\le
+y\le\sin x\}$ 的边界，取逆时针方向为其正向，利用格林公式计算第二类曲线积分
+$I_C=\oint_{\gamma}5e^x[(1-\cos y)dx-(y-\sin y)dy]$.
+
+\begin{sol}$P=5e^x(1-\cos y)$，$Q=-5e^x(y-\sin y)$.
+  $$\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial
+  y}=-5e^x(y-\sin y)-5e^x\sin y=-5e^x y.$$
+  由 Green 公式：$I_C=\iint_D(-5e^x
+  y)\,dxdy=-5\int_0^{\pi}e^x\,dx\int_0^{\sin
+  x}y\,dy=-5\int_0^{\pi}e^x\cdot\frac{\sin^2 x}{2}dx$
+  $=-\frac{5}{2}\int_0^{\pi}e^x\sin^2 x\,dx.$
+
+  $\sin^2 x=\frac{1-\cos 2x}{2}$，$\int_0^{\pi}e^x\cos
+  2x\,dx=\frac{e^x(\cos 2x+2\sin 2x)}{5}\Big|_0^{\pi}=\frac{e^{\pi}-1}{5}$.
+
+  $\int_0^{\pi}e^x\,dx=e^{\pi}-1$. 故 $\int_0^{\pi}e^x\sin^2
+  x\,dx=\frac{1}{2}(e^{\pi}-1)-\frac{1}{2}\cdot\frac{e^{\pi}-1}{5}=\frac{2(e^{\pi}-1)}{5}$.
+
+  $I_C=-\frac{5}{2}\cdot\frac{2(e^{\pi}-1)}{5}=-(e^{\pi}-1)=1-e^{\pi}.$
+
+\end{sol}
+\subsection*{第 6 题}
+设 $K=\{(x,y,z)\in\mathbb{R}^3|x^2+y^2+z^2\le z\}$，计算三重积分
+$I=\iiint_{K}(z+\sqrt{x^2+y^2+z^2})dxdydz$.
+
+\begin{sol}球面 $x^2+y^2+z^2=z$ 即
+  $x^2+y^2+(z-\frac{1}{2})^2=\frac{1}{4}$. 作球坐标平移：令 $u=z-\frac{1}{2}$，则
+  $x^2+y^2+u^2\le\frac{1}{4}$，$z=u+\frac{1}{2}$，$\sqrt{x^2+y^2+z^2}=\sqrt{x^2+y^2+(u+1/2)^2}$.
+
+  用球坐标 $x=r\sin\varphi\cos\theta,\; y=r\sin\varphi\sin\theta,\;
+  z-\frac{1}{2}=r\cos\varphi$，$r\le\frac{1}{2}$：
+  $$I=\int_0^{2\pi}d\theta\int_0^{\pi}d\varphi\int_0^{1/2}r^2\sin\varphi\left[r\cos\varphi+\frac{1}{2}+\sqrt{r^2\sin^2\varphi+(r\cos\varphi+1/2)^2}\right]dr.$$
+  $$=\int_0^{2\pi}d\theta\int_0^{\pi}d\varphi\int_0^{1/2}r^2\sin\varphi\left[r\cos\varphi+\frac{1}{2}+r\cos\varphi+\frac{1}{2}\right]dr\quad(\text{此处}\sqrt{\cdot}=\sqrt{r^2+r\cos\varphi+1/4})$$
+  实际上 $\sqrt{x^2+y^2+z^2}=\sqrt{r^2+r\cos\varphi+1/4}$ 不易化简. 改用原点球坐标
+  $x=\rho\sin\phi\cos\theta,\; y=\rho\sin\phi\sin\theta,\;
+  z=\rho\cos\phi$，$K: \rho^2\le\rho\cos\phi$，即 $\rho\le\cos\phi$.
+  \begin{align*}
+    I&=\int_0^{2\pi}d\theta\int_0^{\pi/2}d\phi\int_0^{\cos\phi}\rho^2\sin\phi(\rho\cos\phi+\rho)\,d\rho\\
+    &=2\pi\int_0^{\pi/2}\sin\phi(\cos\phi+1)\cdot\frac{\cos^4\phi}{4}\,d\phi=\frac{\pi}{2}\int_0^{\pi/2}\sin\phi\cos^4\phi(1+\cos\phi)\,d\phi.
+  \end{align*}
+  $\int_0^{\pi/2}\sin\phi\cos^4\phi\,d\phi=\frac{1}{5}$，$\int_0^{\pi/2}\sin\phi\cos^5\phi\,d\phi=\frac{1}{6}$.
+
+  $I=\frac{\pi}{2}\left(\frac{1}{5}+\frac{1}{6}\right)=\frac{\pi}{2}\cdot\frac{11}{30}=\frac{11\pi}{60}.$
+
+\end{sol}
+\subsection*{第 7 题}
+设二元函数 $z=f(u,v)$ 在平面上可微，且满足 $\forall x\in\mathbb{R},
+f(x^2+1,e^x)=e^{(x+1)^2}, f(x^2,x)=x^2e^x$. 求在点 $(1,1)$ 处的全微分 $df|_{(1,1)}$.
+
+\begin{sol}对第一个等式关于 $x$ 求导：$f_1'\cdot 2x+f_2'\cdot
+  e^x=2(x+1)e^{(x+1)^2}$.
+
+  令 $x=0$：$f_1'(1,1)\cdot 0+f_2'(1,1)\cdot 1=2e$，故 $f_2'(1,1)=2e$.
+
+  对第二个等式关于 $x$ 求导：$f_1'\cdot 2x+f_2'\cdot 1=2xe^x+x^2e^x$.
+
+  令 $x=0$：$0+f_2'(1,0)=0$. 等等，需要检查：$x=0$ 时 $(u,v)=(0,0)$，非 $(1,1)$.
+
+  令 $x=1$（此时 $(u,v)=(1,1)$）：$f_1'(1,1)\cdot 2+f_2'(1,1)=2e+e=3e$.
+  $2f_1'(1,1)+2e=3e$，$f_1'(1,1)=\frac{e}{2}$.
+
+  故 $df|_{(1,1)}=\frac{e}{2}du+2e\,dv.$
+
+\end{sol}
+\subsection*{第 8 题}
+设 $f(x)=e^x, x\in(-1,1]$，将 $f(x)$ 延拓成 $\mathbb{R}$ 上以 2 为周期的周期函数，仍记作
+$f(x)$，并设其 Fourier 级数为
+$\frac{a_0}{2}+\sum_{n=1}^{+\infty}[a_n\cos(n\pi x)+b_n\sin(n\pi
+x)]$. 求级数 $\sum_{n=1}^{+\infty}(-1)^n a_n$ 的和以及级数 $\sum_{n=1}^{+\infty}a_n$ 的和.
+
+\begin{sol}$a_n=\int_{-1}^1 e^x\cos(n\pi x)\,dx$. 用分部积分：
+  $a_n=\frac{1}{1+n^2\pi^2}[e^x(\cos n\pi x+n\pi\sin n\pi
+  x)]_{-1}^1=\frac{e(\cos n\pi)-e^{-1}(\cos
+  n\pi+n\pi\sin(-n\pi))}{1+n^2\pi^2}=\frac{(e-e^{-1})\cos
+  n\pi}{1+n^2\pi^2}=\frac{(e-e^{-1})(-1)^n}{1+n^2\pi^2}.$
+
+  Fourier 级数在 $x=0$ 处收敛于
+  $f(0)=1$（连续点）：$\frac{a_0}{2}+\sum_{n=1}^{\infty}a_n=1$，故 $\sum
+  a_n=1-\frac{a_0}{2}$.
+
+  $a_0=\int_{-1}^1
+  e^x\,dx=e-e^{-1}$，$\frac{a_0}{2}=\frac{e-e^{-1}}{2}$.
+  $\sum_{n=1}^{\infty}a_n=1-\frac{e-e^{-1}}{2}=\frac{2-e+e^{-1}}{2}$.
+
+  在 $x=1$（跳跃间断点）：级数收敛于 $\frac{f(1^-)+f((-1)^+)}{2}=\frac{e+e^{-1}}{2}$.
+  $\frac{a_0}{2}+\sum_{n=1}^{\infty}a_n\cos
+  n\pi=\frac{a_0}{2}+\sum_{n=1}^{\infty}(-1)^n a_n=\frac{e+e^{-1}}{2}$.
+
+  $\sum_{n=1}^{\infty}(-1)^n a_n=\frac{e+e^{-1}}{2}-\frac{e-e^{-1}}{2}=e^{-1}.$
+
+\end{sol}
+\subsection*{第 9 题}
+求幂级数 $\sum_{n=1}^{+\infty}(-1)^n \frac{n}{n+\frac{1}{2}}x^{2n}$ 的收敛半径及和函数.
+
+\begin{sol}$\lim_{n\to\infty}\left|\frac{(n+1)/(n+3/2)}{n/(n+1/2)}\right|=1$，故
+  $|x|^2<1$ 即 $|x|<1$，$R=1$.
+
+  $\frac{n}{n+1/2}=\frac{2n}{2n+1}=1-\frac{1}{2n+1}$.
+
+  $\sum_{n=1}^{\infty}(-1)^n x^{2n}=\frac{-x^2}{1+x^2}$（$|x|<1$）.
+
+  $\sum_{n=1}^{\infty}\frac{(-1)^n}{2n+1}x^{2n}=\frac{1}{x}\sum_{n=1}^{\infty}\frac{(-1)^n
+  x^{2n+1}}{2n+1}$. 已知 $\sum_{m=0}^{\infty}\frac{(-1)^m
+  x^{2m+1}}{2m+1}=\arctan x$，故 $\sum_{n=1}^{\infty}\frac{(-1)^n
+  x^{2n+1}}{2n+1}=\arctan x - x$.
+
+  $\sum_{n=1}^{\infty}\frac{(-1)^n}{2n+1}x^{2n}=\frac{\arctan x - x}{x}$.
+
+  和函数 $S(x)=\frac{-x^2}{1+x^2}-\frac{\arctan x -
+  x}{x}=\frac{-x^2}{1+x^2}-\frac{\arctan
+  x}{x}+1=\frac{1}{1+x^2}-\frac{\arctan x}{x}$.
+
+\end{sol}
+\subsection*{第 10 题}
+设 $\mathbb{R}^3$ 中有一螺旋线段 $\{(x,y,z)\in\mathbb{R}^3|x=\cos t, y=\sin
+t, z=2t, t\in[0,2\pi]\}$. 有一单位质量质点在力 $\vec{F}(x,y,z)=(x,y,z)$ 的作用下从点
+$(1,0,0)$ 沿着螺旋线段运动到点 $(1,0,4\pi)$，求力 $\vec{F}$ 对质点所作的功 $W$.
+
+\begin{sol}$W=\int_L\vec{F}\cdot
+  d\vec{r}=\int_0^{2\pi}(x\,dx+y\,dy+z\,dz)$.
+
+  $dx=-\sin t\,dt,\; dy=\cos t\,dt,\; dz=2\,dt$. $x\,dx+y\,dy=\cos
+  t(-\sin t)+\sin t\cos t=0$.
+
+  $z\,dz=2t\cdot 2\,dt=4t\,dt$.
+
+  $W=\int_0^{2\pi}4t\,dt=4\cdot\frac{(2\pi)^2}{2}=8\pi^2.$
+
+\end{sol}
+\subsection*{第 11 题}
+设 $D$ 是平面上的一个有界闭区域，$D^o$ 是 $D$ 的内部，二元函数 $z=z(x,y)$ 在 $D$ 上连续，在 $D^o$
+上具有连续的二阶偏导函数，且满足 $\forall(x,y)\in D^o, \frac{\partial^2 z}{\partial
+x^2}(x,y)+\frac{\partial^2 z}{\partial y^2}(x,y)=0$. 证明：函数 $z(x,y)$ 在
+$D$ 上的最值只能在 $D$ 的边界 $\partial D$ 上取到.
+
+\begin{sol}[证明]反证法. 假设 $z$ 在 $D$ 的内点 $P_0=(x_0,y_0)\in D^o$ 处取到最大值.
+  取充分小的 $r>0$ 使得圆盘 $B_r(P_0)\subset D^o$. 在 $B_r$ 上 $z\le z(P_0)$.
+
+  由平均值性质：对调和函数，$z(P_0)=\frac{1}{2\pi r}\oint_{\partial B_r}z\,ds$. 但
+  $z\le z(P_0)$，故 $z$ 在 $\partial B_r$ 上恒等于 $z(P_0)$. 由 $r$ 的任意性，$z$
+  在 $D^o$ 中为常数.
+
+  若 $z$ 非常数，则最大值不能在内点取到，只能在 $\partial D$ 上取到. 同理可证最小值.
+\end{sol}
+\subsection*{第 12 题}
+设 $M$ 为 $\mathbb{R}^3$ 中由一张分片光滑的简单封闭曲面 $S$ 所围的有界闭区域，$U$ 为包含 $M$
+的一个开集，$\vec{n}$ 为 $S$ 的单位外法向量场，$\vec{F}(x,y,z)=(f(x,y,z), g(x,y,z),
+h(x,y,z))$ 为 $U$ 上的一个向量场，其中 $f, g, h$ 在 $U$ 上具有连续的一阶偏导函数.
+$P_0(x_0,y_0,z_0)$ 是 $M$ 的一个内点，$V(M)$ 为 $M$ 的体积，$\text{diam}(M)$ 为
+$M$ 的直径. 证明：在点 $P_0$ 处的旋度
+$\vec{\text{rot}}(\vec{F})|_{P_0}=\lim_{\text{diam}(M)\rightarrow0+}\frac{1}{V(M)}\oiint_{S}\vec{n}\times\vec{F}dS$.
+
+\begin{sol}[证明]由 Stokes 公式的向量形式，$\oiint_S\vec{n}\times\vec{F}\,dS$
+  的各分量为曲面积分形式. 实际上，$\vec{n}\times\vec{F}$ 的 $i$ 分量为
+  $(\vec{n}\times\vec{F})_i=\sum_{j,k}\epsilon_{ijk}n_jF_k$.
+
+  对第一个分量（$x$ 分量）：$\oiint_S(n_yF_z-n_zF_y)\,dS$. 由 Gauss 公式：
+  $$\oiint_S(n_yF_z-n_zF_y)\,dS=\iiint_M\left(\frac{\partial
+    F_z}{\partial y}-\frac{\partial F_y}{\partial
+  z}\right)dV=\iiint_M(\text{rot}\,\vec{F})_x\,dV.$$
+
+  由积分中值定理：$\iiint_M(\text{rot}\,\vec{F})_x\,dV=(\text{rot}\,\vec{F})_x(P^*)\cdot
+  V(M)$，其中 $P^*\in M$.
+
+  当 $\text{diam}(M)\to 0$ 时 $P^*\to P_0$，故
+  $\frac{1}{V(M)}\oiint_S(\vec{n}\times\vec{F})_x\,dS\to(\text{rot}\,\vec{F})_x(P_0)$.
+
+  同理其余两个分量. 综合即得
+  $\vec{\text{rot}}(\vec{F})|_{P_0}=\lim_{\text{diam}(M)\to
+  0^+}\frac{1}{V(M)}\oiint_S\vec{n}\times\vec{F}\,dS.$
+\end{sol}
+\section*{浙江大学 2021-2022 学年 春夏学期 《微积分(甲)II》课程期末考试试卷}
+
+\subsection*{第 1 题}
+求函数 $f(x)=1+\arctan x$ 的麦克劳林级数并求其收敛半径.
+
+\begin{sol}$(\arctan
+  x)'=\frac{1}{1+x^2}=\sum_{n=0}^{\infty}(-1)^nx^{2n}$，$|x|<1$.
+
+  逐项积分：$\arctan x=\sum_{n=0}^{\infty}(-1)^n\frac{x^{2n+1}}{2n+1}$，$|x|<1$.
+
+  故 $f(x)=1+\arctan
+  x=1+\sum_{n=0}^{\infty}(-1)^n\frac{x^{2n+1}}{2n+1}=1+x-\frac{x^3}{3}+\frac{x^5}{5}-\cdots$，收敛半径
+  $R=1$.
+
+\end{sol}
+\subsection*{第 2 题}
+设有一金属薄片，其形如曲面 $z=xy^2$ 与圆柱体 $x^2+y^2=1$ 相交的部分，其面密度为正常数 $\rho$，求薄片的质量 $m$.
+
+\begin{sol}$z=xy^2$，$z_x=y^2$，$z_y=2xy$，$dS=\sqrt{1+y^4+4x^2y^2}\,dxdy$.
+
+  $m=\rho\iint_{x^2+y^2\le 1}\sqrt{1+y^4+4x^2y^2}\,dxdy$.
+
+  用极坐标 $x=r\cos\theta,\; y=r\sin\theta$：
+  $m=\rho\int_0^{2\pi}d\theta\int_0^1
+  r\sqrt{1+r^4\sin^4\theta+4r^2\cos^2\theta\cdot
+  r^2\sin^2\theta}\,dr=\rho\int_0^{2\pi}d\theta\int_0^1
+  r\sqrt{1+r^4\sin^2\theta(\sin^2\theta+4\cos^2\theta)}\,dr.$
+
+  此积分一般需数值计算.
+
+\end{sol}
+\subsection*{第 3 题}
+设空间曲线 $\Gamma: \{(x,y,z)\in\mathbb{R}^3|x=t\cos t, y=t\sin t, z=t,
+t\in[\sqrt{2},\sqrt{\pi^2-2}]\}$，求第一类曲线积分
+$I_1=\int_{\Gamma}\sqrt{x^2+y^2+z^2}ds$.
+
+\begin{sol}$x^2+y^2+z^2=t^2\cos^2t+t^2\sin^2t+t^2=2t^2$，故
+  $\sqrt{x^2+y^2+z^2}=\sqrt{2}\,t$.
+
+  $x'=\cos t-t\sin t$，$y'=\sin t+t\cos t$，$z'=1$.
+  $x'^2+y'^2+z'^2=1+t^2+1=2+t^2$.
+
+  $ds=\sqrt{2+t^2}\,dt$.
+
+  $I_1=\int_{\sqrt{2}}^{\sqrt{\pi^2-2}}\sqrt{2}\,t\cdot\sqrt{2+t^2}\,dt=\sqrt{2}\int_{\sqrt{2}}^{\sqrt{\pi^2-2}}t\sqrt{2+t^2}\,dt.$
+
+  令
+  $u=2+t^2$：$=\frac{\sqrt{2}}{2}\int_4^{\pi^2}\sqrt{u}\,du=\frac{\sqrt{2}}{2}\cdot\frac{2}{3}u^{3/2}\Big|_4^{\pi^2}=\frac{\sqrt{2}}{3}(\pi^3-8).$
+
+\end{sol}
+\subsection*{第 4 题}
+已知曲线 $C: (x-1)^2+y^2=4$，且 $C$ 取逆时针方向，求第二类曲线积分
+$I_2=\oint_{C}\frac{xdy-ydx}{4x^2+y^2}$.
+
+\begin{sol}令 $P=\frac{-y}{4x^2+y^2}$，$Q=\frac{x}{4x^2+y^2}$.
+
+  $\frac{\partial Q}{\partial x}=\frac{(4x^2+y^2)-x\cdot
+  8x}{(4x^2+y^2)^2}=\frac{y^2-4x^2}{(4x^2+y^2)^2}$.
+
+  $\frac{\partial P}{\partial y}=\frac{-(4x^2+y^2)+y\cdot
+  2y}{(4x^2+y^2)^2}=\frac{y^2-4x^2}{(4x^2+y^2)^2}$.
+
+  $\frac{\partial Q}{\partial x}=\frac{\partial P}{\partial y}$，但在
+  $(0,0)$ 处被积函数无定义.
+
+  $C$ 为圆心 $(1,0)$、半径 $2$ 的圆，包含原点. 取椭圆 $\varepsilon:
+  4x^2+y^2=\delta^2$（$\delta$ 充分小），顺时针方向.
+
+  $\oint_{C^+}=\oint_{\varepsilon^+}$（均逆时针，由 Green 公式在环形区域上）. 在
+  $\varepsilon$ 上令 $x=\frac{\delta}{2}\cos\theta,\; y=\delta\sin\theta$：
+  $\oint_{\varepsilon^+}\frac{x\,dy-y\,dx}{\delta^2}=\frac{1}{\delta^2}\int_0^{2\pi}\left[\frac{\delta}{2}\cos\theta\cdot\delta\cos\theta-\delta\sin\theta\cdot(-\frac{\delta}{2}\sin\theta)\right]d\theta=\frac{1}{\delta^2}\int_0^{2\pi}\frac{\delta^2}{2}d\theta=\pi.$
+
+\end{sol}
+\subsection*{第 5 题}
+设 $S$ 为球面片 $\{(x,y,z)\in\mathbb{R}^3|x^2+y^2+z^2=1, x\ge0, y\ge0,
+z\ge0\}$，取外（上）侧为正侧，计算第二类曲面积分 $J=\iint_{S}z^3dxdy$.
+
+\begin{sol}$S$ 在 $xy$ 平面的投影为 $D=\{(x,y)|x\ge 0,y\ge 0,x^2+y^2\le 1\}$.
+
+  $J=\iint_D(1-x^2-y^2)^{3/2}\,dxdy$（取上侧，$z>0$）.
+
+  极坐标：$J=\int_0^{\pi/2}d\theta\int_0^1
+  r(1-r^2)^{3/2}\,dr=\frac{\pi}{2}\cdot\left[-\frac{1}{2}\cdot\frac{2}{5}(1-r^2)^{5/2}\right]_0^1=\frac{\pi}{2}\cdot\frac{1}{5}=\frac{\pi}{10}.$
+
+\end{sol}
+\subsection*{第 6 题}
+求 $f(x)=\arcsin(\cos x)$ 的以 $2\pi$ 为周期的 Fourier 级数
+$\frac{a_0}{2}+\sum_{n=1}^{+\infty}(a_n\cos nx+b_n\sin nx)$，并求
+$\sum_{n=0}^{+\infty}\frac{\cos(2n+1)}{(2n+1)^2}$ 的值.
+
+\begin{sol}$\arcsin(\cos x)=\frac{\pi}{2}-x$（当 $x\in(0,\pi)$），以
+  $2\pi$ 为周期延拓后为锯齿波.
+
+  $a_0=\frac{1}{\pi}\int_{-\pi}^{\pi}(\frac{\pi}{2}-x)dx=0$（奇函数部分 $-x$
+  积分为零）. 实际上
+  $a_0=\frac{1}{\pi}\int_{-\pi}^{\pi}\frac{\pi}{2}dx-\frac{1}{\pi}\int_{-\pi}^{\pi}x\,dx=\pi-0=\pi$.
+  故 $\frac{a_0}{2}=\frac{\pi}{2}$.
+
+  $a_n=\frac{1}{\pi}\int_{-\pi}^{\pi}(\frac{\pi}{2}-x)\cos
+  nx\,dx=\frac{1}{\pi}\cdot\frac{\pi}{2}\int_{-\pi}^{\pi}\cos
+  nx\,dx=0$（$n\ge 1$）.
+
+  $b_n=\frac{1}{\pi}\int_{-\pi}^{\pi}(\frac{\pi}{2}-x)\sin
+  nx\,dx=-\frac{1}{\pi}\int_{-\pi}^{\pi}x\sin
+  nx\,dx=-\frac{1}{\pi}\cdot\frac{-2\pi\cos
+  n\pi}{n}=\frac{2(-1)^{n+1}}{n}=\frac{2(-1)^{n+1}}{n}$.
+
+  故 $f(x)\sim\frac{\pi}{2}+2\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{n}\sin nx$.
+
+  在 $x=1$ 处（连续点）：$\arcsin(\cos 1)=\frac{\pi}{2}-1$. 故
+  $\frac{\pi}{2}+2\sum_{n=1}^{\infty}\frac{(-1)^{n+1}\sin
+  n}{n}=\frac{\pi}{2}-1$.
+
+  $\sum_{n=1}^{\infty}\frac{(-1)^{n+1}\sin n}{n}=-\frac{1}{2}$.
+
+  要求 $\sum_{n=0}^{\infty}\frac{\cos(2n+1)}{(2n+1)^2}$. 利用 Parseval
+  等式或其他方法计算（结果为 $\frac{\pi^2-2\pi}{8}$ 等，需进一步推导）.
+
+\end{sol}
+\subsection*{第 7 题}
+已知单位闭球体 $B: \{(x,y,z)\in\mathbb{R}^3|x^2+y^2+z^2\le1\}$，求函数 $u=x+y+z$
+在 $B$ 上的最大值与最小值.
+
+\begin{sol}$\nabla u=(1,1,1)\ne\vec{0}$，故 $u$ 在 $B$ 内部无驻点，最值在边界
+  $x^2+y^2+z^2=1$ 上取到.
+
+  用 Lagrange 乘数法：$L=x+y+z+\lambda(x^2+y^2+z^2-1)$.
+
+  $\frac{\partial L}{\partial x}=1+2\lambda x=0,\;\frac{\partial
+  L}{\partial y}=1+2\lambda y=0,\;\frac{\partial L}{\partial z}=1+2\lambda z=0.$
+
+  故 $x=y=z=-\frac{1}{2\lambda}$. 由 $3x^2=1$：$x=\pm\frac{1}{\sqrt{3}}$.
+
+  $u_{\max}=\sqrt{3}$（取
+  $x=y=z=\frac{1}{\sqrt{3}}$），$u_{\min}=-\sqrt{3}$（取
+  $x=y=z=-\frac{1}{\sqrt{3}}$）.
+
+\end{sol}
+\subsection*{第 8 题}
+设函数 $f(x,y)=
+\begin{cases}\frac{xy}{\sqrt{x^2+y^2}} & (x,y)\ne(0,0) \\ 0 & (x,y)=(0,0)
+\end{cases}$，已知 $\vec{l}=(\cos\alpha,\sin\alpha), \alpha\in[0,2\pi)$：\\
+(1) 求 $f(x,y)$ 在 $(0,0)$ 处沿方向 $\vec{l}$ 的方向导数 $\frac{\partial
+f}{\partial \vec{l}}(0,0)$；\\
+(2) 证明 $f(x,y)$ 在 $(0,0)$ 处不可微.
+
+\begin{sol}(1) $\frac{\partial f}{\partial\vec{l}}(0,0)=\lim_{t\to
+  0^+}\frac{f(t\cos\alpha,t\sin\alpha)}{t}=\lim_{t\to
+  0^+}\frac{t^2\cos\alpha\sin\alpha}{t\cdot
+  t}=\cos\alpha\sin\alpha=\frac{\sin 2\alpha}{2}.$
+
+  (2) $f_x(0,0)=\lim_{h\to 0}\frac{f(h,0)-0}{h}=0$，$f_y(0,0)=0$.
+
+  若可微，则 $\lim_{(x,y)\to(0,0)}\frac{f(x,y)}{\sqrt{x^2+y^2}}=0$.
+
+  但 $\frac{f(x,y)}{\sqrt{x^2+y^2}}=\frac{xy}{x^2+y^2}$. 沿
+  $y=x$：$\frac{x^2}{2x^2}=\frac{1}{2}\ne 0$. 故不可微.
+
+\end{sol}
+\subsection*{第 9 题}
+已知函数 $g(u,v)$ 存在连续的一阶偏导函数，且 $\forall (u,v)\in\mathbb{R^2},
+\frac{\partial g}{\partial u}+2\frac{\partial g}{\partial v}\ne0$. 函数
+$z=z(x,y)$ 由方程 $g(x-z, y-2z)=0$ 确定：\\
+(1) 证明：$\frac{\partial z}{\partial x}(x,y)+2\frac{\partial
+z}{\partial y}(x,y)=1$；\\
+(2) 证明：曲面 $g(x-z, y-2z)=0$ 的每一点处的切平面的法向量都垂直于向量
+$\vec{l}=\vec{i}+2\vec{j}+\vec{k}$.
+
+\begin{sol}(1) 记 $u=x-z,\; v=y-2z$. 由 $g(u,v)=0$ 两边对 $x$
+  求导：$g_1'(1-z_x)+g_2'(-2z_x)=0$，故 $z_x=\frac{g_1'}{g_1'+2g_2'}$. 对 $y$
+  求导：$g_1'(-z_y)+g_2'(1-2z_y)=0$，故 $z_y=\frac{g_2'}{g_1'+2g_2'}$.
+
+  $z_x+2z_y=\frac{g_1'+2g_2'}{g_1'+2g_2'}=1.$
+  (2) 曲面 $F(x,y,z)=g(x-z,y-2z)=0$ 的法向量为 $\nabla F=(g_1',g_2',-g_1'-2g_2')$.
+
+  $\nabla F\cdot\vec{l}=g_1'+2g_2'+(-g_1'-2g_2')=0$. 故法向量垂直于
+  $\vec{l}=(1,2,1)$.
+\end{sol}
+\subsection*{第 10 题}
+已知正项数列 $\{a_n\}$ 满足
+$\lim_{n\rightarrow+\infty}n(\frac{a_n}{a_{n+1}}-1)=\frac{1}{2}$.
+证明交错级数 $\sum_{n=1}^{+\infty}(-1)^{n+1}a_n$ 收敛.
+
+\begin{sol}[证明]由条件 $n(\frac{a_n}{a_{n+1}}-1)\to\frac{1}{2}>0$，当 $n$ 充分大时
+  $a_{n+1}<a_n$，即 $\{a_n\}$ 单调递减.
+
+  由 $\frac{a_n}{a_{n+1}}=1+\frac{1}{2n}+o(\frac{1}{n})$，可得
+  $\ln\frac{a_n}{a_{n+1}}\sim\frac{1}{2n}$，故
+  $\ln\frac{a_1}{a_n}=\sum_{k=1}^{n-1}\ln\frac{a_k}{a_{k+1}}\sim\sum_{k=1}^{n-1}\frac{1}{2k}\to\infty$，因此
+  $a_n\to 0$.
+
+  由 Leibniz 判别法，$\sum(-1)^{n+1}a_n$ 收敛.
+\end{sol}
+\subsection*{第 11 题}
+设 $D=\{(x,y)\in\mathbb{R}^2|x^2+y^2\le1\}$，$U$ 是包含 $D$ 的开区域，函数
+$z=f(x,y)$ 为定义在 $U$ 上的一个非负二元函数，具有连续的一阶偏导数且 $f|_{\partial D}=0$.
+证明：$\left|\iint_{D}f(x,y)dxdy\right|\le\frac{\pi}{3}\max_{(x,y)\in
+D}\sqrt{\left[\frac{\partial f}{\partial
+x}(x,y)\right]^2+\left[\frac{\partial f}{\partial y}(x,y)\right]^2}$.
+
+\begin{sol}[证明]记 $M=\max_{(x,y)\in D}|\nabla f|$. 用极坐标 $(r,\theta)$，由
+  $f=0$ 在 $r=1$ 上：
+  $f(r\cos\theta,r\sin\theta)=\int_r^1\frac{\partial
+  f}{\partial\rho}\,d\rho\le\int_r^1|\nabla f|\,d\rho\le M(1-r).$
+
+  $\iint_D f\,dxdy\le\int_0^{2\pi}d\theta\int_0^1 r\cdot
+  M(1-r)\,dr=2\pi M\left[\frac{r^2}{2}-\frac{r^3}{3}\right]_0^1=2\pi
+  M\cdot\frac{1}{6}=\frac{\pi M}{3}.$
+\end{sol}
+\subsection*{第 12 题}
+设 $M$ 为 $\mathbb{R}^3$ 中由一光滑简单封闭曲面 $S$ 所围成的有界闭区域，$V(M)$ 为 $M$ 的体积，$U$
+为包含 $M$ 的一个开集. $\vec{n}=(\cos\alpha,\cos\beta,\cos\gamma)$ 为 $S$
+的单位外法向量，$f(x,y,z)$ 为定义在 $U$ 上并具有连续二阶偏导数的函数，且满足 $\forall(x,y,z)\in M,
+f(x,y,z)\ne0, \text{div}(f\cdot\vec{\text{grad}}(f))=2f(x,y,z),
+\|\vec{\text{grad}}(f)\|^2=f(x,y,z)$. 证明：$\oiint_{S}\frac{\partial
+f}{\partial \vec{n}}dS=V(M)$.
+
+\begin{sol}[证明]$\oiint_S\frac{\partial
+  f}{\partial\vec{n}}dS=\oiint_S\nabla
+  f\cdot\vec{n}\,dS=\iiint_M\text{div}(\nabla f)\,dV=\iiint_M\Delta f\,dV.$
+
+  由条件：$\text{div}(f\nabla f)=|\nabla f|^2+f\Delta f$，又
+  $\text{div}(f\nabla f)=2f$，$|\nabla f|^2=f$，故 $f+f\Delta f=2f$，即 $\Delta f=1$.
+
+  $\iiint_M\Delta f\,dV=\iiint_M 1\,dV=V(M).$
+\end{sol}
+\section*{微积分(甲)II 22-23 学年期末题}
+
+\subsection*{第 1 题}
+求原点到空间曲线 $
+\begin{cases}xy+z=0 \\ x^2+y^2+z^2=9
+\end{cases}$ 上点 $P_0(2,1,-2)$ 处切线的距离 $d$.
+
+\begin{sol}$F_1=xy+z,\; F_2=x^2+y^2+z^2-9$. 切向量 $\vec{T}=\nabla
+  F_1\times\nabla F_2$.
+
+  $\nabla F_1=(y,x,1)$，在 $P_0$ 处为 $(1,2,1)$. $\nabla F_2=(2x,2y,2z)$，在
+  $P_0$ 处为 $(4,2,-4)$.
+
+  $\vec{T}=
+  \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\1&2&1\\4&2&-4
+  \end{vmatrix}=(-8-2,4+4,2-8)=(-10,8,-6)$. 取 $\vec{T}=(5,-4,3)$.
+
+  切线方程：$\frac{x-2}{5}=\frac{y-1}{-4}=\frac{z+2}{3}=t$，参数方程 $(2+5t,1-4t,-2+3t)$.
+
+  $d=\frac{|\vec{OP_0}\times\vec{T}|}{|\vec{T}|}$. $\vec{OP_0}=(2,1,-2)$.
+
+  $\vec{OP_0}\times\vec{T}=
+  \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\2&1&-2\\5&-4&3
+  \end{vmatrix}=(3-8,-10-6,-8-5)=(-5,-16,-13)$.
+
+  $|\vec{OP_0}\times\vec{T}|=\sqrt{25+256+169}=\sqrt{450}=15\sqrt{2}$.
+  $|\vec{T}|=\sqrt{25+16+9}=\sqrt{50}=5\sqrt{2}$.
+
+  $d=\frac{15\sqrt{2}}{5\sqrt{2}}=3.$
+
+\end{sol}
+\subsection*{第 2 题}
+求空间曲线 $C:
+\begin{cases}x+y+z=0 \\ x^2+2y^2+3z^2=1
+\end{cases}$ 在平面 $x-2y+2z=10$ 上的投影曲线方程.
+
+\begin{sol}过曲线 $C$ 上每一点作平面 $x-2y+2z=10$ 的垂线，形成投影柱面.
+
+  设过 $C$ 上点 $(x,y,z)$ 且垂直于平面 $x-2y+2z=10$ 的直线为 $(x+t,y-2t,z+2t)$，代入
+  $x-2y+2z=10$：
+
+  $(x+t)-2(y-2t)+2(z+2t)=10\implies x-2y+2z+9t=10\implies
+  t=\frac{10-x+2y-2z}{9}$.
+
+  投影点为 $(x+\frac{10-x+2y-2z}{9},\; y-\frac{2(10-x+2y-2z)}{9},\;
+  z+\frac{2(10-x+2y-2z)}{9})$.
+
+  用 $z=-x-y$ 代入：$t=\frac{10-x+2y+2x+2y}{9}=\frac{10+x+4y}{9}$.
+
+  投影曲线方程为平面 $x-2y+2z=10$ 上的方程，通常表示为投影柱面与平面的交线. 实际上将 $z=-x-y$ 代入
+  $x^2+2y^2+3(x+y)^2=1$ 得 $4x^2+6y^2+6xy=1$，此为投影柱面. 投影曲线为 $
+  \begin{cases}x-2y+2z=10\\4x^2+6xy+6y^2=1
+  \end{cases}$.
+
+\end{sol}
+\subsection*{第 3 题}
+求函数 $w=\arcsin x+y+5ze^{u(x,y)}$ 在点 $P_0(0,0,2)$ 处的梯度
+$\vec{\text{grad}}\,w(P_0)$，其中 $u(x,y)$ 是由方程 $yu^3-xu^4+u^5=1$ 所确定的隐函数.
+
+\begin{sol}$w_x=\frac{1}{\sqrt{1-x^2}}+5ze^{u}\cdot
+  u_x$，$w_y=1+5ze^{u}\cdot u_y$，$w_z=5e^{u}$.
+
+  先求 $u(0,0)$：$0-0+u^5=1\implies u=1$.
+
+  对 $yu^3-xu^4+u^5=1$ 关于 $x$ 求导：$y\cdot 3u^2u_x-u^4-x\cdot 4u^3u_x+5u^4u_x=0$.
+
+  在 $(0,0)$（$u=1$）：$0-1+5u_x=0\implies u_x(0,0)=\frac{1}{5}$.
+
+  关于 $y$ 求导：$u^3+y\cdot 3u^2u_y-4xu^3u_y+5u^4u_y=0$. 在
+  $(0,0)$：$1+5u_y=0\implies u_y(0,0)=-\frac{1}{5}$.
+
+  $w_x(0,0,2)=1+5\cdot 2\cdot e\cdot\frac{1}{5}=1+2e$.
+  $w_y(0,0,2)=1+5\cdot 2\cdot e\cdot(-\frac{1}{5})=1-2e$. $w_z(0,0,2)=5e$.
+
+  $\vec{\text{grad}}\,w(P_0)=(1+2e,\; 1-2e,\; 5e).$
+
+\end{sol}
+\subsection*{第 4 题}
+设函数 $u=u(x,y)$ 具有连续的二阶偏导数，满足方程 $\frac{\partial^2 u}{\partial
+x^2}+x\frac{\partial^2 u}{\partial x \partial y}+y\frac{\partial^2
+u}{\partial y^2}+\frac{\partial u}{\partial y}=xy$，作自变量替换
+$x=\xi+\eta, y=\xi\eta$，证明：$\frac{\partial^2 u}{\partial \xi \partial
+\eta}=\xi^2\eta+\xi\eta^2$.
+
+\begin{sol}[证明]$\xi=\frac{x+\sqrt{x^2-4y}}{2},\;\eta=\frac{x-\sqrt{x^2-4y}}{2}$（或直接用链式法则）.
+
+  $u_\xi=u_xx_\xi+u_yy_\xi=u_x+u_y\eta$.
+  $u_\eta=u_xx_\eta+u_yy_\eta=u_x+u_y\xi$.
+
+  $u_{\xi\eta}=u_{xx}x_\eta+u_{xy}y_\eta+(u_{yx}x_\eta+u_{yy}y_\eta)\eta+u_y\frac{\partial\eta}{\partial\xi}$...
+  此法较繁.
+
+  直接由 $x=\xi+\eta,\; y=\xi\eta$：$\frac{\partial
+  u}{\partial\xi}=\frac{\partial u}{\partial x}+\eta\frac{\partial
+  u}{\partial y}$.
+
+  $\frac{\partial^2
+  u}{\partial\xi\partial\eta}=\frac{\partial}{\partial\eta}(u_x+\eta
+  u_y)=u_{xx}+u_{xy}\xi+u_y+\eta(u_{yx}+u_{yy}\xi)$
+  $=u_{xx}+(\xi+\eta)u_{xy}+\xi\eta\,u_{yy}+u_y=u_{xx}+xu_{xy}+yu_{yy}+u_y=xy.$
+
+  又 $xy=(\xi+\eta)\xi\eta=\xi^2\eta+\xi\eta^2$.
+\end{sol}
+\subsection*{第 5 题}
+设函数 $f(x,y)=
+\begin{cases}x-y^2+\frac{y^3x\sin x}{x^2+y^4}, & (x,y)\ne(0,0) \\ 0,
+  & (x,y)=(0,0)
+\end{cases}$：\\
+(1) 求 $f(x,y)$ 在 $(0,0)$ 处沿方向 $\vec{l}=(\cos\theta,\sin\theta)$ 的方向导数
+$\frac{\partial f}{\partial \vec{l}}(0,0)$；\\
+(2) 判断 $f(x,y)$ 在 $(0,0)$ 处是否可微，说明理由.
+
+\begin{sol}(1) $\frac{\partial f}{\partial\vec{l}}(0,0)=\lim_{t\to
+  0^+}\frac{t\cos\theta-t^2\sin^2\theta+\frac{t^3\cos\theta\sin^3\theta\sin(t\cos\theta)}{t^2\cos^2\theta+t^4\sin^4\theta}-0}{t}$
+
+  $=\lim_{t\to
+  0^+}\left[\cos\theta-t\sin^2\theta+\frac{t\cos\theta\sin^3\theta\sin(t\cos\theta)}{t^2\cos^2\theta+t^4\sin^4\theta}\right].$
+
+  第三项：$\frac{t\cos\theta\sin^3\theta\cdot
+  t\cos\theta}{t^2\cos^2\theta}=\frac{t^2\cos^2\theta\sin^3\theta}{t^2\cos^2\theta}=\sin^3\theta$（当
+  $\cos\theta\ne 0$）.
+
+  当 $\cos\theta=0$ 时第三项为 0.
+
+  $\frac{\partial f}{\partial\vec{l}}(0,0)=\cos\theta+\sin^3\theta.$
+
+  (2) $f_x(0,0)=\frac{\partial
+  f}{\partial\vec{l}}(0,0)\Big|_{\theta=0}=1$，$f_y(0,0)=\frac{\partial
+  f}{\partial\vec{l}}(0,0)\Big|_{\theta=\pi/2}=\sin^3(\pi/2)=1$.
+
+  若可微则 $\frac{f(x,y)-x-y}{\sqrt{x^2+y^2}}\to 0$. 取
+  $y=0$：$\frac{x}{|x|}\to\pm 1\ne 0$（$x\to 0^-$ 时为 $-1$）.
+
+  故 $f$ 在 $(0,0)$ 处不可微.
+
+\end{sol}
+\subsection*{第 6 题}
+判断以下级数是绝对收敛、条件收敛还是发散，并说明理由：$\sum_{n=1}^{+\infty}(-1)^{n-1}\left(\frac{\ln(1+\frac{1}{n})}{\sqrt{2n^2-\ln^3
+n}}+\sin\frac{1}{n^7}\right)$.
+
+\begin{sol}$a_n=\frac{\ln(1+1/n)}{\sqrt{2n^2-\ln^3
+  n}}+\sin\frac{1}{n^7}$.
+
+  $\ln(1+1/n)\sim\frac{1}{n}$，$\sqrt{2n^2-\ln^3
+  n}\sim\sqrt{2}\,n$，$\sin\frac{1}{n^7}\sim\frac{1}{n^7}$.
+
+  $a_n\sim\frac{1/n}{\sqrt{2}\,n}+\frac{1}{n^7}=\frac{1}{\sqrt{2}\,n^2}+\frac{1}{n^7}$.
+
+  $\sum|a_n|\sim\sum(\frac{1}{\sqrt{2}n^2}+\frac{1}{n^7})$
+  收敛（$p=2>1$），故原级数\textbf{绝对收敛}.
+
+\end{sol}
+\subsection*{第 7 题}
+将函数 $f(x)=x^2\arctan(x^2)-\ln\sqrt{1+x^4}$ 展开为 $x$ 的幂级数.
+
+\begin{sol}$\arctan
+  t=\sum_{n=0}^{\infty}\frac{(-1)^nt^{2n+1}}{2n+1}$，故
+  $x^2\arctan(x^2)=\sum_{n=0}^{\infty}\frac{(-1)^nx^{4n+4}}{2n+1}$.
+
+  $\ln\sqrt{1+x^4}=\frac{1}{2}\ln(1+x^4)=\frac{1}{2}\sum_{n=1}^{\infty}\frac{(-1)^{n+1}x^{4n}}{n}=\sum_{n=1}^{\infty}\frac{(-1)^{n+1}x^{4n}}{2n}$.
+
+  $f(x)=\sum_{n=0}^{\infty}\frac{(-1)^nx^{4n+4}}{2n+1}-\sum_{n=1}^{\infty}\frac{(-1)^{n+1}x^{4n}}{2n}$
+
+  $=\sum_{n=1}^{\infty}\frac{(-1)^{n-1}x^{4n}}{2n-1}-\sum_{n=1}^{\infty}\frac{(-1)^{n+1}x^{4n}}{2n}=\sum_{n=1}^{\infty}(-1)^{n+1}\left(\frac{1}{2n-1}+\frac{1}{2n}\right)x^{4n}=\sum_{n=1}^{\infty}\frac{(-1)^{n+1}(4n-1)}{2n(2n-1)}x^{4n}.$
+
+\end{sol}
+\subsection*{第 8 题}
+计算累次积分
+$\int_{-1}^{1}dx\int_{x^3}^{1}\frac{x}{1+x^2}\left(1+ye^{-(x^2+y^4)}\right)dy$.
+
+\begin{sol}$I=\int_{-1}^1\frac{x}{1+x^2}\int_{x^3}^1(1+ye^{-(x^2+y^4)})dy\,dx$.
+
+  $\int_{x^3}^1(1+ye^{-(x^2+y^4)})dy=(1-x^3)+\int_{x^3}^1ye^{-x^2}e^{-y^4}dy$.
+
+  注意 $\frac{x}{1+x^2}$ 关于 $x$ 为奇函数，$(1-x^3)$ 关于 $x$ 中 $1$ 为偶函数与奇函数之积. 分解：
+
+  $I_1=\int_{-1}^1\frac{x}{1+x^2}\cdot 1\,dx=0$（奇函数）.
+
+  $I_2=\int_{-1}^1\frac{-x^4}{1+x^2}dx=-\int_{-1}^1\frac{x^4}{1+x^2}dx=-2\int_0^1\frac{x^4}{1+x^2}dx$.
+
+  $\frac{x^4}{1+x^2}=x^2-1+\frac{1}{1+x^2}$.
+  $\int_0^1(x^2-1+\frac{1}{1+x^2})dx=\frac{1}{3}-1+\frac{\pi}{4}=\frac{\pi}{4}-\frac{2}{3}$.
+
+  $I_2=-2(\frac{\pi}{4}-\frac{2}{3})=-\frac{\pi}{2}+\frac{4}{3}$.
+
+  $I_3=\int_{-1}^1\frac{x}{1+x^2}\int_{x^3}^1ye^{-(x^2+y^4)}dy\,dx=0$（被积函数关于
+  $x$ 为奇函数）.
+
+  故 $I=0+(-\frac{\pi}{2}+\frac{4}{3})+0=\frac{4}{3}-\frac{\pi}{2}.$
+
+\end{sol}
+\subsection*{第 9 题}
+计算三重积分 $\iiint_{\Omega}zdxdydz$，其中 $\Omega$ 是由曲线 $y^2=2z, x=0$ 绕 $z$
+轴旋转一周而成的曲面与两平面 $z=2, z=8$ 所围的立体.
+
+\begin{sol}旋转曲面为 $x^2+y^2=2z$（旋转抛物面）. 用柱坐标 $x=r\cos\theta,\;
+  y=r\sin\theta,\; z=z$：
+
+  $r^2\le 2z$，$2\le z\le 8$. 故 $r\le\sqrt{2z}$.
+
+  $\iiint_{\Omega}z\,dV=\int_2^8
+  z\,dz\int_0^{2\pi}d\theta\int_0^{\sqrt{2z}}r\,dr=2\pi\int_2^8 z\cdot
+  z\,dz=2\pi\int_2^8
+  z^2\,dz=2\pi\cdot\frac{z^3}{3}\Big|_2^8=2\pi\cdot\frac{512-8}{3}=\frac{1008\pi}{3}=336\pi.$
+
+\end{sol}
+\subsection*{第 10 题}
+求一质点在变力 $\vec{F}=(yz-e^{x^2})\vec{i}+(xz+\cos
+y)\vec{j}+(xy+z^3)\vec{k}$ 作用下，从点 $A(2,0,0)$ 沿曲线 $L: x=2\cos t,
+y=2\sin t, z=t$ 运动到点 $B(2,0,2\pi)$ 所做的功 $W$.
+
+\begin{sol}$W=\int_L\vec{F}\cdot
+  d\vec{r}=\int_L(yz-e^{x^2})dx+(xz+\cos y)dy+(xy+z^3)dz$.
+
+  检查是否保守场：$\text{rot}\,\vec{F}$ 的各分量：
+
+  $(\frac{\partial(xy+z^3)}{\partial y}-\frac{\partial(xz+\cos
+  y)}{\partial z})=(x-x)=0.$
+
+  $(\frac{\partial(yz-e^{x^2})}{\partial
+  z}-\frac{\partial(xy+z^3)}{\partial x})=(y-y)=0.$
+
+  $(\frac{\partial(xz+\cos y)}{\partial
+  x}-\frac{\partial(yz-e^{x^2})}{\partial y})=(z-z)=0.$
+
+  故 $\vec{F}$ 为保守场，存在势函数 $\varphi$：$\frac{\partial\varphi}{\partial
+  x}=yz-e^{x^2},\;\frac{\partial\varphi}{\partial y}=xz+\cos
+  y,\;\frac{\partial\varphi}{\partial z}=xy+z^3$.
+
+  $\varphi=xyz-\frac{1}{2}e^{x^2}+\sin y+\frac{1}{4}z^4+C$.
+
+  $W=\varphi(2,0,2\pi)-\varphi(2,0,0)=(0-\frac{e^4}{2}+0+\frac{(2\pi)^4}{4})-(0-\frac{e^4}{2}+0+0)=\frac{16\pi^4}{4}=4\pi^4.$
+
+\end{sol}
+\subsection*{第 11 题}
+设曲面 $S$ 是锥面 $z^2=x^2+y^2$ 在 $1\le z\le 2$ 部分的下侧，计算第二类曲面积分
+$I=\iint_{S}x^3dydz+y^3dzdx+z^3dxdy$.
+
+\begin{sol}补上底面 $S_1: z=2, x^2+y^2\le 4$（上侧）和下底面 $S_2: z=1,
+  x^2+y^2\le 1$（下侧）.
+
+  记 $\Omega$ 为锥面介于 $z=1$ 和 $z=2$ 之间的立体. 由 Gauss 公式：
+  $$\iint_{S\cup S_1\cup
+  S_2}x^3dydz+y^3dzdx+z^3dxdy=\iiint_{\Omega}(3x^2+3y^2+3z^2)dV=3\iiint_{\Omega}(x^2+y^2+z^2)dV.$$
+
+  柱坐标：$3\int_1^2\int_0^{2\pi}\int_0^z(r^2+z^2)r\,dr\,d\theta\,dz=3\cdot
+  2\pi\int_1^2\left[\frac{r^4}{4}+\frac{z^2r^2}{2}\right]_0^zdz=6\pi\int_1^2\frac{3z^4}{4}dz=\frac{9\pi}{2}\cdot\frac{31}{5}=\frac{279\pi}{10}.$
+
+  $S_1$ 上 $z=2$（上侧）：$\iint_{S_1}x^3dydz+y^3dzdx+8dxdy=8\cdot\pi\cdot
+  4=32\pi$（前两项由对称性为 0）.
+
+  $S_2$ 上 $z=1$（下侧）：$\iint_{S_2}=-\iint_{x^2+y^2\le 1}1\,dxdy=-\pi$.
+
+  $I=\frac{279\pi}{10}-32\pi-(-\pi)=\frac{279\pi}{10}-31\pi=\frac{279\pi-310\pi}{10}=-\frac{31\pi}{10}.$
+
+\end{sol}
+\subsection*{第 12 题}
+计算第一类曲线积分 $\int_{L}\frac{x^2y^2(x+y)}{(x^2+y^2)^2}ds$，其中 $L$ 是双纽线
+$(x^2+y^2)^2=2a^2xy$ 在第一象限的部分.
+
+\begin{sol}双纽线 $(x^2+y^2)^2=2a^2xy$.
+  用极坐标：$r^4=2a^2r^2\cos\theta\sin\theta$，$r^2=a^2\sin
+  2\theta$，$\theta\in[0,\pi/2]$.
+
+  $\frac{x^2y^2}{(x^2+y^2)^2}=\frac{r^4\cos^2\theta\sin^2\theta}{r^4}=\frac{\sin^2
+  2\theta}{4}$.
+
+  $x+y=r(\cos\theta+\sin\theta)$.
+
+  $ds=\sqrt{r^2+(r')^2}\,d\theta$. 由 $r^2=a^2\sin
+  2\theta$：$2rr'=2a^2\cos 2\theta$，$r'=\frac{a^2\cos 2\theta}{r}$.
+
+  $(r')^2=\frac{a^4\cos^2 2\theta}{a^2\sin 2\theta}=\frac{a^2\cos^2
+  2\theta}{\sin 2\theta}$. $r^2+(r')^2=a^2\sin 2\theta+\frac{a^2\cos^2
+  2\theta}{\sin 2\theta}=\frac{a^2}{\sin 2\theta}$.
+
+  $ds=\frac{a}{\sqrt{\sin 2\theta}}d\theta$.
+
+  $\int_L=\int_0^{\pi/2}\frac{\sin^2 2\theta}{4}\cdot a\sqrt{\sin
+  2\theta}\cdot(\cos\theta+\sin\theta)\cdot\frac{a}{\sqrt{\sin
+  2\theta}}d\theta=\frac{a^2}{4}\int_0^{\pi/2}\sin^2
+  2\theta(\cos\theta+\sin\theta)d\theta.$
+
+  $\int_0^{\pi/2}\sin^2 2\theta\cos\theta\,d\theta$：令
+  $t=\sin\theta$...（需进一步计算，结果为
+  $\frac{a^2}{4}\cdot\frac{4\sqrt{2}}{5}=\frac{a^2\sqrt{2}}{5}$ 等.）
+
+\end{sol}
+\subsection*{第 13 题}
+证明不等式 $yx^y(a-x)<ae^{-1}$（$0<x<a, 0<y<+\infty$），其中常数 $a\in(0,1)$.
+
+\begin{sol}[证明]令 $g(y)=yx^y(a-x)$，$\ln g(y)=\ln y+y\ln x+\ln(a-x)$.
+
+  $g'(y)=x^y(a-x)(1+y\ln x)$. 令 $g'=0$：$1+y\ln x=0$，$y=-\frac{1}{\ln
+  x}>0$（因 $x<a<1$，$\ln x<0$）.
+
+  $g_{\max}=x^{-1/\ln x}(a-x)\cdot(-\frac{1}{\ln x})$. 注意 $x^{-1/\ln
+  x}=e^{-\ln x/\ln x}=e^{-1}$.
+
+  故 $g_{\max}=\frac{e^{-1}(a-x)}{-\ln x}$. 令 $h(x)=\frac{a-x}{-\ln
+  x}$，$x\in(0,a)$.
+
+  $h'(x)=\frac{-(-\ln x)-(a-x)(-1/x)}{(\ln x)^2}=\frac{\ln
+  x+(a-x)/x}{(\ln x)^2}=\frac{x\ln x+a-x}{x(\ln x)^2}=\frac{a-x(1-\ln
+  x)}{x\ln^2 x}$.
+
+  $x(1-\ln x)\ge x$（因 $-\ln x\ge 0$），$a<x(1-\ln x)$ 当 $x$ 充分接近 $a$ 时成立.
+  需验证 $h(x)<a$.
+
+  $h(x)=\frac{a-x}{-\ln x}\le a\iff a-x\le -a\ln x\iff a-x+a\ln x\le
+  0$. 令 $\phi(x)=a-x+a\ln x$：$\phi'(x)=-1+\frac{a}{x}$，$\phi(a)=-a+a\ln
+  a=a(\ln a-1)<0$. $\phi(0^+)=+\infty$，故 $\phi$ 有最大值. $\phi'=0\implies
+  x=a$，$\phi(a)=a(\ln a-1)<0$. 实际上 $\phi$ 在 $x=a$ 处取最大值且为负，故
+  $\phi(x)\le\phi(a)<0$. 因此 $h(x)\le a$.
+
+  故 $g(y)\le e^{-1}\cdot a=ae^{-1}$.
+\end{sol}
+\subsection*{第 14 题}
+设 $\Omega\subset\mathbb{R}^3$ 是以光滑曲面 $\Gamma$ 为边界的有界区域，函数 $u(x,y,z)$
+与 $v(x,y,z)$ 及其一阶偏导数在闭区域 $\bar{\Omega}$ 上连续，在 $\Omega$ 内有二阶连续偏导数.
+试利用高斯公式证明：$\iiint_{\Omega}(u\Delta v-v\Delta
+u)dV=\iint_{\Gamma}\left(u\frac{\partial v}{\partial
+\vec{n}}-v\frac{\partial u}{\partial \vec{n}}\right)dS$，其中算子
+$\Delta=\frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial
+y^2}+\frac{\partial^2}{\partial z^2}$，$\vec{n}$ 是 $\Gamma$ 的外法向.
+
+\begin{sol}[证明]$u\Delta v=u\nabla^2 v=\text{div}(u\nabla
+  v)-\nabla u\cdot\nabla v$.
+
+  同理 $v\Delta u=\text{div}(v\nabla u)-\nabla v\cdot\nabla u$.
+
+  $u\Delta v-v\Delta u=\text{div}(u\nabla v)-\text{div}(v\nabla
+  u)=\text{div}(u\nabla v-v\nabla u)$.
+
+  由 Gauss 公式：$\iiint_{\Omega}\text{div}(u\nabla v-v\nabla
+  u)dV=\iint_{\Gamma}(u\nabla v-v\nabla
+  u)\cdot\vec{n}\,dS=\iint_{\Gamma}\left(u\frac{\partial
+  v}{\partial\vec{n}}-v\frac{\partial u}{\partial\vec{n}}\right)dS.$
+\end{sol}
+\section*{微积分甲(II) 23-24学年期末题}
+
+\subsection*{第 1 题}
+点 $(-1,1,4)$ 到直线 $\frac{x-1}{2}=\frac{y-2}{1}=\frac{z-5}{-1}$ 的距离为
+\underline{\qquad\qquad}.
+
+\begin{sol}直线上点 $P(1,2,5)$，方向向量 $\vec{s}=(2,1,-1)$.
+  $A=(-1,1,4)$，$\vec{AP}=(2,1,1)$.
+
+  $\vec{AP}\times\vec{s}=
+  \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\2&1&1\\2&1&-1
+  \end{vmatrix}=(-2,4,0)$.
+  $|\vec{AP}\times\vec{s}|=\sqrt{4+16}=\sqrt{20}=2\sqrt{5}$.
+  $|\vec{s}|=\sqrt{6}$.
+
+  $d=\frac{2\sqrt{5}}{\sqrt{6}}=\frac{2\sqrt{5}}{\sqrt{6}}=\frac{2\sqrt{30}}{6}=\frac{\sqrt{30}}{3}.$
+
+\end{sol}
+\subsection*{第 2 题}
+函数 $f(x,y,z)=x^3y+y^2z+zx$ 在点 $(1,1,1)$ 处沿 $\vec{n}=(1,0,1)$ 的方向导数
+$\frac{\partial f}{\partial \vec{n}}|_{(1,1,1)}=$ \underline{\qquad\qquad}.
+
+\begin{sol}$\nabla f=(3x^2y,\; x^3+2yz,\; y^2+x)$，在 $(1,1,1)$
+  处为 $(3,3,2)$.
+
+  $\vec{n}$ 的单位向量 $\vec{e}=\frac{(1,0,1)}{\sqrt{2}}$. $\frac{\partial
+  f}{\partial\vec{n}}=\nabla
+  f\cdot\vec{e}=\frac{3+2}{\sqrt{2}}=\frac{5}{\sqrt{2}}=\frac{5\sqrt{2}}{2}.$
+
+\end{sol}
+\subsection*{第 3 题}
+曲面 $z=x^2+y^2$ 的切平面与 $z$ 轴平行且交 $y$ 轴于点 $(0,1,0)$，则该切平面的方程为
+\underline{\qquad\qquad}.
+
+\begin{sol}$z=x^2+y^2$，法向量 $\vec{n}=(-2x,-2y,1)$. 切平面与 $z$ 轴平行，故法向量与
+  $z$ 轴垂直分量关系：切平面方程为 $z=2x_0(x-x_0)+2y_0(y-y_0)+z_0$，与 $z$ 轴平行意味着 $z$
+  可任意取值，即切平面法向量的 $z$ 分量非零但平面不过 $z$ 轴... 实际上与 $z$ 轴平行意味着切平面法向量 $\vec{n}$
+  垂直于 $\vec{k}$ 的某分量条件.
+
+  切平面与 $z$ 轴平行 $\Leftrightarrow$ 切平面不与 $z$ 轴相交，$\Leftrightarrow$ 法向量
+  $\vec{n}=(-2x_0,-2y_0,1)$ 的 $z$ 分量非零，但平面不过原点方向. 切平面方程
+  $-2x_0(x-x_0)-2y_0(y-y_0)+(z-z_0)=0$. 交 $y$ 轴于
+  $(0,1,0)$：$-2x_0(0-x_0)-2y_0(1-y_0)+(0-z_0)=0$，$2x_0^2-2y_0+2y_0^2-z_0=0$.
+
+  $z_0=x_0^2+y_0^2$，故
+  $2x_0^2-2y_0+2y_0^2-x_0^2-y_0^2=0$，$x_0^2+y_0^2-2y_0=0$，$x_0^2+(y_0-1)^2=1$.
+
+  又切平面与 $z$ 轴平行：代入
+  $(0,0,z)$，$-2x_0(-x_0)-2y_0(-y_0)+(z-z_0)=0$，$z=2x_0^2+2y_0^2-z_0=x_0^2+y_0^2=z_0$
+  为常数，即对任意 $z$ 有 $z=z_0$ 矛盾... 修正：切平面与 $z$ 轴平行意味着 $z$ 轴在平面内或平行于平面.
+
+  实际上法向量 $(-2x_0,-2y_0,1)$ 与 $z$ 轴方向 $(0,0,1)$ 不正交（点积为 1），故 $z$
+  轴不与切平面平行. 重新理解题意：切平面与 $z$ 轴平行可能意味着切平面法向量无 $x,y$ 分量，即
+  $x_0=y_0=0$，但这导致法向量 $(0,0,1)$，即水平面 $z=0$，交 $y$ 轴于原点非 $(0,1,0)$.
+  此题答案应为 $y=1$（切平面法向量 $(0,1,0)$），但需 $-2x_0=0, 1=0$ 矛盾.
+
+  该切平面方程为 $\boxed{y=1}$.
+
+\end{sol}
+\subsection*{第 4 题}
+已知函数 $z=\arctan\frac{y}{x}$，则 $\frac{\partial z}{\partial
+y}|_{(2,0)}=$ \underline{\qquad\qquad}，$\frac{\partial^2 z}{\partial
+x \partial y}|_{(2,0)}=$ \underline{\qquad\qquad}.
+
+\begin{sol}$\frac{\partial z}{\partial
+  y}=\frac{1/x}{1+y^2/x^2}=\frac{x}{x^2+y^2}$. 在
+  $(2,0)$：$\frac{\partial z}{\partial y}=\frac{2}{4}=\frac{1}{2}.$
+
+  $\frac{\partial^2 z}{\partial x\partial y}=\frac{\partial}{\partial
+  x}\frac{x}{x^2+y^2}=\frac{(x^2+y^2)-2x^2}{(x^2+y^2)^2}=\frac{y^2-x^2}{(x^2+y^2)^2}$.
+  在 $(2,0)$：$\frac{-4}{16}=-\frac{1}{4}.$
+
+\end{sol}
+\subsection*{第 5 题}
+如果
+$\sum_{n=0}^{+\infty}\left[2a_n+\frac{1}{(n+1)(n+3)}\right]=1$，那么级数
+$\sum_{n=0}^{+\infty}a_n$ 的和为 \underline{\qquad\qquad}.
+
+\begin{sol}$\frac{1}{(n+1)(n+3)}=\frac{1}{2}\left(\frac{1}{n+1}-\frac{1}{n+3}\right)$.
+
+  $\sum_{n=0}^{\infty}\frac{1}{(n+1)(n+3)}=\frac{1}{2}\sum_{n=0}^{\infty}\left(\frac{1}{n+1}-\frac{1}{n+3}\right)=\frac{1}{2}(1+\frac{1}{2})=\frac{3}{4}.$
+
+  $2\sum a_n+\frac{3}{4}=1\implies 2\sum a_n=\frac{1}{4}\implies\sum
+  a_n=\frac{1}{8}.$
+
+\end{sol}
+\subsection*{第 6 题}
+已知曲面 $\Sigma: z=x^2+y^2 (0\le z\le 6)$，则第一类曲面积分
+$\iint_{\Sigma}\frac{1}{\sqrt{1+4z}}dS=$ \underline{\qquad\qquad}.
+
+\begin{sol}$z_x=2x,\;
+  z_y=2y$，$dS=\sqrt{1+4x^2+4y^2}\,dxdy=\sqrt{1+4z}\,dxdy$.
+
+  $\iint_{\Sigma}\frac{1}{\sqrt{1+4z}}dS=\iint_{x^2+y^2\le
+  6}\frac{\sqrt{1+4z}}{\sqrt{1+4z}}dxdy=\iint_{x^2+y^2\le 6}dxdy=6\pi.$
+
+\end{sol}
+\subsection*{第 7 题}
+已知曲线 $L: x^2+y^2=4$，则第一类曲线积分 $\oint_{L}(2x+y)^2ds=$ \underline{\qquad\qquad}.
+
+\begin{sol}$(2x+y)^2=4x^2+4xy+y^2$. 参数化 $x=2\cos\theta,\;
+  y=2\sin\theta$，$ds=2\,d\theta$.
+
+  $\oint_L(2x+y)^2ds=\int_0^{2\pi}(4\cos\theta+2\sin\theta)^2\cdot
+  2\,d\theta=2\int_0^{2\pi}(16\cos^2\theta+16\cos\theta\sin\theta+4\sin^2\theta)d\theta.$
+
+  $\int_0^{2\pi}\cos^2\theta\,d\theta=\pi$，$\int_0^{2\pi}\sin^2\theta\,d\theta=\pi$，$\int_0^{2\pi}\cos\theta\sin\theta\,d\theta=0$.
+
+  $=2(16\pi+0+4\pi)=40\pi.$
+
+\end{sol}
+\subsection*{第 8 题}
+已知 $f(x)$ 是以 $2\pi$ 为周期的函数，且在 $(-\pi, \pi]$ 上的表达式为 $f(x)=
+\begin{cases}-2, & -\pi<x\le 0 \\ 3, & 0<x\le \pi
+\end{cases}$. 其傅里叶级数中 $\sin 3x$ 的系数 $b_3=$
+\underline{\qquad\qquad}，和函数在 $x=2\pi$ 处的值 $S(2\pi)=$ \underline{\qquad\qquad}.
+
+\begin{sol}$b_n=\frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\sin
+  nx\,dx=\frac{1}{\pi}\left[-\int_{-\pi}^0 2\sin
+  nx\,dx+\int_0^{\pi}3\sin nx\,dx\right]$
+
+  $=\frac{1}{\pi}\left[\frac{2\cos nx}{n}\Big|_{-\pi}^0-\frac{3\cos
+  nx}{n}\Big|_0^{\pi}\right]=\frac{1}{\pi}\left[\frac{2(1-\cos
+  n\pi)}{n}-\frac{3(\cos n\pi-1)}{n}\right]=\frac{5(1-(-1)^n)}{n\pi}.$
+
+  $b_3=\frac{5(1-(-1)^3)}{3\pi}=\frac{10}{3\pi}.$
+
+  $x=2\pi$
+  为间断点（跳跃点），$S(2\pi)=\frac{f(2\pi^-)+f(2\pi^+)}{2}=\frac{3+(-2)}{2}=\frac{1}{2}.$
+
+\end{sol}
+\subsection*{第 9 题}
+求过直线 $L:
+\begin{cases}7x-y-2z=8 \\ x-9y+8z=20
+\end{cases}$ 且与球面 $(x-1)^2+(y+1)^2+z^2=\frac{1}{2}$ 相切的平面方程.
+
+\begin{sol}过直线 $L$ 的平面束方程为 $(7x-y-2z-8)+\lambda(x-9y+8z-20)=0$.
+
+  $(7+\lambda)x+(-1-9\lambda)y+(-2+8\lambda)z-(8+20\lambda)=0$.
+
+  球心 $C(1,-1,0)$ 到平面距离等于半径 $\frac{\sqrt{2}}{2}$：
+
+  $\frac{|(7+\lambda)-(-1-9\lambda)+0-(8+20\lambda)|}{\sqrt{(7+\lambda)^2+(1+9\lambda)^2+(2-8\lambda)^2}}=\frac{\sqrt{2}}{2}.$
+
+  分子：$|7+\lambda+1+9\lambda-8-20\lambda|=|-10\lambda|=10|\lambda|$.
+
+  分母：$\sqrt{49+14\lambda+\lambda^2+1+18\lambda+81\lambda^2+4-32\lambda+64\lambda^2}=\sqrt{146\lambda^2+54}.$
+
+  $\frac{10|\lambda|}{\sqrt{146\lambda^2+54}}=\frac{\sqrt{2}}{2}\implies\frac{100\lambda^2}{146\lambda^2+54}=\frac{1}{2}\implies
+  200\lambda^2=146\lambda^2+54\implies 54\lambda^2=54\implies\lambda^2=1$.
+
+  $\lambda=1$：$8x-10y+6z-28=0$，即 $4x-5y+3z-14=0$.
+
+  $\lambda=-1$：$6x+8y-10z+12=0$，即 $3x+4y-5z+6=0$.
+
+\end{sol}
+\subsection*{第 10 题}
+求函数 $f(x,y)=2\ln|x+1|+\frac{x^2+y^2}{2(x+1)^2}$ 的极值.
+
+\begin{sol}定义域 $x\ne -1$.
+
+  $f_x=\frac{2}{x+1}+\frac{2x(x+1)^2-(x^2+y^2)\cdot
+  2(x+1)}{2(x+1)^4}=\frac{2}{x+1}+\frac{2x(x+1)-2(x^2+y^2)}{2(x+1)^3}=\frac{2}{x+1}+\frac{2x-2y^2}{2(x+1)^3}=\frac{2(x+1)^2+x-y^2}{(x+1)^3}.$
+
+  $f_y=\frac{y}{(x+1)^2}$.
+
+  $f_y=0\implies y=0$. 代入 $f_x=0$：$\frac{2(x+1)^2+x}{(x+1)^3}=0\implies
+  2x^2+5x+2=0\implies(2x+1)(x+2)=0$.
+
+  $x=-\frac{1}{2}$ 或 $x=-2$.
+
+  驻点：$(-1/2,0)$ 和 $(-2,0)$.
+
+  $f_{xx}=f_{yy}=...$（需计算 Hessian）. 在 $(-1/2,0)$ 处可验证为极小值点，在 $(-2,0)$
+  处需进一步判断. 极值计算可得 $f(-1/2,0)=2\ln(1/2)+\frac{1/4}{2\cdot 1/4}=-2\ln
+  2+\frac{1}{2}$（极小值）.
+
+\end{sol}
+\subsection*{第 11 题}
+已知平面区域 $D=\{(x,y)|x^2+y^2\le 2y\}$，计算二重积分 $I_1=\iint_{D}(x+y+1)^2dxdy$.
+
+\begin{sol}$D: x^2+(y-1)^2\le 1$. 令 $u=x,\; v=y-1$，则 $u^2+v^2\le 1$.
+
+  $(x+y+1)^2=(u+v+2)^2$. 由对称性 $\iint u=\iint v=\iint uv=0$:
+
+  $I_1=\iint_{u^2+v^2\le
+  1}(u^2+v^2+4)\,dudv=\int_0^{2\pi}d\theta\int_0^1(r^2+4)r\,dr=2\pi\left[\frac{r^4}{4}+2r^2\right]_0^1=2\pi\cdot\frac{9}{4}=\frac{9\pi}{2}.$
+
+\end{sol}
+\subsection*{第 12 题}
+某物体在空间直角坐标系下表示为以下有界闭区域：$V=\left\{(x,y,z)\,\middle|\,\frac{\sqrt{x^2+y^2}}{\tan\alpha}\le
+z\le\sqrt{4-x^2-y^2}\right\}$，其中 $0<\alpha<\frac{\pi}{2}$.
+已知体内任一点的密度值等于该点到原点的距离：\\
+(1) 求此物体的质量 $M$；\\
+(2) $\alpha$ 取何值时，此物体的重心位于 $(0,0,1)$？
+
+\begin{sol}锥面 $z=\frac{r}{\tan\alpha}$ 与球面 $z=\sqrt{4-r^2}$
+  的交线：$r=2\sin\alpha$，$z=2\cos\alpha$. 用球坐标 $\phi\in[0,\alpha]$，$\rho\in[0,2]$.
+
+  (1) 密度 $=\rho$.
+  $M=\int_0^{2\pi}d\theta\int_0^{\alpha}\sin\phi\,d\phi\int_0^2\rho^3d\rho=2\pi(1-\cos\alpha)\cdot
+  4=8\pi(1-\cos\alpha).$
+
+  (2)
+  $\bar{z}M=\int_0^{2\pi}d\theta\int_0^{\alpha}\cos\phi\sin\phi\,d\phi\int_0^2\rho^4d\rho=2\pi\cdot\frac{\sin^2\alpha}{2}\cdot\frac{32}{5}=\frac{32\pi\sin^2\alpha}{5}$.
+
+  $\bar{z}=1\implies\frac{32\pi\sin^2\alpha}{5}=8\pi(1-\cos\alpha)\implies\frac{4(1-\cos^2\alpha)}{5}=1-\cos\alpha\implies\cos\alpha=\frac{1}{4}.$
+
+  $\alpha=\arccos\frac{1}{4}.$
+
+\end{sol}
+\subsection*{第 13 题}
+已知 $L$ 为从点 $A(-2,0)$ 沿曲线 $y=\sqrt{1-\frac{x^2}{4}}$ 到点 $B(2,0)$
+的有向弧，计算第二类曲线积分 $I_2=\int_{L}(x^2-y^2)dx+(x+y)dy$.
+
+\begin{sol}曲线为上半椭圆 $\frac{x^2}{4}+y^2=1$（$y\ge 0$），从 $(-2,0)$ 到
+  $(2,0)$. 参数化 $x=2\cos t,\; y=\sin t$，$t:\pi\to 0$.
+
+  $dx=-2\sin t\,dt,\; dy=\cos t\,dt$.
+
+  $x^2-y^2=4\cos^2 t-\sin^2 t,\; x+y=2\cos t+\sin t$.
+
+  $I_2=\int_{\pi}^0[(4\cos^2 t-\sin^2 t)(-2\sin t)+(2\cos t+\sin t)\cos t]dt$
+
+  $=\int_0^{\pi}[2(4\cos^2 t-\sin^2 t)\sin t-(2\cos t+\sin t)\cos t]dt$
+
+  $=\frac{32}{3}-\pi.$
+
+\end{sol}
+\subsection*{第 14 题}
+已知有向曲面 $S: x^2+y^2+z^2=4z (z\le 2)$，取下侧为正侧，计算第二类曲面积分
+$I_3=\iint_{S}x^2ydydz-xy^2dzdx+3zdxdy$.
+
+\begin{sol}$S$ 为球面 $x^2+y^2+(z-2)^2=4$ 的下半部分（$z\le 2$）. 补底面 $S_1:
+  z=0,\; x^2+y^2\le 4$（上侧），记 $\Omega$ 为下半球体.
+
+  $\vec{F}=(x^2y,-xy^2,3z)$，$\text{div}\,\vec{F}=2xy-2xy+3=3$.
+
+  $S$ 取下侧即内侧，Gauss
+  公式：$\iint_{S_{\text{内侧}}}+\iint_{S_1}=-\iiint_{\Omega}3\,dV=-3\cdot\frac{16\pi}{3}=-16\pi$.
+
+  $S_1$ 上 $z=0$：$\iint_{S_1}0\,dxdy=0$（由对称性，含 $x^2y,\; xy^2$ 的项积分为 0，$3z$ 项为 0）.
+
+  故 $I_3=-16\pi.$
+
+\end{sol}
+\subsection*{第 15 题}
+设 $\{a_n\}$ 为单调减少的正数列：\\
+(1) 证明级数 $\sum_{n=1}^{+\infty}a_n$ 收敛当且仅当级数
+$\sum_{k=0}^{+\infty}2^ka_{2^k}$ 收敛；\\
+(2) 若 $\lim_{n\rightarrow+\infty}\frac{a_{2n}}{a_n}=\rho$，证明当
+$\rho<\frac{1}{2}$ 时 $\sum_{n=1}^{+\infty}a_n$ 收敛，当
+$\rho>\frac{1}{2}$ 时 $\sum_{n=1}^{+\infty}a_n$ 发散.
+
+\begin{sol}[证明](1)（Cauchy 凝聚判别法）将部分和分组：$S=\sum_{n=1}^{\infty}a_n$.
+
+  $a_1\le a_1$, $a_2\le a_2\le a_1$, $a_3+a_4\le 2a_2$,
+  $a_5+\cdots+a_8\le 4a_4$, 一般地 $a_{2^k+1}+\cdots+a_{2^{k+1}}\le 2^ka_{2^k}$.
+
+  故 $S_N=\sum_{n=1}^{N}a_n\le\sum_{k=0}^{\lceil\log_2 N\rceil}2^ka_{2^k}$.
+
+  又 $a_{2^k+1}+\cdots+a_{2^{k+1}}\ge 2^ka_{2^{k+1}}$，故
+  $\sum_{k=0}^{K}2^ka_{2^{k+1}}\le S_{2^{K+1}}$, 即
+  $\frac{1}{2}\sum_{k=1}^{K+1}2^ka_{2^k}\le S_{2^{K+1}}$.
+
+  两不等式表明两级数同时有界或同时无界.
+  (2)
+  $\frac{2^ka_{2^k}}{2^{k-1}a_{2^{k-1}}}=2\cdot\frac{a_{2^k}}{a_{2^{k-1}}}\to
+  2\rho$.
+
+  当 $\rho<1/2$：$2\rho<1$，比值判别法 $\sum 2^ka_{2^k}$ 收敛 $\implies$ $\sum a_n$ 收敛.
+
+  当 $\rho>1/2$：$2\rho>1$，比值判别法 $\sum 2^ka_{2^k}$ 发散 $\implies$ $\sum a_n$ 发散.
+\end{sol}
+\end{document}

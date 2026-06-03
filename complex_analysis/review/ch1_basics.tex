@@ -1,0 +1,64 @@
+% ch1_basics.tex — 复数基础与解析函数
+
+\subsection{复数域 $\mathbb{C}$}
+
+复数域 $\mathbb{C}$ 是在 $\mathbb{R}$ 上通过添加虚数单位 $i$（满足 $i^2 = -1$）所得的扩域。
+从代数角度看，$\mathbb{C} = \mathbb{R}[x]/(x^2+1)$。复数域是\textbf{代数封闭的}
+\eng{algebraically closed}：每个非常数复系数多项式在 $\mathbb{C}$ 中都有根。
+
+\begin{remark}
+$\mathbb{C}$ 不能赋予全序使其成为有序域 \eng{ordered field}（若 $i > 0$，则 $i^2 = -1 > 0$，矛盾）。
+\end{remark}
+
+\subsection{复数的表示}
+
+每个复数 $z \in \mathbb{C}$ 可唯一地写成 $z = x + iy$（$x,y \in \mathbb{R}$），或用极坐标
+\[
+  z = r e^{i\theta}, \quad r = |z|,\; \theta = \arg z.
+\]
+
+\begin{definition}[辐角 \eng{argument}]
+$\arg z$ 是多值函数，主值分支 \eng{principal branch} 定义在割平面
+$\mathbb{C}^- = \mathbb{C} \setminus (-\infty, 0]$ 上取 $(-\pi, \pi)$。
+在 $\mathbb{C}^-$ 上，$\arg$ 是连续的。
+\end{definition}
+
+\subsection{指数函数与三角函数}
+
+通过幂级数定义：
+\[
+  e^z = \sum_{n=0}^{\infty} \frac{z^n}{n!}, \quad
+  \cos z = \frac{e^{iz} + e^{-iz}}{2}, \quad
+  \sin z = \frac{e^{iz} - e^{-iz}}{2i}.
+\]
+
+\begin{lemma}[指数函数的基本性质]
+$e^z$ 满足：
+\begin{enumerate}  \item $e^{z_1 + z_2} = e^{z_1} e^{z_2}$（加法公式）；
+  \item $e^z$ 以 $2\pi i$ 为周期；
+  \item $e^z : \mathbb{C} \to \mathbb{C} \setminus \{0\}$ 是满射。
+\end{enumerate}
+\end{lemma}
+
+\begin{remark}
+三角函数与双曲函数 \eng{hyperbolic functions} 通过 $\cosh z = \cos(iz)$, $\sinh z = -i\sin(iz)$ 联系。
+映射 $z \mapsto \cos z$ 将竖直线映为双曲线，水平线映为椭圆。
+\end{remark}
+
+\subsection{解析函数}
+
+\begin{definition}[解析 \eng{analytic} / 全纯 \eng{holomorphic}]
+设 $U \subset \mathbb{C}$ 为开集，$f: U \to \mathbb{C}$。若 $f$ 在 $U$ 上处处复可微
+\eng{complex differentiable}，即极限
+\[
+  f'(z_0) = \lim_{h \to 0} \frac{f(z_0+h) - f(z_0)}{h}
+\]
+在每点 $z_0 \in U$ 存在，则称 $f$ 在 $U$ 上解析（全纯）。
+
+若 $U = \mathbb{C}$，则称 $f$ 为\textbf{整函数} \eng{entire function}。
+\end{definition}
+
+\begin{remark}
+复可微比实可微条件强得多：复可微蕴含无穷次可微，甚至可展开为幂级数。
+这是复分析区别于实分析的核心。
+\end{remark}
