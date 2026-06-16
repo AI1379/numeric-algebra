@@ -1,0 +1,234 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{luacode}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Legendre symbol
+\newcommand{\leg}[2]{\left(\frac{#1}{#2}\right)}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{初等数论}
+\newcommand{\hwNum}{4}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name (\uid)}
+\chead{\course \#\hwNum}
+\rhead{\today}
+
+\section{习题 1}
+
+设 $p$ 为奇素数，$\zeta_p = e^{2\pi\sqrt{-1}/p}$，用 Gauss 和证明：
+\[
+  g = \sum_{x=1}^{p-1} \leg{x}{p} \zeta_p^x, \qquad
+  G = \sum_{x=0}^{p-1} \zeta_p^{x^2}.
+\]
+证明 $G = g$。
+
+\begin{solution}
+  注意 $x^2 \pmod{p}$ 的取值规律：对于 $a \in \{1, \ldots, p-1\}$，方程 $x^2 \equiv a \pmod{p}$ 的解的个数为
+  \[
+    N(a) = 1 + \leg{a}{p},
+  \]
+  即 $a$ 为二次剩余时有 2 个解，非剩余时有 0 个解。因此
+  \[
+    \sum_{x=1}^{p-1} \zeta_p^{x^2} = \sum_{a=1}^{p-1} N(a)\, \zeta_p^a = \sum_{a=1}^{p-1} \left(1 + \leg{a}{p}\right) \zeta_p^a.
+  \]
+
+  第一项：
+  \[
+    \sum_{a=1}^{p-1} \zeta_p^a = \sum_{a=0}^{p-1} \zeta_p^a - 1 = 0 - 1 = -1.
+  \]
+  第二项：
+  \[
+    \sum_{a=1}^{p-1} \leg{a}{p} \zeta_p^a = g.
+  \]
+  所以
+  \[
+    G = \sum_{x=0}^{p-1} \zeta_p^{x^2} = 1 + (-1 + g) = g. \qedhere
+  \]
+\end{solution}
+
+\section{习题 2}
+
+设奇素数 $p \equiv 1 \pmod{4}$，取 $\chi$ 为 $\mathbb{F}_p^*$ 上阶为 4 的特征（即 $\chi^4 = \chi_0$，$\chi^2 \neq \chi_0$，其中 $\chi_0$ 为主特征）。Jacobi 和定义为
+\[
+  J(\chi, \chi) = \sum_{x \in \mathbb{F}_p} \chi(x)\,\chi(1-x).
+\]
+\begin{enumerate}[(1)]
+  \item 证明 $J(\chi, \chi) \in \mathbb{Z}[\sqrt{-1}]$；
+  \item 设 $J(\chi, \chi) = a + b\sqrt{-1}$，$a, b \in \mathbb{Z}$，证明 $p = a^2 + b^2$，且 $a$ 为奇数，$b$ 为偶数。
+\end{enumerate}
+
+\begin{solution}
+  (1) $\chi$ 是 4 阶特征，对每个 $x$，$\chi(x) \in \{0, 1, \sqrt{-1}, -1, -\sqrt{-1}\}$，故 $\chi(x)\chi(1-x)$ 恒为 4 次单位根或 0。有限个这样的值之和自然属于 $\mathbb{Z}[\sqrt{-1}]$。
+
+  (2) 设 $g(\chi) = \sum_{x=1}^{p-1}\chi(x)\zeta_p^x$。由 $J(\chi,\psi) = g(\chi)g(\psi)/g(\chi\psi)$（$\chi\psi$ 非平凡时适用），而 $\chi\cdot\chi = \chi^2 \neq \chi_0$，所以
+  \[
+    J(\chi,\chi) = \frac{g(\chi)^2}{g(\chi^2)}.
+  \]
+  已知 $|g(\chi)|^2 = \chi(-1)p$，$|g(\chi^2)|^2 = p$（$p \equiv 1\!\pmod{4}$ 时 $\leg{-1}{p} = 1$），故
+  \[
+    |J(\chi,\chi)|^2 = \frac{|g(\chi)|^4}{|g(\chi^2)|^2} = \frac{\chi(-1)^2\,p^2}{p} = p,
+  \]
+  其中 $\chi(-1)^2 = \chi^2(-1) = \leg{-1}{p} = 1$。设 $J(\chi,\chi) = a + b\sqrt{-1}$，则 $a^2 + b^2 = p$。
+
+  下证 $a$ 奇、$b$ 偶。记
+  \[
+    N_k = \#\{x \in \mathbb{F}_p \setminus \{0,1\} : \chi(x)\chi(1-x) = i^k\}, \quad k = 0,1,2,3,
+  \]
+  其中 $i = \sqrt{-1}$。则 $a = N_0 - N_2$，$b = N_1 - N_3$，且
+  \[
+    N_0 + N_1 + N_2 + N_3 = p - 2. \tag{$*$}
+  \]
+
+  又 $\chi^2$ 是 Legendre 符号，阶为 2，故 $(\chi^2)^{-1} = \chi^2$。由 $J(\chi,\chi^{-1}) = -\chi(-1)$ 知
+  \[
+    J(\chi^2,\chi^2) = -\chi^2(-1) = -1.
+  \]
+  但 $\chi^2(x)\chi^2(1-x) = [\chi(x)\chi(1-x)]^2 = i^{2k} = (-1)^k$，所以
+  \[
+    (N_0 + N_2) - (N_1 + N_3) = -1.
+  \]
+  与 ($*$) 联立得 $N_0 + N_2 = \frac{p-3}{2}$，$N_1 + N_3 = \frac{p-1}{2}$。
+
+  $p \equiv 1 \pmod{4}$，设 $p = 4m+1$，则 $\frac{p-3}{2} = 2m-1$（奇），$\frac{p-1}{2} = 2m$（偶），于是
+  \[
+    a = (N_0 + N_2) - 2N_2 \equiv 1 \pmod{2}, \qquad
+    b = (N_1 + N_3) - 2N_3 \equiv 0 \pmod{2}. \qedhere
+  \]
+\end{solution}
+
+\section{习题 3}
+
+设奇素数 $p$，$a \in \mathbb{Z}$，$p \nmid a$。计算
+\[
+  \sum_{x \in \mathbb{F}_p} \leg{x^2 - a}{p}.
+\]
+
+\begin{solution}
+  记 $\chi = \leg{\cdot}{p}$。由 Gauss 和 $g = \sum_{t=0}^{p-1} \chi(t) \zeta_p^t$（其中 $\chi(0) = 0$）的反演公式，对 $n \in \mathbb{F}_p$，$n \neq 0$ 有
+  \[
+    \chi(n) = \frac{1}{g} \sum_{t=1}^{p-1} \chi(t) \zeta_p^{tn}.
+  \]
+
+  于是
+  \begin{align*}
+    \sum_{x=0}^{p-1} \chi(x^2 - a)
+    &= \frac{1}{g} \sum_{x=0}^{p-1} \sum_{t=1}^{p-1} \chi(t) \zeta_p^{t(x^2 - a)} \\
+    &= \frac{1}{g} \sum_{t=1}^{p-1} \chi(t) \zeta_p^{-ta} \sum_{x=0}^{p-1} \zeta_p^{tx^2}.
+  \end{align*}
+
+  由第 1 题结论，$\sum_{x=0}^{p-1} \zeta_p^{tx^2} = \chi(t)\, G = \chi(t)\, g$（因为 $G = g$）。代入得
+  \begin{align*}
+    \sum_{x=0}^{p-1} \chi(x^2 - a)
+    &= \frac{1}{g} \sum_{t=1}^{p-1} \chi(t) \zeta_p^{-ta} \cdot \chi(t) \cdot g
+    = \sum_{t=1}^{p-1} \chi(t)^2 \zeta_p^{-ta}.
+  \end{align*}
+
+  $\chi$ 是 Legendre 符号（2 阶特征），$\chi(t)^2 = 1$（$t \neq 0$），所以
+  \[
+    \sum_{x=0}^{p-1} \chi(x^2 - a) = \sum_{t=1}^{p-1} \zeta_p^{-ta} = \sum_{t=0}^{p-1} \zeta_p^{-ta} - 1 = 0 - 1 = -1,
+  \]
+  最后一步用了 $p \nmid a$ 时 $\sum_{t=0}^{p-1} \zeta_p^{-ta} = 0$。因此
+  \[
+    \boxed{\sum_{x \in \mathbb{F}_p} \leg{x^2 - a}{p} = -1.} \qedhere
+  \]
+\end{solution}
+
+\section{习题 4}
+
+证明 $x^2 + 5y^2 = 3z^2$ 不存在 $x_0 y_0 z_0 \neq 0$ 的整数解 $(x_0, y_0, z_0)$。
+
+\begin{solution}
+  注意 $5 \equiv 1 \pmod{4}$，原方程模 4 即
+  \[
+    x^2 + y^2 \equiv 3z^2 \pmod{4}.
+  \]
+  平方数模 4 只能是 $0$ 或 $1$。
+
+  若 $z$ 为奇数，右边 $\equiv 3 \pmod{4}$，但左边 $x^2 + y^2 \in \{0, 1, 2\} \pmod{4}$，矛盾。故 $z$ 为偶数，此时右边 $\equiv 0 \pmod{4}$。
+
+  若 $x, y$ 一奇一偶，左边 $\equiv 1 \pmod{4}$，矛盾。若 $x, y$ 均奇，左边 $\equiv 2 \pmod{4}$，矛盾。因此 $x, y, z$ 全为偶数。
+
+  设 $x = 2x_1$，$y = 2y_1$，$z = 2z_1$，代入得
+  \[
+    4x_1^2 + 20y_1^2 = 12z_1^2 \implies x_1^2 + 5y_1^2 = 3z_1^2.
+  \]
+  $(x_1, y_1, z_1)$ 仍是同一方程的解，但 $|z_1| = |z|/2 < |z|$。无穷递降，故无非平凡解。
+\end{solution}
+
+\section{习题 5}
+
+求 $x^2 - 2y^2 = 1$ 的全部正整数解。
+
+\begin{solution}
+  这是 Pell 方程。展开 $\sqrt{2} = [1; \overline{2}]$，渐近分数
+  \[
+    \frac{1}{1},\; \frac{3}{2},\; \frac{7}{5},\; \frac{17}{12},\; \frac{41}{29},\; \ldots
+  \]
+  其中 $\frac{p_1}{q_1} = \frac{3}{2}$ 给出 $p_1^2 - 2q_1^2 = 9 - 8 = 1$，基本解为 $(x_1, y_1) = (3, 2)$。
+
+  在 $\mathbb{Z}[\sqrt{2}]$ 中，$x^2 - 2y^2 = N(x + y\sqrt{2})$。基本单位 $\varepsilon = 3 + 2\sqrt{2}$ 满足 $N(\varepsilon) = 1$。由范数的乘性，全部正整数解为
+  \[
+    x_n + y_n\sqrt{2} = (3 + 2\sqrt{2})^n, \quad n = 1, 2, 3, \ldots
+  \]
+
+  由 $(x_n + y_n\sqrt{2}) = (3 + 2\sqrt{2})(x_{n-1} + y_{n-1}\sqrt{2})$ 展开得递推
+  \[
+    x_n = 3x_{n-1} + 4y_{n-1}, \qquad y_n = 2x_{n-1} + 3y_{n-1},
+  \]
+  初值 $x_0 = 1$，$y_0 = 0$。消去得二阶递推
+  \[
+    x_n = 6x_{n-1} - x_{n-2}, \qquad y_n = 6y_{n-1} - y_{n-2}.
+  \]
+
+  通项公式（令 $\bar{\varepsilon} = 3 - 2\sqrt{2}$）：
+  \[
+    x_n = \frac{\varepsilon^n + \bar{\varepsilon}^n}{2}, \qquad
+    y_n = \frac{\varepsilon^n - \bar{\varepsilon}^n}{2\sqrt{2}}.
+  \]
+
+  前几组解：$(3, 2)$，$(17, 12)$，$(99, 70)$，$(577, 408)$，$(3363, 2378)$，$\ldots$
+\end{solution}
+
+\section{习题 6}
+
+求 $x^2 + y^2 + z^2 = 2xyz$ 的全部整数解。
+
+\begin{solution}
+  只需证仅有零解。取模 4，注意奇数平方 $\equiv 1$，偶数平方 $\equiv 0$。
+
+  \begin{itemize}
+    \item 全奇：左边 $\equiv 3 \pmod{4}$，右边 $\equiv 2 \pmod{4}$，矛盾。
+    \item 一偶两奇：左边 $\equiv 2 \pmod{4}$，右边 $\equiv 0 \pmod{4}$，矛盾。
+    \item 两偶一奇：左边 $\equiv 1 \pmod{4}$，右边 $\equiv 0 \pmod{4}$，矛盾。
+    \item 全偶：唯一可能。
+  \end{itemize}
+
+  设 $x = 2x_1$，$y = 2y_1$，$z = 2z_1$，代入得
+  \[
+    4(x_1^2 + y_1^2 + z_1^2) = 16x_1 y_1 z_1 \implies x_1^2 + y_1^2 + z_1^2 = 4x_1 y_1 z_1.
+  \]
+  对新方程同样做模 4 分析：右边 $\equiv 0 \pmod{4}$，左边在非全偶情形下 $\equiv 1, 2, 3 \pmod{4}$，仍然矛盾。所以 $(x_1, y_1, z_1)$ 也必须全偶。
+
+  重复此过程，得到对任意 $n$，$2^n \mid x$，$2^n \mid y$，$2^n \mid z$。唯一可能为 $x = y = z = 0$。
+\end{solution}
+
+\end{document}

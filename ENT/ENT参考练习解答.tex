@@ -1,0 +1,733 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=2cm}
+\setlength{\headheight}{12.5pt}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+
+% import common macros
+\input{../common/macros.tex}
+
+% Legendre symbol
+\newcommand{\leg}[2]{\left(\frac{#1}{#2}\right)}
+\newcommand{\ord}{\operatorname{ord}}
+
+\newcommand{\course}{初等数论参考练习}
+
+\title{\textbf{初等数论参考练习 \quad 参考解答}}
+\author{}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\itshape 本文给出参考练习中 30 道题目的完整解答。个别题目原始表述存疑之处已在解答中以「注」标出。
+\end{center}
+
+\bigskip
+
+%==================================================================
+\section{问题 1}
+
+设 $p$ 为奇素数。对 $1\le i\le p-1$，$a_i$ 是满足 $i a_i\equiv 1\pmod p$ 的正整数。
+
+\begin{enumerate}[(1)]
+  \item 证明 $\sum_{i=1}^{p-1} a_i\equiv 0\pmod p$。
+  \item 设 $S=1+2+\cdots+(p-1)$。证明对所有素数 $p>3$ 都有 $(p-1)!\not\equiv -1\pmod S$。
+\end{enumerate}
+
+\begin{solution}
+  (1) 映射 $i\mapsto a_i\bmod p$ 是 $\Z/p\Z$ 中乘法逆元的映射。当 $i$ 取遍 $\{1,2,\dots,p-1\}$ 时，逆元 $i^{-1}\bmod p$ 也取遍 $\{1,2,\dots,p-1\}$（逆元唯一且互不相同）。因此
+  \[
+    \sum_{i=1}^{p-1} a_i\equiv \sum_{j=1}^{p-1} j=\frac{p(p-1)}{2}\equiv 0\pmod p,
+  \]
+  最后一步因为 $p\mid \tfrac{p(p-1)}2$（$\tfrac{p-1}2\in\Z$）。
+
+  (2) 此处 $S=\dfrac{p(p-1)}{2}$。记 $m=\dfrac{p-1}{2}$。由于 $p>3$，即 $p\ge 5$，故 $m\ge 2$。
+
+  因为 $1\le m\le p-1$，$m$ 是 $(p-1)!=1\cdot 2\cdots (p-1)$ 的一个因子，故
+  \[
+    (p-1)!\equiv 0\pmod m .
+  \]
+  又 $m\mid S$。倘若 $(p-1)!\equiv -1\pmod S$，则在模 $m$ 下也有 $(p-1)!\equiv -1\pmod m$，于是 $0\equiv -1\pmod m$，即 $m\mid 1$，得 $m=1$，即 $p=3$，与 $p>3$ 矛盾。故 $(p-1)!\not\equiv -1\pmod S$。
+\end{solution}
+
+%==================================================================
+\section{问题 2}
+
+设 $p,q$ 为奇素数，$q\mid M_p=2^p-1$。证明 $q>p$。
+
+\begin{solution}
+  由 $q\mid 2^p-1$ 知 $2^p\equiv 1\pmod q$，故 $2$ 模 $q$ 的阶 $d=\ord_q(2)$ 整除 $p$。由 $p$ 为素数，$d=1$ 或 $d=p$。
+
+  若 $d=1$，则 $2\equiv 1\pmod q$，即 $q\mid 1$，不可能。故 $d=p$。
+
+  由 Fermat 小定理，$2^{q-1}\equiv 1\pmod q$，所以 $d\mid q-1$，即 $p\mid q-1$。于是 $q\ge p+1>p$。
+\end{solution}
+
+%==================================================================
+\section{问题 3}
+
+二次同余式 $x^2\equiv a\pmod{p^2}$，$p$ 为奇素数，$\gcd(a,p)=1$。
+
+\begin{enumerate}[(1)]
+  \item 设 $x_0$ 是 $x^2\equiv a\pmod p$ 的解，证明存在模 $p$ 唯一的 $t$ 使 $x_1=x_0+tp$ 是模 $p^2$ 的解。
+  \item 证明：（在 $a$ 为模 $p$ 二次剩余的前提下）对任意正整数 $k$，$x^2\equiv a\pmod{p^k}$ 有解。
+\end{enumerate}
+
+\begin{solution}
+  注意 $\gcd(a,p)=1$ 且 $x_0^2\equiv a\pmod p$ 蕴含 $\gcd(x_0,p)=1$。
+
+  (1) 记 $x_0^2-a=pc$（$c\in\Z$）。则
+  \[
+    (x_0+tp)^2=x_0^2+2x_0 tp+t^2p^2\equiv x_0^2+2x_0 tp = a+p(c+2x_0 t)\pmod{p^2}.
+  \]
+  要使其 $\equiv a\pmod{p^2}$，需 $p(c+2x_0t)\equiv 0\pmod{p^2}$，即
+  \[
+    c+2x_0 t\equiv 0\pmod p .
+  \]
+  因 $p$ 为奇素数且 $\gcd(x_0,p)=1$，故 $2x_0$ 模 $p$ 可逆，于是 $t\equiv -c\,(2x_0)^{-1}\pmod p$ 唯一确定。
+
+  (2) 对 $k$ 归纳。$k=1$ 成立（已设有解）。设 $x_k$ 满足 $x_k^2\equiv a\pmod{p^k}$，记 $x_k^2-a=p^k c$。令 $x_{k+1}=x_k+tp^k$，则因 $2k\ge k+1$，
+  \[
+    x_{k+1}^2\equiv x_k^2+2x_k tp^k=a+p^k(c+2x_k t)\pmod{p^{k+1}}.
+  \]
+  同理 $\gcd(x_k,p)=1$，可解出 $t\equiv -c\,(2x_k)^{-1}\pmod p$ 使 $x_{k+1}^2\equiv a\pmod{p^{k+1}}$。归纳完成。
+\end{solution}
+
+%==================================================================
+\section{问题 4}
+
+不定方程 $x^3+2y^3=7z^3$。
+
+\begin{enumerate}[(1)]
+  \item 证明任意整数的立方模 $7$ 同余于 $0,1$ 或 $-1$。
+  \item 证明方程只有平凡解 $x=y=z=0$。
+\end{enumerate}
+
+\begin{solution}
+  (1) 逐一计算 $n^3\bmod 7$（$n=0,\dots,6$）：$0,1,1,6,1,6,6$，即取值集合为 $\{0,1,6\}=\{0,1,-1\}\pmod 7$。
+
+  (2) 用无穷递降。设 $(x,y,z)$ 为整数解。模 $7$：$x^3+2y^3\equiv 0\pmod 7$，其中 $x^3\in\{0,\pm1\}$，$2y^3\in\{0,\pm2\}$。枚举二者之和模 $7$，唯一得 $0$ 的方式是 $x^3\equiv 0$ 且 $2y^3\equiv 0$，即 $7\mid x$，$7\mid y$。
+
+  写 $x=7x_1,\ y=7y_1$，代入：
+  \[
+    343x_1^3+2\cdot 343y_1^3=7z^3\ \Longrightarrow\ 49(x_1^3+2y_1^3)=z^3 .
+  \]
+  故 $7\mid z^3$，从而 $7\mid z$。写 $z=7z_1$，得
+  \[
+    49(x_1^3+2y_1^3)=343 z_1^3\ \Longrightarrow\ x_1^3+2y_1^3=7z_1^3 .
+  \]
+  于是 $(x_1,y_1,z_1)$ 又是原方程的解，且 $\abs{x_1}=\abs x/7$ 等。若存在非零解，可无限递降，矛盾。故唯一解为 $x=y=z=0$。
+\end{solution}
+
+%==================================================================
+\section{问题 5}
+
+方程 $x^2-3y^2=1$。
+
+\begin{enumerate}[(1)]
+  \item 求最小正整数解 $(x_1,y_1)$。
+  \item 由 $(x_n+y_n\sqrt3)=(x_1+y_1\sqrt3)^n$ 定义解序列，讨论 $x_n$ 的奇偶性。
+  \item 证明 $\{(x_n,y_n)\mid n\in\Z_{>0}\}$ 即全部正整数解。
+\end{enumerate}
+
+\begin{solution}
+  (1) 取 $y=1$ 得 $x^2=4$，$x=2$；故最小正整数解为 $(x_1,y_1)=(2,1)$。
+
+  (2) 由 $x_n+y_n\sqrt3=(2+\sqrt3)(x_{n-1}+y_{n-1}\sqrt3)$ 得递推
+  \[
+    x_n=2x_{n-1}+3y_{n-1},\qquad y_n=x_{n-1}+2y_{n-1}.
+  \]
+  在模 $2$ 下，$x_n\equiv y_{n-1}$，$y_n\equiv x_{n-1}$。由初值 $x_1\equiv 0,\ y_1\equiv 1$ 递推得
+  \[
+    x_n\equiv n+1,\qquad y_n\equiv n\pmod 2 .
+  \]
+  即 $x_n$ 为奇数当且仅当 $n$ 为偶数；$x_n,y_n$ 总是一奇一偶。
+
+  \textbf{注.} 原题要求证「$x_n$ 始终为奇数」，但对 $x^2-3y^2=1$ 这一断言不成立：$x_1=2$ 为偶数，序列 $x_n=2,7,26,97,\dots$ 奇偶交替。该断言对 Pell 方程 $x^2-2y^2=1$（基本解 $(3,2)$，$x^2=1+2y^2$ 恒为奇）才成立。这里给出 $x^2-3y^2=1$ 的真实奇偶规律。
+
+  (3) 设 $\eps=2+\sqrt3$，其在 $\Z[\sqrt3]$ 中的范数 $N(2+\sqrt3)=4-3=1$，且 $\eps$ 是范数为 $1$ 的基本单位（最小的 $>1$ 的解对应单位）。由范数乘性，$N(\eps^n)=1$，故每个 $(x_n,y_n)$ 都是正整数解。
+
+  反之设 $(x,y)$ 为任一正整数解，则 $\beta=x+y\sqrt3>1$ 且 $N(\beta)=1$。存在唯一整数 $n\ge1$ 使
+  \[
+    \eps^n\le \beta<\eps^{n+1}\quad\Longrightarrow\quad 1\le \beta\eps^{-n}<\eps .
+  \]
+  令 $\gamma=\beta\eps^{-n}=u+v\sqrt3$，则 $N(\gamma)=1$ 且 $1\le\gamma<\eps$。由 $N(\gamma)=u^2-3v^2=1$ 及 $\gamma\ge1$，其共轭 $\bar\gamma=1/\gamma\in(0,1]$，于是 $u=\tfrac{\gamma+\bar\gamma}2>0$，$v=\tfrac{\gamma-\bar\gamma}{2\sqrt3}\ge0$。若 $v>0$ 则 $\gamma\ge \eps$（$\eps$ 是最小的 $>1$ 的解），矛盾；故 $v=0$，$u=1$，$\gamma=1$，即 $\beta=\eps^n$。这说明全部正整数解恰为 $(x_n,y_n)$。
+\end{solution}
+
+%==================================================================
+\section{问题 6}
+
+设 $\mu$ 为 Möbius 函数，$\Phi_n$ 为第 $n$ 个分圆多项式，$x^n-1=\prod_{d\mid n}\Phi_d(x)$。
+
+\begin{enumerate}[(1)]
+  \item 将 $\Phi_n(x)$ 表示为 $x^d-1$ 的有理函数。
+  \item 设 $p$ 为素数，证明 $\Phi_{p^k}(x)=\Phi_p\!\left(x^{p^{k-1}}\right)$。
+\end{enumerate}
+
+\begin{solution}
+  (1) 对 $x^n-1=\prod_{d\mid n}\Phi_d(x)$ 两边取对数（在有理函数域中作 Möbius 反演的乘性形式）。由乘性 Möbius 反演：若 $f(n)=\prod_{d\mid n}g(d)$，则 $g(n)=\prod_{d\mid n}f(d)^{\mu(n/d)}$。取 $f(n)=x^n-1$，$g(n)=\Phi_n(x)$，得
+  \[
+    \boxed{\ \Phi_n(x)=\prod_{d\mid n}\left(x^{d}-1\right)^{\mu(n/d)}=\prod_{d\mid n}\left(x^{n/d}-1\right)^{\mu(d)}.\ }
+  \]
+
+  (2) $p^k$ 的全部正因子为 $1,p,\dots,p^k$，故
+  \[
+    x^{p^k}-1=\prod_{j=0}^{k}\Phi_{p^j}(x),\qquad
+    x^{p^{k-1}}-1=\prod_{j=0}^{k-1}\Phi_{p^j}(x).
+  \]
+  两式相除得
+  \[
+    \Phi_{p^k}(x)=\frac{x^{p^k}-1}{x^{p^{k-1}}-1}.
+  \]
+  另一方面，$\Phi_p(y)=\dfrac{y^p-1}{y-1}$，取 $y=x^{p^{k-1}}$：
+  \[
+    \Phi_p\!\left(x^{p^{k-1}}\right)=\frac{\left(x^{p^{k-1}}\right)^p-1}{x^{p^{k-1}}-1}=\frac{x^{p^k}-1}{x^{p^{k-1}}-1}=\Phi_{p^k}(x).
+  \]
+\end{solution}
+
+%==================================================================
+\section{问题 7}
+
+求 $7^{7^{7}}$ 除以 $100$ 的余数。
+
+\begin{solution}
+  先求 $7$ 模 $100$ 的阶：$7^1=7,\ 7^2=49,\ 7^3\equiv 43,\ 7^4\equiv 7\cdot43=301\equiv 1\pmod{100}$，故 $\ord_{100}(7)=4$。
+
+  因此 $7^{7^7}\bmod 100$ 只依赖于指数 $E=7^7$ 模 $4$。由 $7\equiv -1\pmod 4$，
+  \[
+    E=7^7\equiv(-1)^7=-1\equiv 3\pmod 4 .
+  \]
+  于是
+  \[
+    7^{7^7}\equiv 7^{3}\equiv 43\pmod{100}.
+  \]
+  所求余数为 $\boxed{43}$。
+\end{solution}
+
+%==================================================================
+\section{问题 8}
+
+设 $\gcd(a,10)=1$，证明 $a^{20}\equiv 1\pmod{100}$。
+
+\begin{solution}
+  $100=4\cdot 25$，用中国剩余定理分别处理。
+
+  \emph{模 $4$}：$a$ 为奇数，$a^2\equiv 1\pmod 4$，故 $a^{20}=(a^2)^{10}\equiv 1\pmod 4$。
+
+  \emph{模 $25$}：$\gcd(a,10)=1\Rightarrow\gcd(a,25)=1$，且 $\varphi(25)=20$，由 Euler 定理 $a^{20}\equiv 1\pmod{25}$。
+
+  由 $a^{20}\equiv 1\pmod 4$ 与 $a^{20}\equiv 1\pmod{25}$ 及 $\gcd(4,25)=1$，得 $a^{20}\equiv 1\pmod{100}$。
+
+  （等价地，Carmichael 函数 $\lambda(100)=\operatorname{lcm}(\lambda(4),\lambda(25))=\operatorname{lcm}(2,20)=20$。）
+\end{solution}
+
+%==================================================================
+\section{问题 9}
+
+设 $p>3$ 为素数，整数 $a$ 模 $p$ 的乘法阶为 $3$。
+
+\begin{enumerate}[(1)]
+  \item 证明 $p\equiv 1\pmod 3$。
+  \item 证明 $a^2+a+1\equiv 0\pmod p$。
+  \item 确定 $a+1$ 模 $p$ 的阶。
+\end{enumerate}
+
+\begin{solution}
+  (1) 阶 $3=\ord_p(a)$ 整除 $\abs{(\Z/p\Z)^\times}=p-1$，故 $3\mid p-1$，即 $p\equiv 1\pmod 3$。
+
+  (2) 由 $a^3\equiv 1$ 得 $(a-1)(a^2+a+1)\equiv 0\pmod p$。因 $\ord_p(a)=3>1$，$a\not\equiv1\pmod p$，故 $a-1$ 模 $p$ 可逆，从而 $a^2+a+1\equiv 0\pmod p$。
+
+  (3) 由 (2)，$a+1\equiv -a^2\pmod p$。计算其幂：
+  \[
+    (a+1)^2\equiv a^4\equiv a,\qquad
+    (a+1)^3\equiv (a+1)^2(a+1)\equiv a\cdot(-a^2)=-a^3\equiv -1,
+  \]
+  故 $(a+1)^6\equiv 1$。而 $(a+1)^1\equiv -a^2\ne 1$（否则 $a^2\equiv -1$，$a^4\equiv1$，与 $\ord_p(a)=3$ 矛盾），$(a+1)^2\equiv a\ne1$，$(a+1)^3\equiv-1\ne1$（$p>2$）。因此
+  \[
+    \boxed{\ \ord_p(a+1)=6.\ }
+  \]
+\end{solution}
+
+%==================================================================
+\section{问题 10}
+
+设 $p$ 为奇素数，$p\nmid 2026$。问 $p$ 满足何条件时 $x^2\equiv 2026\pmod p$ 有解。
+
+\begin{solution}
+  分解 $2026=2\cdot 1013$，其中 $1013$ 为素数（可验证它不被不超过 $\sqrt{1013}\approx31.8$ 的素数整除）。方程有解当且仅当 $2026$ 是模 $p$ 的二次剩余，即
+  \[
+    \leg{2026}{p}=\leg{2}{p}\leg{1013}{p}=1 .
+  \]
+  由第二补充律，$\leg2p=1\iff p\equiv\pm1\pmod 8$；$\leg2p=-1\iff p\equiv\pm3\pmod8$。
+
+  又 $1013\equiv 1\pmod 4$，故由二次互反律 $\leg{1013}{p}=\leg{p}{1013}$。于是判据为
+  \[
+    \boxed{\ \leg2p=\leg{p}{1013},\ }
+  \]
+  亦即（对 $p\ne 2,1013$）：
+  \[
+    x^2\equiv2026\pmod p\text{ 有解}\iff
+    \begin{cases}
+      p\equiv\pm1\pmod8\ \text{且}\ p\ \text{是模 }1013\ \text{的二次剩余};\\[2pt]
+      p\equiv\pm3\pmod8\ \text{且}\ p\ \text{是模 }1013\ \text{的二次非剩余}.
+    \end{cases}
+  \]
+  这是关于 $p\bmod 8104\ (=8\cdot1013)$ 的同余类条件。
+\end{solution}
+
+%==================================================================
+\section{问题 11}
+
+解不定方程 $x^2+y^2+z^2=615$。
+
+\begin{solution}
+  由 Legendre 三平方和定理：正整数 $n$ 可表为三个整数平方之和，当且仅当 $n$ 不形如 $4^a(8b+7)$。
+
+  这里 $615=8\cdot 76+7\equiv 7\pmod 8$，且 $4\nmid 615$，即 $615=4^0(8\cdot76+7)$，正是被排除的形式。
+
+  故 $x^2+y^2+z^2=615$ \textbf{没有整数解}。
+
+  （可直接核验：对所有 $0\le t\le 24$，$615-t^2$ 都不是两个平方之和，与上述结论一致。）
+\end{solution}
+
+%==================================================================
+\section{问题 12}
+
+\begin{enumerate}[(1)]
+  \item 证明对素数 $p$ 与正整数 $k$，$x^2\equiv x\pmod{p^k}$ 恰有两个解，并写出它们。
+  \item 求 $x^2\equiv x\pmod{100}$ 在模 $100$ 下的所有解。
+\end{enumerate}
+
+\begin{solution}
+  (1) $x^2\equiv x$ 即 $p^k\mid x(x-1)$。因 $\gcd(x,x-1)=1$，素数 $p$ 不能同时整除 $x$ 与 $x-1$，故 $p^k$ 必整除其中之一：$p^k\mid x$ 或 $p^k\mid x-1$。于是恰有两解
+  \[
+    x\equiv 0\quad\text{或}\quad x\equiv 1\pmod{p^k}.
+  \]
+
+  (2) $100=4\cdot 25$。模 $4$ 解为 $\{0,1\}$，模 $25$ 解为 $\{0,1\}$。由中国剩余定理，$2\times2=4$ 组组合：
+  \[
+    (0,0)\to 0,\quad (1,1)\to 1,\quad
+    \begin{cases}x\equiv0\!\!\pmod4\\ x\equiv1\!\!\pmod{25}\end{cases}\to 76,\quad
+    \begin{cases}x\equiv1\!\!\pmod4\\ x\equiv0\!\!\pmod{25}\end{cases}\to 25.
+  \]
+  故全部解为 $\boxed{x\equiv 0,\ 1,\ 25,\ 76\pmod{100}}$（即模 $100$ 的幂等元）。核验：$25^2=625\equiv25$，$76^2=5776\equiv76$。
+\end{solution}
+
+%==================================================================
+\section{问题 13}
+
+设 $p$ 为奇素数。
+
+\begin{enumerate}[(1)]
+  \item 证明对 $0\le k\le p-1$，$\binom{p-1}{k}\equiv(-1)^k\pmod p$。
+  \item 计算 $\sum_{k=0}^{p-1}\binom{p-1}{k}^2$ 模 $p$ 的余数。
+\end{enumerate}
+
+\begin{solution}
+  (1)
+  \[
+    \binom{p-1}{k}=\frac{(p-1)(p-2)\cdots(p-k)}{k!}.
+  \]
+  分子中 $p-j\equiv -j\pmod p$，故分子 $\equiv(-1)^k k!\pmod p$。因 $k!$ 与 $p$ 互素，可约去，得 $\binom{p-1}{k}\equiv(-1)^k\pmod p$。
+
+  (2) 由 (1)，$\binom{p-1}{k}^2\equiv\big((-1)^k\big)^2=1\pmod p$，故
+  \[
+    \sum_{k=0}^{p-1}\binom{p-1}{k}^2\equiv\sum_{k=0}^{p-1}1=p\equiv 0\pmod p .
+  \]
+  所求余数为 $\boxed{0}$。
+\end{solution}
+
+%==================================================================
+\section{问题 14}
+
+有限域 $\mathbb F_p$（$p>3$）上方程组
+\[
+  \begin{cases}ax+2y\equiv 3\pmod p,\\ x+ay\equiv 5\pmod p.\end{cases}
+\]
+问对哪些 $a$ 有解。
+
+\begin{solution}
+  系数行列式 $D=a\cdot a-2\cdot1=a^2-2$。
+
+  \textbf{情形一：$a^2\not\equiv 2\pmod p$。} 此时 $D\ne0$，方程组有唯一解，恒可解。
+
+  \textbf{情形二：$a^2\equiv 2\pmod p$。} 用第一行减去 $a$ 倍第二行：
+  \[
+    (a,2\mid3)-a(1,a\mid5)=(0,\ 2-a^2\mid 3-5a)=(0,0\mid 3-5a),
+  \]
+  故相容当且仅当 $3-5a\equiv0$，即 $5a\equiv3\pmod p$。结合 $a^2\equiv2$：由 $25a^2\equiv9$ 得 $50\equiv9$，即 $p\mid 41$，于是 $p=41$。此时 $5^{-1}\equiv33$，$a\equiv3\cdot33\equiv17\pmod{41}$，且确有 $17^2\equiv2\pmod{41}$。
+
+  \textbf{结论.}
+  \[
+    \boxed{\ \text{有解}\iff a^2\not\equiv2\pmod p\ \text{，或}\ 5a\equiv3\pmod p.\ }
+  \]
+  具体地：当 $p\ne41$ 时，有解 $\iff a^2\not\equiv2\pmod p$；当 $p=41$ 时，只有 $a\equiv24\pmod{41}$（满足 $a^2\equiv2$ 但 $5a\not\equiv3$）无解，其余 $a$ 全部有解。
+\end{solution}
+
+%==================================================================
+\section{问题 15}
+
+设 $p$ 为奇素数，$g$ 是模 $p$ 的原根。
+
+\begin{enumerate}[(1)]
+  \item 证明 $g^{(p-1)/2}\equiv -1\pmod p$。
+  \item 对哪些奇素数 $p$，$-g$ 仍是模 $p$ 的原根？
+\end{enumerate}
+
+\begin{solution}
+  (1) 由 $g^{p-1}\equiv1$ 知 $\big(g^{(p-1)/2}\big)^2\equiv1$，故 $g^{(p-1)/2}\equiv\pm1$。因 $g$ 的阶为 $p-1>\tfrac{p-1}2$，不可能 $g^{(p-1)/2}\equiv1$，故 $g^{(p-1)/2}\equiv -1$。
+
+  (2) 由 (1)，$-g\equiv g^{(p-1)/2}\cdot g=g^{(p+1)/2}\pmod p$。在循环群 $(\Z/p\Z)^\times$ 中，$g^{(p+1)/2}$ 的阶为
+  \[
+    \frac{p-1}{\gcd\!\left(p-1,\ \tfrac{p+1}2\right)}.
+  \]
+  $-g$ 为原根 $\iff\gcd\!\left(p-1,\tfrac{p+1}2\right)=1$。记 $m=\tfrac{p-1}2$，则 $\tfrac{p+1}2=m+1$，
+  \[
+    \gcd(p-1,m+1)=\gcd(2m,m+1)=\gcd(2,m+1),
+  \]
+  （用 $\gcd(m,m+1)=1$）。此值为 $1\iff m+1$ 为奇 $\iff m$ 为偶 $\iff p\equiv1\pmod4$。
+
+  \textbf{结论：} $-g$ 是模 $p$ 的原根当且仅当 $\boxed{p\equiv1\pmod4}$。
+  （例：$p=5$，$g=2$，$-g\equiv3$ 是原根；$p=7$，$g=3$，$-g\equiv4$ 阶为 $3$，不是原根。）
+\end{solution}
+
+%==================================================================
+\section{问题 16}
+
+设整数 $n>1$，证明 $n^4+4^n$ 不是素数。
+
+\begin{solution}
+  \textbf{$n$ 为偶数时：} $n^4+4^n$ 为偶数且 $>2$，故为合数。
+
+  \textbf{$n$ 为奇数时（$n\ge3$）：} 令 $b=2^{(n-1)/2}\in\Z$（因 $n$ 奇，$(n-1)/2\in\Z$），则 $4b^4=4\cdot2^{2(n-1)}=2^{2n}=4^n$。利用 Sophie Germain 恒等式 $a^4+4b^4=(a^2+2b^2+2ab)(a^2+2b^2-2ab)$，取 $a=n$：
+  \[
+    n^4+4^n=n^4+4b^4=(n^2+2b^2+2nb)(n^2+2b^2-2nb).
+  \]
+  较小因子
+  \[
+    n^2+2b^2-2nb=(n-b)^2+b^2\ge b^2=2^{\,n-1}\ge 4>1,
+  \]
+  另一因子更大，故二者均 $>1$，$n^4+4^n$ 为合数。
+
+  综上，对一切 $n>1$，$n^4+4^n$ 不是素数。
+\end{solution}
+
+%==================================================================
+\section{问题 17}
+
+求方程 $x^2+y^2=2$ 的全部有理解。
+
+\begin{solution}
+  按提示换元 $u=\tfrac{x+y}2,\ v=\tfrac{x-y}2$，则 $x=u+v,\ y=u-v$，且
+  \[
+    x^2+y^2=(u+v)^2+(u-v)^2=2(u^2+v^2)=2\ \Longrightarrow\ u^2+v^2=1 .
+  \]
+  这化为求单位圆上的有理点。以 $(1,0)$ 为基点作有理斜率直线，得标准参数化
+  \[
+    (u,v)=\left(\frac{1-t^2}{1+t^2},\ \frac{2t}{1+t^2}\right),\quad t\in\Q,
+  \]
+  它给出圆上除 $(-1,0)$ 外的全部有理点；$(-1,0)$ 对应 $(x,y)=(-1,-1)$。于是 $x^2+y^2=2$ 的全部有理解为
+  \[
+    \boxed{\ (x,y)=\left(\frac{1-t^2+2t}{1+t^2},\ \frac{1-t^2-2t}{1+t^2}\right),\ t\in\Q,\quad\text{以及}\quad (x,y)=(-1,-1).\ }
+  \]
+  （例：$t=0$ 给 $(1,1)$；$t=1$ 给 $(1,-1)$。）
+\end{solution}
+
+%==================================================================
+\section{问题 18}
+
+设 $p$ 为奇素数，$p\nmid a$。
+
+\begin{enumerate}[(1)]
+  \item 证明 $\sum_{y=0}^{p-1}\leg{y^2+a}{p}=-1$。
+  \item 计算 $x^2-y^2\equiv a\pmod p$ 的解 $(x,y)$ 的个数。
+\end{enumerate}
+
+\begin{solution}
+  (1) 对固定 $z$，方程 $y^2\equiv z$ 的解数为 $1+\leg zp$，故
+  \[
+    \sum_{y=0}^{p-1}\leg{y^2+a}{p}
+    =\sum_{z=0}^{p-1}\Big(1+\leg zp\Big)\leg{z+a}{p}
+    =\underbrace{\sum_{z=0}^{p-1}\leg{z+a}{p}}_{S_1}+\underbrace{\sum_{z=0}^{p-1}\leg{z}{p}\leg{z+a}{p}}_{S_2}.
+  \]
+  $S_1$：当 $z$ 取遍模 $p$ 完系时 $z+a$ 亦然，故 $S_1=\sum_{w}\leg wp=0$。
+
+  $S_2$：$z=0$ 项为 $0$。对 $z\ne0$，$\leg{z}p\leg{z+a}p=\leg{z(z+a)}p=\leg{z^2(1+az^{-1})}p=\leg{1+az^{-1}}p$。当 $z$ 取遍非零元时 $w=az^{-1}$ 亦取遍非零元，$u=1+w$ 取遍除 $1$ 外的全部剩余，故
+  \[
+    S_2=\sum_{u\ne 1}\leg up=\Big(\sum_{u=0}^{p-1}\leg up\Big)-\leg1p=0-1=-1 .
+  \]
+  于是 $\sum_{y=0}^{p-1}\leg{y^2+a}{p}=S_1+S_2=-1$。
+
+  (2) 对每个固定的 $y$，$x^2\equiv y^2+a$ 的解数为 $1+\leg{y^2+a}{p}$。求和并用 (1)：
+  \[
+    \#\{(x,y)\}=\sum_{y=0}^{p-1}\Big(1+\leg{y^2+a}{p}\Big)=p+(-1)=p-1 .
+  \]
+  （也可换元 $u=x+y,\ v=x-y$，$p$ 为奇素数时 $(x,y)\mapsto(u,v)$ 为双射，方程化为 $uv\equiv a$；$a\not\equiv0$ 时 $u$ 取遍非零元、$v=a u^{-1}$ 唯一确定，共 $p-1$ 组。）
+\end{solution}
+
+%==================================================================
+\section{问题 19}
+
+不定方程 $x^2+y^2=z^3$。
+
+\begin{enumerate}[(1)]
+  \item 若有解 $(x_0,y_0,z_0)$ 且 $\gcd(x_0,y_0)=1$，证明 $x_0$ 奇、$y_0$ 偶。
+  \item 证明在 $\Z[\sqrt{-1}]$ 中 $x_0+y_0\sqrt{-1}$ 与 $x_0-y_0\sqrt{-1}$ 互素。
+  \item 证明存在整数 $a,b$ 使 $x_0=a(a^2-3b^2),\ y_0=b(3a^2-b^2),\ z_0=a^2+b^2$。
+\end{enumerate}
+
+\begin{solution}
+  记 $i=\sqrt{-1}$。
+
+  (1) 因 $\gcd(x_0,y_0)=1$，$x_0,y_0$ 不同为偶。若同为奇，则 $x_0^2+y_0^2\equiv2\pmod4$。但立方 $z_0^3$ 模 $4$ 只能是 $0,1,3$（$z_0$ 偶时 $\equiv0$，奇时 $\equiv\pm1$），不可能 $\equiv2$，矛盾。故 $x_0,y_0$ 一奇一偶。由对称性不妨设 $x_0$ 奇、$y_0$ 偶（此时 $z_0^3=x_0^2+y_0^2$ 为奇，$z_0$ 为奇）。
+
+  (2) 设 Gauss 素元 $\pi$ 同时整除 $x_0+y_0i$ 与 $x_0-y_0i$。则 $\pi$ 整除其和 $2x_0$ 与差 $2y_0 i$，故 $\pi\mid 2x_0$ 且 $\pi\mid 2y_0$。又 $\pi\mid(x_0+y_0i)(x_0-y_0i)=z_0^3$，而 $z_0$ 为奇。
+
+  若 $\pi\mid 2$，则 $\pi$ 与 $1+i$ 相伴，$N(\pi)=2\mid N(x_0+y_0i)=z_0^3$，但 $z_0$ 奇，矛盾。故 $\pi\nmid2$，$\pi$ 为奇素元，从而由 $\pi\mid2x_0,\ \pi\mid2y_0$ 得 $\pi\mid x_0$ 且 $\pi\mid y_0$，于是 $\pi\mid\gcd(x_0,y_0)=1$，矛盾。故二者互素。
+
+  (3) $\Z[i]$ 是唯一分解整环。由 $(x_0+y_0i)(x_0-y_0i)=z_0^3$ 且两因子互素，每个因子都是单位乘以一个立方。$\Z[i]$ 的单位 $\{\pm1,\pm i\}$ 全为立方（$1=1^3,\ -1=(-1)^3,\ i=(-i)^3,\ -i=i^3$），故可设
+  \[
+    x_0+y_0i=(a+bi)^3,\quad a,b\in\Z .
+  \]
+  展开 $(a+bi)^3=(a^3-3ab^2)+(3a^2b-b^3)i$，比较实虚部：
+  \[
+    x_0=a^3-3ab^2=a(a^2-3b^2),\qquad y_0=3a^2b-b^3=b(3a^2-b^2).
+  \]
+  又取范数：$z_0^3=N(x_0+y_0i)=N(a+bi)^3=(a^2+b^2)^3$，故 $z_0=a^2+b^2$。
+\end{solution}
+
+%==================================================================
+\section{问题 20}
+
+线性同余方程组 $x\equiv5\pmod{12},\ x\equiv a\pmod{18}$。
+
+\begin{enumerate}[(1)]
+  \item 证明有解当且仅当 $a\equiv5\pmod6$。
+  \item 设 $a=11$，求全部解。
+\end{enumerate}
+
+\begin{solution}
+  (1) 该组有解的充要条件是 $\gcd(12,18)\mid(a-5)$，即 $6\mid(a-5)$，亦即 $a\equiv5\pmod6$。
+
+  （必要性：由两式分别得 $x\equiv5\pmod6$ 与 $x\equiv a\pmod6$，故 $a\equiv5\pmod6$。充分性：由广义中国剩余定理，条件满足时模 $\operatorname{lcm}(12,18)=36$ 有唯一解。）
+
+  (2) $a=11$ 时 $11\equiv5\pmod6$，有解。设 $x=5+12k$，代入 $x\equiv11\pmod{18}$：
+  \[
+    5+12k\equiv11\pmod{18}\Rightarrow 12k\equiv6\pmod{18}\Rightarrow 2k\equiv1\pmod3\Rightarrow k\equiv2\pmod3 .
+  \]
+  取 $k=2$：$x=29$。故全部解为 $\boxed{x\equiv29\pmod{36}}$。（核验：$29\bmod12=5$，$29\bmod18=11$。）
+\end{solution}
+
+%==================================================================
+\section{问题 21}
+
+求所有 $>7$ 的奇素数 $p$ 使 $105$ 是模 $p$ 的二次剩余，并求其 Dirichlet 密度。
+
+\begin{solution}
+  $105=3\cdot5\cdot7$。$105$ 为模 $p$ 的二次剩余当且仅当
+  \[
+    \leg{105}{p}=\leg3p\leg5p\leg7p=1 .
+  \]
+  注意 $105\equiv1\pmod4$，故由二次互反律 $\leg{105}{p}=\leg{p}{105}$（Jacobi 符号）。于是判据为
+  \[
+    \boxed{\ \leg{p}{3}\leg{p}{5}\leg{p}{7}=1,\ }
+  \]
+  这是关于 $p\bmod105$ 的条件：在与 $105$ 互素的 $\varphi(105)=48$ 个剩余类中，恰有 $24$ 个满足该式。所求素数即落在这 $24$ 个同余类中的素数。
+
+  \textbf{Dirichlet 密度：} $\leg{\cdot}{105}$ 是模 $105$ 的非平凡实特征（因 $105$ 非完全平方）。由 Dirichlet 定理，每个与模互素的同余类中素数密度相同，故取值 $+1$ 的素数集合密度为 $\dfrac{24}{48}=\dfrac12$。即密度为 $\boxed{\tfrac12}$。
+\end{solution}
+
+%==================================================================
+\section{问题 22}
+
+记 $p$ 的全部二次剩余为 $a_1,\dots,a_{(p-1)/2}$。证明
+\[
+  (x-a_1)\cdots(x-a_{(p-1)/2})\equiv x^{(p-1)/2}-1\pmod p .
+\]
+
+\begin{solution}
+  由 Euler 判别法，$a\in(\Z/p\Z)^\times$ 是二次剩余当且仅当 $a^{(p-1)/2}\equiv1\pmod p$。因此模 $p$ 的全部二次剩余 $a_1,\dots,a_{(p-1)/2}$ 恰是多项式
+  \[
+    f(x)=x^{(p-1)/2}-1
+  \]
+  在域 $\mathbb F_p$ 中的全部根：$f$ 的次数为 $\tfrac{p-1}2$，而二次剩余恰有 $\tfrac{p-1}2$ 个且互不相同，它们都是 $f$ 的根，故 $f$ 的根恰为这些 $a_i$。
+
+  在域 $\mathbb F_p$ 上，首一多项式由其全部根唯一决定：
+  \[
+    x^{(p-1)/2}-1=\prod_{i=1}^{(p-1)/2}(x-a_i)\pmod p .
+  \]
+\end{solution}
+
+%==================================================================
+\section{问题 23}
+
+证明 $(x^2-2)(x^2-3)(x^2-6)=0$ 无整数解，但对任意素数 $p$ 模 $p$ 都有解。
+
+\begin{solution}
+  \textbf{注.} 原题第三个因子印作 $x^3-6$，但与本题经典论证（$2\cdot3=6$ 的二次剩余配合）相吻合的应为 $x^2-6$，下按此理解。
+
+  \textbf{无整数解：} 整数解要求 $x^2\in\{2,3,6\}$，而 $2,3,6$ 均非完全平方，故无整数解（亦无有理解）。
+
+  \textbf{对每个素数 $p$ 模 $p$ 有解：}
+  \begin{itemize}
+    \item $p=2$：取 $x=0$，则 $x^2-2\equiv0\pmod2$。
+    \item $p=3$：取 $x=0$，则 $x^2-3\equiv0\pmod3$。
+    \item $p>3$：此时 $2,3,6$ 均与 $p$ 互素。由 $\leg2p\leg3p=\leg6p$：若 $\leg2p=1$ 则 $x^2\equiv2$ 可解；若 $\leg3p=1$ 则 $x^2\equiv3$ 可解；若 $\leg2p=\leg3p=-1$，则 $\leg6p=(-1)(-1)=1$，$x^2\equiv6$ 可解。
+  \end{itemize}
+  三种情形必居其一，故方程模 $p$ 恒有解。
+\end{solution}
+
+%==================================================================
+\section{问题 24}
+
+三次分圆整数环 $\Z[\omega]$，$\omega=e^{2\pi\sqrt{-1}/3}$，$N(a+b\omega)=a^2-ab+b^2$。设 $\alpha,\beta\in\Z[\omega]$，$3\nmid N(\alpha)$，$3\nmid N(\beta)$，且 $\alpha,\beta$ 在 $\Z[\omega]$ 中互素。
+
+\begin{enumerate}[(1)]
+  \item $N(\alpha),N(\beta)$ 在 $\Z$ 中是否一定互素？
+  \item 设 $g=\gcd(N(\alpha),N(\beta))$，证明 $g\equiv1\pmod3$。
+\end{enumerate}
+
+\begin{solution}
+  $\Z[\omega]$ 是 Euclid 整环（Eisenstein 整数），故为唯一分解整环；$\omega^2=-1-\omega$，$\bar\omega=\omega^2$。
+
+  (1) \textbf{不一定互素。} 反例：取 $\alpha=3+\omega$，$\beta=2-\omega$。则
+  \[
+    N(\alpha)=9-3+1=7,\qquad N(\beta)=4-(2)(-1)+1=7 .
+  \]
+  $7\equiv1\pmod3$，故 $3\nmid N(\alpha),N(\beta)$。因 $7\equiv1\pmod3$ 在 $\Z[\omega]$ 中分裂，$\alpha,\beta$ 是范数为 $7$ 的两个非相伴素元（互为共轭，$\beta=3+\omega^2=\overline{\alpha}$），它们互素。但 $\gcd(N(\alpha),N(\beta))=\gcd(7,7)=7\ne1$。
+
+  (2) 我们证明 $g$ 的每个素因子都 $\equiv1\pmod3$。
+
+  \emph{首先 $3\nmid g$：} 因 $g\mid N(\alpha)$ 而 $3\nmid N(\alpha)$。
+
+  \emph{其次无 $\equiv2\pmod3$ 的素因子：} 设素数 $q\equiv2\pmod3$。这种 $q$ 在 $\Z[\omega]$ 中惯性（保持为素元）。若 $q\mid N(\alpha)=\alpha\bar\alpha$，由 $q$ 为素元得 $q\mid\alpha$ 或 $q\mid\bar\alpha$；而 $q\in\Z$ 自共轭，$q\mid\bar\alpha\Rightarrow q\mid\alpha$。故 $q\mid N(\alpha)\iff q\mid\alpha$。倘若 $q\mid g$，则 $q\mid N(\alpha)$ 且 $q\mid N(\beta)$，于是 $q\mid\alpha$ 且 $q\mid\beta$，与 $\alpha,\beta$ 互素矛盾。故 $q\nmid g$。
+
+  因此 $g$ 的素因子只能是 $\equiv1\pmod3$ 的素数（在 $\Z[\omega]$ 中分裂的素数）。这些素数之积 $\equiv1\pmod3$，故 $g\equiv1\pmod3$。
+
+  （另证 $3\nmid g$ 之外的部分：范数型 $a^2-ab+b^2$ 模 $3$ 只取值 $0$ 或 $1$，故 $3\nmid N(\alpha)$ 时 $N(\alpha)\equiv1\pmod3$；本题更强地刻画了 $g$ 的素因子。）
+\end{solution}
+
+%==================================================================
+\section{问题 25}
+
+证明：对任意正整数 $k$，存在无穷多个素数其十进制末 $k$ 位全为 $1$。
+
+\begin{solution}
+  「末 $k$ 位全为 $1$」即 $p\equiv R_k\pmod{10^k}$，其中重单位数 $R_k=\underbrace{11\cdots1}_{k}=\dfrac{10^k-1}{9}$。
+
+  注意 $R_k$ 的个位为 $1$，故为奇数且不被 $5$ 整除，从而 $\gcd(R_k,10^k)=1$。
+
+  由 Dirichlet 算术级数素数定理，公差 $10^k$、首项 $R_k$ 的算术级数 $\{R_k+m\cdot10^k\}$ 中含有无穷多个素数。由于 $R_k<10^k$，每个这样的素数模 $10^k$ 的余数恰为 $R_k$，即其末 $k$ 位正好是 $k$ 个 $1$。故这样的素数有无穷多个。
+\end{solution}
+
+%==================================================================
+\section{问题 26}
+
+$A=\{p:p\equiv1\!\!\pmod3\}$，$B=\{p:p\equiv3\!\!\pmod4\}$。求 $A,\ B,\ A\cap B$ 的 Dirichlet 密度。
+
+\begin{solution}
+  由 Dirichlet 定理，对模 $m$ 的每个与 $m$ 互素的剩余类，其中素数的 Dirichlet 密度均为 $\dfrac1{\varphi(m)}$。
+
+  \emph{$A$：} 模 $3$ 的互素剩余类为 $\{1,2\}$，$\varphi(3)=2$，故密度 $\delta(A)=\dfrac1{2}$。
+
+  \emph{$B$：} 模 $4$ 的互素剩余类为 $\{1,3\}$，$\varphi(4)=2$，故 $\delta(B)=\dfrac1{2}$。
+
+  \emph{$A\cap B$：} $p\equiv1\pmod3$ 且 $p\equiv3\pmod4$。由中国剩余定理，这等价于模 $12$ 的单一剩余类 $p\equiv7\pmod{12}$。$\varphi(12)=4$，故 $\delta(A\cap B)=\dfrac1{4}$。
+
+  （模 $3$ 与模 $4$ 条件相互独立，密度相乘：$\tfrac12\cdot\tfrac12=\tfrac14$。）
+\end{solution}
+
+%==================================================================
+\section{问题 27}
+
+证明任意等差数列 $a,a+d,a+2d,\dots$ 必含一个非素数。
+
+\begin{solution}
+  设公差 $d\ge1$（即非常数递增等差数列；若 $d<0$ 则各项趋于 $-\infty$，必有项 $<2$ 为非素数，结论显然；常数列 $d=0$ 时该项即 $a$，除「$a$ 为素数」这一退化情形外亦含非素数）。
+
+  考察首项 $a$（即 $k=0$ 项）：
+  \begin{itemize}
+    \item 若 $a\le1$ 或 $a$ 为合数，则首项已是非素数。
+    \item 若 $a=p$ 为素数，考虑下标 $k=a$ 的项
+    \[
+      a+a\,d=a(1+d).
+    \]
+    由 $a=p\ge2$ 且 $1+d\ge2$，此项是两个 $>1$ 的整数之积，为合数。
+  \end{itemize}
+  无论哪种情形，等差数列中都存在非素数项。
+\end{solution}
+
+%==================================================================
+\section{问题 28}
+
+\begin{enumerate}[(1)]
+  \item 设正整数 $m$，证明若 $p=2^m+1$ 为素数，则 $m$ 是 $2$ 的方幂。
+  \item 记 $F_n=2^{2^n}+1$。证明若 $m>n$，则 $F_n\mid(F_m-2)$。
+  \item 证明 $m\ne n\Rightarrow\gcd(F_m,F_n)=1$，并由此证明素数无穷。
+\end{enumerate}
+
+\begin{solution}
+  (1) 反设 $m$ 有奇因子 $r>1$，写 $m=rs$。利用当 $r$ 为奇数时 $X^r+1$ 被 $X+1$ 整除（取 $X=2^s$）：
+  \[
+    2^m+1=(2^s)^r+1\ \text{被}\ 2^s+1\ \text{整除}.
+  \]
+  而 $1<2^s+1<2^m+1$，故 $2^m+1$ 为合数，矛盾。因此 $m$ 无大于 $1$ 的奇因子，即 $m$ 是 $2$ 的方幂。
+
+  (2) 由 $2^{2^n}\equiv-1\pmod{F_n}$。当 $m>n$ 时，
+  \[
+    F_m-2=2^{2^m}-1=\big(2^{2^n}\big)^{2^{m-n}}-1\equiv(-1)^{2^{m-n}}-1=1-1=0\pmod{F_n},
+  \]
+  因 $2^{m-n}$ 为偶数（$m>n$）。故 $F_n\mid F_m-2$。
+
+  (3) 不妨 $m>n$。设 $g=\gcd(F_m,F_n)$。由 (2)，$g\mid F_n\mid F_m-2$，又 $g\mid F_m$，故 $g\mid F_m-(F_m-2)=2$。但 $F_n$ 为奇数，故 $g$ 为奇数，$g\mid2$ 给出 $g=1$。
+
+  每个 $F_n\ge3$ 至少有一个素因子；由两两互素，不同 $F_n$ 的素因子互不相同。于是 $\{F_0,F_1,F_2,\dots\}$ 给出无穷多个互异素数，素数无穷。
+\end{solution}
+
+%==================================================================
+\section{问题 29}
+
+求 $2026^{618}$ 的十进制末两位。
+
+\begin{solution}
+  即求 $2026^{618}\bmod100$。$2026\equiv26\pmod{100}$，用 $100=4\cdot25$ 及中国剩余定理。
+
+  \emph{模 $4$}：$26\equiv2$，$2^{618}\equiv0\pmod4$（因 $2^2\equiv0\pmod4$）。
+
+  \emph{模 $25$}：$26\equiv1$，$26^{618}\equiv1^{618}=1\pmod{25}$。
+
+  解 $x\equiv0\pmod4,\ x\equiv1\pmod{25}$：$x=1+25k\equiv0\pmod4\Rightarrow1+k\equiv0\Rightarrow k\equiv3\pmod4$，取 $k=3$ 得 $x=76$。
+
+  故 $2026^{618}\equiv76\pmod{100}$，末两位为 $\boxed{76}$。
+\end{solution}
+
+%==================================================================
+\section{问题 30}
+
+设 $p$ 为奇素数。证明模 $p$ 的原根都是二次非剩余；问对哪些 $p$，全部二次非剩余都是原根。
+
+\begin{solution}
+  \textbf{原根必为二次非剩余：} 设 $g$ 为原根，$\ord_p(g)=p-1$。若 $g$ 是二次剩余，记 $g\equiv h^2$，则 $g^{(p-1)/2}\equiv h^{p-1}\equiv1\pmod p$，与 $\ord_p(g)=p-1>\tfrac{p-1}2$ 矛盾。故 $g$ 为二次非剩余。
+
+  \textbf{何时全部二次非剩余都是原根：} 原根共 $\varphi(p-1)$ 个，二次非剩余共 $\tfrac{p-1}2$ 个，且原根集合 $\subseteq$ 二次非剩余集合。两集合相等 $\iff$
+  \[
+    \varphi(p-1)=\frac{p-1}{2}.
+  \]
+  记 $n=p-1$，即 $\dfrac{\varphi(n)}{n}=\dfrac12$，亦即 $\prod_{q\mid n}\big(1-\tfrac1q\big)=\dfrac12$。素数 $2$ 贡献因子 $\tfrac12$，任何奇素数因子 $q$ 贡献 $1-\tfrac1q\in(\tfrac12,1)$ 会使乘积 $<\tfrac12$；若 $n$ 为奇则乘积 $>\tfrac12$。故只能 $n=2^k$，即
+  \[
+    p-1=2^k\ \Longrightarrow\ p=2^k+1 .
+  \]
+  又由问题 28(1)，$2^k+1$ 为素数要求 $k$ 是 $2$ 的方幂，故 $p$ 是 \textbf{Fermat 素数}：
+  \[
+    \boxed{\ p\in\{3,\ 5,\ 17,\ 257,\ 65537,\dots\}\ (\text{即 }p=2^{2^t}+1\text{ 型素数}).\ }
+  \]
+  （核验：$p=5$，$p-1=4$，$\varphi(4)=2=\tfrac{p-1}2$，二次非剩余 $\{2,3\}$ 恰为原根；$p=7$，$\varphi(6)=2\ne3$，非剩余 $6\equiv-1$ 阶为 $2$，非原根。）
+\end{solution}
+
+\end{document}

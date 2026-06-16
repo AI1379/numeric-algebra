@@ -1,0 +1,273 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+
+% import common macros
+\input{../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Real Analysis}
+\newcommand{\hwNum}{14}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+% ==============================================================================
+% Exercise 12
+% ==============================================================================
+\section{Exercise 12}
+
+设 $f$ 在 $[a,b]$ 上可微, $f'$ 有界变差, 求证: $f'$ 连续.
+
+\begin{solution}
+  $f'$ 有界变差, 故可写成两个单增函数之差 $f' = \varphi - \psi$.
+  而单增函数只有跳跃间断点, 所以 $f'$ 也至多有跳跃间断点.
+
+  但 $f'$ 是导数, 由 Darboux 定理具有介值性质, 而介值性质排斥跳跃间断:
+  若 $x_0$ 处 $f'$ 有跳跃, 设 $\lim_{x\to x_0^-}f'(x)=L^-$, $\lim_{x\to x_0^+}f'(x)=L^+$, $L^-<L^+$,
+  取 $c\in(L^-,L^+)$, 则 $f'$ 在 $x_0$ 附近不取值 $c$, 矛盾.
+
+  所以 $f'$ 无间断点, 即 $f'$ 连续. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 15
+% ==============================================================================
+\section{Exercise 15}
+
+设 $f \in L([0,1])$, $g$ 在 $[0,1]$ 上实值单增, 若对任何 $[a,b] \subset [0,1]$ 有
+\[
+  \left[\int_a^b f(x)\,\dif x\right]^2 \le [g(b)-g(a)](b-a),
+\]
+求证: $f^2 \in L([0,1])$.
+
+\begin{solution}
+  将题设两边除以 $(b-a)^2$ 得
+  \[
+    \left(\frac{1}{b-a}\int_a^b f\right)^2 \le \frac{g(b)-g(a)}{b-a}.
+  \]
+  令 $b-a\to 0$, 由 Lebesgue 微分定理, 对 a.e.\ $x$:
+  \[
+    f(x)^2 \le g'(x).
+  \]
+  （$g$ 单增故 a.e.\ 可微且 $g'\ge 0$.) 又 $g$ 单增蕴含 $\int_0^1 g'\le g(1)-g(0)<\infty$,
+  即 $g'\in L([0,1])$, 从而 $f^2\le g'$ a.e.\ 给出 $f^2\in L([0,1])$. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 16
+% ==============================================================================
+\section{Exercise 16}
+
+设 $f$ 是 $\mathbf{R}$ 上有界可测函数, 若有 $0 < \lambda < 1$ 及 $1 \le p < \infty$, 使对任何有界区间 $[a,b]$ 有
+\[
+  \left(\int_a^b |f(x)|\,\dif x\right)^p
+  \le \lambda (b-a)^{p-1}\int_a^b |f(x)|^p\,\dif x.
+\]
+求证: $f(x) = 0$, a.e.
+
+\begin{solution}
+  设 $|f|\le M$ a.e. 若 $M=0$ 则结论显然, 设 $M>0$.
+
+  $p=1$ 时题设直接给出 $(1-\lambda)\int_a^b|f|\le 0$, 故 $\int_a^b|f|=0$ 对所有区间成立, $f=0$ a.e.
+
+  $p>1$ 时, 由 $|f|^p\le M^{p-1}|f|$ 代入题设得
+  \[
+    \left(\int_a^b|f|\right)^p \le \lambda(b-a)^{p-1}M^{p-1}\int_a^b|f|,
+  \]
+  故 $\dfrac{1}{b-a}\displaystyle\int_a^b|f|\le \lambda^{1/(p-1)}M$.
+  令 $b-a\to 0$, Lebesgue 微分定理给出 $|f(x)|\le\lambda^{1/(p-1)}M$ a.e.
+  从而 $M=\operatorname{ess\,sup}|f|\le\lambda^{1/(p-1)}M<M$, 矛盾. 故 $M=0$. \qed
+\end{solution}
+
+% ==============================================================================
+% Supplementary Problems
+% ==============================================================================
+\section{补充题}
+
+\begin{enumerate}
+  \renewcommand{\labelenumi}{(\theenumi)}
+  \item 证明 $f(x) = \sin x$ 在 $[0,2\pi]$ 上有界变差, 并求变差函数 $V_0^x(f)\ (x \in [0,2\pi])$.
+
+    \begin{solution}
+      $\sin x\in C^1[0,2\pi]$, 故绝对连续, 当然有界变差.
+      变差函数
+      \[
+        V_0^x(f) = \int_0^x|\cos t|\,\dif t.
+      \]
+      $[0,\pi/2]$ 上 $\cos t\ge 0$: $\;V_0^x = \sin x$.
+
+      $[\pi/2,3\pi/2]$ 上 $\cos t\le 0$:
+      $V_0^x = 1 + \int_{\pi/2}^x(-\cos t)\,\dif t = 2-\sin x$.
+
+      $[3\pi/2,2\pi]$ 上 $\cos t\ge 0$:
+      $V_0^x = 3 + \int_{3\pi/2}^x\cos t\,\dif t = 4+\sin x$.
+
+      所以
+      \[
+        V_0^x(f) = \begin{cases}
+          \sin x, & 0 \le x \le \dfrac{\pi}{2}, \\[4pt]
+          2 - \sin x, & \dfrac{\pi}{2} \le x \le \dfrac{3\pi}{2}, \\[4pt]
+          4 + \sin x, & \dfrac{3\pi}{2} \le x \le 2\pi,
+        \end{cases}
+        \qquad V_0^{2\pi}(f) = 4. \text{~\qed}
+      \]
+    \end{solution}
+
+  \item 若 $f \in BV[a,b]$, 证明:
+  \[
+    \int_a^b |f'(x)|\,\dif x \le V_a^b(f).
+  \]
+
+    \begin{solution}
+      令 $p(x)=\frac{V_a^x(f)+f(x)-f(a)}{2}$, $n(x)=\frac{V_a^x(f)-f(x)+f(a)}{2}$,
+      则 $p,n$ 均单增, $f(x)=f(a)+p(x)-n(x)$.
+      于是 $|f'|\le p'+n'$ a.e., 而
+      \[
+        \int_a^b|f'|\le\int_a^b p'+\int_a^b n'
+        \le [p(b)-p(a)]+[n(b)-n(a)]=p(b)+n(b)=V_a^b(f). \qed
+      \]
+    \end{solution}
+\end{enumerate}
+
+% ==============================================================================
+% Exercise 19
+% ==============================================================================
+\section{Exercise 19}
+
+若 $f$ 在 $[a,b]$ 上绝对连续, 求证: $|f(x)|^p$ 也绝对连续, 其中 $p \ge 1$. 当 $0 < p < 1$ 时, 上述命题是否成立? 试研究函数
+\[
+  f(x) = x^2 \sin^2\frac{1}{x}, \quad f(0) = 0, \quad x \in [0,1], \quad p = \frac{1}{2}.
+\]
+
+\begin{solution}
+  $p\ge 1$: $f$ 在紧集 $[a,b]$ 上连续, 设 $|f|\le M$.
+  $\phi(t)=|t|^p$ 在 $[-M,M]$ 上 Lipschitz 连续:
+  $||t_1|^p-|t_2|^p|\le pM^{p-1}|t_1-t_2|$, $L=pM^{p-1}$.
+  对任意 $\eps>0$, 由 $f$ 绝对连续可取 $\delta>0$ 使
+  $\sum|f(b_k)-f(a_k)|<\eps/L$ 当 $\sum(b_k-a_k)<\delta$, 于是
+  \[
+    \sum\bigl||f(b_k)|^p-|f(a_k)|^p\bigr|\le L\sum|f(b_k)-f(a_k)|<\eps.
+  \]
+  所以 $|f|^p$ 绝对连续.
+
+  $0<p<1$ 不一定成立. 取 $f(x)=x^2\sin^2(1/x)$, $f(0)=0$, $x\in[0,1]$, $p=1/2$.
+  $f'(x)=2x\sin^2(1/x)-\sin(2/x)$ 有界, 故 $f$ 绝对连续.
+  但 $|f(x)|^{1/2}=x|\sin(1/x)|=:\phi(x)$, 在 $\sin(1/x)>0$ 处
+  $\phi'(x)=\sin(1/x)-\cos(1/x)/x$, 于是
+  \[
+    \int_0^1|\phi'|\ge\int_0^1\frac{|\cos(1/x)|}{x}\,\dif x-1
+    =\int_1^{\infty}\frac{|\cos u|}{u}\,\dif u-1=+\infty.
+  \]
+  若 $\phi$ 绝对连续则 $\phi'\in L([0,1])$, 矛盾. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 20
+% ==============================================================================
+\section{Exercise 20}
+
+求证: $\sqrt{x}$ 在 $[0,1]$ 上绝对连续.
+
+\begin{solution}
+  $(\sqrt{x})'=1/(2\sqrt{x})$, $\displaystyle\int_0^1\frac{1}{2\sqrt{x}}\,\dif x=1<\infty$,
+  且 $\sqrt{x}=\int_0^x\frac{1}{2\sqrt{t}}\,\dif t$,
+  即 $\sqrt{x}$ 是 $L^1$ 函数的不定积分, 故绝对连续. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 21
+% ==============================================================================
+\section{Exercise 21}
+
+设 $E \subset \mathbf{R}$ 可测,
+\[
+  f_n(x) = n \int_0^{1/n} \chi_E(x+t)\,\dif t, \quad n = 1,2,\dots.
+\]
+求证:
+\begin{enumerate}
+  \renewcommand{\labelenumi}{(\roman{enumi})}
+  \item $f_n$ 在任何有界区间上绝对连续;
+  \item 在 $\mathbf{R}$ 上 $f_n(x) \to \chi_E(x)$, a.e.;
+  \item 对任何有界区间 $[a,b]$,
+    \[
+      \int_a^b |f_n(x) - \chi_E(x)|\,\dif x \to 0.
+    \]
+\end{enumerate}
+
+\begin{solution}
+  写成 $f_n(x)=n\int_x^{x+1/n}\chi_E(u)\,\dif u$.
+
+  (i)\; 对 a.e.\ $x$, $f_n'(x)=n[\chi_E(x+1/n)-\chi_E(x)]$ a.e., 故 $|f_n'|\le n$,
+  $f_n'\in L([a,b])$, 且 $f_n(x)=f_n(a)+\int_a^x f_n'$, 所以 $f_n$ 在任何有界区间上绝对连续.
+
+  (ii)\; $f_n(x)=\frac{1}{1/n}\int_0^{1/n}\chi_E(x+t)\,\dif t$, 令 $h=1/n\to 0$,
+  由 Lebesgue 微分定理即得 $f_n(x)\to\chi_E(x)$ a.e.
+
+  (iii)\; $0\le f_n\le 1$, $0\le\chi_E\le 1$, 故 $|f_n-\chi_E|\le 1$,
+  在有界区间 $[a,b]$ 上由有界收敛定理即得. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 23
+% ==============================================================================
+\section{Exercise 23}
+
+设 $\{g_k\}_{k \ge 1}$ 是 $[a,b]$ 上绝对连续函数列, $|g_k'(x)| \le F(x)$, a.e., $F \in L([a,b])$. 此外 $g_k(x) \to g(x)$, $g_k'(x) \to f(x)$, a.e. 求证 $g'(x) = f(x)$, a.e.
+
+\begin{solution}
+  $|g_k'|\le F$, $F\in L([a,b])$, $g_k'\to f$ a.e., 由控制收敛定理,
+  $\int_a^x g_k'\to\int_a^x f$ ($\forall x$).
+  又 $g_k(x)=g_k(a)+\int_a^x g_k'$, 令 $k\to\infty$ 得 (a.e.)
+  \[
+    g(x)=g(a)+\int_a^x f(t)\,\dif t.
+  \]
+  右端是 $L^1$ 函数的不定积分, 绝对连续, 故 $g'=f$ a.e. \qed
+\end{solution}
+
+% ==============================================================================
+% Exercise 27
+% ==============================================================================
+\section{Exercise 27}
+
+设 $f_n\ (n \ge 1)$ 都是 $[a,b]$ 上单增绝对连续函数, 并且 $\sum_{n=1}^{\infty} f_n(x)$ 在 $[a,b]$ 上处处收敛于 $s(x)$, 求证: $s(x)$ 也是单增绝对连续函数.（提示：利用题 3.）
+
+\begin{solution}
+  单增性显然: 每个 $f_n$ 单增, 部分和 $S_N$ 单增, 取极限即可.
+
+  绝对连续性: $f_n$ 绝对连续且单增, 故 $f_n'\ge 0$ a.e.,
+  $f_n(x)-f_n(a)=\int_a^x f_n'$.
+  由 $\sum f_n$ 处处收敛,
+  \[
+    s(b)-s(a)=\sum_{n=1}^{\infty}[f_n(b)-f_n(a)]
+    =\sum_{n=1}^{\infty}\int_a^b f_n'<\infty.
+  \]
+  $f_n'\ge 0$, 由单调收敛定理,
+  $\int_a^b\sum f_n'=\sum\int_a^b f_n'\le s(b)-s(a)$,
+  故 $h:=\sum f_n'\in L([a,b])$.
+  同理
+  \[
+    s(x)-s(a)=\sum\int_a^x f_n'
+    =\int_a^x\sum f_n'=\int_a^x h,
+  \]
+  所以 $s(x)=s(a)+\int_a^x h$, $h\in L([a,b])$, $s$ 绝对连续. \qed
+\end{solution}
+
+\end{document}

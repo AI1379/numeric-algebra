@@ -1,0 +1,732 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Complex Analysis}
+\newcommand{\hwNum}{11}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+\section{Exercise 4.97}
+
+Let $c \notin D$ be a singularity of an analytic function $f : D \to \C$ with
+$D \subset \C$ open. Show that the following statements are equivalent:
+\begin{enumerate}[(a)]
+  \item $c$ is a removable singularity of $f$.
+  \item There exists $r > 0$ such that $\dot{U}_r(c) \subseteq D$ and $f$ is bounded
+    over $\dot{U}_r(c)$.
+  \item The limit $\lim_{z \to c} f(z)$ exists.
+  \item $\lim_{z \to c} (z - c)f(z) = 0$.
+\end{enumerate}
+
+\begin{solution}
+  We prove the equivalence by showing (a) $\Rightarrow$ (b) $\Rightarrow$ (c) $\Rightarrow$ (d) $\Rightarrow$ (a).
+
+  \medskip
+  \noindent\textbf{(a) $\Rightarrow$ (b):}
+  By Definition~4.92, $c$ is a removable singularity iff there exists an analytic
+  continuation $F : D \cup \{c\} \to \C$ such that $F|_D = f$.
+  Since $F$ is analytic at $c$, it is continuous at $c$, hence bounded in some
+  neighborhood $U_r(c)$. Thus $f = F|_{\dot{U}_r(c)}$ is bounded on $\dot{U}_r(c)$.
+
+  \medskip
+  \noindent\textbf{(b) $\Rightarrow$ (c):}
+  This is Theorem~4.93 (Riemann removability condition). If $f$ is bounded on
+  $\dot{U}_r(c)$, then define
+  \[
+    h(z) =
+    \begin{cases}
+      (z - c)^2 f(z), & z \ne c,\\
+      0, & z = c.
+    \end{cases}
+  \]
+  Then $h$ is analytic on $U_r(c)$ with $h(c) = h'(c) = 0$. Expanding $h$ as a
+  power series and factoring out $(z-c)^2$ gives an analytic continuation of $f$
+  to $c$, which implies $\lim_{z \to c} f(z)$ exists and equals $F(c)$.
+
+  \medskip
+  \noindent\textbf{(c) $\Rightarrow$ (d):}
+  If $\lim_{z \to c} f(z) = L \in \C$, then
+  \[
+    \lim_{z \to c} (z - c)f(z) = \Bigl(\lim_{z \to c} (z-c)\Bigr) \cdot
+    \Bigl(\lim_{z \to c} f(z)\Bigr) = 0 \cdot L = 0.
+  \]
+
+  \medskip
+  \noindent\textbf{(d) $\Rightarrow$ (a):}
+  Assume $\lim_{z \to c} (z-c)f(z) = 0$. Define
+  \[
+    h(z) =
+    \begin{cases}
+      (z - c)^2 f(z), & z \ne c,\\
+      0, & z = c.
+    \end{cases}
+  \]
+  Then
+  \[
+    \lim_{z \to c} \frac{h(z) - h(c)}{z - c} = \lim_{z \to c} (z-c)f(z) = 0,
+  \]
+  so $h'(c) = 0$ and $h$ is analytic on $U_r(c)$. By Theorem~4.1, $h$ has a
+  power series expansion $h(z) = a_2(z-c)^2 + a_3(z-c)^3 + \cdots$. Then for
+  $z \ne c$, $f(z) = h(z)/(z-c)^2 = a_2 + a_3(z-c) + \cdots$, which defines
+  an analytic extension of $f$ to $c$. Hence $c$ is removable by Definition~4.92.
+\end{solution}
+
+\section{Exercise 4.98}
+
+Is $0$ a removable singularity of $g(z) = \sin \frac{1}{z}$? Why?
+
+\begin{solution}
+  No, $0$ is not a removable singularity of $g(z) = \sin \frac{1}{z}$.
+
+  By Exercise~4.97(b), if $0$ were removable, then $g$ would be bounded in some
+  punctured neighborhood $\dot{U}_r(0)$. However, for any $r > 0$, set
+  $z_n = \frac{2}{(4n+1)\pi} \in \dot{U}_r(0)$ for sufficiently large $n$.
+  Then $\frac{1}{z_n} = \frac{(4n+1)\pi}{2}$, so
+  $\sin\frac{1}{z_n} = \sin\frac{(4n+1)\pi}{2} = 1$.
+  Meanwhile, set $w_n = \frac{1}{2n\pi} \in \dot{U}_r(0)$, then
+  $\sin\frac{1}{w_n} = \sin(2n\pi) = 0$.
+  Thus $g$ is not bounded (and has no limit) as $z \to 0$. By the equivalence
+  of (a) and (b) in Exercise~4.97, $0$ is not removable.
+
+  In fact, $0$ is an essential singularity of $g$, as can be seen from the
+  Laurent expansion $g(z) = \sum_{n=0}^{\infty} \frac{(-1)^n}{(2n+1)!} z^{-(2n+1)}$,
+  which has infinitely many negative powers.
+\end{solution}
+
+\section{Exercise 4.99}
+
+Let $c \notin D$ be a singularity of an analytic function $f : D \to \C$ with
+$D \subset \C$ open. Show that $c$ is a removable singularity of $f$ if there
+exist positive constants $r$, $A$, and $\epsilon$ such that
+\[
+  \forall z \in \dot{U}_r(c), \quad |f(z)| \le A |z - c|^{-1 + \epsilon}.
+\]
+
+\begin{solution}
+  Using the given bound, for any $z \in \dot{U}_r(c)$,
+  \[
+    |(z - c)f(z)| = |z - c| \cdot |f(z)|
+    \le |z - c| \cdot A |z - c|^{-1 + \epsilon}
+    = A |z - c|^{\epsilon}.
+  \]
+  Since $\epsilon > 0$, we have $\lim_{z \to c} |z - c|^{\epsilon} = 0$. Hence
+  \[
+    \lim_{z \to c} (z - c)f(z) = 0.
+  \]
+  By Exercise~4.97(d), $c$ is a removable singularity of $f$.
+\end{solution}
+
+\section{Exercise 4.108}
+
+Let $c \notin D$ be a singularity of an analytic function $f : D \to \C$ with
+$D \subset \C$ open. Show that the following statements are equivalent:
+\begin{enumerate}[(a)]
+  \item $c$ is a pole of $f$ of order $k \in \N$.
+  \item There exist $r > 0$ and an analytic function $h : U_r(c) \to \C$ with
+    $h(c) \ne 0$ such that $\dot{U}_r(c) \subseteq D$ and
+    $\forall z \in \dot{U}_r(c), \; f(z) = \frac{h(z)}{(z-c)^k}$.
+  \item There exist $r > 0$ and an analytic function $g : U_r(c) \to \C$ not
+    vanishing in $\dot{U}_r(c)$ such that $g$ has a zero of multiplicity $k$
+    at $c$ and $f = \frac{1}{g}$ over $\dot{U}_r(c)$.
+  \item There exist $r > 0$ and constants $M_1, M_2 > 0$ such that
+    $\forall z \in \dot{U}_r(c), \; M_1 |z-c|^{-k} \le |f(z)| \le M_2 |z-c|^{-k}$.
+\end{enumerate}
+
+\begin{solution}
+  We prove the equivalence cyclically.
+
+  \medskip
+  \noindent\textbf{(a) $\Rightarrow$ (b):}
+  By Definition~4.103 and Definition~4.106, $c$ is a pole of order $k$ means
+  $\operatorname{ord}(f; c) = -k$. Thus $h(z) := (z-c)^k f(z)$ has a removable
+  singularity at $c$ with $h(c) \ne 0$. Extending $h$ analytically to $U_r(c)$
+  gives the desired representation $f(z) = h(z)/(z-c)^k$.
+
+  \medskip
+  \noindent\textbf{(b) $\Rightarrow$ (c):}
+  Given $f(z) = h(z)/(z-c)^k$ with $h$ analytic and $h(c) \ne 0$, define
+  $g(z) = (z-c)^k/h(z)$. Then $g$ is analytic on some $U_r(c)$ (shrinking $r$
+  if needed so $h(z) \ne 0$), $g(c) = 0$, and $g^{(k)}(c) \ne 0$ (since
+  $h(c) \ne 0$), so $g$ has a zero of multiplicity $k$ at $c$. Moreover,
+  $g(z) \ne 0$ for $z \in \dot{U}_r(c)$, and $f = 1/g$.
+
+  \medskip
+  \noindent\textbf{(c) $\Rightarrow$ (d):}
+  Since $g$ has a zero of multiplicity $k$ at $c$, we can write
+  $g(z) = (z-c)^k \varphi(z)$ with $\varphi$ analytic and $\varphi(c) \ne 0$.
+  Then $f(z) = 1/g(z) = 1/[(z-c)^k \varphi(z)]$. Since $\varphi$ is continuous
+  and nonzero at $c$, there exist $m_1, m_2 > 0$ such that
+  $m_1 \le |\varphi(z)| \le m_2$ for $z$ near $c$. Setting $M_1 = 1/m_2$ and
+  $M_2 = 1/m_1$ yields $M_1 |z-c|^{-k} \le |f(z)| \le M_2 |z-c|^{-k}$.
+
+  \medskip
+  \noindent\textbf{(d) $\Rightarrow$ (a):}
+  From the inequality, $|(z-c)^k f(z)| \ge M_1 > 0$ and
+  $|(z-c)^{k-1} f(z)| \le M_2 |z-c|^{-1}$. By the lower bound, $(z-c)^k f(z)$
+  has a removable singularity at $c$ (it is bounded below, and together with the
+  upper bound we show it actually has a non-zero limit). Specifically,
+  $(z-c)^k f(z)$ is bounded near $c$ (by $M_2$ times a factor), hence by
+  Theorem~4.93 (Exercise~4.97(b)$\Rightarrow$(a)) it has a removable singularity.
+  Its limit at $c$ is non-zero because $|(z-c)^k f(z)| \ge M_1$.
+  Meanwhile, $(z-c)^{k-1} f(z) \to \infty$ as $z \to c$ (since
+  $|(z-c)^{k-1} f(z)| \ge M_1 |z-c|^{-1} \to \infty$), so $k$ is minimal.
+  Hence $\operatorname{ord}(f; c) = -k$, i.e., $c$ is a pole of order $k$.
+\end{solution}
+
+\section{Exercise 4.114}
+
+Find all isolated singularities of
+\[
+  f(z) = \frac{(z-1)^2(z+3)}{1 - \sin\frac{\pi z}{2}}
+\]
+and determine for each one its type.
+
+\begin{solution}
+  The singularities occur when the denominator vanishes:
+  \[
+    1 - \sin\frac{\pi z}{2} = 0 \iff \sin\frac{\pi z}{2} = 1
+    \iff \frac{\pi z}{2} = \frac{\pi}{2} + 2\pi n,\; n \in \Z
+    \iff z = 1 + 4n,\; n \in \Z.
+  \]
+
+  Let $z_n = 1 + 4n$ for $n \in \Z$. We analyze each singularity.
+
+  \medskip
+  \noindent\textbf{At $z = 1$ (i.e., $n = 0$):}
+  Compute the Taylor expansion of $\sin\frac{\pi z}{2}$ at $z = 1$:
+  \begin{align*}
+    g(z) &:= 1 - \sin\frac{\pi z}{2}, \\
+    g(1) &= 1 - \sin\frac{\pi}{2} = 0,\\
+    g'(z) &= -\frac{\pi}{2} \cos\frac{\pi z}{2}, \quad
+    g'(1) = -\frac{\pi}{2} \cos\frac{\pi}{2} = 0,\\
+    g''(z) &= \frac{\pi^2}{4} \sin\frac{\pi z}{2}, \quad
+    g''(1) = \frac{\pi^2}{4} \sin\frac{\pi}{2} = \frac{\pi^2}{4} \ne 0.
+  \end{align*}
+  Thus $g$ has a zero of multiplicity $2$ at $z = 1$. The numerator is
+  $(z-1)^2(z+3)$, which has a zero of multiplicity $2$ at $z = 1$. Hence
+  \[
+    f(z) = \frac{(z-1)^2(z+3)}{g(z)} =
+    \frac{(z-1)^2(z+3)}{(z-1)^2 \cdot \frac{g''(1)}{2!} + O((z-1)^3)}
+    = \frac{z+3}{\frac{g''(1)}{2} + O(z-1)}.
+  \]
+  The factor $(z-1)^2$ cancels, so $z = 1$ is a \textbf{removable singularity}.
+  Moreover, $\lim_{z \to 1} f(z) = \frac{4}{\pi^2/8} = \frac{32}{\pi^2}$.
+
+  \medskip
+  \noindent\textbf{At $z = 1 + 4n$ for $n \ne 0$:}
+  Let $z_n = 1 + 4n$. Compute:
+  \[
+    g(z_n) = 1 - \sin\frac{\pi(1+4n)}{2} = 1 - \sin\Bigl(\frac{\pi}{2} + 2\pi n\Bigr)
+    = 1 - \sin\frac{\pi}{2} = 0,
+  \]
+  \[
+    g'(z_n) = -\frac{\pi}{2} \cos\frac{\pi(1+4n)}{2}
+    = -\frac{\pi}{2} \cos\Bigl(\frac{\pi}{2} + 2\pi n\Bigr)
+    = -\frac{\pi}{2} \cos\frac{\pi}{2} = 0.
+  \]
+  The second derivative:
+  \[
+    g''(z_n) = \frac{\pi^2}{4} \sin\frac{\pi(1+4n)}{2}
+    = \frac{\pi^2}{4} \sin\Bigl(\frac{\pi}{2} + 2\pi n\Bigr)
+    = \frac{\pi^2}{4} \ne 0.
+  \]
+  So for all $n \in \Z$, $g(z)$ has a zero of multiplicity $2$ at $z = 1+4n$.
+
+  For $n \ne 0$, the numerator $(z-1)^2(z+3)$ does \emph{not} vanish at
+  $z = 1+4n$ (since $1+4n \ne 1$ and $1+4n \ne -3$ for $n \ne 0, -1$).
+  Check $n = -1$: $z_{-1} = -3$. Then numerator = $(-4)^2 \cdot 0 = 0$,
+  with multiplicity $1$. Denominator has zero of multiplicity $2$. Hence
+  $f(z) \sim \frac{C}{(z+3)^1}$ near $z = -3$, so $z = -3$ is a
+  \textbf{simple pole}.
+
+  For $n \ne 0, -1$, the numerator is non-zero and analytic at $z_n$, while
+  the denominator has a zero of order $2$. Hence $f$ has a \textbf{pole of
+  order $2$} at each $z_n$ with $n \in \Z \setminus \{0, -1\}$.
+
+  \medskip
+  \noindent\textbf{Summary:}
+  \begin{itemize}
+    \item $z = 1$: removable singularity.
+    \item $z = -3$: simple pole (pole of order $1$).
+    \item $z = 1 + 4n,\; n \in \Z \setminus \{0, -1\}$: poles of order $2$.
+  \end{itemize}
+\end{solution}
+
+\section{Exercise 4.116}
+
+Give an alternative proof of Theorem~4.115 by applying the Riemann removability
+theorem~4.93 to the function $g_z : A_c(r, R) \setminus \{z\} \to \C$ given by
+\[
+  g_z(\zeta) := \frac{f(\zeta) - f(z)}{\zeta - z}.
+\]
+You are not supposed to use Corollary~3.76.
+
+\begin{solution}
+  Fix $z \in A_c(r, R)$. The function $g_z(\zeta) = \frac{f(\zeta)-f(z)}{\zeta-z}$
+  is analytic on $A_c(r, R) \setminus \{z\}$ and continuous on $A_c(r, R)$.
+  At $\zeta = z$, $g_z$ has a removable singularity because
+  $\lim_{\zeta \to z} g_z(\zeta) = f'(z)$ exists. By Theorem~4.93 (Riemann
+  removability), $g_z$ extends analytically to all of $A_c(r, R)$.
+
+  Now apply the Cauchy integral theorem on the annulus. Choose $r_1, R_1$ such
+  that $r < r_1 < |z-c| < R_1 < R$. Consider the cycle
+  $\Gamma = \partial U_{R_1}(c) \cup (-\partial U_{r_1}(c))$ (the boundary of
+  the annulus with positive orientation on the outer circle and negative on the
+  inner one). By the homology form of Cauchy's theorem (Theorem~3.70), since
+  $g_z$ is analytic on $A_c(r, R)$ and $\Gamma$ is homologous to $0$ in this
+  domain,
+  \[
+    \frac{1}{2\pi i} \oint_{\Gamma} g_z(\zeta) \dd \zeta = 0.
+  \]
+
+  Expanding the integral:
+  \[
+    0 = \frac{1}{2\pi i} \oint_{|\zeta-c|=R_1} \frac{f(\zeta)-f(z)}{\zeta-z} \dd\zeta
+    - \frac{1}{2\pi i} \oint_{|\zeta-c|=r_1} \frac{f(\zeta)-f(z)}{\zeta-z} \dd\zeta.
+  \]
+
+  Hence
+  \begin{align*}
+    \frac{1}{2\pi i} \oint_{|\zeta-c|=R_1} \frac{f(\zeta)}{\zeta-z} \dd\zeta
+    - \frac{1}{2\pi i} \oint_{|\zeta-c|=r_1} \frac{f(\zeta)}{\zeta-z} \dd\zeta
+    &= \frac{f(z)}{2\pi i} \left(
+      \oint_{|\zeta-c|=R_1} \frac{\dd\zeta}{\zeta-z}
+      - \oint_{|\zeta-c|=r_1} \frac{\dd\zeta}{\zeta-z}
+    \right)\\
+    &= \frac{f(z)}{2\pi i} \bigl(2\pi i - 0\bigr) = f(z).
+  \end{align*}
+  Here we used that $z$ lies inside the outer circle (winding number $1$) but
+  outside the inner circle (winding number $0$). This gives exactly
+  \[
+    f(z) = \frac{1}{2\pi i} \oint_{|\zeta-c|=R} \frac{f(\zeta)}{\zeta-z} \dd\zeta
+    - \frac{1}{2\pi i} \oint_{|\zeta-c|=r} \frac{f(\zeta)}{\zeta-z} \dd\zeta,
+  \]
+  which is Theorem~4.115.
+\end{solution}
+
+\section{Exercise 4.123}
+
+Find all possible Laurent series of
+\[
+  f(z) := \frac{1}{z(z-1)(z-2)}.
+\]
+
+\begin{solution}
+  Using partial fraction decomposition:
+  \[
+    f(z) = \frac{1}{z(z-1)(z-2)} = \frac{1}{2} \cdot \frac{1}{z}
+    - \frac{1}{z-1} + \frac{1}{2} \cdot \frac{1}{z-2}.
+  \]
+  (Verify: $\frac{1}{2z} - \frac{1}{z-1} + \frac{1}{2(z-2)}
+  = \frac{(z-1)(z-2) - 2z(z-2) + z(z-1)}{2z(z-1)(z-2)}
+  = \frac{2}{2z(z-1)(z-2)} = \frac{1}{z(z-1)(z-2)}$.)
+
+  The singularities are at $z = 0, 1, 2$. There are three possible annuli
+  centered at $0$ (by convention, Laurent series are expanded at $c = 0$):
+  \begin{enumerate}
+    \item $A_0(0, 1) = \{z : 0 < |z| < 1\}$,
+    \item $A_0(1, 2) = \{z : 1 < |z| < 2\}$,
+    \item $A_0(2, +\infty) = \{z : |z| > 2\}$.
+  \end{enumerate}
+
+  \medskip
+  \noindent\textbf{Region 1: $0 < |z| < 1$.}
+  Here $|z| < 1 < 2$, so we expand each term:
+  \begin{align*}
+    \frac{1}{z-1} &= -\frac{1}{1-z} = -\sum_{n=0}^{\infty} z^n,\\
+    \frac{1}{z-2} &= -\frac{1}{2} \cdot \frac{1}{1 - z/2}
+    = -\frac{1}{2} \sum_{n=0}^{\infty} \left(\frac{z}{2}\right)^n
+    = -\sum_{n=0}^{\infty} \frac{z^n}{2^{n+1}}.
+  \end{align*}
+  Hence
+  \begin{align*}
+    f(z) &= \frac{1}{2z} - \left(-\sum_{n=0}^{\infty} z^n\right)
+    + \frac{1}{2}\left(-\sum_{n=0}^{\infty} \frac{z^n}{2^{n+1}}\right)\\
+    &= \frac{1}{2} z^{-1} + \sum_{n=0}^{\infty} z^n
+    - \sum_{n=0}^{\infty} \frac{z^n}{2^{n+2}}\\
+    &= \frac{1}{2} z^{-1} + \sum_{n=0}^{\infty}
+    \left(1 - \frac{1}{2^{n+2}}\right) z^n.
+  \end{align*}
+
+  \medskip
+  \noindent\textbf{Region 2: $1 < |z| < 2$.}
+  Here $|z| > 1$ and $|z| < 2$:
+  \begin{align*}
+    \frac{1}{z-1} &= \frac{1}{z} \cdot \frac{1}{1 - 1/z}
+    = \frac{1}{z} \sum_{n=0}^{\infty} \left(\frac{1}{z}\right)^n
+    = \sum_{n=0}^{\infty} \frac{1}{z^{n+1}} = \sum_{n=-\infty}^{-1} z^n,\\
+    \frac{1}{z-2} &= -\frac{1}{2} \cdot \frac{1}{1 - z/2}
+    = -\sum_{n=0}^{\infty} \frac{z^n}{2^{n+1}}.
+  \end{align*}
+  Hence
+  \begin{align*}
+    f(z) &= \frac{1}{2z} - \sum_{n=-\infty}^{-1} z^n
+    + \frac{1}{2}\left(-\sum_{n=0}^{\infty} \frac{z^n}{2^{n+1}}\right)\\
+    &= \frac{1}{2} z^{-1} - \sum_{n=-\infty}^{-1} z^n
+    - \sum_{n=0}^{\infty} \frac{z^n}{2^{n+2}}\\
+    &= -\sum_{n=-\infty}^{-2} z^n - \frac{1}{2}z^{-1}
+    - \sum_{n=0}^{\infty} \frac{z^n}{2^{n+2}}.
+  \end{align*}
+  More compactly:
+  \[
+    f(z) = -\sum_{n=-\infty}^{-1} z^n - \sum_{n=0}^{\infty} \frac{z^n}{2^{n+2}}.
+  \]
+  (Note: the $n=-1$ term is $-z^{-1}$, combining with $\frac{1}{2}z^{-1}$ gives
+  $-\frac{1}{2}z^{-1}$. Let me recheck.)
+
+  Actually, recompute carefully:
+  \begin{align*}
+    f(z) &= \frac{1}{2z} - \sum_{n=1}^{\infty} \frac{1}{z^n}
+    - \sum_{n=0}^{\infty} \frac{z^n}{2^{n+2}}\\
+    &= \frac{1}{2}z^{-1} - z^{-1} - \sum_{n=2}^{\infty} z^{-n}
+    - \sum_{n=0}^{\infty} \frac{z^n}{2^{n+2}}\\
+    &= -\frac{1}{2}z^{-1} - \sum_{n=2}^{\infty} z^{-n}
+    - \sum_{n=0}^{\infty} \frac{z^n}{2^{n+2}}.
+  \end{align*}
+  So $a_{-1} = -\frac{1}{2}$, $a_{-n} = -1$ for $n \ge 2$, and
+  $a_n = -\frac{1}{2^{n+2}}$ for $n \ge 0$.
+
+  \medskip
+  \noindent\textbf{Region 3: $|z| > 2$.}
+  Both $|z| > 1$ and $|z| > 2$:
+  \begin{align*}
+    \frac{1}{z-1} &= \sum_{n=1}^{\infty} \frac{1}{z^n},\\
+    \frac{1}{z-2} &= \frac{1}{z} \cdot \frac{1}{1 - 2/z}
+    = \sum_{n=1}^{\infty} \frac{2^{n-1}}{z^n}.
+  \end{align*}
+  Hence
+  \begin{align*}
+    f(z) &= \frac{1}{2z} - \sum_{n=1}^{\infty} \frac{1}{z^n}
+    + \frac{1}{2} \sum_{n=1}^{\infty} \frac{2^{n-1}}{z^n}\\
+    &= \frac{1}{2}z^{-1} - \sum_{n=1}^{\infty} z^{-n}
+    + \sum_{n=1}^{\infty} \frac{2^{n-2}}{z^n}\\
+    &= \frac{1}{2}z^{-1} + \sum_{n=1}^{\infty} (2^{n-2} - 1) z^{-n}.
+  \end{align*}
+  For $n = 1$: $a_{-1} = \frac{1}{2} + (2^{-1} - 1) = \frac{1}{2} - \frac{1}{2} = 0$.
+  For $n \ge 2$: $a_{-n} = 2^{n-2} - 1$.
+
+  So $f(z) = \sum_{n=2}^{\infty} (2^{n-2} - 1) z^{-n} = \sum_{n=2}^{\infty}
+  \frac{2^{n-2} - 1}{z^n}$ for $|z| > 2$.
+\end{solution}
+
+\section{Exercise 4.126}
+
+Let $f : A_c(r, R) \to \C$ be an analytic function with the Laurent
+expansion (4.39). Prove that
+\[
+  \forall \rho \in (r, R), \quad
+  \sum_{j=-\infty}^{+\infty} |a_j|^2 \rho^{2j} \le [M(\rho)]^2,
+\]
+where $M(\rho)$ is defined in Corollary~3.86. In particular, for any
+$j \in \Z$, $|a_j| \le \rho^{-j} M(\rho)$; the equality holds for some
+$j = j_0$ and $\rho = \rho_0$ if and only if $f(z) = a_{j_0}(z-c)^{j_0}$.
+
+\begin{solution}
+  From Theorem~4.124, the Laurent coefficients are given by
+  \[
+    a_j = \frac{1}{2\pi i} \oint_{|\zeta-c|=\rho}
+    \frac{f(\zeta)}{(\zeta-c)^{j+1}} \dd\zeta, \qquad \rho \in (r, R).
+  \]
+  Parametrizing $\zeta = c + \rho e^{i\theta}$ for $\theta \in [0, 2\pi]$,
+  \begin{align*}
+    a_j &= \frac{1}{2\pi i} \int_{0}^{2\pi}
+    \frac{f(c + \rho e^{i\theta})}{\rho^{j+1} e^{i(j+1)\theta}}
+    \cdot i\rho e^{i\theta} \dd\theta\\
+    &= \frac{\rho^{-j}}{2\pi} \int_{0}^{2\pi}
+    f(c + \rho e^{i\theta}) \, e^{-ij\theta} \dd\theta.
+  \end{align*}
+  Thus $a_j \rho^j = \frac{1}{2\pi} \int_0^{2\pi} f(c + \rho e^{i\theta})
+  e^{-ij\theta} \dd\theta$, which are precisely the Fourier coefficients of
+  the function $\theta \mapsto f(c + \rho e^{i\theta})$.
+
+  By Parseval's identity for Fourier series (or Gutzmer's inequality,
+  Exercise~4.2),
+  \[
+    \sum_{j=-\infty}^{+\infty} |a_j|^2 \rho^{2j}
+    = \frac{1}{2\pi} \int_{0}^{2\pi} |f(c + \rho e^{i\theta})|^2 \dd\theta
+    \le \frac{1}{2\pi} \int_{0}^{2\pi} [M(\rho)]^2 \dd\theta
+    = [M(\rho)]^2,
+  \]
+  where $M(\rho) = \max_{|\zeta-c|=\rho} |f(\zeta)|$ as defined in
+  Corollary~3.86.
+
+  The particular case $|a_j| \le \rho^{-j} M(\rho)$ follows immediately since
+  each term in the sum is non-negative:
+  \[
+    |a_j|^2 \rho^{2j} \le \sum_{k=-\infty}^{+\infty} |a_k|^2 \rho^{2k}
+    \le [M(\rho)]^2 \implies |a_j| \le \rho^{-j} M(\rho).
+  \]
+
+  For the equality case: if $f(z) = a_{j_0}(z-c)^{j_0}$, then by direct
+  computation $M(\rho_0) = |a_{j_0}| \rho_0^{j_0}$, so
+  $|a_{j_0}| = \rho_0^{-j_0} M(\rho_0)$.
+
+  Conversely, suppose equality $|a_{j_0}| = \rho_0^{-j_0} M(\rho_0)$ holds.
+  Then all other terms in the sum must be zero:
+  \[
+    \sum_{j \ne j_0} |a_j|^2 \rho_0^{2j}
+    = [M(\rho_0)]^2 - |a_{j_0}|^2 \rho_0^{2j_0} = 0,
+  \]
+  so $a_j = 0$ for all $j \ne j_0$. Hence $f(z) = a_{j_0}(z-c)^{j_0}$.
+  This can also be argued via the equality condition of Parseval's identity:
+  $|f(c + \rho_0 e^{i\theta})| \equiv M(\rho_0)$ constant on the circle
+  $|\zeta-c| = \rho_0$, which (by the maximum modulus principle) forces
+  $f$ to be a monomial.
+\end{solution}
+
+\section{Exercise 4.128}
+
+Prove Lemma~4.127.
+
+\begin{solution}
+  \textbf{Lemma~4.127.} The Laurent expansion of an analytic function
+  $f : A_0(r, R) \to \C$ only contains even (or odd) powers of $z$ if $f$ is
+  respectively even (or odd).
+
+  \medskip
+  \noindent\textbf{Even case:} Suppose $f(-z) = f(z)$ for all
+  $z \in A_0(r, R)$. Write the Laurent expansion
+  \[
+    f(z) = \sum_{j=-\infty}^{\infty} a_j z^j, \qquad z \in A_0(r, R).
+  \]
+  Then
+  \[
+    f(-z) = \sum_{j=-\infty}^{\infty} a_j (-z)^j
+    = \sum_{j=-\infty}^{\infty} (-1)^j a_j z^j.
+  \]
+  Since $f(-z) = f(z)$, the uniqueness of Laurent expansion
+  (Theorem~4.124) implies $a_j = (-1)^j a_j$ for all $j \in \Z$.
+  For odd $j$, $(-1)^j = -1$, so $a_j = -a_j \implies a_j = 0$.
+  Hence only even powers survive.
+
+  \medskip
+  \noindent\textbf{Odd case:} Suppose $f(-z) = -f(z)$ for all
+  $z \in A_0(r, R)$. Then
+  \[
+    f(-z) = \sum_{j=-\infty}^{\infty} (-1)^j a_j z^j
+    = -f(z) = -\sum_{j=-\infty}^{\infty} a_j z^j
+    = \sum_{j=-\infty}^{\infty} (-a_j) z^j.
+  \]
+  By uniqueness, $(-1)^j a_j = -a_j$, i.e., $a_j = (-1)^{j+1} a_j$ for all
+  $j \in \Z$. For even $j$, $(-1)^{j+1} = -1$, so $a_j = -a_j \implies a_j = 0$.
+  Hence only odd powers survive.
+\end{solution}
+
+\section{Exercise 4.131}
+
+Give an alternative proof of (d) $\Rightarrow$ (a) in Exercise~4.97 by
+applying Exercise~4.126.
+
+\begin{solution}
+  Recall that (d) states $\lim_{z \to c} (z-c)f(z) = 0$, and (a) states that
+  $c$ is a removable singularity.
+
+  WLOG, assume $c = 0$. Since $f$ is analytic on some punctured disk
+  $\dot{U}_R(0)$, it has a Laurent expansion
+  \[
+    f(z) = \sum_{j=-\infty}^{\infty} a_j z^j, \qquad z \in A_0(0, R).
+  \]
+
+  Condition (d) gives $\lim_{z \to 0} z f(z) = 0$. Compute:
+  \[
+    z f(z) = \sum_{j=-\infty}^{\infty} a_j z^{j+1}
+    = \sum_{j=-\infty}^{\infty} a_{j-1} z^j.
+  \]
+  For this to have limit $0$ as $z \to 0$, we need all negative-power
+  coefficients to vanish.
+
+  We prove this using Exercise~4.126. For any $\rho \in (0, R)$,
+  Exercise~4.126 gives $|a_j| \le \rho^{-j} M(\rho)$.
+  For $j < 0$, this becomes $|a_j| \le \rho^{-j} M(\rho)$ with $-j > 0$.
+
+  Now, condition (d) implies that $z f(z)$ is bounded near $0$ (in fact,
+  tends to $0$). Thus there exists $B > 0$ such that
+  $|z f(z)| \le B$ for all $z \in \dot{U}_{\delta}(0)$ for some $\delta > 0$.
+  Then for $\rho < \delta$,
+  \[
+    M(\rho) = \max_{|z|=\rho} |f(z)|
+    \le \max_{|z|=\rho} \frac{B}{|z|} = \frac{B}{\rho}.
+  \]
+
+  Now for $j \le -2$, apply Exercise~4.126:
+  \[
+    |a_j| \le \rho^{-j} M(\rho) \le \rho^{-j} \cdot \frac{B}{\rho}
+    = B \rho^{-j-1}.
+  \]
+  Since $-j-1 \ge 1$ for $j \le -2$, letting $\rho \to 0^+$ yields
+  $|a_j| = 0$ for all $j \le -2$.
+
+  For $j = -1$, we have $a_{-1} = \lim_{z \to 0} z f(z) = 0$ by condition (d).
+
+  Therefore all negative-index coefficients vanish: $a_j = 0$ for all
+  $j < 0$. By Theorem~4.130(a), $c = 0$ is a removable singularity.
+
+  \medskip
+  \noindent\textit{Remark.} This proof shows that condition (d) forces the
+  principal part of the Laurent series to vanish, which is exactly the
+  characterization of removable singularities via Laurent series
+  (Theorem~4.130).
+\end{solution}
+
+\section{Exercise 4.134 (Laurent series as an expansion in an orthonormal basis)}
+
+Denote by $H$ the space of all analytic functions on $A_0(r, R)$ where
+$r < 1 < R$ and define a sesquilinear map $\langle\cdot, \cdot\rangle :
+H \times H \to \C$,
+\[
+  \langle f, g \rangle := \frac{1}{2\pi i}
+  \oint_{|\zeta| = 1} f(\zeta) \overline{g(\zeta)} \frac{1}{\zeta} \dd\zeta.
+\]
+Show that
+\begin{enumerate}[(a)]
+  \item $\langle\cdot, \cdot\rangle$ is an inner product on $H$ in the sense
+    of Definition~C.170;
+  \item the set $\{z^j : j \in \Z\}$ is an orthonormal basis of $H$;
+  \item the Laurent series of any $f \in H$ is exactly the expansion of $f$ in
+    terms of the orthonormal basis $\{z^j : j \in \Z\}$. In other words, if
+    $f(z) = \sum_{j=-\infty}^{+\infty} a_j z^j$ is the Laurent expansion of
+    $f$, then
+    \[
+      \forall j \in \Z, \quad a_j = \langle f, z^j \rangle
+      = \frac{1}{2\pi i} \oint_{|\zeta|=1} \frac{f(\zeta)}{\zeta^{j+1}} \dd\zeta.
+    \]
+\end{enumerate}
+
+\begin{solution}
+  \textbf{(a) Inner product verification.}
+
+  Recall (Definition~C.170) that $\langle\cdot,\cdot\rangle$ is an inner
+  product if it is: (i) positive definite,
+  (ii) conjugate symmetric, (iii) linear in the first argument.
+
+  \begin{itemize}
+    \item \textbf{Conjugate symmetry:}
+    \begin{align*}
+      \overline{\langle g, f \rangle}
+      &= \overline{\frac{1}{2\pi i} \oint_{|\zeta|=1}
+        g(\zeta) \overline{f(\zeta)} \frac{1}{\zeta} \dd\zeta}
+      = -\frac{1}{2\pi i} \oint_{|\zeta|=1}
+        \overline{g(\zeta)} f(\zeta) \frac{1}{\bar{\zeta}} \dd\bar{\zeta}.
+    \end{align*}
+    On the unit circle, $\zeta = e^{i\theta}$, $\bar{\zeta} = e^{-i\theta} = 1/\zeta$,
+    $\dd\bar{\zeta} = -ie^{-i\theta} \dd\theta$, and $\dd\zeta = ie^{i\theta} \dd\theta$.
+    Through the change of variables or using $\bar{\zeta} = 1/\zeta$ and
+    $\dd\bar{\zeta} = -\dd\zeta/\zeta^2$, a direct computation shows
+    $\overline{\langle g, f \rangle} = \langle f, g \rangle$.
+
+    More concretely, parametrize $\zeta = e^{i\theta}$:
+    \[
+      \langle f, g \rangle = \frac{1}{2\pi i} \int_0^{2\pi}
+      f(e^{i\theta}) \overline{g(e^{i\theta})} \frac{1}{e^{i\theta}}
+      \cdot ie^{i\theta} \dd\theta
+      = \frac{1}{2\pi} \int_0^{2\pi}
+      f(e^{i\theta}) \overline{g(e^{i\theta})} \dd\theta.
+    \]
+    Then $\overline{\langle g, f \rangle} = \overline{\frac{1}{2\pi}
+    \int_0^{2\pi} g(e^{i\theta}) \overline{f(e^{i\theta})} \dd\theta}
+    = \frac{1}{2\pi} \int_0^{2\pi} f(e^{i\theta})
+    \overline{g(e^{i\theta})} \dd\theta = \langle f, g \rangle$.
+
+    \item \textbf{Linearity in the first argument:}
+    For $\alpha, \beta \in \C$ and $f_1, f_2, g \in H$,
+    \begin{align*}
+      \langle \alpha f_1 + \beta f_2, g \rangle
+      &= \frac{1}{2\pi} \int_0^{2\pi}
+      (\alpha f_1(e^{i\theta}) + \beta f_2(e^{i\theta}))
+      \overline{g(e^{i\theta})} \dd\theta\\
+      &= \alpha \langle f_1, g \rangle + \beta \langle f_2, g \rangle.
+    \end{align*}
+
+    \item \textbf{Positive definiteness:}
+    $\langle f, f \rangle = \frac{1}{2\pi} \int_0^{2\pi}
+    |f(e^{i\theta})|^2 \dd\theta \ge 0$. If $\langle f, f \rangle = 0$,
+    then $f(e^{i\theta}) = 0$ for all $\theta \in [0, 2\pi]$ (by continuity
+    of $|f|^2$). Thus $f$ vanishes on the unit circle. Since the unit circle
+    has an accumulation point in the domain $A_0(r, R)$, the identity theorem
+    (Theorem~4.35) implies $f \equiv 0$ on $A_0(r, R)$.
+  \end{itemize}
+  Hence $\langle\cdot,\cdot\rangle$ is an inner product on $H$.
+
+  \medskip
+  \textbf{(b) Orthonormality of $\{z^j : j \in \Z\}$.}
+
+  For any $j, k \in \Z$,
+  \[
+    \langle z^j, z^k \rangle
+    = \frac{1}{2\pi i} \oint_{|\zeta|=1} \zeta^j \overline{\zeta^k}
+    \frac{1}{\zeta} \dd\zeta
+    = \frac{1}{2\pi i} \oint_{|\zeta|=1} \zeta^j \zeta^{-k}
+    \frac{1}{\zeta} \dd\zeta
+    = \frac{1}{2\pi i} \oint_{|\zeta|=1} \zeta^{j-k-1} \dd\zeta.
+  \]
+  (Here we used $\overline{\zeta} = 1/\zeta$ on the unit circle.)
+
+  By the fundamental integral formula (or Example~3.16),
+  \[
+    \frac{1}{2\pi i} \oint_{|\zeta|=1} \zeta^{m} \dd\zeta
+    = \begin{cases}
+      1, & m = -1,\\
+      0, & m \ne -1.
+    \end{cases}
+  \]
+  Here $m = j-k-1$. Thus $m = -1 \iff j-k-1 = -1 \iff j = k$.
+  Hence $\langle z^j, z^k \rangle = \delta_{jk}$, proving orthonormality.
+
+  To see that $\{z^j\}$ is a \textbf{basis} (i.e., complete): any
+  $f \in H$ has a Laurent expansion $f(z) = \sum_{j=-\infty}^{\infty} a_j z^j$
+  converging normally on $A_0(r, R)$. The convergence is uniform on the unit
+  circle, so $f$ can be approximated in the $L^2$-norm induced by the inner
+  product by finite linear combinations of $\{z^j\}$. Hence $\{z^j\}$ spans
+  a dense subspace; since it is orthonormal, it is an orthonormal basis.
+
+  \medskip
+  \textbf{(c) Laurent coefficients as inner products.}
+
+  For any $j \in \Z$,
+  \begin{align*}
+    \langle f, z^j \rangle
+    &= \frac{1}{2\pi i} \oint_{|\zeta|=1} f(\zeta) \overline{\zeta^j}
+    \frac{1}{\zeta} \dd\zeta
+    = \frac{1}{2\pi i} \oint_{|\zeta|=1} f(\zeta) \zeta^{-j}
+    \frac{1}{\zeta} \dd\zeta\\
+    &= \frac{1}{2\pi i} \oint_{|\zeta|=1}
+    \frac{f(\zeta)}{\zeta^{j+1}} \dd\zeta.
+  \end{align*}
+
+  By Theorem~4.124, the Laurent coefficient $a_j$ is exactly
+  \[
+    a_j = \frac{1}{2\pi i} \oint_{|\zeta|=\rho}
+    \frac{f(\zeta)}{\zeta^{j+1}} \dd\zeta
+  \]
+  for any $\rho \in (r, R)$. Taking $\rho = 1$ (which is valid since
+  $r < 1 < R$) gives $a_j = \langle f, z^j \rangle$.
+
+  Thus the Laurent series $f(z) = \sum_{j=-\infty}^{\infty} a_j z^j$ is
+  precisely the expansion of $f$ in the orthonormal basis $\{z^j : j \in \Z\}$,
+  with coefficients given by the inner product $a_j = \langle f, z^j \rangle$.
+\end{solution}
+
+\end{document}

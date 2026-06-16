@@ -1,0 +1,184 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{luacode}
+
+% import common macros
+\input{../../common/macros.tex}
+
+\newcommand{\tridiag}{\operatorname{tridiag}}
+\newcommand{\ii}{\mathrm{i}}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Configure listings for Python code highlighting
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,
+  frame=single,
+  framesep=5pt,
+  rulecolor=\color{gray},
+  backgroundcolor=\color{white},
+  captionpos=b,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=5,
+}
+
+\lstnewenvironment{plaintext}[1][]{
+  \lstset{
+    language=none,
+    basicstyle=\ttfamily\small,
+    keywordstyle=,
+    commentstyle=,
+    stringstyle=,
+    numbers=none,
+    frame=single,
+    backgroundcolor=\color{white},
+    #1
+  }
+}{}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{数值代数}
+\newcommand{\hwNum}{14}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name (\uid)}
+\chead{\course \#\hwNum}
+\rhead{\today}
+
+\section{一般实矩阵的隐式 QR 算法}
+
+求实矩阵的全部特征值及特征向量.
+
+\begin{enumerate}[(1)]
+  \item 用熟悉的计算机语言编制利用隐式 QR 算法求一个实矩阵全部特征值和特征向量的通用子程序.
+  \item 利用所编制的子程序计算方程
+    \[
+      x^{41} + x^3 + 1 = 0
+    \]
+    的全部根.
+  \item 设
+    \[
+      A =
+      \begin{bmatrix}
+        9.1 & 3.0 & 2.6 & 4.0 \\
+        4.2 & 5.3 & 1.7 & 1.6 \\
+        3.2 & 1.7 & 9.4 & x \\
+        6.1 & 4.9 & 3.5 & 6.2
+      \end{bmatrix},
+    \]
+    试求当 $x = 0.9, 1.0, 1.1$ 时 $A$ 的全部特征值, 并观察特征值的变化情况.
+\end{enumerate}
+
+\begin{solution}
+
+  先用 Householder 变换将 $A$ 化为上 Hessenberg 阵，再对其做带 Wilkinson 位移的隐式 QR
+  迭代（bulge chasing）.
+  收敛后得到复 Schur 分解 $AZ=ZT$，$T$ 的对角元即特征值，特征向量由解上三角系统 $Zy_j=v_j$ 再归一化得到.
+
+  对 $x^{41}+x^3+1=0$，构造对应首一多项式的 $41$ 阶友矩阵，其特征值即多项式的全部根.
+
+  题~(3) 中 $4\times4$ 矩阵的特征值如下：
+  \[
+    \begin{array}{c|c}
+      x & \text{特征值} \\ \hline
+      0.9 &
+      16.964832670607,\; 7.365629536958,\;
+      2.834768896218 \pm 1.007441166353\ii \\
+      1.0 &
+      16.996516047941,\; 7.343359754830,\;
+      2.830062098615 \pm 1.006228905570\ii \\
+      1.1 &
+      17.028013323148,\; 7.321318091146,\;
+      2.825334292853 \pm 1.004978621116\ii
+    \end{array}
+  \]
+  可以看到，当 $x$ 从 $0.9$ 增大到 $1.1$ 时，最大实特征值单调增大；
+  另一个实特征值单调减小；复共轭特征值对的实部和虚部绝对值都略有减小，变化较平滑.
+
+  代码与运行结果如下：
+  \lstinputlisting[language=Python, caption={一般矩阵隐式 QR 算法及应用}]{exercise.py}
+  \lstinputlisting[language={}, caption={一般矩阵隐式 QR 运行结果}]{output.txt}
+
+\end{solution}
+
+\section{实对称矩阵的隐式 QR 算法}
+
+用熟悉的计算机语言编写隐式对称 QR 算法, 求解实对称矩阵的全部特征值和特征向量的通用子程序,
+并计算教材第 244 页 1(2) 和 2(2) 的矩阵的全部特征值和特征向量.
+
+第 1(2) 题矩阵为 $n=50,51,\ldots,100$ 阶三对角矩阵
+\[
+  A_1 = \tridiag(1,4,1)
+  =
+  \begin{bmatrix}
+    4 & 1 \\
+    1 & 4 & 1 \\
+    & \ddots & \ddots & \ddots \\
+    &        & 1 & 4 & 1 \\
+    &        &   & 1 & 4
+  \end{bmatrix}.
+\]
+第 2(2) 题矩阵为 $100\times100$ 三对角矩阵
+\[
+  A_2 = \tridiag(-1,2,-1)
+  =
+  \begin{bmatrix}
+    2 & -1 \\
+    -1 & 2 & -1 \\
+    & \ddots & \ddots & \ddots \\
+    &        & -1 & 2 & -1 \\
+    &        &    & -1 & 2
+  \end{bmatrix}.
+\]
+
+\begin{solution}
+
+  先用 Householder 变换将 $A$ 化为三对角阵 $T=Q_0^\T AQ_0$，再对 $T$ 做带 Wilkinson
+  位移的隐式对称 QR 迭代（Givens bulge chasing），累积正交变换即得特征向量.
+
+  常系数三对角 Toeplitz 矩阵 $\tridiag(b,a,b)$ 有精确特征值
+  $\lambda_k=a+2b\cos\frac{k\pi}{n+1}$，程序用该公式验证 QR 结果.
+
+  对 $A_1=\tridiag(1,4,1)$，计算了 $n=50,51,\ldots,100$ 全部阶数. $n=100$ 时：
+  \[
+    \lambda_{\min} = 2.000967435416,\qquad
+    \lambda_{\max} = 5.999032564584.
+  \]
+  对 $A_2=\tridiag(-1,2,-1)$，$n=100$ 时：
+  \[
+    \lambda_{\min} = 0.000967435416,\qquad
+    \lambda_{\max} = 3.999032564584.
+  \]
+  两个 $100$ 阶例子的最大特征值误差约 $10^{-14}$，特征向量残差约 $10^{-12}$，正交性误差约 $10^{-14}$.
+
+  代码与运行结果如下：
+  \lstinputlisting[language=Python, caption={实对称矩阵隐式 QR 算法及应用}]{symmetric_qr.py}
+  \lstinputlisting[language={}, caption={实对称矩阵隐式 QR 运行结果}]{symmetric_output.txt}
+
+\end{solution}
+
+\end{document}

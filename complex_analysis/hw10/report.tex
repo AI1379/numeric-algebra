@@ -1,0 +1,421 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+% \usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Complex Analysis}
+\newcommand{\hwNum}{10}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+\section{Exercise 4.31}
+
+Let $l_1, l_2$ be two rays that both start from the origin and have an
+angle $\theta \in (0, 2\pi)$. Find the angle between the image curves
+$f(l_1)$ and $f(l_2)$ at $0$ by assuming the conditions in
+Theorem~4.30.
+
+\begin{solution}
+  Consider $m$ as the multiplicity of $f$ at $0$. By Theorem~4.30,
+  the function $f$ can be written as:
+  \[
+    f(z) = [g(z)]^m,\quad g \text{ is conformal}
+  \]
+  Write $l_1$ and $l_2$ as $l_1 = \{re^{i\alpha} : r > 0\}$ and
+  $l_2 = \{re^{i(\alpha + \theta)} : r > 0\}$ for some $\alpha \in
+  \R$. Then we have
+  \[
+    \begin{aligned}
+      f(l_1) &= \{[g(re^{i\alpha})]^m : r > 0\} \\
+      f(l_2) &= \{[g(re^{i(\alpha + \theta)})]^m : r > 0\}.
+    \end{aligned}
+  \]
+  By the conformality of $g$, the angle between $g(l_1)$ and $g(l_2)$
+  at $0$ is $\theta$. Since $f(z) = [g(z)]^m$, the angle between
+  $f(l_1)$ and $f(l_2)$ at $0$ is $m\theta$.
+\end{solution}
+
+\section{Exercise 4.34}
+
+For a nonconstant analytic function $f : D \to \C$ where $D$ is a
+domain, $0 \in D$, $f(0) = f'(0) = 0$, and $f''(0) \ne 0$,
+construct two curves $\Gamma_1$ and $\Gamma_2$ so that
+\begin{enumerate}[(a)]
+  \item both $\Gamma_1$ and $\Gamma_2$ pass through $0$,
+  \item $\Gamma_1$ and $\Gamma_2$ are orthogonal at $0$,
+  \item $f(\Gamma_1)$ is a subset of $\R$ and has a minimum at $0$,
+  \item $f(\Gamma_2)$ is a subset of $\R$ and has a maximum at $0$.
+\end{enumerate}
+
+\begin{solution}
+  By Theorem~4.30, the function $f$ can be written as
+  \[
+    f(z) = [g(z)]^2, \quad g: U_r(0) \to \C \text{ is conformal}.
+  \]
+  Where $g(0) = 0$ and $g'(0) \ne 0$. Thus there exists an inverse function
+  $g^{-1} : U_{r'}(0) \to U_r(0)$ for some $r' > 0$. Let $\Gamma_1 =
+  g^{-1}(\R \cap U_{r'}(0))$ and $\Gamma_2 = g^{-1}(i\R \cap
+  U_{r'}(0))$. Then $\Gamma_1$ and $\Gamma_2$ are orthogonal at $0$
+  since $g$ is conformal. Moreover, $f(\Gamma_1) = \{x^2 : x \in \R
+  \cap U_{r'}(0)\}$ has a minimum at $0$, and $f(\Gamma_2) = \{-y^2 :
+  y \in \R \cap U_{r'}(0)\}$ has a maximum at $0$.
+\end{solution}
+
+\section{Exercise 4.55}
+
+Show that there is no analytic function $f$ in $D$ that extends
+continuously to $\overline{D}$ and satisfies $f(z) = \bar{z}$ for all
+$z \in \partial D$.
+
+\begin{solution}
+  If there exists such an analytic function $f$, then we have: $f(z)
+  = \bar{z}$ for all $z \in \partial D$. Consider the integral:
+  \[
+    \oint_{\partial D} f(z) \dd z = \oint_{\partial D} \bar{z} \dd z
+  \]
+  By Green's theorem, we have
+  \[
+    \oint_{\partial D} (x-iy)(\dd x + i \dd y) = \iint_D
+    \left(\frac{\partial (x-iy)}{\partial x} + i \frac{\partial
+    (x-iy)}{\partial y}\right) \dd x \dd y = 2i \iint_D \dd x \dd y =
+    2i\text{Area}(D) \ne 0.
+  \]
+  However, since $f$ is analytic in $D$, we have $\oint_{\partial D}
+  f(z) \dd z = 0$. This is a contradiction.
+\end{solution}
+
+\section{Exercise 4.57 (Alternative proof of Liouville's theorem)}
+
+Prove Theorem~3.95 by Lemma~4.56.
+
+\begin{solution}
+  Consider a bounded entire function $f$, and let $M = \sup_{z \in
+  \C} |f(z)| < \infty$. Let $g(z) = f(z) - f(0)$, then $g$ is also a
+  bounded entire function with an upper bound of $2M$. Then we define:
+  \[
+    h_R(x): \{|z| < 1\} \to \C, \quad h_R(x) = \frac{g(Rx)}{2M} =
+    \frac{f(Rx) - f(0)}{2M}.
+  \]
+  Then $h_R$ is an analytic function in $\{|z| < 1\}$ and satisfies
+  $|h_R(x)| \le 1$ for all $x$ such that $|x| < 1$. By Lemma~4.56, we have
+  \[
+    |h_R(x)| \leq |x| \Rightarrow |f(x) - f(0)| \leq \frac{2M}{R} |x|
+    \text{ for all } |x| < R.
+  \]
+  Let $R \to \infty$, we have $|f(x) - f(0)| = 0$ for all $x \in \C$,
+  which means $f$ is a constant function.
+\end{solution}
+
+\section{Exercise 4.58}
+
+For biholomorphic functions $f, g : D \to D$ with $f(0) = g(0)$ and
+$f'(0) = g'(0)$, show that $f = g$.
+
+\begin{solution}
+  Consider $h = g^{-1} \circ f : D \to D$. Then $h$ is biholomorphic
+  and $h(0) = g^{-1}(f(0)) = g^{-1}(g(0)) = 0$.
+
+  By the inverse function theorem, $(g^{-1})'(g(0)) = 1/g'(0)$, so
+  \[
+    h'(0) = (g^{-1})'(f(0)) \cdot f'(0)
+    = \frac{f'(0)}{g'(0)} = 1.
+  \]
+
+  By Lemma~4.56 (Schwarz lemma), $|h'(0)| \le 1$. Since
+  $|h'(0)| = 1$, the equality case yields $h(z) = \zeta z$ for some
+  $\zeta$ with $|\zeta| = 1$. As $h'(0) = \zeta = 1$, we conclude
+  $h(z) = z$, i.e., $g^{-1} \circ f = \mathrm{id}$, hence $f = g$.
+\end{solution}
+
+\section{Exercise 4.59 (Study 1913)}
+
+For a biholomorphic function $f : D \to \Omega$, show that if $\Omega$
+is convex, then for any $r \in (0, 1)$, the image
+$\Omega_r = f(U_r(0))$ is also convex.
+
+\textit{Hint:} For two points $|a| \le |b| < r$ and $t \in [0, 1]$,
+consider the map
+$g_t(z) = (1-t)\,f\!\left(\frac{a}{b}z\right) + t\,f(z)$.
+
+\begin{solution}
+  Take $w_1 = f(a)$ and $w_2 = f(b)$ in $\Omega_r$ with
+  $|a| \le |b| < r$. We show $(1-t)w_1 + tw_2 \in \Omega_r$ for all
+  $t \in [0,1]$.
+
+  Define
+  $g_t(z) = (1-t)\,f\!\left(\tfrac{a}{b}z\right) + t\,f(z)$
+  for $z \in D$. Since $|a/b| \le 1$, for any $z \in D$ we have
+  $|\tfrac{a}{b}z| < 1$, so both $f(\tfrac{a}{b}z)$ and $f(z)$ lie
+  in $\Omega$. By convexity of $\Omega$, $g_t(z) \in \Omega$ for all
+  $z \in D$.
+
+  Now define $h_t = f^{-1} \circ g_t : D \to D$. Then $h_t$ is
+  analytic and
+  $h_t(0) = f^{-1}(g_t(0)) = f^{-1}(f(0)) = 0$.
+  By Lemma~4.56 (Schwarz lemma),
+  $|h_t(z)| \le |z|$ for all $z \in D$.
+  In particular,
+  \[
+    |h_t(b)| \le |b| < r.
+  \]
+  Since
+  $h_t(b) = f^{-1}\!\bigl((1-t)f(a) + tf(b)\bigr)$
+  and $|h_t(b)| < r$, the point $h_t(b)$ lies in $U_r(0)$, so
+  $(1-t)f(a) + tf(b) \in f(U_r(0)) = \Omega_r$.
+\end{solution}
+
+\section{Exercise 4.63}
+
+Consider an analytic function $f : D \to D$ that is not the identity
+function.
+\begin{enumerate}[(a)]
+  \item Show that $f$ has at most one fixed point.
+  \item Give an example of $f$ having no fixed points.
+\end{enumerate}
+
+\begin{solution}
+  (a) Suppose $f$ has two distinct fixed points $a, b \in D$.
+  Consider the map $g = \varphi_a \circ f \circ \varphi_a^{-1} : D \to
+  D$, where $\varphi_a$ is as defined in~(4.18). Then
+  \[
+    g(0) = \varphi_a(f(\varphi_a^{-1}(0))) = \varphi_a(f(a))
+    = \varphi_a(a) = 0.
+  \]
+  By Lemma~4.56, $|g(z)| \le |z|$ for all $z \in D$. Since $b \ne a$,
+  the point $\varphi_a(b) \ne 0$ is also a fixed point of $g$:
+  \[
+    g(\varphi_a(b)) = \varphi_a(f(b)) = \varphi_a(b).
+  \]
+  Hence $|g(\varphi_a(b))| = |\varphi_a(b)|$, which is equality in the
+  Schwarz lemma. Therefore $g(z) = \zeta z$ for some $|\zeta| = 1$, and
+  $\zeta \varphi_a(b) = \varphi_a(b)$ gives $\zeta = 1$, so
+  $g = \mathrm{id}$. But then $f = \varphi_a^{-1} \circ \varphi_a =
+  \mathrm{id}$, a contradiction.
+
+  \medskip
+  (b) Consider $f(z) = -\varphi_a(z) = \frac{a - z}{\bar{a}z - 1}$
+  for any $a \in D \setminus \{0\}$.
+  This is an automorphism of $D$ by Theorem~4.65 (with $\theta = \pi$),
+  so $f : D \to D$ is analytic and not the identity.
+  A fixed point satisfies $f(z) = z$, i.e.,
+  $\frac{a - z}{\bar{a}z - 1} = z$, which gives
+  $a - z = \bar{a}z^2 - z$, hence $\bar{a}z^2 = a$,
+  i.e., $z^2 = a/\bar{a}$.
+  Therefore $|z|^2 = |a|/|\bar{a}| = 1$, so $|z| = 1$ for both roots,
+  and neither lies in $D$.
+  Hence $f$ has no fixed points in $D$.
+\end{solution}
+
+\section{Exercise 4.64}
+
+For an analytic function $f : D \to D$, show that if there exists a
+point $a \in D \setminus \{0\}$ such that $f(0) = a$ and $f(a) = 0$,
+then $f = \varphi_a$, where $\varphi_a$ is as defined in~(4.18).
+
+\begin{solution}
+  Consider $h = \varphi_a \circ f : D \to D$, which is analytic.
+  We compute
+  \[
+    h(0) = \varphi_a(f(0)) = \varphi_a(a) = 0.
+  \]
+  By Lemma~4.56, $|h(z)| \le |z|$ for all $z \in D$. On the other
+  hand, using Lemma~4.62(b):
+  \[
+    h(a) = \varphi_a(f(a)) = \varphi_a(0) = a.
+  \]
+  So $|h(a)| = |a|$, which is equality in the Schwarz lemma. Therefore
+  $h(z) = \zeta z$ for some $|\zeta| = 1$, and $\zeta = h'(0)$.
+  Since $\zeta a = h(a) = a$ and $a \ne 0$, we get $\zeta = 1$.
+  Hence $h(z) = z$, i.e., $\varphi_a \circ f = \mathrm{id}$.
+  By Lemma~4.62(c), $\varphi_a^{-1} = \varphi_a$, so
+  $f = \varphi_a^{-1} = \varphi_a$.
+\end{solution}
+
+\section{Exercise 4.67}
+
+Prove Theorem~4.66 (Schwarz--Pick).
+
+\begin{solution}
+  Fix $z_0 \in D$ and set $w_0 = f(z_0)$. Define the composition
+  \[
+    g = \varphi_{w_0} \circ f \circ \varphi_{z_0}^{-1} : D \to D,
+  \]
+  where $\varphi_a$ is as in~(4.18). Since $\varphi_{z_0}^{-1}(0) =
+  \varphi_{z_0}(0) = z_0$ by Lemma~4.62(b,c), we have
+  \[
+    g(0) = \varphi_{w_0}(f(z_0)) = \varphi_{w_0}(w_0) = 0.
+  \]
+
+  By Lemma~4.56, $|g(z)| \le |z|$ and $|g'(0)| \le 1$. We compute
+  $g'(0)$ by the chain rule. Since
+  $\varphi_a(z) = \frac{z - a}{\bar{a}z - 1}$, we have
+  $\varphi_a'(z) = \frac{|a|^2 - 1}{(\bar{a}z - 1)^2}$, so
+  \[
+    \varphi_{w_0}'(w_0) = \frac{|w_0|^2 - 1}{(|w_0|^2 - 1)^2}
+    = \frac{1}{|w_0|^2 - 1} = \frac{-1}{1 - |w_0|^2},
+    \qquad
+    (\varphi_{z_0}^{-1})'(0) = \varphi_{z_0}'(0) = |z_0|^2 - 1.
+  \]
+  Therefore
+  \[
+    g'(0) = \varphi_{w_0}'(w_0) \cdot f'(z_0) \cdot
+    (\varphi_{z_0}^{-1})'(0)
+    = \frac{f'(z_0)\,(1 - |z_0|^2)}{1 - |w_0|^2}.
+  \]
+  The condition $|g'(0)| \le 1$ gives
+  \[
+    |f'(z_0)| \le \frac{1 - |f(z_0)|^2}{1 - |z_0|^2}.
+  \]
+
+  Equality holds iff $g(z) = \zeta z$ for some $|\zeta| = 1$, i.e.,
+  $\varphi_{w_0} \circ f \circ \varphi_{z_0}^{-1} = \zeta \,\mathrm{id}$,
+  which rearranges to
+  $f = \varphi_{w_0}^{-1} \circ (\zeta\,\mathrm{id}) \circ \varphi_{z_0}$.
+  This is a composition of automorphisms of $D$ (a rotation and two
+  M\"obius maps), hence $f \in \mathrm{Aut}(D)$.
+
+  Conversely, if $f \in \mathrm{Aut}(D)$, then
+  $f(z) = e^{i\theta}\varphi_a(z)$ by Theorem~4.65, and one verifies
+  directly that equality holds everywhere.
+\end{solution}
+
+\section{Exercise 4.74}
+
+The ray in the proof of Theorem~4.73 starts from $f(x)$. Can we start
+the ray from $x$ and still get $g$ as a retraction? Why?
+
+\begin{solution}
+  No. If we define $g(x)$ as the intersection of the ray starting from
+  $x$ in the direction of $f(x)$ with $S^{n-1}$, then for a boundary
+  point $p \in S^{n-1}$, the ray from $p$ towards $f(p) \in D^n$
+  points inward. This ray intersects $S^{n-1}$ at a point different
+  from $p$ (on the opposite side of $D^n$), so $g(p) \ne p$.
+
+  For a concrete example, take $n = 1$, so $D^1 = [-1,1]$ and
+  $S^0 = \{-1, 1\}$. Let $f(x) = -x$ (which has no fixed point in
+  $D^1$). For $x = 1$, the ray from $1$ towards $f(1) = -1$ gives
+  $g(1) = -1 \ne 1$, violating the retraction condition
+  $g|_{S^0} = \mathrm{id}_{S^0}$.
+\end{solution}
+
+\section{Exercise 4.82}
+
+Prove Corollary~4.81 by similar arguments as in the proof of
+Theorem~4.79.
+
+\begin{solution}
+  Define the inversion $\Phi(z) = r^2/\bar{z}$, which maps $D_+$ to
+  $D_-$ and vice versa, and fixes each point of $D_0$ (since
+  $|z| = r$ implies $\bar{z} = r^2/z$, so $\Phi(z) = z$).  Define
+  \[
+    F(z) =
+    \begin{cases}
+      f(z) & \text{if } z \in D_+ \cup D_0, \\[4pt]
+      \dfrac{\rho^2}{\overline{f(\Phi(z))}} & \text{if } z \in D_-.
+    \end{cases}
+  \]
+
+  \textbf{Continuity on $D_0$.}
+  For $z_0 \in D_0$, $\Phi(z_0) = z_0$ and $|f(z_0)| = \rho$, so
+  $\overline{f(z_0)} = \rho^2/f(z_0)$, giving
+  $F(z_0) = \rho^2/\overline{f(z_0)} = f(z_0)$.
+
+  \textbf{Analyticity on $D_-$.}
+  The map $z \mapsto f(\Phi(z)) = f(r^2/\bar{z})$ is anti-holomorphic
+  (composition of holomorphic $f$ with anti-holomorphic $\Phi$).
+  Conjugation turns anti-holomorphic into holomorphic, so
+  $\overline{f(\Phi(z))}$ is holomorphic on $D_-$.
+  Hence $F(z) = \rho^2/\overline{f(\Phi(z))}$ is analytic on $D_-$
+  wherever the denominator is nonzero; near $D_0$ this is guaranteed
+  since $|f| = \rho > 0$ on $D_0$.
+
+  \textbf{Analyticity on $D$.}
+  By the same Morera-type argument as in the proof of
+  Theorem~4.79---decomposing arbitrary triangles by their intersection
+  with $\partial U_r(0)$ and applying the Cauchy integral
+  theorem---$F$ is analytic on all of $D$.
+\end{solution}
+
+\section{Exercise 4.83}
+
+Show that an analytic function $f : D \to \C$ that is continuous on
+$\overline{D}$ must be a constant if
+\[
+  f(z) \ne 0 \text{ if } z \in D, \quad
+  |f(z)| = 1 \text{ if } z \in \partial D.
+\]
+
+\begin{solution}
+  Since $f \ne 0$ on $D$, the function $1/f$ is analytic on $D$.
+  On $\partial D$, $|f(z)| = 1$.
+
+  By the maximum modulus principle (Theorem~4.48),
+  $|f(z)| \le \max_{\partial D}|f| = 1$ for all $z \in D$.
+  Applying the same principle to $1/f$:
+  $|1/f(z)| \le \max_{\partial D}|1/f| = 1$, i.e.,
+  $|f(z)| \ge 1$ for all $z \in D$.
+
+  Combining these, $|f(z)| = 1$ for all $z \in D$.
+  Since $|f|$ is constant, $f(D) \subseteq \partial D$, which is not
+  open in $\C$. By the open mapping theorem (Theorem~4.45), $f$ must
+  be constant.
+\end{solution}
+
+\section{Exercise 4.86}
+
+Show that the real part and the imaginary part of an analytic function
+is real analytic in the sense of Definition~4.85.
+
+\begin{solution}
+  Let $f = u + iv$ be analytic on a domain $\Omega \subseteq \C$,
+  identified with an open subset of $\R^2$. Fix $(x_0, y_0) \in \Omega$
+  and set $z_0 = x_0 + iy_0$.
+
+  By Theorem~4.1, $f$ has a convergent power series expansion
+  \[
+    f(z) = \sum_{n=0}^{\infty} a_n (z - z_0)^n,
+    \qquad a_n \in \C,
+  \]
+  valid in some disk $U_r(z_0)$. Expanding $(z - z_0)^n$ by the
+  binomial theorem with $z - z_0 = (x - x_0) + i(y - y_0)$:
+  \[
+    f(z) = \sum_{n=0}^{\infty} a_n
+    \sum_{k=0}^{n} \binom{n}{k}
+    (x - x_0)^k \cdot i^{n-k}(y - y_0)^{n-k}.
+  \]
+  Since the series converges absolutely, we may rearrange. Setting
+  $m = k$ and $j = n - k$:
+  \[
+    u(x,y) = \sum_{m=0}^{\infty} \sum_{j=0}^{\infty}
+    \Re\!\left(a_{m+j}\,\binom{m+j}{m}\,i^{\,j}\right)
+    (x - x_0)^m (y - y_0)^j.
+  \]
+  This is a convergent power series in two variables centered at
+  $(x_0, y_0)$, so $u$ is real analytic by Definition~4.85.
+  The same argument with $\Im$ in place of $\Re$ shows that $v$ is
+  real analytic.
+\end{solution}
+
+\end{document}

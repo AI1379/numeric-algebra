@@ -1,0 +1,552 @@
+========================================================================
+Textbook p.244, Exercise 1(2): diag = 4, offdiag = 1
+========================================================================
+A = tridiag(1, 4, 1), n = 50
+  QR iterations       : 100
+  max eigenvalue error: 8.882e-15
+  max residual        : 7.247e-12
+  orthogonality error : 1.144e-14
+  smallest eigenvalues: [2.003793342526 2.015158980656 2.034053800632 2.06040612793
+ 2.094115999146]
+  largest  eigenvalues: [5.905884000854 5.93959387207  5.965946199368 5.984841019344
+ 5.996206657474]
+
+A = tridiag(1, 4, 1), n = 51
+  QR iterations       : 105
+  max eigenvalue error: 1.066e-14
+  max residual        : 4.897e-12
+  orthogonality error : 1.225e-14
+  smallest eigenvalues: [2.003648891553 2.014582251804 2.032760186106 2.058116365148
+ 2.090558266983]
+  largest  eigenvalues: [5.909441733017 5.941883634852 5.967239813894 5.985417748196
+ 5.996351108447]
+
+A = tridiag(1, 4, 1), n = 52
+  QR iterations       : 106
+  max eigenvalue error: 1.599e-14
+  max residual        : 5.994e-12
+  orthogonality error : 1.430e-14
+  smallest eigenvalues: [2.003512536471 2.014037807973 2.031538844105 2.055954171839
+ 2.087198031447]
+  largest  eigenvalues: [5.912801968553 5.944045828161 5.968461155895 5.985962192027
+ 5.996487463529]
+
+A = tridiag(1, 4, 1), n = 53
+  QR iterations       : 106
+  max eigenvalue error: 7.105e-15
+  max residual        : 1.236e-11
+  orthogonality error : 1.246e-14
+  smallest eigenvalues: [2.003383683457 2.013523284516 2.030384493976 2.05391025884
+ 2.084020975369]
+  largest  eigenvalues: [5.915979024631 5.94608974116  5.969615506024 5.986476715484
+ 5.996616316543]
+
+A = tridiag(1, 4, 1), n = 54
+  QR iterations       : 110
+  max eigenvalue error: 1.421e-14
+  max residual        : 5.721e-12
+  orthogonality error : 1.401e-14
+  smallest eigenvalues: [2.003261792148 2.013036529303 2.029292328305 2.051976166115
+ 2.081014052771]
+  largest  eigenvalues: [5.918985947229 5.948023833885 5.970707671695 5.986963470697
+ 5.996738207852]
+
+A = tridiag(1, 4, 1), n = 55
+  QR iterations       : 112
+  max eigenvalue error: 9.770e-15
+  max residual        : 7.310e-12
+  orthogonality error : 1.351e-14
+  smallest eigenvalues: [2.003146369964 2.012575580214 2.028257962964 2.050144175636
+ 2.07816535611 ]
+  largest  eigenvalues: [5.92183464389  5.949855824364 5.971742037036 5.987424419786
+ 5.996853630036]
+
+A = tridiag(1, 4, 1), n = 56
+  QR iterations       : 113
+  max eigenvalue error: 1.155e-14
+  max residual        : 5.149e-12
+  orthogonality error : 1.329e-14
+  smallest eigenvalues: [2.003036967133 2.012138645364 2.027277393195 2.048407234745
+ 2.075463999381]
+  largest  eigenvalues: [5.924536000619 5.951592765255 5.972722606805 5.987861354636
+ 5.996963032867]
+
+A = tridiag(1, 4, 1), n = 57
+  QR iterations       : 116
+  max eigenvalue error: 8.882e-15
+  max residual        : 6.092e-12
+  orthogonality error : 1.239e-14
+  smallest eigenvalues: [2.002933172298 2.011724085691 2.026346954917 2.04675888858
+ 2.072900014962]
+  largest  eigenvalues: [5.927099985038 5.95324111142  5.973653045083 5.988275914309
+ 5.997066827702]
+
+A = tridiag(1, 4, 1), n = 58
+  QR iterations       : 118
+  max eigenvalue error: 7.994e-15
+  max residual        : 6.956e-12
+  orthogonality error : 1.235e-14
+  smallest eigenvalues: [2.002834608646 2.01133039958  2.025463290557 2.045193220364
+ 2.070464262371]
+  largest  eigenvalues: [5.929535737629 5.954806779636 5.974536709443 5.98866960042
+ 5.997165391354]
+
+A = tridiag(1, 4, 1), n = 59
+  QR iterations       : 118
+  max eigenvalue error: 1.066e-14
+  max residual        : 1.229e-11
+  orthogonality error : 1.385e-14
+  smallest eigenvalues: [2.002740930491 2.010956209263 2.02462331881  2.043704798532
+ 2.068148347422]
+  largest  eigenvalues: [5.931851652578 5.956295201468 5.97537668119  5.989043790737
+ 5.997259069509]
+
+A = tridiag(1, 4, 1), n = 60
+  QR iterations       : 122
+  max eigenvalue error: 1.421e-14
+  max residual        : 5.359e-12
+  orthogonality error : 1.395e-14
+  smallest eigenvalues: [2.00265182023  2.010600248771 2.023824207818 2.042288629809
+ 2.065944550417]
+  largest  eigenvalues: [5.934055449583 5.957711370191 5.976175792182 5.989399751229
+ 5.99734817977 ]
+
+A = tridiag(1, 4, 1), n = 61
+  QR iterations       : 123
+  max eigenvalue error: 1.865e-14
+  max residual        : 6.636e-12
+  orthogonality error : 1.445e-14
+  smallest eigenvalues: [2.002566985658 2.010261353216 2.023063351344 2.040940117495
+ 2.063845762268]
+  largest  eigenvalues: [5.936154237732 5.959059882505 5.976936648656 5.989738646784
+ 5.997433014342]
+
+A = tridiag(1, 4, 1), n = 62
+  QR iterations       : 123
+  max eigenvalue error: 8.882e-15
+  max residual        : 1.345e-11
+  orthogonality error : 1.415e-14
+  smallest eigenvalues: [2.002486157562 2.009938449269 2.02233834755  2.039655024303
+ 2.061845427542]
+  largest  eigenvalues: [5.938154572458 5.960344975697 5.97766165245  5.990061550731
+ 5.997513842438]
+
+A = tridiag(1, 4, 1), n = 63
+  QR iterations       : 127
+  max eigenvalue error: 9.770e-15
+  max residual        : 5.905e-12
+  orthogonality error : 1.456e-14
+  smallest eigenvalues: [2.00240908759  2.009630546656 2.02164698007  2.038429439194
+ 2.059937493611]
+  largest  eigenvalues: [5.940062506389 5.961570560806 5.97835301993  5.990369453344
+ 5.99759091241 ]
+
+A = tridiag(1, 4, 1), n = 64
+  QR iterations       : 129
+  max eigenvalue error: 9.770e-15
+  max residual        : 6.345e-12
+  orthogonality error : 1.506e-14
+  smallest eigenvalues: [2.002335546335 2.009336730565 2.020987201098 2.037259747721
+ 2.058116365148]
+  largest  eigenvalues: [5.941883634852 5.962740252279 5.979012798902 5.990663269435
+ 5.997664453665]
+
+A = tridiag(1, 4, 1), n = 65
+  QR iterations       : 130
+  max eigenvalue error: 7.105e-15
+  max residual        : 6.091e-12
+  orthogonality error : 1.514e-14
+  smallest eigenvalues: [2.002265321634 2.009056154854 2.020357116238 2.036142605475
+ 2.056376863353]
+  largest  eigenvalues: [5.943623136647 5.963857394525 5.979642883762 5.990943845146
+ 5.997734678366]
+
+A = tridiag(1, 4, 1), n = 66
+  QR iterations       : 133
+  max eigenvalue error: 1.066e-14
+  max residual        : 5.005e-12
+  orthogonality error : 1.528e-14
+  smallest eigenvalues: [2.002198217029 2.008788035956 2.019754970931 2.035074914249
+ 2.05471418935 ]
+  largest  eigenvalues: [5.94528581065  5.964925085751 5.980245029069 5.991211964044
+ 5.997801782971]
+
+A = tridiag(1, 4, 1), n = 67
+  QR iterations       : 135
+  max eigenvalue error: 1.243e-14
+  max residual        : 6.519e-12
+  orthogonality error : 1.684e-14
+  smallest eigenvalues: [2.002134050395 2.00853164741  2.01917913825  2.034053800632
+ 2.053123891279]
+  largest  eigenvalues: [5.946876108721 5.965946199368 5.98082086175  5.99146835259
+ 5.997865949605]
+
+A = tridiag(1, 4, 1), n = 68
+  QR iterations       : 135
+  max eigenvalue error: 1.510e-14
+  max residual        : 5.879e-12
+  orthogonality error : 1.608e-14
+  smallest eigenvalues: [2.002072652707 2.008286314937 2.018628107927 2.033076596733
+ 2.051601834653]
+  largest  eigenvalues: [5.948398165347 5.966923403267 5.981371892073 5.991713685063
+ 5.997927347293]
+
+A = tridiag(1, 4, 1), n = 69
+  QR iterations       : 138
+  max eigenvalue error: 7.994e-15
+  max residual        : 6.147e-12
+  orthogonality error : 1.502e-14
+  smallest eigenvalues: [2.002013866917 2.00805141201  2.018100476464 2.032140822803
+ 2.050144175636]
+  largest  eigenvalues: [5.949855824364 5.967859177197 5.981899523536 5.99194858799
+ 5.997986133083]
+
+A = tridiag(1, 4, 1), n = 70
+  QR iterations       : 140
+  max eigenvalue error: 1.066e-14
+  max residual        : 5.834e-12
+  orthogonality error : 1.723e-14
+  smallest eigenvalues: [2.00195754696  2.00782635585  2.017594938201 2.031244171555
+ 2.048747336895]
+  largest  eigenvalues: [5.951252663105 5.968755828445 5.982405061799 5.99217364415
+ 5.99804245304 ]
+
+A = tridiag(1, 4, 1), n = 71
+  QR iterations       : 140
+  max eigenvalue error: 1.510e-14
+  max residual        : 6.418e-12
+  orthogonality error : 1.556e-14
+  smallest eigenvalues: [2.001903556836 2.007610603817 2.017110277252 2.030384493976
+ 2.04740798576 ]
+  largest  eigenvalues: [5.95259201424  5.969615506024 5.982889722748 5.992389396183
+ 5.998096443164]
+
+A = tridiag(1, 4, 1), n = 72
+  QR iterations       : 144
+  max eigenvalue error: 9.770e-15
+  max residual        : 3.638e-12
+  orthogonality error : 1.835e-14
+  smallest eigenvalues: [2.001851769796 2.007403650131 2.016645360201 2.029559786488
+ 2.046123014446]
+  largest  eigenvalues: [5.953876985554 5.970440213512 5.983354639799 5.992596349869
+ 5.998148230204]
+
+A = tridiag(1, 4, 1), n = 73
+  QR iterations       : 146
+  max eigenvalue error: 1.243e-14
+  max residual        : 5.869e-12
+  orthogonality error : 1.814e-14
+  smallest eigenvalues: [2.001802067591 2.007205022915 2.016199129482 2.028768179305
+ 2.044889522105]
+  largest  eigenvalues: [5.955110477895 5.971231820695 5.983800870518 5.992794977085
+ 5.998197932409]
+
+A = tridiag(1, 4, 1), n = 74
+  QR iterations       : 146
+  max eigenvalue error: 1.332e-14
+  max residual        : 7.081e-12
+  orthogonality error : 1.628e-14
+  smallest eigenvalues: [2.001754339802 2.007014281501 2.015770597371 2.028007925859
+ 2.043704798532]
+  largest  eigenvalues: [5.956295201468 5.971992074141 5.984229402629 5.992985718499
+ 5.998245660198]
+
+A = tridiag(1, 4, 1), n = 75
+  QR iterations       : 150
+  max eigenvalue error: 9.770e-15
+  max residual        : 3.344e-12
+  orthogonality error : 1.842e-14
+  smallest eigenvalues: [2.001708483225 2.006831013987 2.015358840526 2.027277393195
+ 2.042566309345]
+  largest  eigenvalues: [5.957433690655 5.972722606805 5.984641159474 5.993168986013
+ 5.998291516775]
+
+A = tridiag(1, 4, 1), n = 76
+  QR iterations       : 152
+  max eigenvalue error: 1.155e-14
+  max residual        : 5.398e-12
+  orthogonality error : 1.689e-14
+  smallest eigenvalues: [2.001664401311 2.006654835012 2.014962995018 2.026575053217
+ 2.041471682485]
+  largest  eigenvalues: [5.958528317515 5.973424946783 5.985037004982 5.993345164988
+ 5.998335598689]
+
+A = tridiag(1, 4, 1), n = 77
+  QR iterations       : 152
+  max eigenvalue error: 1.688e-14
+  max residual        : 1.304e-11
+  orthogonality error : 1.871e-14
+  smallest eigenvalues: [2.001622003657 2.006485383732 2.014582251804 2.025899474724
+ 2.040418695915]
+  largest  eigenvalues: [5.959581304085 5.974100525276 5.985417748196 5.993514616268
+ 5.998377996343]
+
+A = tridiag(1, 4, 1), n = 78
+  QR iterations       : 155
+  max eigenvalue error: 1.332e-14
+  max residual        : 3.413e-12
+  orthogonality error : 1.821e-14
+  smallest eigenvalues: [2.001581205545 2.006322321971 2.014215852596 2.025249316127
+ 2.039405266391]
+  largest  eigenvalues: [5.960594733609 5.974750683873 5.985784147404 5.993677678029
+ 5.998418794455]
+
+A = tridiag(1, 4, 1), n = 79
+  QR iterations       : 157
+  max eigenvalue error: 1.332e-14
+  max residual        : 5.205e-12
+  orthogonality error : 1.792e-14
+  smallest eigenvalues: [2.001541927519 2.006165332534 2.01386308609  2.02462331881
+ 2.038429439194]
+  largest  eigenvalues: [5.961570560806 5.97537668119  5.98613691391  5.993834667466
+ 5.998458072481]
+
+A = tridiag(1, 4, 1), n = 80
+  QR iterations       : 157
+  max eigenvalue error: 1.688e-14
+  max residual        : 1.238e-11
+  orthogonality error : 1.844e-14
+  smallest eigenvalues: [2.001504094992 2.006014117664 2.013523284516 2.024020301046
+ 2.037489378745]
+  largest  eigenvalues: [5.962510621255 5.975979698954 5.986476715484 5.993985882336
+ 5.998495905008]
+
+A = tridiag(1, 4, 1), n = 81
+  QR iterations       : 162
+  max eigenvalue error: 1.465e-14
+  max residual        : 2.351e-12
+  orthogonality error : 1.891e-14
+  smallest eigenvalues: [2.001467637898 2.005868397633 2.013195820481 2.023439152439
+ 2.036583360006]
+  largest  eigenvalues: [5.963416639994 5.976560847561 5.986804179519 5.994131602367
+ 5.998532362102]
+
+A = tridiag(1, 4, 1), n = 82
+  QR iterations       : 163
+  max eigenvalue error: 1.066e-14
+  max residual        : 5.025e-12
+  orthogonality error : 2.292e-14
+  smallest eigenvalues: [2.001432490367 2.005727909441 2.012880104074 2.022878828816
+ 2.035709760592]
+  largest  eigenvalues: [5.964290239408 5.977121171184 5.987119895926 5.994272090559
+ 5.998567509633]
+
+A = tridiag(1, 4, 1), n = 83
+  QR iterations       : 163
+  max eigenvalue error: 1.066e-14
+  max residual        : 3.356e-12
+  orthogonality error : 1.765e-14
+  smallest eigenvalues: [2.001398590423 2.005592405638 2.012575580214 2.02233834755
+ 2.034867053533]
+  largest  eigenvalues: [5.965132946467 5.97766165245  5.987424419786 5.994407594362
+ 5.998601409577]
+
+A = tridiag(1, 4, 1), n = 84
+  QR iterations       : 167
+  max eigenvalue error: 1.155e-14
+  max residual        : 2.230e-12
+  orthogonality error : 1.863e-14
+  smallest eigenvalues: [2.001365879714 2.005461653228 2.012281726209 2.021816783258
+ 2.034053800632]
+  largest  eigenvalues: [5.965946199368 5.978183216742 5.987718273791 5.994538346772
+ 5.998634120286]
+
+A = tridiag(1, 4, 1), n = 85
+  QR iterations       : 170
+  max eigenvalue error: 1.155e-14
+  max residual        : 4.857e-12
+  orthogonality error : 2.002e-14
+  smallest eigenvalues: [2.00133430326  2.005335432673 2.01199804952  2.02131326385
+ 2.033268646341]
+  largest  eigenvalues: [5.966731353659 5.97868673615  5.98800195048  5.994664567327
+ 5.99866569674 ]
+
+A = tridiag(1, 4, 1), n = 86
+  QR iterations       : 170
+  max eigenvalue error: 7.994e-15
+  max residual        : 2.153e-12
+  orthogonality error : 1.903e-14
+  smallest eigenvalues: [2.001303809221 2.005213536964 2.011724085691 2.020826966889
+ 2.032510312136]
+  largest  eigenvalues: [5.967489687864 5.979173033111 5.988275914309 5.994786463036
+ 5.998696190779]
+
+A = tridiag(1, 4, 1), n = 87
+  QR iterations       : 173
+  max eigenvalue error: 1.155e-14
+  max residual        : 3.212e-12
+  orthogonality error : 1.893e-14
+  smallest eigenvalues: [2.001274348686 2.005095770779 2.011459396456 2.020357116238
+ 2.031777591328]
+  largest  eigenvalues: [5.968222408672 5.979642883762 5.988540603544 5.994904229221
+ 5.998725651314]
+
+A = tridiag(1, 4, 1), n = 88
+  QR iterations       : 176
+  max eigenvalue error: 1.243e-14
+  max residual        : 4.700e-12
+  orthogonality error : 2.056e-14
+  smallest eigenvalues: [2.001245875476 2.004981949698 2.011203567984 2.019902978971
+ 2.031069344277]
+  largest  eigenvalues: [5.968930655723 5.980097021029 5.988796432016 5.995018050302
+ 5.998754124524]
+
+A = tridiag(1, 4, 1), n = 89
+  QR iterations       : 175
+  max eigenvalue error: 1.243e-14
+  max residual        : 1.075e-11
+  orthogonality error : 1.984e-14
+  smallest eigenvalues: [2.001218345962 2.00487189948  2.010956209263 2.019463862517
+ 2.030384493976]
+  largest  eigenvalues: [5.969615506024 5.980536137483 5.989043790737 5.99512810052
+ 5.998781654038]
+
+A = tridiag(1, 4, 1), n = 90
+  QR iterations       : 179
+  max eigenvalue error: 1.243e-14
+  max residual        : 2.025e-12
+  orthogonality error : 2.030e-14
+  smallest eigenvalues: [2.001191718898 2.004765455398 2.01071695061  2.019039112025
+ 2.029722021966]
+  largest  eigenvalues: [5.970277978034 5.980960887975 5.98928304939  5.995234544602
+ 5.998808281102]
+
+A = tridiag(1, 4, 1), n = 91
+  QR iterations       : 181
+  max eigenvalue error: 1.332e-14
+  max residual        : 4.553e-12
+  orthogonality error : 2.128e-14
+  smallest eigenvalues: [2.001165955268 2.004662461619 2.010485442284 2.018628107927
+ 2.029080964566]
+  largest  eigenvalues: [5.970919035434 5.981371892073 5.989514557716 5.995337538381
+ 5.998834044732]
+
+A = tridiag(1, 4, 1), n = 92
+  QR iterations       : 181
+  max eigenvalue error: 1.155e-14
+  max residual        : 1.042e-11
+  orthogonality error : 2.083e-14
+  smallest eigenvalues: [2.001141018141 2.00456277064  2.010261353216 2.018230263684
+ 2.02846040937 ]
+  largest  eigenvalues: [5.97153959063  5.981769736316 5.989738646784 5.99543722936
+ 5.998858981859]
+
+A = tridiag(1, 4, 1), n = 93
+  QR iterations       : 185
+  max eigenvalue error: 1.776e-14
+  max residual        : 3.416e-12
+  orthogonality error : 2.170e-14
+  smallest eigenvalues: [2.001116872539 2.004466242754 2.010044369823 2.01784502369
+ 2.02785949202 ]
+  largest  eigenvalues: [5.97214050798  5.98215497631  5.989955630177 5.995533757246
+ 5.998883127461]
+
+A = tridiag(1, 4, 1), n = 94
+  QR iterations       : 187
+  max eigenvalue error: 1.243e-14
+  max residual        : 4.413e-12
+  orthogonality error : 2.440e-14
+  smallest eigenvalues: [2.001093485318 2.004372745562 2.00983419491  2.017471861346
+ 2.027277393195]
+  largest  eigenvalues: [5.972722606805 5.982528138654 5.99016580509  5.995627254438
+ 5.998906514682]
+
+A = tridiag(1, 4, 1), n = 95
+  QR iterations       : 186
+  max eigenvalue error: 8.438e-15
+  max residual        : 9.595e-12
+  orthogonality error : 2.035e-14
+  smallest eigenvalues: [2.001070825047 2.004282153523 2.009630546656 2.017110277252
+ 2.02671333583 ]
+  largest  eigenvalues: [5.97328666417  5.982889722748 5.990369453344 5.995717846477
+ 5.998929174953]
+
+A = tridiag(1, 4, 1), n = 96
+  QR iterations       : 191
+  max eigenvalue error: 1.421e-14
+  max residual        : 1.852e-12
+  orthogonality error : 2.020e-14
+  smallest eigenvalues: [2.001048861909 2.004194347525 2.009433157667 2.016759797547
+ 2.026166582532]
+  largest  eigenvalues: [5.973833417468 5.983240202453 5.990566842333 5.995805652475
+ 5.998951138091]
+
+A = tridiag(1, 4, 1), n = 97
+  QR iterations       : 193
+  max eigenvalue error: 1.421e-14
+  max residual        : 4.285e-12
+  orthogonality error : 2.140e-14
+  smallest eigenvalues: [2.001027567599 2.004109214499 2.009241774102 2.016419972354
+ 2.025636433171]
+  largest  eigenvalues: [5.974363566829 5.983580027646 5.990758225898 5.995890785501
+ 5.998972432401]
+
+A = tridiag(1, 4, 1), n = 98
+  QR iterations       : 192
+  max eigenvalue error: 8.882e-15
+  max residual        : 9.523e-12
+  orthogonality error : 2.040e-14
+  smallest eigenvalues: [2.001006915234 2.004026647056 2.009056154854 2.016090374338
+ 2.025122222647]
+  largest  eigenvalues: [5.974877777353 5.983909625662 5.990943845146 5.995973352944
+ 5.998993084766]
+
+A = tridiag(1, 4, 1), n = 99
+  QR iterations       : 197
+  max eigenvalue error: 1.510e-14
+  max residual        : 1.775e-12
+  orthogonality error : 2.361e-14
+  smallest eigenvalues: [2.000986879269 2.003946543143 2.008876070794 2.015770597371
+ 2.02462331881 ]
+  largest  eigenvalues: [5.97537668119  5.984229402629 5.991123929206 5.996053456857
+ 5.999013120731]
+
+A = tridiag(1, 4, 1), n = 100
+  QR iterations       : 199
+  max eigenvalue error: 1.599e-14
+  max residual        : 4.163e-12
+  orthogonality error : 2.228e-14
+  smallest eigenvalues: [2.000967435416 2.003868805733 2.008701304062 2.015460255273
+ 2.024139120518]
+  largest  eigenvalues: [5.975860879482 5.984539744727 5.991298695938 5.996131194267
+ 5.999032564584]
+  eigenvector for lambda[0] = 2.000967435416
+    first 8 entries: [ 0.004376 -0.008748  0.013112 -0.017463  0.021797 -0.02611   0.030398
+ -0.034656]
+    last  8 entries: [ 0.034656 -0.030398  0.02611  -0.021797  0.017463 -0.013112  0.008748
+ -0.004376]
+  eigenvector for lambda[50] = 4.031103623841
+    first 8 entries: [-0.140702 -0.004376  0.140566  0.008748 -0.140294 -0.013112  0.139886
+  0.017463]
+    last  8 entries: [-0.017463 -0.139886  0.013112  0.140294 -0.008748 -0.140566  0.004376
+  0.140702]
+  eigenvector for lambda[99] = 5.999032564584
+    first 8 entries: [0.004376 0.008748 0.013112 0.017463 0.021797 0.02611  0.030398 0.034656]
+    last  8 entries: [0.034656 0.030398 0.02611  0.021797 0.017463 0.013112 0.008748 0.004376]
+
+========================================================================
+Textbook p.244, Exercise 2(2): diag = 2, offdiag = -1, n = 100
+========================================================================
+A = tridiag(-1, 2, -1), n = 100
+  QR iterations       : 199
+  max eigenvalue error: 1.288e-14
+  max residual        : 2.256e-12
+  orthogonality error : 2.159e-14
+  smallest eigenvalues: [0.000967435416 0.003868805733 0.008701304062 0.015460255273
+ 0.024139120518]
+  largest  eigenvalues: [3.975860879482 3.984539744727 3.991298695938 3.996131194267
+ 3.999032564584]
+  eigenvector for lambda[0] = 0.000967435416
+    first 8 entries: [0.004376 0.008748 0.013112 0.017463 0.021797 0.02611  0.030398 0.034656]
+    last  8 entries: [0.034656 0.030398 0.02611  0.021797 0.017463 0.013112 0.008748 0.004376]
+  eigenvector for lambda[50] = 2.031103623841
+    first 8 entries: [ 0.140702 -0.004376 -0.140566  0.008748  0.140294 -0.013112 -0.139886
+  0.017463]
+    last  8 entries: [ 0.017463 -0.139886 -0.013112  0.140294  0.008748 -0.140566 -0.004376
+  0.140702]
+  eigenvector for lambda[99] = 3.999032564584
+    first 8 entries: [ 0.004376 -0.008748  0.013112 -0.017463  0.021797 -0.02611   0.030398
+ -0.034656]
+    last  8 entries: [ 0.034656 -0.030398  0.02611  -0.021797  0.017463 -0.013112  0.008748
+ -0.004376]
+

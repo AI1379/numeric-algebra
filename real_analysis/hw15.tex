@@ -1,0 +1,361 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+
+% import common macros
+\input{../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Real Analysis}
+\newcommand{\hwNum}{15}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+% ==============================================================================
+% Page 119, Exercise 29
+% ==============================================================================
+\section{P119 Exercise 29}
+
+设 $\alpha>0,\ \beta>0$,
+\[
+  f(x)=x^\alpha\sin x^{-\beta},\quad 0<x\le 1,\qquad f(0)=0.
+\]
+求证: 当且仅当 $\alpha>\beta$ 时 $f(x)$ 绝对连续.
+
+\begin{solution}
+  先设 $\alpha>\beta$. 对 $x>0$,
+  \[
+    f'(x)=\alpha x^{\alpha-1}\sin x^{-\beta}
+      -\beta x^{\alpha-\beta-1}\cos x^{-\beta}.
+  \]
+  因为 $\alpha>0$ 且 $\alpha-\beta>0$,
+  \[
+    |f'(x)|\le \alpha x^{\alpha-1}
+      +\beta x^{\alpha-\beta-1}\in L([0,1]).
+  \]
+  对任意 $0<\varepsilon<x\le1$, Newton--Leibniz 公式给出
+  \[
+    f(x)-f(\varepsilon)=\int_\varepsilon^x f'(t)\,\dif t.
+  \]
+  令 $\varepsilon\to0^+$, 由 $f(\varepsilon)\to0=f(0)$ 及
+  $f'\in L([0,1])$ 可得
+  \[
+    f(x)=\int_0^x f'(t)\,\dif t.
+  \]
+  故 $f$ 是 $L^1$ 函数的不定积分, 在 $[0,1]$ 上绝对连续.
+
+  反之, 设 $\alpha\le\beta$. 令
+  \[
+    x_n=\left(\frac{\pi}{2}+n\pi\right)^{-1/\beta},\qquad n=0,1,2,\ldots.
+  \]
+  则 $x_n\downarrow0$ 且
+  \[
+    f(x_n)=(-1)^n x_n^\alpha.
+  \]
+  对由 $0,x_N,x_{N-1},\ldots,x_0$ 构成的分割,
+  \[
+    V_0^1(f)\ge \sum_{n=0}^{N-1}|f(x_{n+1})-f(x_n)|
+    =\sum_{n=0}^{N-1}(x_{n+1}^\alpha+x_n^\alpha).
+  \]
+  而 $x_n^\alpha\asymp n^{-\alpha/\beta}$, 当
+  $\alpha/\beta\le1$ 时该级数发散, 故 $V_0^1(f)=\infty$.
+  绝对连续函数必有界变差, 所以此时 $f$ 不绝对连续.
+  故 $f$ 绝对连续当且仅当 $\alpha>\beta$.
+\end{solution}
+
+% ==============================================================================
+% Page 119, Exercise 31
+% ==============================================================================
+\section{P119 Exercise 31}
+
+设 $f\in L([a,b])$. 若
+\[
+  \int_a^b|f(x+h)-f(x)|\,\dif x=o(|h|),
+\]
+求证: 除一零测集外 $f$ 为常数.
+
+\begin{solution}
+  令
+  \[
+    F(x)=\int_a^x f(t)\,\dif t,\qquad
+    E=\{x\in(a,b):F'(x)=f(x)\}.
+  \]
+  由 Lebesgue 微分定理, $m([a,b]\setminus E)=0$.
+
+  任取 $x,y\in E,\ x<y$. 当 $|h|$ 充分小时,
+  \begin{align*}
+    &\frac{F(y+h)-F(y)}{h}
+      -\frac{F(x+h)-F(x)}{h}\\
+    &\quad=\frac1h\left(\int_y^{y+h}f(t)\,\dif t
+      -\int_x^{x+h}f(t)\,\dif t\right)\\
+    &\quad=\frac1h\int_x^y\bigl(f(t+h)-f(t)\bigr)\,\dif t.
+  \end{align*}
+  从而
+  \[
+    \left|
+      \frac{F(y+h)-F(y)}{h}
+      -\frac{F(x+h)-F(x)}{h}
+    \right|
+    \le \frac1{|h|}\int_a^b|f(t+h)-f(t)|\,\dif t\longrightarrow0.
+  \]
+  令 $h\to0$, 由 $x,y\in E$ 得 $f(y)-f(x)=0$.
+  故 $f$ 在 $E$ 上取常值, 即几乎处处为常数.
+\end{solution}
+
+% ==============================================================================
+% Page 119, Exercise 33
+% ==============================================================================
+\section{P119 Exercise 33}
+
+设对每一 $0<x<1$, $f$ 在 $[0,x]$ 上绝对连续, 在 $[x,1]$ 上有界变差,
+而且 $f$ 在 $x=1$ 连续. 求证: $f$ 在 $[0,1]$ 上绝对连续.
+
+\begin{solution}
+  固定 $c\in(0,1)$. 因为 $f\in BV([c,1])$, 其变差函数
+  \[
+    V(t)=V_c^t(f),\qquad c\le t\le1
+  \]
+  单调递增. 对任意 $t<1$, $f$ 在 $[0,t]$ 上绝对连续, 故也在
+  $[c,t]$ 上绝对连续, 从而
+  \[
+    V(t)=\int_c^t|f'(s)|\,\dif s.
+  \]
+  令 $L=\lim_{t\to1^-}V(t)$. 由 $f$ 在 $1$ 连续可知, 在分割中把端点
+  $1$ 换成充分接近 $1$ 的点不会改变变差的上确界, 故
+  \[
+    V_c^1(f)=L.
+  \]
+  所以
+  \[
+    V_t^1(f)=V_c^1(f)-V_c^t(f)\longrightarrow0
+    \qquad(t\to1^-).
+  \]
+
+  任给 $\varepsilon>0$, 取 $t\in(c,1)$ 使
+  $V_t^1(f)<\varepsilon/2$. 又因 $f$ 在 $[0,t]$ 上绝对连续,
+  存在 $\delta>0$, 使得 $[0,t]$ 中任意有限个互不相交区间
+  $\{(a_k,b_k)\}$ 满足 $\sum_k(b_k-a_k)<\delta$ 时,
+  \[
+    \sum_k|f(b_k)-f(a_k)|<\frac{\varepsilon}{2}.
+  \]
+  对 $[0,1]$ 中任意满足同样长度条件的有限个互不相交区间,
+  在 $t$ 处分割跨过 $t$ 的区间. 位于 $[0,t]$ 中的各段增量之和小于
+  $\varepsilon/2$, 位于 $[t,1]$ 中的各段增量之和不超过
+  $V_t^1(f)<\varepsilon/2$. 故总增量之和小于 $\varepsilon$.
+  故 $f$ 在 $[0,1]$ 上绝对连续.
+\end{solution}
+
+% ==============================================================================
+% Page 119, Exercise 35
+% ==============================================================================
+\section{P119 Exercise 35}
+
+设 $f\in L([0,1])$, $f$ 在 $0$ 的一个邻域中有界.
+\begin{enumerate}
+  \renewcommand{\labelenumi}{(\roman{enumi})}
+  \item 证明: 对任何 $n\ge1$, $f(x^n)\in L([0,1])$;
+  \item 若 $f$ 单调, 求极限 $\displaystyle\lim_{n\to\infty}\int_0^1f(x^n)\,\dif x$.
+\end{enumerate}
+
+\begin{solution}
+  (i)\; 作代换 $t=x^n$, 得
+  \[
+    \int_0^1|f(x^n)|\,\dif x
+    =\frac1n\int_0^1|f(t)|t^{1/n-1}\,\dif t.
+  \]
+  取 $\delta\in(0,1)$ 及 $M>0$, 使得 $|f(t)|\le M$ 于
+  $(0,\delta)$. 则
+  \[
+    \frac1n\int_0^\delta|f(t)|t^{1/n-1}\,\dif t
+    \le M\delta^{1/n}<\infty.
+  \]
+  在 $[\delta,1]$ 上, $t^{1/n-1}\le\delta^{1/n-1}$, 故
+  \[
+    \frac1n\int_\delta^1|f(t)|t^{1/n-1}\,\dif t
+    \le\frac{\delta^{1/n-1}}n\int_\delta^1|f(t)|\,\dif t<\infty.
+  \]
+  故 $f(x^n)\in L([0,1])$.
+
+  (ii)\; 若 $f$ 单调, 则 $f$ 在 $[0,1]$ 上有界, 且右极限
+  $f(0+)=\lim_{t\to0^+}f(t)$ 存在. 对每个 $0\le x<1$,
+  $x^n\to0$, 从而
+  \[
+    f(x^n)\longrightarrow f(0+).
+  \]
+  又 $\{f(x^n)\}$ 被一个常数控制, 由控制收敛定理,
+  \[
+    \lim_{n\to\infty}\int_0^1f(x^n)\,\dif x=f(0+).
+    \qed
+  \]
+\end{solution}
+
+% ==============================================================================
+% Page 135, Exercise 1
+% ==============================================================================
+\section{P135 Exercise 1}
+
+设 $f\in L^p(\mathbf R),\ 1\le p<\infty$. 求证: 当 $\lambda\to\infty$ 时,
+\[
+  \int_{\{|f|>\lambda\}}|f(x)|^p\,\dif x\to0,\qquad
+  \int_{\{|x|>\lambda\}}|f(x)|^p\,\dif x\to0.
+\]
+
+\begin{solution}
+  因为 $|f|^p\in L^1(\mathbf R)$, 且当 $\lambda\to\infty$ 时
+  \[
+    \chi_{\{|f|>\lambda\}}(x)\to0,\qquad
+    \chi_{\{|x|>\lambda\}}(x)\to0
+  \]
+  对 a.e.\ $x$ 成立. 由控制收敛定理,
+  \[
+    \int_{\{|f|>\lambda\}}|f|^p\to0,\qquad
+    \int_{\{|x|>\lambda\}}|f|^p\to0. \qed
+  \]
+\end{solution}
+
+% ==============================================================================
+% Page 135, Exercise 2
+% ==============================================================================
+\section{P135 Exercise 2}
+
+设 $f\in L^p(\mathbf R),\ 1\le p<\infty$. 求证: 当
+$\lambda\to0^+$ 及 $\lambda\to+\infty$ 时皆有
+\[
+  \lambda^p m(\{|f|>\lambda\})\to0.
+\]
+
+\begin{solution}
+  记 $E_\lambda=\{x:|f(x)|>\lambda\}$.
+
+  当 $\lambda\to+\infty$ 时,
+  \[
+    0\le\lambda^p m(E_\lambda)
+    \le\int_{E_\lambda}|f(x)|^p\,\dif x\longrightarrow0,
+  \]
+  其中最后一步由上一题得到.
+
+  当 $\lambda\to0^+$ 时, 任给 $\varepsilon>0$, 由 $f\in L^p(\mathbf R)$
+  可取 $A>0$ 使
+  \[
+    \int_{\{|x|>A\}}|f(x)|^p\,\dif x<\varepsilon.
+  \]
+  将 $E_\lambda$ 分为
+  \[
+    E_\lambda^{(1)}=E_\lambda\cap\{|x|\le A\},\qquad
+    E_\lambda^{(2)}=E_\lambda\cap\{|x|>A\}.
+  \]
+  则
+  \[
+    \lambda^p m(E_\lambda^{(1)})\le2A\lambda^p\to0,
+  \]
+  且
+  \[
+    \lambda^p m(E_\lambda^{(2)})
+    \le\int_{\{|x|>A\}}|f(x)|^p\,\dif x<\varepsilon.
+  \]
+  因而
+  $\limsup_{\lambda\to0^+}\lambda^p m(E_\lambda)\le\varepsilon$.
+  令 $\varepsilon\to0^+$ 即得. \qed
+\end{solution}
+
+% ==============================================================================
+% Page 135, Exercise 5
+% ==============================================================================
+\section{P135 Exercise 5}
+
+设 $f_k\in L^{p_k}(E),\ k=1,2,\ldots,n$, 其中 $p_k>1$,
+\[
+  \frac1{p_1}+\cdots+\frac1{p_n}=1.
+\]
+求证:
+\[
+  \int_E\prod_{k=1}^n|f_k(x)|\,\dif x
+  \le\prod_{k=1}^n\|f_k\|_{p_k}.
+\]
+
+\begin{solution}
+  对 $n$ 作归纳. $n=2$ 时结论就是 Hölder 不等式.
+
+  假设结论对 $n-1$ 个函数成立. 令
+  \[
+    \frac1q=\sum_{k=1}^{n-1}\frac1{p_k}
+      =1-\frac1{p_n},
+  \]
+  则 $q$ 与 $p_n$ 共轭. 因为
+  \[
+    \sum_{k=1}^{n-1}\frac{q}{p_k}=1,
+  \]
+  对函数 $|f_k|^q$ 及指数 $p_k/q$ 应用归纳假设, 得
+  \[
+    \int_E\prod_{k=1}^{n-1}|f_k|^q
+    \le\prod_{k=1}^{n-1}
+      \left(\int_E|f_k|^{p_k}\right)^{q/p_k}.
+  \]
+  故
+  \[
+    \left\|\prod_{k=1}^{n-1}|f_k|\right\|_q
+    \le\prod_{k=1}^{n-1}\|f_k\|_{p_k}.
+  \]
+  再对 $\prod_{k=1}^{n-1}|f_k|$ 与 $|f_n|$ 应用通常的 Hölder 不等式,
+  \[
+    \int_E\prod_{k=1}^n|f_k|
+    \le
+    \left\|\prod_{k=1}^{n-1}|f_k|\right\|_q\|f_n\|_{p_n}
+    \le\prod_{k=1}^n\|f_k\|_{p_k}.
+    \qed
+  \]
+\end{solution}
+
+% ==============================================================================
+% Page 135, Exercise 6
+% ==============================================================================
+\section{P135 Exercise 6}
+
+设 $f$ 和 $g$ 在 $[a,b]$ 上非负可测而且 $g\in L([a,b])$. 求证:
+\[
+  \left(\int_a^b f(x)g(x)\,\dif x\right)^p
+  \le \|g\|_1^{p-1}\int_a^b f^p(x)g(x)\,\dif x,
+  \qquad 1\le p<\infty.
+\]
+
+\begin{solution}
+  当 $p=1$ 时等号成立. 设 $p>1$, 令 $q=p/(p-1)$.
+  将被积函数写成
+  \[
+    f g=(f g^{1/p})g^{1/q}.
+  \]
+  由 Hölder 不等式,
+  \[
+    \int_a^b fg
+    \le
+    \left(\int_a^b f^p g\right)^{1/p}
+    \left(\int_a^b g\right)^{1/q}.
+  \]
+  两边取 $p$ 次方, 并注意到 $p/q=p-1$, 即得
+  \[
+    \left(\int_a^b fg\right)^p
+    \le\left(\int_a^b g\right)^{p-1}\int_a^b f^p g
+    =\|g\|_1^{p-1}\int_a^b f^p g.
+    \qed
+  \]
+\end{solution}
+
+\end{document}
