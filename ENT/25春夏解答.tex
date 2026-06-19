@@ -1,0 +1,456 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=2cm}
+\setlength{\headheight}{12.5pt}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+
+% import common macros
+\input{../common/macros.tex}
+
+% Legendre symbol
+\newcommand{\leg}[2]{\left(\frac{#1}{#2}\right)}
+\newcommand{\ord}{\operatorname{ord}}
+
+\newcommand{\course}{初等数论}
+
+\title{\textbf{2025 年春夏学期初等数论回忆卷 \quad 参考解答}}
+\author{}
+\date{2025.6.3}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\itshape 本卷据「2025 年春夏学期初等数论回忆卷」（Written by 无理的$\Pi$，2025.6.3）整理，
+给出全部五道题的详细解答。个别题目原始表述（如第五题）为开放性探索题，本文给出相应结论与证明。
+\end{center}
+
+\bigskip
+
+%==================================================================
+\section{第一题}
+
+\subsection*{(a) 求 $[546,\,726]$ 与 $(546,\,726)$}
+
+\begin{solution}
+用辗转相除法求最大公因数：
+\[
+  726 = 1\times 546 + 180,\qquad
+  546 = 3\times 180 + 6,\qquad
+  180 = 30\times 6.
+\]
+最后一个非零余数为 $6$，故
+\[
+  (546,726)=6.
+\]
+又可作素因数分解验证：
+\[
+  546 = 2\cdot 3\cdot 7\cdot 13,\qquad
+  726 = 2\cdot 3\cdot 11^{2},
+\]
+公共素因子仅 $2,3$，确实 $(546,726)=2\cdot 3=6$。
+
+由 $[a,b]\cdot(a,b)=ab$ 得
+\[
+  [546,726]=\frac{546\times 726}{6}=546\times 121=66066.
+\]
+
+\medskip\noindent
+综上：$\boxed{(546,726)=6,\quad [546,726]=66066.}$
+\end{solution}
+
+\subsection*{(b) 求使得 $\varphi(n)=12$ 的所有正整数 $n$}
+
+\begin{solution}
+设 $n=p_1^{a_1}\cdots p_k^{a_k}$，则 $\varphi(n)=\prod_i p_i^{a_i-1}(p_i-1)$。
+
+若素数 $p\mid n$，则 $p-1\mid \varphi(n)=12$，故 $p-1\in\{1,2,3,4,6,12\}$，
+从而 $p\in\{2,3,5,7,13\}$（$4$ 非素数）。再对 $p^{a-1}\mid 12$ 限制 $a$：
+\begin{itemize}
+  \item $p=2$：$2^{a-1}\mid 12\Rightarrow a\le 3$，可取 $2,4,8$；
+  \item $p=3$：$3^{a-1}\mid 12\Rightarrow a\le 2$，可取 $3,9$；
+  \item $p=5,7,13$：$a=1$。
+\end{itemize}
+列出各候选素数幂及其 $\varphi$ 值：
+\[
+\begin{array}{c|ccccccccc}
+  q & 2 & 4 & 8 & 3 & 9 & 5 & 7 & 13\\ \hline
+  \varphi(q) & 1 & 2 & 4 & 2 & 6 & 4 & 6 & 12
+\end{array}
+\]
+需从中每组素数至多取一个，使 $\varphi$ 值之积恰为 $12=2^2\cdot 3$。
+其中因子 $3$ 必来自 $\varphi\in\{6,12\}$，分类讨论：
+
+\begin{enumerate}[(1)]
+  \item 取 $13$（$\varphi=12$）：其余因子须贡献 $1$，故其余素数幂最多补一个 $2$（$\varphi(2)=1$）。
+    得 $n=13,\ 2\cdot 13=26$。
+  \item 取 $9$（$\varphi=6$）：尚缺因子 $2$，只能再取 $4$（$\varphi(4)=2$，因 $3$ 与 $9$ 同组不可取）。
+    得 $n=9\cdot 4=36$。
+  \item 取 $7$（$\varphi=6$）：尚缺因子 $2$，可取 $4$ 或 $3$。
+    \begin{itemize}
+      \item $7\cdot 4=28$；
+      \item $7\cdot 3=21$，并可再补 $2$（$\varphi(2)=1$）：$7\cdot 3\cdot 2=42$。
+    \end{itemize}
+\end{enumerate}
+逐一验证：
+\[
+  \varphi(13)=\varphi(26)=\varphi(28)=\varphi(36)=\varphi(42)=\varphi(21)=12.
+\]
+
+\medskip\noindent
+故 $\varphi(n)=12$ 的全部正整数为
+\[
+  \boxed{n\in\{13,\ 21,\ 26,\ 28,\ 36,\ 42\}.}
+\]
+\end{solution}
+
+\subsection*{(c) 求 $4x+7y=200$ 的所有正整数解}
+
+\begin{solution}
+先求特解与通解。取特解 $x_0=50,\ y_0=0$（满足 $4\cdot 50=200$）。齐次方程 $4x+7y=0$ 的通解为 $x=-7t,\ y=4t$，故全部整数解为
+\[
+  x=50-7t,\qquad y=4t,\qquad t\in\Z.
+\]
+要求正整数解，即 $x\ge 1,\ y\ge 1$：
+\[
+  4t\ge 1\Rightarrow t\ge 1,\qquad 50-7t\ge 1\Rightarrow t\le 7.
+\]
+故 $t=1,2,\dots,7$。
+
+也可直接看：$4x=200-7y>0$ 要求 $7\mid 200-7y\equiv 200\equiv 0\pmod 4$，即 $7y\equiv 0\pmod 4$，亦 $y\equiv 0\pmod 4$；由 $4x\ge 4$ 得 $y\le 28$，故 $y=4,8,\dots,28$。
+
+\medskip\noindent
+所求正整数解共 $7$ 组，列表如下：
+\[
+  \boxed{(x,y)=(50-7t,\ 4t),\quad t=1,2,\dots,7,}
+\]
+即
+\[
+  (43,4),\ (36,8),\ (29,12),\ (22,16),\ (15,20),\ (8,24),\ (1,28).
+\]
+\end{solution}
+
+%==================================================================
+\section{第二题}
+
+\subsection*{(a) 求模 $19$ 的所有二次剩余和原根}
+
+\begin{solution}
+$\varphi(19)=18=2\cdot 3^{2}$。先找一个原根。检验 $g=2$：
+\[
+  2^{9}=512\equiv 18\equiv -1\pmod{19},\quad
+  2^{6}=64\equiv 7\pmod{19},\quad
+  2^{2}=4,\ 2^{3}=8\pmod{19}.
+\]
+$18$ 的真因子 $1,2,3,6,9$ 对应的 $2^{d}$ 均不为 $1$，故 $\ord_{19}(2)=18$，即 $2$ 是模 $19$ 的一个原根。
+
+列出 $2$ 的各次幂（模 $19$）：
+\[
+\begin{array}{c|cccccccccccccccccc}
+  k & 1&2&3&4&5&6&7&8&9&10&11&12&13&14&15&16&17&18\\ \hline
+  2^{k}\bmod 19 & 2&4&8&16&13&7&14&9&18&17&15&11&3&6&12&5&10&1
+\end{array}
+\]
+\textbf{原根}为 $2^{k}$，$\gcd(k,18)=1$，即 $k\in\{1,5,7,11,13,17\}$：
+\[
+  \boxed{\text{原根}=\{2,\,3,\,10,\,13,\,14,\,15\}\quad(\text{共 }\varphi(18)=6\text{ 个}).}
+\]
+
+\textbf{二次剩余}为原根的偶数次幂 $2^{2j}$（$j=0,1,\dots,8$），即上表中偶数列的值：
+\[
+  \boxed{\text{二次剩余}=\{1,\,4,\,5,\,6,\,7,\,9,\,11,\,16,\,17\}\quad(\text{共 }9\text{ 个}).}
+\]
+（二次非剩余为 $\{2,3,8,10,12,13,14,15,18\}$。）
+\end{solution}
+
+\subsection*{(b) 模 $7$ 的非负最小剩余系之差构成完全系 / 绝对最小剩余系}
+
+模 $7$ 的\emph{非负最小剩余系}即 $\{0,1,2,3,4,5,6\}$ 的一个排列。所谓两个剩余系「对应元素之差」，指按位置逐项相减（参见卷首模 $3$ 之例 $\{0,1,2\}$ 与 $\{0,2,1\}$ 得 $\{0,-1,1\}$）。
+
+\begin{solution}
+\textbf{第一问（差构成完全系）。} 取
+\[
+  A=(0,\,2,\,4,\,6,\,1,\,3,\,5),\qquad B=(0,\,1,\,2,\,3,\,4,\,5,\,6),
+\]
+二者都是 $\{0,\dots,6\}$ 的排列。逐项作差：
+\[
+  0-0,\ 2-1,\ 4-2,\ 6-3,\ 1-4,\ 3-5,\ 5-6
+  \;=\;0,\,1,\,2,\,3,\,-3,\,-2,\,-1.
+\]
+此七数模 $7$ 为 $\{0,1,2,3,4,5,6\}$，恰为模 $7$ 的一个完全剩余系。（注意：两系元素之和相等，故差之和为 $0$；而 $\{0,\dots,6\}$ 之和为 $21\ne0$，故差不可能逐项为非负的 $\{0,\dots,6\}$，「完全系」须按同余类理解。）
+
+\medskip
+\textbf{第二问（差构成绝对最小剩余系）。} 存在。取
+\[
+  A=(3,\,2,\,1,\,0,\,6,\,5,\,4),\qquad B=(0,\,1,\,2,\,3,\,4,\,5,\,6).
+\]
+逐项作差：
+\[
+  3-0,\ 2-1,\ 1-2,\ 0-3,\ 6-4,\ 5-5,\ 4-6
+  \;=\;3,\,1,\,-1,\,-3,\,2,\,0,\,-2
+  \;=\;\{-3,-2,-1,0,1,2,3\},
+\]
+恰为模 $7$ 的绝对最小剩余系。故\textbf{存在}这样的两个非负最小剩余系。
+
+\medskip
+\noindent\textit{注。} 第一问所给的 $A=(0,2,4,6,1,3,5)$，其差 $\{-3,-2,-1,0,1,2,3\}$ 本身就既是完全系、又是绝对最小剩余系；此处另给一例以示构造之一般性。能否对任意 $n$ 构造绝对最小剩余系，见第五题。
+\end{solution}
+
+\subsection*{(c) 今天过了 $10^{2025}$ 天后是星期几}
+
+\begin{solution}
+以试卷日期 $2025$ 年 $6$ 月 $3$ 日为「今天」。该日为\textbf{星期二}（$2025$ 年 $1$ 月 $1$ 日为星期三，而 $6$ 月 $3$ 日是该年第 $154$ 天，$154-1=153\equiv 6\pmod 7$，星期三加 $6$ 天为星期二）。
+
+只需算 $10^{2025}\pmod 7$。由 $10\equiv 3\pmod 7$ 及 $3^{6}\equiv 1\pmod 7$（Fermat 小定理），又 $2025=6\times 337+3$，故
+\[
+  10^{2025}\equiv 3^{2025}\equiv 3^{3}=27\equiv 6\pmod 7.
+\]
+即 $10^{2025}$ 天相当于 $6$ 天后。星期二再过 $6$ 天为
+\[
+  \boxed{\text{星期一}.}
+\]
+\end{solution}
+
+%==================================================================
+\section{第三题}
+
+\subsection*{(a) 求所有整数 $n$ 使 $2^{n}-1$ 能被 $7$ 整除}
+
+\begin{solution}
+$7\mid 2^{n}-1\iff 2^{n}\equiv 1\pmod 7$。先求 $2$ 模 $7$ 的阶：
+\[
+  2^{1}=2,\quad 2^{2}=4,\quad 2^{3}=8\equiv 1\pmod 7,
+\]
+故 $\ord_{7}(2)=3$。由阶的性质，$2^{n}\equiv 1\pmod 7\iff 3\mid n$。
+
+（$n$ 需使 $2^{n}$ 为整数，故 $n\ge 0$；负整数不在此列。）
+\[
+  \boxed{n=3k,\quad k=0,1,2,\dots\text{（即 }n\text{ 为 }3\text{ 的非负倍数）。}}
+\]
+\end{solution}
+
+\subsection*{(b) 写出两个积性数论函数 $f(n),g(n)$，求 $\sum_{d\mid n}f(d)$ 与 $\sum_{d\mid n}g(d)$}
+
+\begin{solution}
+取 $f(n)=\varphi(n)$（欧拉函数），$g(n)=\mathrm{id}(n)=n$（恒等函数）。二者皆为\emph{积性}函数（$\varphi$ 积性是标准结论；$\mathrm{id}$ 完全积性）。
+
+关键事实：若 $h$ 积性，则其约数和 $H(n)=\sum_{d\mid n}h(d)$ 亦积性（因若 $\gcd(m,n)=1$，$d\mid mn$ 唯一分解为 $d=d_1d_2$，$d_1\mid m,d_2\mid n$，则 $H(mn)=\sum h(d_1d_2)=\sum h(d_1)\sum h(d_2)=H(m)H(n)$）。于是只需算 $H(p^{a})$，再对 $n=\prod_i p_i^{a_i}$ 作积。
+
+\medskip
+\noindent\textbf{(i) $\sum_{d\mid n}\varphi(d)$。} 对素数幂：
+\[
+  \sum_{j=0}^{a}\varphi(p^{j})=\varphi(1)+\sum_{j=1}^{a}(p^{j}-p^{j-1})
+  =1+(p^{a}-1)=p^{a}\quad(\text{各项相消})。
+\]
+故
+\[
+  \boxed{\;\sum_{d\mid n}\varphi(d)=\prod_i p_i^{a_i}=n.\;}
+\]
+（此即欧拉函数的经典恒等式 $\sum_{d\mid n}\varphi(d)=n$。）
+
+\medskip
+\noindent\textbf{(ii) $\sum_{d\mid n}g(d)=\sum_{d\mid n}d$。} 对素数幂（等比求和）：
+\[
+  \sum_{j=0}^{a}p^{j}=\frac{p^{a+1}-1}{p-1}.
+\]
+故
+\[
+  \boxed{\;\sum_{d\mid n}d=\sigma(n)=\prod_i\frac{p_i^{a_i+1}-1}{p_i-1},\quad n=\prod_i p_i^{a_i}.\;}
+\]
+（$\sigma(n)$ 为约数和函数。）
+\end{solution}
+
+\subsection*{(c) 判断 $563$ 是否为素数；$x^{2}\equiv 374\pmod{563}$ 是否有解}
+
+\begin{solution}
+\textbf{素性。} $\sqrt{563}\approx 23.7$，只需检验 $\le 23$ 的素数 $2,3,5,7,11,13,17,19,23$。逐一相除（或取模）均不整除：
+\[
+  563\not\equiv 0\pmod{2,3,5},\quad
+  563=7\cdot80+3,\ 11\cdot51+2,\ 13\cdot43+4,\ 17\cdot33+2,\ 19\cdot29+12,\ 23\cdot24+11.
+\]
+故 $\boxed{563\text{ 是素数。}}$
+
+\textbf{二次同余。} $563$ 为素数，用 Euler 判别法：$x^{2}\equiv a\pmod p$ 有解 $\iff a^{(p-1)/2}\equiv 1\pmod p$。需判断
+\[
+  \leg{374}{563}=374^{281}\pmod{563}.
+\]
+用二次互反律。先分解 $374=2\cdot 11\cdot 17$，则
+\[
+  \leg{374}{563}=\leg{2}{563}\,\leg{11}{563}\,\leg{17}{563}.
+\]
+\begin{itemize}
+  \item $\leg{2}{563}$：$563\equiv 3\pmod 8$，故 $\leg{2}{563}=-1$。
+  \item $\leg{11}{563}$：$11\equiv 563\equiv 3\pmod 4$，互反律取负号，
+    $\leg{11}{563}=-\leg{563}{11}=-\leg{2}{11}$。由 $11\equiv 3\pmod 8$（因 $563=11\cdot51+2$），$\leg{2}{11}=-1$，故 $\leg{11}{563}=+1$。
+  \item $\leg{17}{563}$：$17\equiv 1\pmod 4$，无负号，$\leg{17}{563}=\leg{563}{17}=\leg{2}{17}$（$563=17\cdot33+2$）。$17\equiv 1\pmod 8$，故 $\leg{2}{17}=+1$，从而 $\leg{17}{563}=+1$。
+\end{itemize}
+三式相乘：
+\[
+  \leg{374}{563}=(-1)\cdot(+1)\cdot(+1)=-1.
+\]
+Legendre 符号为 $-1$，即 $374$ 为模 $563$ 的二次非剩余（Euler 判别给出 $374^{281}\equiv -1\pmod{563}$）。故
+\[
+  \boxed{x^{2}\equiv 374\pmod{563}\text{ 无解。}}
+\]
+\end{solution}
+
+%==================================================================
+\section{第四题}
+
+\subsection*{(a) 求证对任意整数 $n$，$(14n+3,\,21n+4)=1$}
+
+\begin{solution}
+用 Bézout 组合。直接验证
+\[
+  3\,(14n+3)\;-\;2\,(21n+4)\;=\;(42n+9)-(42n+8)\;=\;1.
+\]
+故 $1$ 可表为 $14n+3$ 与 $21n+4$ 的整系数线性组合，从而 $(14n+3,21n+4)\mid 1$，即
+\[
+  \boxed{(14n+3,\,21n+4)=1.}
+\]
+\end{solution}
+
+\subsection*{(b) 求证 $17\mid 2x+3y\iff 17\mid 9x+5y$}
+
+\begin{solution}
+关键是把 $9x+5y$ 用 $2x+3y$ 表出。计算
+\[
+  13\,(2x+3y)-(9x+5y)=(26x+39y)-(9x+5y)=17x+34y=17\,(x+2y).
+\]
+故
+\[
+  13\,(2x+3y)\equiv 9x+5y\pmod{17}. \tag{$*$}
+\]
+又 $\gcd(13,17)=1$，$13$ 模 $17$ 可逆，于是由 ($*$)：
+\[
+  17\mid 13(2x+3y)\;\iff\;17\mid 9x+5y,
+\]
+而 $17\mid 13(2x+3y)\iff 17\mid 2x+3y$（因 $\gcd(13,17)=1$）。两端连接即得
+\[
+  \boxed{17\mid 2x+3y\;\iff\;17\mid 9x+5y.}
+\]
+\end{solution}
+
+\subsection*{(c) 求证 $2^{2^{n}}-1$ 至少有 $n$ 个不同的素因子}
+
+\begin{solution}
+记 Fermat 数 $F_k=2^{2^{k}}+1\ (k\ge 0)$。
+
+\medskip\noindent\textbf{第一步（因式分解）。} 对 $k\ge 0$，
+\[
+  2^{2^{k+1}}-1=\bigl(2^{2^{k}}\bigr)^{2}-1=\bigl(2^{2^{k}}-1\bigr)\bigl(2^{2^{k}}+1\bigr)=\bigl(2^{2^{k}}-1\bigr)\,F_k,
+\]
+即 $F_k=\dfrac{2^{2^{k+1}}-1}{2^{2^{k}}-1}$。连乘相消（望远镜积）：
+\[
+  F_0 F_1\cdots F_{n-1}
+  =\prod_{k=0}^{n-1}\frac{2^{2^{k+1}}-1}{2^{2^{k}}-1}
+  =\frac{2^{2^{n}}-1}{2^{2^{0}}-1}
+  =\frac{2^{2^{n}}-1}{2^{1}-1}
+  =2^{2^{n}}-1. \tag{1}
+\]
+
+\medskip\noindent\textbf{第二步（两两互素）。} 设 $0\le i<j$。由 (1)（取 $n=j$）有 $F_0\cdots F_{j-1}=2^{2^{j}}-1=F_j-2$，特别 $F_i\mid F_j-2$，故 $F_j\equiv 2\pmod{F_i}$。于是
+\[
+  \gcd(F_i,F_j)=\gcd(F_i,2).
+\]
+而 $F_i=2^{2^{i}}+1$ 为奇数，故 $\gcd(F_i,2)=1$，从而
+\[
+  \gcd(F_i,F_j)=1\qquad(i\ne j). \tag{2}
+\]
+
+\medskip\noindent\textbf{第三步（素因子计数）。} 每个 $F_k\ge F_0=3>1$，故各有至少一个素因子。由 (2)，诸 $F_k$ 的素因子彼此不相交。于是由 (1)，$2^{2^{n}}-1=F_0\cdots F_{n-1}$ 至少含有 $n$ 个（两两不同的）素因子：
+\[
+  \boxed{2^{2^{n}}-1\text{ 至少有 }n\text{ 个不同的素因子。}}
+\]
+
+\smallskip\noindent\textit{注。} 题目原文作「有 $n$ 个不同的素因子」；因部分 Fermat 数可分解（如 $F_5$ 非素），实际个数可能 $>n$，可严格证明的是「至少 $n$ 个」。验算：$n=2$ 时 $2^{4}-1=15=3\cdot5$（$2$ 个），$n=3$ 时 $2^{8}-1=255=3\cdot5\cdot17$（$3$ 个），与结论吻合。
+\end{solution}
+
+%==================================================================
+\section{第五题}
+
+记模 $n$ 的非负最小剩余系为 $\{0,1,\dots,n-1\}$。所谓「两个非负最小剩余系对应元素之差构成绝对最小剩余系」，即：取 $\{0,\dots,n-1\}$ 的两个排列 $A=(a_0,\dots,a_{n-1})$，$B=(b_0,\dots,b_{n-1})$，使按位置逐项作差所得集合
+\[
+  \{\,a_i-b_i\mid i=0,\dots,n-1\,\}
+\]
+恰为模 $n$ 的绝对最小完全剩余系。模 $n$ 的绝对最小剩余系为
+\[
+  \begin{cases}
+    \{-m,-m+1,\dots,-1,0,1,\dots,m\}, & n=2m+1\text{（奇）},\\[2pt]
+    \{-\tfrac n2+1,\dots,-1,0,1,\dots,\tfrac n2\}\text{（或其相反），其和为}\pm\tfrac n2, & n=2m\text{（偶）}.
+  \end{cases}
+\]
+
+\subsection*{(a) 对 $n=4,5,6,7$ 的判断}
+
+\begin{solution}
+\textbf{关键观察（必要条件）。} 因 $A,B$ 同为 $\{0,\dots,n-1\}$ 的排列，故
+\[
+  \sum_{i=0}^{n-1}(a_i-b_i)=\sum a_i-\sum b_i=\frac{n(n-1)}2-\frac{n(n-1)}2=0.
+\]
+因此\emph{差的集合之和必为 $0$}。而绝对最小剩余系之和：奇数 $n$ 时为 $0$（关于 $0$ 对称），偶数 $n$ 时为 $\pm\dfrac n2\ne 0$（含且仅含一个绝对值为 $\frac n2$ 的元素）。故\textbf{偶数 $n$ 不可能成立}。
+
+\medskip
+对 $n=4,5,6,7$ 逐一作答：
+
+\begin{itemize}
+  \item $n=4$（偶）：\textbf{不存在}。由上述必要条件，差之和须为 $0$，而模 $4$ 绝对最小剩余系 $\{-1,0,1,2\}$ 之和为 $2\ne0$（取 $\{-2,-1,0,1\}$ 时和为 $-2$）。
+  \item $n=5$（奇，$m=2$）：\textbf{存在}。取 $A=(0,2,4,1,3)$，$B=(0,1,2,3,4)$（即 $a_i\equiv 2i\pmod 5$）。
+    差为 $0,1,2,-2,-1=\{-2,-1,0,1,2\}$，恰为模 $5$ 绝对最小剩余系。
+  \item $n=6$（偶）：\textbf{不存在}（理由同 $n=4$，绝对最小剩余系之和为 $\pm 3\ne0$）。
+  \item $n=7$（奇，$m=3$）：\textbf{存在}。取 $A=(0,2,4,6,1,3,5)$，$B=(0,1,2,3,4,5,6)$（即 $a_i\equiv 2i\pmod 7$）。
+    差为 $0,1,2,3,-3,-2,-1=\{-3,-2,-1,0,1,2,3\}$，恰为模 $7$ 绝对最小剩余系。
+\end{itemize}
+\end{solution}
+
+\subsection*{(b) 唯一性}
+
+\begin{solution}
+\textbf{不唯一}（$n\ge 5$ 时）。即便固定 $B=(0,1,\dots,n-1)$（这等价于固定一种「位置标号」，已忽略位置重排），符合条件的排列 $A$ 仍不止一个。例如 $n=5$ 时除 $A=(0,2,4,1,3)$ 外，
+\[
+  A'=(1,3,0,2,4)
+\]
+亦合（差为 $1,2,-2,-1,0=\{-2,-1,0,1,2\}$）。穷举可知 $n=5$ 有 $6$ 个、$n=7$ 有 $28$ 个这样的 $A$（$n=3$ 仅 $2$ 个，在忽略 $A,B$ 互换与位置重排的意义下基本唯一）。故一般而言取法\textbf{不唯一}。
+\end{solution}
+
+\subsection*{(c) 一般结论（一般的 $n$）}
+
+\begin{solution}
+\textbf{定理。} 存在两个模 $n$ 的非负最小剩余系，使其对应元素之差构成模 $n$ 的绝对最小剩余系，\textbf{当且仅当 $n$ 为奇数}。
+
+\smallskip
+\noindent\textit{必要性（$n$ 必为奇）。} 已在 (a) 的关键观察中证得：差之和恒为 $0$，而偶数 $n$ 的绝对最小剩余系之和为 $\pm\frac n2\ne0$，矛盾。故 $n$ 不能为偶。
+
+\smallskip
+\noindent\textit{充分性（奇数 $n$ 的构造）。} 设 $n=2m+1$。取
+\[
+  b_i=i,\qquad a_i\equiv 2i\pmod n\ \ (0\le a_i\le n-1),\qquad i=0,1,\dots,n-1.
+\]
+因 $\gcd(2,n)=1$，$i\mapsto 2i\bmod n$ 是 $\{0,\dots,n-1\}$ 到自身的双射，故 $A=(a_0,\dots,a_{n-1})$ 确为 $\{0,\dots,n-1\}$ 的排列，$B=(0,1,\dots,n-1)$ 亦然。
+
+计算差 $a_i-i$：
+\begin{itemize}
+  \item 当 $0\le i\le m$ 时，$2i\le 2m<n$，故 $a_i=2i$，$a_i-i=i\in\{0,1,\dots,m\}$；
+  \item 当 $m+1\le i\le 2m$ 时，$2i\ge 2m+2>n$，故 $a_i=2i-n$，$a_i-i=i-n\in\{-m,\dots,-1\}$。
+\end{itemize}
+从而
+\[
+  \{a_i-b_i\}=\{0,1,\dots,m\}\cup\{-m,-m+1,\dots,-1\}=\{-m,\dots,-1,0,1,\dots,m\},
+\]
+恰为模 $n=2m+1$ 的绝对最小完全剩余系。构造成立。
+
+\smallskip
+\noindent\textit{注。} 此即「以 $2$ 倍作平移」的标准构造。它也给出一条关于「完全映射」的初等实例：奇数阶循环群 $\Z/n\Z$ 上，置换 $i\mapsto 2i$ 与恒等映射 $i\mapsto i$ 之差 $i\mapsto i$（适当取代表）遍历全部剩余类。
+\end{solution}
+
+\bigskip
+\begin{center}
+\rule{0.4\textwidth}{0.4pt}\\[2pt]
+\itshape （全卷完）
+\end{center}
+
+\end{document}

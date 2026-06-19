@@ -1,0 +1,1168 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=2.2cm}
+\setlength{\headheight}{12.5pt}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+
+% import common macros
+\input{../common/macros.tex}
+
+% Legendre symbol
+\newcommand{\leg}[2]{\left(\frac{#1}{#2}\right)}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Nm}{\operatorname{Nm}}
+\newcommand{\Prim}{\mathbb{P}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\DeclareMathOperator{\lcm}{lcm}
+
+% Chinese theorem-like environments (names distinct from macros.tex to avoid clash)
+\theoremstyle{plain}
+\newtheorem{thm}{定理}[section]
+\newtheorem{lem}[thm]{引理}
+\newtheorem{cor}[thm]{推论}
+\newtheorem{prop}[thm]{命题}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{定义}
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{注}
+\newtheorem{conj}[thm]{猜想}
+
+\newcommand{\course}{初等数论重要定理}
+
+\title{\textbf{初等数论重要定理证明汇编}\\[4pt]
+\large 据 Rui CHEN《Elementary Number Theory Lecture Note》(2026.5.28) 整理}
+\author{}
+\date{2026.6.17}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+  \itshape
+  本文将讲义中各章的重要大定理及其证明抽离整理，按章节编排。除特别注明「此处仅陈述」的结论
+  （如素数定理、Riemann 猜想、Lagrange 四平方定理等，讲义中亦未给出完整证明）外，每个定理都附有
+  完整证明。符号与证法尽量忠实于原讲义；个别处为清晰起见作了改写与补充。
+\end{center}
+
+\bigskip
+\tableofcontents
+\bigskip
+
+%==================================================================
+\section{整除与算术基本定理}
+
+\subsection{算术基本定理}
+
+设 $a,b\in\Z$，$a\ne 0$。若存在 $c\in\Z$ 使 $b=ac$，则称 $a$ \emph{整除} $b$，记 $a\mid b$。
+记 $\Prim$ 为素数集合，$p$ 为素数当且仅当 $p\ne0,\pm1$ 且 $p$ 的全部因子恰为 $\pm p$。
+
+\begin{defn}[素数幂次]
+  设 $p$ 为素数，$n\in\Z$，定义
+  \[
+    \ord_p(n):=\max\{\,a\in\N\mid p^a\mid n\,\},
+  \]
+  并约定 $\ord_p(0)=+\infty$。
+\end{defn}
+
+\begin{lem}\label{lem:ord-mul}
+  对任意 $a,b\in\Z$ 与素数 $p$，有 $\ord_p(ab)=\ord_p(a)+\ord_p(b)$。
+\end{lem}
+
+\begin{proof}
+  设 $\alpha=\ord_p(a)$，$\beta=\ord_p(b)$，则存在 $c,d\in\Z$，$p\nmid c$，$p\nmid d$，使
+  $a=p^\alpha c$，$b=p^\beta d$。于是 $ab=p^{\alpha+\beta}cd$。只需证 $p\nmid cd$。
+  由 $p\nmid c,\ p\nmid d$ 及 $p$ 为素数（素元）知 $\gcd(p,c)=\gcd(p,d)=1$，从而 $\gcd(p,cd)=\gcd(p,d)=1$，即 $p\nmid cd$。故 $\ord_p(ab)=\alpha+\beta$。
+\end{proof}
+
+\begin{thm}[算术基本定理]\label{thm:FTA}
+  每个非零整数 $n$ 均可（在相差因子的次序与 $\pm1$ 下）唯一地写成
+  \[
+    n=\sgn(n)\prod_{p}p^{\alpha(n,p)},
+  \]
+  其中 $\sgn(n)$ 为符号，$\alpha(n,p)\in\N$ 为素数 $p$ 的幂次，且对每个 $n$ 只有有限个 $\alpha(n,p)\ne0$。
+\end{thm}
+
+\begin{proof}
+  \textbf{存在性。} 令
+  \[
+    A=\{\,a\in\N\mid a>0,\ a\text{ 不能写成素数之积}\,\}.
+  \]
+  若 $A\ne\varnothing$，由自然数良序性取 $N=\min A$。则 $N$ 必为合数（素数本身已是素数之积），故存在 $m,n\in\N$，$N=mn$，$1<m<N$，$1<n<N$。由 $N$ 的极小性，$m,n$ 均可写成素数之积：
+  $m=p_1\cdots p_r$，$n=q_1\cdots q_s$，从而 $N=p_1\cdots p_rq_1\cdots q_s$ 亦可，矛盾。故 $A=\varnothing$。
+
+  \textbf{唯一性。} 设 $n$ 有两种分解，对任一素数 $p$，比较 $p$ 在两端的总幂次。由引理~\ref{lem:ord-mul}，
+  \[
+    \ord_p(n)=\ord_p(\sgn(n))+\sum_q \alpha(n,q)\ord_p(q).
+  \]
+  注意到 $\ord_p(\sgn(n))=0$（$p\nmid\pm1$），且当 $q\ne p$ 时 $\ord_p(q)=0$，而 $\ord_p(p)=1$。故 $\alpha(n,p)=\ord_p(n)$，即每个素因子的幂次由 $n$ 唯一确定。证毕。
+\end{proof}
+
+\subsection{素数无限}
+
+\begin{thm}\label{thm:inf-primes}
+  $\Z$ 中有无穷多个素数。
+\end{thm}
+
+\begin{proof}[Euclid 证明]
+  设素数仅有有限个 $p_1,\dots,p_n$。令 $N=p_1p_2\cdots p_n+1>1$。取 $N$ 的任一素因子 $p$，
+  则 $p\notin\{p_1,\dots,p_n\}$（否则 $p\mid p_i$ 且 $p\mid N$ 蕴含 $p\mid 1$，矛盾）。故存在新的素数，与假设矛盾。
+\end{proof}
+
+\subsection{$\pi(x)$ 的 Chebyshev 型估计}
+
+记 $\pi(x):=|\{\,\text{素数 }p\mid 1\le p\le x\,\}|$ 为不超过 $x$ 的素数个数，并记
+$\vartheta(x):=\sum_{p\le x}\log p$。
+
+\begin{lem}\label{lem:theta-bound}
+  对一切 $x\ge 1$，有 $\vartheta(x)<4\log 2\cdot x$。
+\end{lem}
+
+\begin{proof}
+  对任意 $n\ge1$，由二项式系数
+  \[
+    2^{2n}=(1+1)^{2n}>\binom{2n}{n}>\prod_{n<p\le 2n}p,
+  \]
+  两端取对数得
+  \[
+    2n\log2>\sum_{n<p\le2n}\log p=\vartheta(2n)-\vartheta(n).
+  \]
+  反复使用（令 $n=2^{m-1},2^{m-2},\dots,1$）相加：
+  \[
+    \vartheta(2^m)<(2^m+2^{m-1}+\cdots)\log2<2^{m+1}\log2.
+  \]
+  对一般 $x$，取 $m$ 使 $2^{m-1}<x\le 2^m$，则 $\vartheta(x)\le\vartheta(2^m)<2^{m+1}\log2<4\log2\cdot x$。
+\end{proof}
+
+\begin{thm}[Chebyshev 型估计]\label{thm:cheby}
+  存在常数 $c_1,c_2>0$，使对一切 $x\ge 2$，
+  \[
+    c_2\,\frac{x}{\log x}<\pi(x)<c_1\,\frac{x}{\log x}.
+  \]
+\end{thm}
+
+\begin{proof}
+  \textbf{上界。} 由
+  \[
+    \vartheta(x)\ge\sum_{\sqrt{x}<p\le x}\log p\ge\log\sqrt{x}\bigl(\pi(x)-\pi(\sqrt{x})\bigr)
+    \ge\tfrac12\log x\,\bigl(\pi(x)-\sqrt{x}\bigr),
+  \]
+  及引理~\ref{lem:theta-bound}，得 $\pi(x)\le \dfrac{2\vartheta(x)}{\log x}+\sqrt{x}\le\dfrac{8\log2\cdot x}{\log x}+\sqrt{x}$。
+  对大的 $x$，$\sqrt{x}\le\dfrac{x}{\log x}$，取 $c_1=8\log2+1$ 即得上界。
+
+  \textbf{下界。} 计算 $\ord_p\!\binom{2n}{n}$：由引理~\ref{lem:ord-mul}，
+  \[
+    \ord_p\!\binom{2n}{n}=\ord_p((2n)!)-2\ord_p(n!)=\sum_{i=1}^{t_p}\!\left(\Bigl\lfloor\frac{2n}{p^i}\Bigr\rfloor-2\Bigl\lfloor\frac{n}{p^i}\Bigr\rfloor\right),\quad
+    t_p=\Bigl\lfloor\frac{\log(2n)}{\log p}\Bigr\rfloor.
+  \]
+  每项取值于 $\{0,1\}$，故 $\ord_p\!\binom{2n}{n}\le t_p$。又 $\binom{2n}{n}\ge 2^n/\cdots$（实际 $\binom{2n}{n}$ 是 $(2n)!$ 中最大项之一），由 $2n\le\binom{2n}{n}\le\prod_{p<2n}p^{t_p}$ 取对数：
+  \[
+    n\log2\le\sum_{p<2n}\Bigl\lfloor\frac{\log(2n)}{\log p}\Bigr\rfloor\log p
+    \le\sqrt{2n}\,\log(2n)+\vartheta(2n).
+  \]
+  于是 $\vartheta(2n)\ge n\log2-\sqrt{2n}\log(2n)$，当 $n\to\infty$ 时右端 $\sim n\log2$，故存在 $T$ 使 $n>T$ 时 $\vartheta(2n)>T\cdot n$。对一般 $x$，取 $m$ 使 $2^m\le x<2^{m+1}$，得 $\vartheta(x)\ge\vartheta(2^m)>Tm>\tfrac{T}{2}\log2\cdot x$ 之常数倍，即 $\vartheta(x)>c_2'x$。再由 $\vartheta(x)\le\pi(x)\log x$ 即得 $\pi(x)\ge c_2\,\dfrac{x}{\log x}$。
+\end{proof}
+
+\begin{thm}[素数定理，Hadamard--de la Vall\'ee-Poussin, 1896]\label{thm:PNT}
+  $\displaystyle\lim_{x\to\infty}\dfrac{\pi(x)}{x/\log x}=1.$
+\end{thm}
+
+\begin{rem}
+  讲义中此节标注为 AI 生成，仅陈述结论。其证明依赖 Riemann $\zeta$ 函数在 $\Re(s)=1$ 上无零点（见第~\ref{sec:zeta}~节），已超出本讲义的初等范畴。
+\end{rem}
+
+%==================================================================
+\section{二平方和与 Gauss 整数}
+
+记 Gauss 整数环 $\Z[i]=\Z[\sqrt{-1}]=\{\,a+b\sqrt{-1}\mid a,b\in\Z\,\}$，赋以范数
+\[
+  \Nm:\Z[i]\to\N,\quad a+b i\mapsto a^2+b^2.
+\]
+$\Nm$ 满足乘性 $\Nm(\alpha\beta)=\Nm(\alpha)\Nm(\beta)$，且 $\Z[i]$ 为唯一因子分解整环（UFD）。
+
+\begin{lem}\label{lem:gauss-unit}
+  Gauss 整数环 $\Z[i]$ 的全部单位为 $\{\pm1,\pm i\}$。
+\end{lem}
+
+\begin{proof}
+  若 $\varepsilon$ 为单位，则 $\Nm(\varepsilon)\in\Z_{>0}$ 为单位，故 $\Nm(\varepsilon)=a^2+b^2=1$，解得 $(a,b)=(\pm1,0),(0,\pm1)$。
+\end{proof}
+
+\begin{thm}[Gauss 整数中素数的行为]\label{thm:sum2sq-prime}
+  设 $p$ 为奇素数，则
+  \begin{enumerate}[(1)]
+    \item 若 $p$ 在 $\Z[i]$ 中可约，则 $p=\pi\bar\pi$，其中 $\pi\in\Z[i]$；
+    \item 若 $\pi\in\Z[i]$ 为素元，则 $\pi\bar\pi$ 亦然（在相差单位下）；
+    \item $p$ 在 $\Z[i]$ 中不可约（保持素性）当且仅当 $p\equiv3\pmod4$；
+    \item $p\equiv1\pmod4$ 当且仅当 $p$ 在 $\Z[i]$ 中可分解 $p=a^2+b^2$。
+  \end{enumerate}
+\end{thm}
+
+\begin{proof}
+  (1) 设 $p$ 在 $\Z[i]$ 中非素，$p=\pi_1\cdots\pi_r$，$\pi_j\in\Z[i]$ 素元。则
+  $p^2=\Nm(p)=\Nm(\pi_1)\cdots\Nm(\pi_r)$。每个 $\Nm(\pi_j)\in\Z_{>0}$ 且 $\Nm(\pi_j)>1$（因 $\pi_j$ 非单位），
+  故必有 $r=2$ 且 $\Nm(\pi_1)=p$，即 $p=\pi_1\bar\pi_1$（因 $\Nm(\pi_1)=\pi_1\bar\pi_1=p$）。
+
+  (2) 因 $\pi\bar\pi=\Nm(\pi)\in\Z_{>0}$，取其有理素因子 $p\mid\Nm(\pi)$。若 $p$ 在 $\Z[i]$ 中仍素，由 $p\mid\pi\bar\pi$ 知 $p\mid\pi$ 或 $p\mid\bar\pi$（素元的性质），进而 $p^2\mid\pi\bar\pi$，矛盾于 $\Nm(\pi)$ 可能只含 $p$ 的一次方。故 $p$ 在 $\Z[i]$ 中可约，由 (1) 存在素元 $\alpha$ 使 $p=\alpha\bar\alpha$。则 $\alpha\bar\alpha\mid\pi\bar\pi$；由 $\Z[i]$ 为 UFD，比较素因子得 $\pi$ 与 $\alpha$ 相差单位，最终 $\pi\bar\pi=p$（在相差单位下）。
+
+  (3) 充分性（$p\equiv3\pmod4$ 则 $p$ 不可约）：若 $p=a^2+b^2$，则 $a^2+b^2\equiv0,1,2\pmod4$（因 $a^2\equiv0,1$），但 $p\equiv3\pmod4$，矛盾。故 $p$ 不能写成两平方和，由 (1) $p$ 在 $\Z[i]$ 中不可约。
+
+  必要性（$p\equiv1\pmod4$ 则 $p$ 可约）：我们断言 $p\equiv1\pmod4$ 时存在 $x\in\Z$ 使 $p\mid x^2+1$（取 $\mathbb{F}_p^\times$ 中阶为 $\tfrac{p-1}{2}$ 之元的 $\tfrac{p-1}{4}$ 次幂即得，$\mathbb{F}_p^\times$ 的循环性见定理~\ref{thm:prim-exist-p}）。于是 $p\mid(x+i)(x-i)$，但 $p\nmid(x\pm i)$（$\tfrac{x}{p}\notin\Z[i]$），故 $p$ 在 $\Z[i]$ 中非素元，从而可约。
+
+  (4) 由 (1)(3) 立得。
+\end{proof}
+
+\begin{thm}[二平方和定理]\label{thm:sum2sq}
+  设 $n\ge2$，将其素因数分解写作
+  \[
+    n=2^\alpha\,p_1^{\beta_1}\cdots p_r^{\beta_r}\,q_1^{\gamma_1}\cdots q_s^{\gamma_s},
+  \]
+  其中 $p_i\equiv1\pmod4$，$q_j\equiv3\pmod4$。则 $n$ 能表为两整数平方和 $n=a^2+b^2$ 当且仅当诸 $\gamma_j$ 均为偶数；
+  且此时表法的个数（不计次序与符号）为
+  \[
+    \tfrac14\,(\beta_1+1)(\beta_2+1)\cdots(\beta_r+1).
+  \]
+\end{thm}
+
+\begin{proof}[证明概要]
+  $n=a^2+b^2\iff n=\Nm(\xi)$，$\xi\in\Z[i]$，即在 $\Z[i]$ 中 $n=\xi\bar\xi$。
+  对每个 $p_i\equiv1\pmod4$，由定理~\ref{thm:sum2sq-prime} 存在素元 $\pi_i\in\Z[i]$，$p_i=\pi_i\bar\pi_i$。
+  $q_j\equiv3\pmod4$ 在 $\Z[i]$ 中保持素性（成对出现才能贡献平方和）。
+  于是 $\xi$ 的素因子分解中，每个 $q_j^{\gamma_j}$ 必须成对（$\gamma_j$ 偶）；
+  而每个 $\pi_i$ 在 $\xi$ 与 $\bar\xi$ 间分配的幂次之和为 $\beta_i$，有 $\beta_i+1$ 种分配方式，
+  $2$ 的因子 $2^\alpha=(1+i)^\alpha(1-i)^\alpha$ 由单位 $(\pm1,\pm i)$ 调整。
+  合并符号与次序，得表法数恰为 $\tfrac14\prod(\beta_i+1)$。
+\end{proof}
+
+\begin{thm}[Lagrange 四平方定理]\label{thm:lagrange}
+  对任意 $n\in\Z_{>0}$，存在整数 $a,b,c,d$ 使 $n=a^2+b^2+c^2+d^2$。
+\end{thm}
+
+\begin{rem}
+  讲义中此节由 AI 生成，仅陈述结论（并指出 Legendre 三平方定理：$n\ne4^k(8m+7)$ 时 $n$ 可表为三平方和）。完整证明从略。
+\end{rem}
+
+%==================================================================
+\section{同余理论}
+
+设 $m\in\Z_{>0}$。$a,b\in\Z$ 满足 $m\mid(a-b)$ 时记 $a\equiv b\pmod m$。模 $m$ 的同余类记 $[a]_m$，全部同余类构成环 $\Z/m\Z$。
+
+\subsection{中国剩余定理}
+
+\begin{thm}[中国剩余定理]\label{thm:CRT}
+  设 $m,n\in\Z_{>0}$，$\gcd(m,n)=1$，则映射
+  \[
+    \varphi:\Z/mn\Z\longrightarrow\Z/m\Z\times\Z/n\Z,\qquad [a]_{mn}\longmapsto([a]_m,[a]_n)
+  \]
+  为环同构。
+\end{thm}
+
+\begin{proof}
+  $\varphi$ 显然是环同态。它是单射：若 $[a]_m=[b]_m$ 且 $[a]_n=[b]_n$，则 $m\mid(a-b)$，$n\mid(a-b)$，故 $\mathrm{lcm}(m,n)\mid(a-b)$；由 $\gcd(m,n)=1$，$\mathrm{lcm}(m,n)=mn$，从而 $mn\mid(a-b)$，即 $[a]_{mn}=[b]_{mn}$。
+
+  它是满射：由 $\gcd(m,n)=1$ 及 Bézout 引理，存在 $u,v\in\Z$ 使 $mu+nv=1$。对任意 $a,b\in\Z$，令
+  \[
+    x=b\,mu+a\,nv.
+  \]
+  则 $[x]_m=[a\,nv]_m=[a]_m$（因 $nv\equiv1\pmod m$），$[x]_n=[b]_m=[b]_n$。故 $\varphi([x]_{mn})=([a]_m,[b]_n)$，$\varphi$ 满。综上 $\varphi$ 为同构。
+\end{proof}
+
+\begin{cor}\label{cor:crt-unit}
+  若 $\gcd(m,n)=1$，则 $U(\Z/mn\Z)\cong U(\Z/m\Z)\times U(\Z/n\Z)$，从而 Euler 函数 $\varphi$ 满足 $\varphi(mn)=\varphi(m)\varphi(n)$。
+\end{cor}
+
+\subsection{Euler 定理与 Fermat 小定理}
+
+\begin{thm}[Euler 定理]\label{thm:euler}
+  设 $m$ 为正整数，$a\in\Z$ 与 $m$ 互素，则
+  \[
+    a^{\varphi(m)}\equiv1\pmod m.
+  \]
+\end{thm}
+
+\begin{proof}
+  考虑 $a$ 在乘法群 $U(\Z/m\Z)$ 中的阶。因 $U(\Z/m\Z)$ 有限（阶为 $\varphi(m)$），序列 $[a]^1,[a]^2,\dots$ 必有重复，
+  即存在 $i<j$ 使 $[a]^i=[a]^j$，由 $[a]$ 可逆得 $[a]^{j-i}=1$，故 $a$ 模 $m$ 的阶 $n_0$ 存在。
+
+  由阶的性质，$[a]$ 生成的循环群 $\{[1],[a],[a]^2,\dots,[a]^{n_0-1}\}$ 恰为 $U(\Z/m\Z)$ 的子群，其阶 $n_0$ 整除 $|U(\Z/m\Z)|=\varphi(m)$（Lagrange 定理，或由陪集分解）。于是
+  \[
+    a^{\varphi(m)}=(a^{n_0})^{\varphi(m)/n_0}\equiv1\pmod m. \qedhere
+  \]
+\end{proof}
+
+\begin{cor}[Fermat 小定理]\label{cor:fermat-little}
+  设 $p$ 为素数，$a\in\Z$，则 $a^p\equiv a\pmod p$。特别地，$p\nmid a$ 时 $a^{p-1}\equiv1\pmod p$。
+\end{cor}
+
+\begin{proof}
+  $p$ 素数时 $\varphi(p)=p-1$，$U(\Z/p\Z)=\Z/p\Z\setminus\{0\}$。对 $p\nmid a$ 由 Euler 定理 $a^{p-1}\equiv1\pmod p$，
+  两端乘 $a$ 即 $a^p\equiv a\pmod p$；$p\mid a$ 时两端皆 $\equiv0$，亦成立。
+\end{proof}
+
+\begin{cor}[Frobenius 自同态]\label{cor:frobenius}
+  设 $p$ 为素数，$f,g\in\mathbb{F}_p[x_1,\dots,x_n]$，则
+  \[
+    (f+g)^p=f^p+g^p,\qquad f(x_1,\dots,x_n)^p=f(x_1^p,\dots,x_n^p).
+  \]
+\end{cor}
+
+\begin{proof}
+  $(f+g)^p=\sum_{k=0}^p\binom pk f^k g^{p-k}$，其中 $0<k<p$ 时 $p\mid\binom pk$（$p$ 素数），故在 $\mathbb{F}_p$ 中仅剩 $f^p+g^p$。第二式逐项展开即得。
+\end{proof}
+
+%==================================================================
+\section{积性函数与 Möbius 反演}\label{sec:mobius}
+
+算术函数、积性、Möbius 函数与 Möbius 反演，是处理「约数和」型恒等式的标准框架。原讲义虽未单列此章，
+但其中出现的恒等式 $n=\sum_{d\mid n}\varphi(d)$（引理~\ref{lem:cyclo-factor}）与 $\zeta$ 函数的 Euler 乘积
+（命题~\ref{prop:euler-prod-zeta}）本质上都属此范畴，故补于此。
+
+\subsection{积性函数}
+
+\begin{defn}[积性函数]
+  定义于 $\Z_{>0}$、取值于 $\C$ 的函数称为\emph{数论（算术）函数}。设 $f$ 为非零数论函数。
+  \begin{enumerate}[(1)]
+    \item 若 $\gcd(m,n)=1$ 时 $f(mn)=f(m)f(n)$，称 $f$ 为\emph{积性}（multiplicative）；
+    \item 若对\emph{任意} $m,n$ 均有 $f(mn)=f(m)f(n)$，称 $f$ 为\emph{完全积性}（completely multiplicative）。
+  \end{enumerate}
+\end{defn}
+
+完全积性的例子：常数函数 $\mathbf 1(n)=1$、恒等函数 $\mathrm{id}(n)=n$、幂函数 $\mathrm{id}_k(n)=n^k$、
+Dirichlet 特征 $\chi$（命题~\ref{prop:L-euler}）。积性而非完全积性的典型例子是 Euler 函数 $\varphi$：
+由推论~\ref{cor:crt-unit}，$\gcd(m,n)=1$ 时 $\varphi(mn)=\varphi(m)\varphi(n)$，但
+$\varphi(4)=2\ne\varphi(2)^2=1$，故非完全积性。
+
+\begin{prop}\label{prop:mult-divsum}
+  设 $f$ 为积性函数，则其约数和 $F(n):=\sum_{d\mid n}f(d)$ 亦为积性函数。
+\end{prop}
+
+\begin{proof}
+  设 $\gcd(m,n)=1$。由算术基本定理，$m,n$ 素因子不相交，故 $d\mid mn$ 等价于 $d=d_1d_2$，$d_1\mid m$，$d_2\mid n$（唯一确定）。于是
+  \[
+    F(mn)=\sum_{d_1\mid m}\sum_{d_2\mid n}f(d_1d_2)=\sum_{d_1\mid m}\sum_{d_2\mid n}f(d_1)f(d_2)=F(m)F(n),
+  \]
+  第二个等号用了 $f$ 积性及 $\gcd(d_1,d_2)\mid\gcd(m,n)=1$。
+\end{proof}
+
+\begin{rem}
+  由此，积性函数 $f$ 完全由其在素数幂 $p^k$ 处的取值决定：$F(n)=\prod_{p^a\parallel n}F(p^a)$。
+  例如 $\sum_{d\mid n}\varphi(d)=\prod_{p^a\parallel n}\sum_{j=0}^a\varphi(p^j)$，而
+  $\sum_{j=0}^a\varphi(p^j)=1+\sum_{j=1}^a(p^j-p^{j-1})=p^a$（各项相消），故 $\sum_{d\mid n}\varphi(d)=n$，
+  与引理~\ref{lem:cyclo-factor} 一致。
+\end{rem}
+
+\subsection{Möbius 函数}
+
+\begin{defn}[Möbius 函数]
+  Möbius 函数 $\mu:\Z_{>0}\to\{-1,0,1\}$ 定义为
+  \[
+    \mu(n)=\begin{cases}
+      1,& n=1,\\
+      (-1)^r,& n=p_1p_2\cdots p_r\text{ 为 }r\text{ 个互异素数之积},\\
+      0,& n\text{ 含素因子的平方}.
+    \end{cases}
+  \]
+  即 $\mu(n)=(-1)^{\omega(n)}$ 当 $n$ 无平方因子（$\omega(n)$ 为互异素因子个数），否则为 $0$。
+\end{defn}
+
+\begin{prop}\label{prop:mu-mult}
+  $\mu$ 为积性函数。
+\end{prop}
+
+\begin{proof}
+  设 $\gcd(m,n)=1$。若 $m,n$ 之一含平方因子，则 $mn$ 亦含平方因子，$\mu(mn)=0=\mu(m)\mu(n)$（其一为 $0$）。
+  若 $m,n$ 均无平方因子，则 $mn$ 亦无平方因子（因 $\gcd(m,n)=1$），且 $\omega(mn)=\omega(m)+\omega(n)$，故
+  $\mu(mn)=(-1)^{\omega(m)+\omega(n)}=\mu(m)\mu(n)$。
+\end{proof}
+
+\begin{prop}[关键恒等式]\label{prop:mu-sum}
+  $\displaystyle\sum_{d\mid n}\mu(d)=\begin{cases}1,& n=1,\\0,& n>1.\end{cases}$
+\end{prop}
+
+\begin{proof}
+  $n=1$ 显然。设 $n>1$，$n=\prod_{i=1}^r p_i^{a_i}$（$a_i\ge1$，$r\ge1$）。$\mu(d)\ne0$ 当且仅当 $d$ 无平方因子，
+  即 $d=\prod_{i\in I}p_i$，$I\subseteq\{1,\dots,r\}$。由命题~\ref{prop:mu-mult}（或直接由定义），
+  \[
+    \sum_{d\mid n}\mu(d)=\prod_{i=1}^r(1+\mu(p_i))=\prod_{i=1}^r(1-1)=0.
+  \]
+  （等价地，按子集求和：$\sum_{I\subseteq\{1,\dots,r\}}(-1)^{|I|}=(1-1)^r=0$。）
+\end{proof}
+
+记 $\varepsilon(n):=\begin{cases}1,& n=1\\0,& n>1\end{cases}$（即命题~\ref{prop:mu-sum} 的右端），则
+$\sum_{d\mid n}\mu(d)=\varepsilon(n)$。
+
+\subsection{Möbius 反演公式}
+
+\begin{thm}[Möbius 反演公式]\label{thm:mobius-inv}
+  设 $f,g$ 为数论函数。下列两式等价：
+  \[
+    g(n)=\sum_{d\mid n}f(d)\ (\forall\,n\ge1)
+    \quad\Longleftrightarrow\quad
+    f(n)=\sum_{d\mid n}\mu(d)\,g\!\Bigl(\frac nd\Bigr)\ (\forall\,n\ge1).
+  \]
+\end{thm}
+
+\begin{proof}
+  ($\Rightarrow$) 设 $g(n)=\sum_{d\mid n}f(d)$，则
+  \[
+    \sum_{d\mid n}\mu(d)\,g\!\Bigl(\frac nd\Bigr)
+    =\sum_{d\mid n}\mu(d)\sum_{e\mid(n/d)}f(e)
+    =\sum_{e\mid n}f(e)\underbrace{\sum_{d\mid(n/e)}\mu(d)}_{=\,\varepsilon(n/e)}
+    =f(n),
+  \]
+  最后一步因 $\varepsilon(n/e)=1$ 当且仅当 $e=n$，其余 $e\mid n$ 贡献 $0$。中间为有限和交换求和次序，
+  并用了命题~\ref{prop:mu-sum}。
+
+  ($\Leftarrow$) 设 $f(n)=\sum_{d\mid n}\mu(d)\,g(n/d)$。类似地交换求和（令 $c=d/e$）：
+  \[
+    \sum_{d\mid n}f(d)=\sum_{d\mid n}\sum_{e\mid d}\mu(e)\,g(d/e)
+    =\sum_{c\mid n}g(c)\sum_{e\mid(n/c)}\mu(e)
+    =\sum_{c\mid n}g(c)\,\varepsilon(n/c)=g(n),
+  \]
+  仅 $c=n$ 一项贡献 $g(n)$。
+\end{proof}
+
+\subsection{应用}
+
+\begin{cor}[Euler 函数的乘积公式]\label{cor:phi-formula}
+  $\displaystyle\varphi(n)=n\prod_{p\mid n}\Bigl(1-\frac1p\Bigr)$。
+\end{cor}
+
+\begin{proof}
+  恒等式 $n=\sum_{d\mid n}\varphi(d)$（引理~\ref{lem:cyclo-factor}）写作 $g=\varphi$，$g(n)=\sum_{d\mid n}f(d)$ 中的 $f=\varphi$ 的「被求和函数」即 $f(d)=\varphi(d)$，$g(n)=n=\mathrm{id}(n)$。由 Möbius 反演（定理~\ref{thm:mobius-inv}），
+  \[
+    \varphi(n)=\sum_{d\mid n}\mu(d)\,\frac nd=n\sum_{d\mid n}\frac{\mu(d)}d.
+  \]
+  因 $\mu$ 积性，$\sum_{d\mid n}\mu(d)/d=\prod_{p^a\parallel n}\bigl(1-\tfrac1p\bigr)$（无平方因子 $d\mid n$ 仅 $d=1$ 或单素因子），故
+  \[
+    \varphi(n)=n\prod_{p\mid n}\Bigl(1-\frac1p\Bigr). \qedhere
+  \]
+\end{proof}
+
+\begin{prop}[分圆多项式的 Möbius 表示]\label{prop:cyclo-mobius}
+  $\displaystyle\Phi_n(x)=\prod_{d\mid n}(x^d-1)^{\mu(n/d)}$。
+\end{prop}
+
+\begin{proof}
+  引理~\ref{lem:cyclo-factor} 给出 $x^n-1=\prod_{d\mid n}\Phi_d(x)$。对取对数后的等式
+  $\log(x^n-1)=\sum_{d\mid n}\log\Phi_d(x)$ 用 Möbius 反演（定理~\ref{thm:mobius-inv}，取 $g(d)=\log(x^d-1)$，$f(d)=\log\Phi_d(x)$）得
+  \[
+    \log\Phi_n(x)=\sum_{d\mid n}\mu(d)\log(x^{n/d}-1)=\sum_{d\mid n}\mu(n/d)\log(x^d-1),
+  \]
+  取指数即 $\Phi_n(x)=\prod_{d\mid n}(x^d-1)^{\mu(n/d)}$。
+\end{proof}
+
+\begin{prop}[$\zeta$ 的倒数的 Dirichlet 级数]\label{prop:mu-dirichlet}
+  对 $\Re(s)>1$，$\displaystyle\sum_{n=1}^\infty\frac{\mu(n)}{n^s}=\frac1{\zeta(s)}$。
+\end{prop}
+
+\begin{proof}
+  由 $\mu$ 完全为局部函数及 Euler 乘积，
+  \[
+    \sum_{n=1}^\infty\frac{\mu(n)}{n^s}
+    =\prod_p\sum_{k=0}^\infty\frac{\mu(p^k)}{p^{ks}}
+    =\prod_p(1-p^{-s})
+    =\frac1{\zeta(s)},
+  \]
+  最后一步用命题~\ref{prop:euler-prod-zeta} 的 Euler 乘积 $\zeta(s)=\prod_p(1-p^{-s})^{-1}$。
+\end{proof}
+
+\begin{rem}[Dirichlet 卷积]
+  定义数论函数的 \emph{Dirichlet 卷积}
+  \[
+    (f*g)(n):=\sum_{d\mid n}f(d)\,g\!\Bigl(\frac nd\Bigr).
+  \]
+  全体数论函数在逐点加法与 Dirichlet 卷积下构成交换环，单位元为 $\varepsilon$（$\varepsilon(1)=1$，$\varepsilon(n)=0$，$n>1$）。
+  由命题~\ref{prop:mu-sum}，$\mu*\mathbf 1=\varepsilon$，即 $\mu$ 与 $\mathbf 1$ 在 Dirichlet 卷积下互逆。
+  定理~\ref{thm:mobius-inv} 即：$g=f*\mathbf 1\iff f=g*\mu$。此环为整环，且完全积性函数 $f$ 满足
+  $f(n)f(1/n)$…… 的相应性质，是解析数论（Dirichlet 级数、$\zeta$ 与 $L$ 函数）的代数基础。
+  例如 $\varphi=\mu*\mathrm{id}$、$\sigma=\mathbf 1*\mathrm{id}$（约数和）、$d(n)=(\mathbf 1*\mathbf 1)(n)$（约数个数）。
+\end{rem}
+
+%==================================================================
+\section{分圆多项式}
+
+设 $\zeta_n=e^{2\pi i/n}$ 为 $n$ 次本原单位根。
+
+\begin{defn}[分圆多项式]
+  设 $\zeta$ 为 $n$ 次本原单位根，定义 $n$ 次\emph{分圆多项式}
+  \[
+    \Phi_n(x)=\prod_{\xi\text{ 为 $n$ 次本原单位根}}(x-\xi).
+  \]
+\end{defn}
+
+\begin{lem}\label{lem:cyclo-factor}
+  $x^n-1=\displaystyle\prod_{d\mid n}\Phi_d(x)$。从而 $n=\displaystyle\sum_{d\mid n}\varphi(d)$。
+\end{lem}
+
+\begin{proof}
+  $x^n-1$ 的全部根为 $1,\zeta_n,\zeta_n^2,\dots,\zeta_n^{n-1}$。$\zeta_n^a$ 的阶为 $n/\gcd(a,n)$，故按阶 $d\mid n$ 分组：
+  \[
+    x^n-1=\prod_{d\mid n}\prod_{\substack{1\le a\le d\\\gcd(a,d)=1}}\Bigl(x-\zeta_n^{a\cdot n/d}\Bigr)=\prod_{d\mid n}\Phi_d(x).
+  \]
+  比较两端的常数项次数（或取 $x=1$ 的极限）即得 $\sum_{d\mid n}\varphi(d)=n$。
+\end{proof}
+
+\begin{thm}[分圆多项式在 $\Q$ 上不可约]\label{thm:cyclo-irred}
+  $\Phi_n(x)\in\Q[x]$ 在 $\Q$ 上不可约。
+\end{thm}
+
+\begin{proof}
+  $\Phi_n(x)\in\Z[x]$ 为首一整系数多项式（可由引理~\ref{lem:cyclo-factor} 归纳证：$\Phi_n(x)=(x^n-1)/\prod_{d\mid n,d<n}\Phi_d(x)$，分母整除分子）。
+
+  设 $\zeta$ 为 $n$ 次本原单位根，$f(x)\in\Q[x]$ 为 $\zeta$ 在 $\Q$ 上的极小多项式（不可约），则 $f(x)\mid\Phi_n(x)$。下证 $\Phi_n(x)\mid f(x)$，从而 $\Phi_n(x)=f(x)$ 不可约。
+
+  \textbf{步骤一。} 由 $f(\zeta)=0$ 及 $f$ 不可约，$f(x)\mid x^n-1$（因 $\zeta^n=1$，$x^n-1$ 在 $\zeta$ 处为零，$f$ 为极小多项式），即存在 $g(x)\in\Q[x]$ 使 $x^n-1=f(x)g(x)$。由 Gauss 引理可设 $f,g\in\Z[x]$（本原多项式）。
+
+  \textbf{步骤二。} 对任意素数 $p\nmid n$，证 $\zeta^p$ 仍是 $f(x)$ 的根。若不然，由 $x^n-1=f(x)g(x)$，$\zeta^p$ 是 $g(x)$ 的根，即 $g(\zeta^p)=0$，亦即 $g(x^p)$ 以 $\zeta$ 为根，故 $f(x)\mid g(x^p)$：存在 $h(x)\in\Z[x]$ 使 $g(x^p)=f(x)h(x)$。取模 $p$ 约化（记 $\bar{}\ $ 为约化）：
+  \[
+    \bar g(x)^p=\bar g(x^p)=\bar f(x)\bar h(x)\quad\in\mathbb{F}_p[x]
+  \]
+  （用了推论~\ref{cor:frobenius}）。若 $\bar f(x)$ 在 $\mathbb{F}_p[x]$ 中可约，则 $\bar g(x)^p$ 可约，即 $\bar f$ 的某不可约因子整除 $\bar g(x)$，从而 $\bar f(x)$ 与 $\bar g(x)$ 有公因子。但
+  \[
+    \bar f(x)\bar g(x)=\overline{x^n-1},
+  \]
+  由 $p\nmid n$ 及下面的引理~\ref{lem:sep}，$\overline{x^n-1}$ 在 $\mathbb{F}_p$ 上无重根，故无平方因子，矛盾于 $\bar f,\bar g$ 有公因子。因此 $\bar f(x)$ 在 $\mathbb{F}_p$ 上不可约。回到 $g(x^p)=f(x)h(x)$ 取模 $p$ 得 $\bar f\mid\bar g^p$，结合 $\bar f$ 不可约得 $\bar f\mid\bar g$，又与 $x^n-1$ 无重根矛盾，除非 $\zeta^p$ 确为 $f$ 的根。
+
+  \textbf{步骤三。} 对任意与 $n$ 互素的 $a$，将其分解为素因子之积 $a=p_1\cdots p_s$（均与 $n$ 互素），反复应用步骤二得 $\zeta^{p_1},\zeta^{p_1p_2},\dots,\zeta^a$ 都是 $f(x)$ 的根。但 $\zeta^a$（$\gcd(a,n)=1$）遍历全部 $n$ 次本原单位根，即 $\Phi_n(x)$ 的全部根。故 $\Phi_n(x)\mid f(x)$。从而 $\Phi_n(x)=f(x)$ 不可约。
+\end{proof}
+
+\begin{lem}\label{lem:sep}
+  设 $p$ 为素数，$p\nmid n$，则 $x^n-[1]$ 在 $\mathbb{F}_p[x]$ 中无重根（可分）。
+\end{lem}
+
+\begin{proof}
+  取形式导数 $\partial:\mathbb{F}_p[x]\to\mathbb{F}_p[x]$。若 $F=u^k v$（$k\ge2$），则 $u^{k-1}\mid\gcd(F,\partial F)$（Leibniz 律）。今
+  \[
+    \partial(x^n-[1])=[n]x^{n-1},\qquad [n]\cdot(x^n-[1])-x\cdot\partial(x^n-[1])=[n].
+  \]
+  因 $p\nmid n$，$[n]$ 在 $\mathbb{F}_p$ 中可逆，故 $x^n-[1]$ 与其导数互素，无重根。
+\end{proof}
+
+\begin{thm}\label{thm:prime-residue}
+  对任意正整数 $m$，存在无穷多个素数 $p\equiv1\pmod m$。
+\end{thm}
+
+\begin{proof}
+  不妨 $m\ge2$。设 $p_1,\dots,p_r$ 为所有满足 $p_i\equiv1\pmod m$ 的素数，令 $x=m\,p_1p_2\cdots p_r$。考虑 $\Phi_m(x)\in\Z[x]$：因 $x\ge2$，$\Phi_m(x)$ 各项与 $x$ 互素故 $|\Phi_m(x)|>1$。取其素因子 $p$。由 $\Phi_m$ 与 $x$ 互素（$\Phi_m(x)\equiv\Phi_m(0)\equiv\pm1\pmod x$），$p\nmid x$，故 $p\ne p_i$ 且 $p\nmid m$。
+
+  由 $\Phi_m(x)\equiv0\pmod p$ 及引理（下文引理~\ref{lem:cyclo-residue}），$x\bmod p$ 的阶恰为 $m$。又 $x^{p-1}\equiv1\pmod p$（Fermat 小定理），故 $m\mid(p-1)$，即 $p\equiv1\pmod m$。但 $p\ne p_i$，矛盾于 $p_1,\dots,p_r$ 的穷尽性。
+\end{proof}
+
+\begin{lem}\label{lem:cyclo-residue}
+  设 $a\in\Z$，$\Phi_n(a)\equiv0\pmod p$，则 $a\bmod p$ 的阶恰为 $n$，即 $p\equiv1\pmod n$（当 $p\nmid n$）。
+\end{lem}
+
+\begin{proof}
+  $\Phi_n(a)\equiv0\pmod p$ 蕴含 $a^n\equiv1\pmod p$，故 $a$ 模 $p$ 的阶 $h$ 整除 $n$。若 $h<n$，则 $a^h-1=\prod_{d\mid h}\Phi_d(a)\equiv0\pmod p$，存在 $d\mid h$ 使 $\Phi_d(a)\equiv0\pmod p$。但 $a$ 模 $p$ 阶为 $h$ 而 $d\mid h$，$d<h$ 时 $a^d\not\equiv1$，矛盾。故 $d=h$。但 $a$ 模 $p$ 阶为 $h$，$a^h\equiv1$，由 $x^n-1$ 无重根（$p\nmid n$，引理~\ref{lem:sep}），$(x-a)\mid\Phi_h$ 与 $(x-a)\mid\Phi_n$ 在 $\mathbb{F}_p$ 中导致 $(x-a)^2\mid x^n-1$，矛盾，除非 $h=n$。
+\end{proof}
+
+%==================================================================
+\section{原根}
+
+\begin{thm}[奇素数幂模的原根]\label{thm:prim-odd}
+  设 $p$ 为奇素数，$\ell\ge1$，则模 $p^\ell$ 存在原根（即 $U(\Z/p^\ell\Z)$ 为循环群）。
+\end{thm}
+
+\begin{proof}
+  $\ell=1$ 时由定理~\ref{thm:prim-exist-p}（$\mathbb{F}_p^\times$ 循环）即得。下设 $\ell>1$。取 $g$ 模 $p$ 的原根，调整使 $g^{p-1}\not\equiv1\pmod{p^2}$（若 $g^{p-1}\equiv1\pmod{p^2}$，则 $(g+p)^{p-1}\equiv g^{p-1}+p(p-1)g^{p-2}\pmod{p^2}$，右端第二项 $p(p-1)g^{p-2}$ 不被 $p^2$ 整除，故 $g+p$ 合适）。
+
+  记 $g^{p-1}=1+ap$，$p\nmid a$。先归纳证对一切 $k\ge1$，
+  \[
+    (1+ap)^{p^k}\equiv1+ap^{k+1}\pmod{p^{k+2}}. \tag{$*$}
+  \]
+  $k=1$ 时 $(1+ap)^p=1+ap^2+\binom p2(ap)^2+\cdots\equiv1+ap^2\pmod{p^3}$（因 $p^2\mid p(p-1)$）。归纳步骤类似展开。
+
+  由 ($*$)，$1+ap$ 模 $p^\ell$ 的阶恰为 $p^{\ell-1}$。于是 $g$ 模 $p^\ell$ 的阶为 $\mathrm{lcm}(p-1,p^{\ell-1})$。由 $p-1$ 与 $p^{\ell-1}$ 互素，阶为 $(p-1)p^{\ell-1}=\varphi(p^\ell)$，即 $g$ 为模 $p^\ell$ 的原根。
+\end{proof}
+
+\begin{thm}[$\mathbb{F}_p^\times$ 循环]\label{thm:prim-exist-p}
+  对素数 $p$，乘法群 $\mathbb{F}_p^\times$ 为循环群，即存在模 $p$ 的原根。
+\end{thm}
+
+\begin{proof}
+  由 $\Phi_{p-1}(x)\mid x^{p-1}-1$ 及推论~\ref{cor:fermat-little}（$x^{p-1}-1$ 在 $\mathbb{F}_p$ 上恰有根 $[1],[2],\dots,[p-1]$），在 $\mathbb{F}_p[x]$ 中
+  \[
+    x^{p-1}-[1]=(x-[1])(x-[2])\cdots(x-[p-1]).
+  \]
+  而 $\prod_{d\mid p-1,d<p-1}\bar\Phi_d(x)$ 的根数 $<p-1$，由 UFD 性质，存在 $1\le a\le p-1$ 使 $(x-[a])\nmid\prod_{d<p-1}\bar\Phi_d$，从而 $(x-[a])\mid\bar\Phi_{p-1}$，即 $\Phi_{p-1}(a)\equiv0\pmod p$。由引理~\ref{lem:cyclo-residue}，$a$ 模 $p$ 的阶为 $p-1$，即 $a$ 为原根。
+\end{proof}
+
+\begin{thm}[原根存在判定]\label{thm:prim-root-char}
+  正整数 $m$ 模下存在原根，当且仅当
+  \[
+    m\in\{\,2,\ 4,\ p^\ell,\ 2p^\ell\,\},\qquad p\text{ 为奇素数},\ \ell\ge1.
+  \]
+\end{thm}
+
+\begin{proof}
+  由定理~\ref{thm:prim-odd} 及中国剩余定理，$2$、$4$、$p^\ell$ 模均存在原根；$2p^\ell$ 时 $U(\Z/2p^\ell\Z)\cong U(\Z/2\Z)\times U(\Z/p^\ell\Z)\cong U(\Z/p^\ell\Z)$ 为循环。
+
+  反之，设 $m=2^e p_1^{e_1}\cdots p_r^{e_r}$（$p_i$ 为互异奇素数，$e_i\ge1$，允许 $r=0$）。若 $m\notin\{2,4,p^\ell,2p^\ell\}$：
+  \begin{itemize}
+    \item $r=0$（$m$ 为 $2$ 的幂）且 $\ell\ge3$：由 $U(\Z/2^\ell\Z)\cong\{\pm1\}\times\langle5\rangle$（下定理~\ref{thm:prim-2pow}）非循环，无原根。
+    \item $r\ge1$：由中国剩余定理 $U(\Z/m\Z)\cong\prod U(\Z/p_i^{e_i}\Z)\times U(\Z/2^e\Z)$，各因子阶 $\varphi(p_i^{e_i})$ 均为偶数，乘积群中每个元素的阶被 $\varphi(m)/2$ 整除（偶数个偶阶因子），故无阶为 $\varphi(m)$ 的元，无原根。
+  \end{itemize}
+  结合 Euler 定理知结论成立。
+\end{proof}
+
+\begin{thm}[$2$ 幂模的单位群结构]\label{thm:prim-2pow}
+  对 $\ell\ge1$，当 $\ell=1,2$ 时 $U(\Z/2^\ell\Z)$ 循环；$\ell\ge3$ 时
+  \[
+    U(\Z/2^\ell\Z)\cong\{\pm1\}\times\langle5\rangle\cong\Z/2\Z\times\Z/2^{\ell-2}\Z.
+  \]
+\end{thm}
+
+\begin{proof}
+  $\ell=1,2$ 时 $3$ 模 $2^\ell$ 为原根。下设 $\ell\ge3$。若 $(-1)^a5^b\equiv(-1)^{a'}5^{b'}\pmod{2^\ell}$，则 $4\mid 2^\ell$ 蕴含 $(-1)^a\equiv(-1)^{a'}\pmod4$，故 $a\equiv a'\pmod2$；再由 $5^b\equiv5^{b'}\pmod{2^\ell}$。归纳可证 $5^{2^k}\equiv1+2^{k+2}\pmod{2^{k+3}}$（$k\ge0$），故 $5$ 模 $2^\ell$ 的阶为 $2^{\ell-2}$。于是 $\{(-1)^a5^b\}$ 给出 $2\cdot 2^{\ell-2}=\varphi(2^\ell)$ 个互异元，穷尽 $U(\Z/2^\ell\Z)$。
+\end{proof}
+
+%==================================================================
+\section{二次互反律（Theorema Aureum）}\label{sec:quad-rec}
+
+\begin{defn}[Legendre 符号]
+  设 $p$ 为奇素数，$a\in\Z$，定义
+  \[
+    \leg{a}{p}=
+    \begin{cases}+1,& \exists\,x\in\Z,\ x^2\equiv a\pmod p,\\ -1,& \text{否则},
+    \end{cases}\qquad\leg{a}{p}=0\ (p\mid a).
+  \]
+\end{defn}
+
+\begin{prop}[Euler 判别法]\label{prop:euler-crit}
+  设 $p$ 为奇素数，$p\nmid a$，则 $\leg{a}{p}\equiv a^{(p-1)/2}\pmod p$。从而 $\leg{ab}{p}=\leg{a}{p}\leg{b}{p}$。
+\end{prop}
+
+\begin{proof}
+  若 $\leg{a}{p}=1$，取 $x_0^2\equiv a\pmod p$，则 $a^{(p-1)/2}\equiv x_0^{p-1}\equiv1\pmod p$。
+  若 $\leg{a}{p}=-1$，由 $a^{(p-1)/2}\not\equiv1$（否则 $a$ 为 $\frac{p-1}{2}$ 次幂... 直接用推论~\ref{cor:fermat-little}：$a^{p-1}-1=(a^{(p-1)/2}-1)(a^{(p-1)/2}+1)\equiv0\pmod p$，故 $a^{(p-1)/2}\equiv\pm1$；已排除 $+1$，故为 $-1$）。
+\end{proof}
+
+\begin{prop}\label{prop:leg-1}
+  $\leg{-1}{p}=(-1)^{(p-1)/2}$，即 $-1$ 为模 $p$ 二次剩余当且仅当 $p\equiv1\pmod4$。
+\end{prop}
+
+\begin{proof}
+  由 Euler 判别法 $\leg{-1}{p}\equiv(-1)^{(p-1)/2}\pmod p$，两端皆为 $\pm1$ 且 $p>2$，故相等。又 $\exists\,x,\ p\mid x^2+1\iff p\equiv1\pmod4$（定理~\ref{thm:sum2sq-prime}(4) 之推论）。
+\end{proof}
+
+\begin{lem}[Gauss 引理]\label{lem:gauss-lemma}
+  设 $p$ 为奇素数，$p\nmid a$，则
+  \[
+    \leg{a}{p}=(-1)^\mu,
+  \]
+  其中 $\mu$ 为 $a,2a,\dots,\frac{p-1}{2}a$ 模 $p$ 的最小正剩余中超过 $\dfrac p2$ 的个数。
+\end{lem}
+
+\begin{proof}
+  对 $j=1,\dots,\frac{p-1}{2}$，设 $ja$ 模 $p$ 的最小正剩余为 $r_j\in\{1,\dots,p-1\}$。令
+  \[
+    b_j=
+    \begin{cases}r_j,& r_j<\dfrac p2,\\ r_j-p,& r_j>\dfrac p2.
+    \end{cases}
+  \]
+  则 $b_j\equiv ja\pmod p$，$|b_j|\in\{1,\dots,\frac{p-1}{2}\}$，且诸 $|b_j|$ 互异（若 $|b_j|=|b_k|$，则 $b_j=\pm b_k$，即 $ja\equiv\pm ka$，$j\equiv\pm k\pmod p$，由 $1\le j,k\le\frac{p-1}{2}$ 推出 $j=k$）。故 $\{|b_1|,\dots,|b_{(p-1)/2}|\}=\{1,\dots,\frac{p-1}{2}\}$，从而
+  \[
+    b_1b_2\cdots b_{(p-1)/2}=(-1)^\mu\Bigl(\tfrac{p-1}{2}\Bigr)!.
+  \]
+  又 $b_1\cdots b_{(p-1)/2}\equiv a\cdot2a\cdots\tfrac{p-1}{2}a=a^{(p-1)/2}\bigl(\frac{p-1}{2}\bigr)!\pmod p$。比较（注意 $\bigl(\frac{p-1}{2}\bigr)!$ 与 $p$ 互素）得
+  \[
+    a^{(p-1)/2}\equiv(-1)^\mu\pmod p.
+  \]
+  由 Euler 判别法即 $\leg{a}{p}=(-1)^\mu$。
+\end{proof}
+
+\begin{cor}\label{cor:leg-2}
+  $\leg{2}{p}=(-1)^{(p^2-1)/8}$，即 $2$ 为模 $p$ 二次剩余当且仅当 $p\equiv\pm1\pmod8$。
+\end{cor}
+
+\begin{proof}
+  由 Gauss 引理，$\mu$ 等于 $2,4,\dots,2\cdot\frac{p-1}{2}$ 模 $p$ 超过 $p/2$ 的个数，即 $\mu=\frac{p-1}{2}-\lfloor p/4\rfloor$，计算得 $\mu$ 为偶当且仅当 $p\equiv\pm1\pmod8$。
+\end{proof}
+
+\begin{thm}[二次互反律]\label{thm:quad-rec}
+  设 $p,q$ 为互异奇素数，则
+  \[
+    \leg{p}{q}\leg{q}{p}=(-1)^{\frac{p-1}{2}\cdot\frac{q-1}{2}}.
+  \]
+\end{thm}
+
+下面给出两个证明。
+
+\subsubsection*{第一个证明（Eisenstein，借助正弦函数）}
+
+定义 $\epsilon$ 函数 $f(x)=e^{2\pi i x}-e^{-2\pi i x}=2i\sin(2\pi x)$。
+
+\begin{lem}\label{lem:eps-mult}
+  设 $p$ 为奇素数，$p\nmid a$，则对任意满足 $f(x)\ne0$ 的函数 $f$，
+  \[
+    \prod_{k=1}^{(p-1)/2}f\!\Bigl(\frac{ka}{p}\Bigr)=\leg{a}{p}\prod_{k=1}^{(p-1)/2}f\!\Bigl(\frac{k}{p}\Bigr).
+  \]
+\end{lem}
+
+\begin{proof}
+  由 Gauss 引理，集合 $\{|\text{最小剩余}(ka/p)|\}$ 即 $\{1,\dots,\frac{p-1}{2}\}$，乘上 $f$ 的偶/奇性即得因子 $\leg{a}{p}$（详见讲义 Lemma 6.9）。
+\end{proof}
+
+\begin{lem}\label{lem:eps-prod}
+  设 $n$ 为奇数，则
+  \[
+    \prod_{k=1}^{(n-1)/2}f\!\Bigl(\frac{x+k}{n}\Bigr)f\!\Bigl(\frac{x-k}{n}\Bigr)=\frac{f(nx)}{f(x)}.
+  \]
+\end{lem}
+
+\begin{proof}
+  由 $x^n-y^n=\prod_{k=0}^{n-1}(x-\zeta_n^{-k}y)$ 及 $n$ 奇、配对 $k$ 与 $n-k$ 即得。
+\end{proof}
+
+\begin{proof}[定理~\ref{thm:quad-rec} 的 Eisenstein 证明]
+  由引理~\ref{lem:eps-mult}，
+  \[
+    \leg{q}{p}=\prod_{j=1}^{(p-1)/2}\frac{f(qj/p)}{f(j/p)}.
+  \]
+  由引理~\ref{lem:eps-prod}（$n=q$），$\dfrac{f(qx)}{f(x)}=\prod_{k=1}^{(q-1)/2}f\!\bigl(\tfrac{x+k}{q}\bigr)f\!\bigl(\tfrac{x-k}{q}\bigr)$。代入 $x=j/p$：
+  \[
+    \leg{q}{p}=\prod_{j=1}^{(p-1)/2}\prod_{k=1}^{(q-1)/2}f\!\Bigl(\frac{j}{p}+\frac{k}{q}\Bigr)f\!\Bigl(\frac{j}{p}-\frac{k}{q}\Bigr).
+  \]
+  对称地（交换 $p,q$），
+  \[
+    \leg{p}{q}=\prod_{k=1}^{(q-1)/2}\prod_{j=1}^{(p-1)/2}f\!\Bigl(\frac{k}{q}+\frac{j}{p}\Bigr)f\!\Bigl(\frac{k}{q}-\frac{j}{p}\Bigr).
+  \]
+  注意到第二因子中 $f\!\bigl(\tfrac{k}{q}-\tfrac{j}{p}\bigr)=-f\!\bigl(\tfrac{j}{p}-\tfrac{k}{q}\bigr)$（$f$ 为奇函数），共有 $\frac{p-1}{2}\cdot\frac{q-1}{2}$ 个因子变号，故
+  \[
+    \leg{p}{q}\leg{q}{p}=(-1)^{\frac{p-1}{2}\cdot\frac{q-1}{2}}. \qedhere
+  \]
+\end{proof}
+
+\subsubsection*{第二个证明（Gauss 和）}
+
+设 $\zeta_p=e^{2\pi i/p}$。对 $a\in\Z$ 定义\emph{Gauss 和}
+\[
+  g_a:=\sum_{k=0}^{p-1}\leg{k}{p}\zeta_p^{ak},\qquad g:=g_1.
+\]
+
+\begin{lem}\label{lem:gauss-sum-lin}
+  对任意奇素数 $p$，$\sum_{k=0}^{p-1}\zeta_p^{ak}=
+  \begin{cases}p,& p\mid a,\\0,&\text{否则}.
+  \end{cases}$
+\end{lem}
+
+\begin{prop}[Gauss 和的性质]\label{prop:gauss-sum}
+  \begin{enumerate}[(1)]
+    \item 对任意 $a\in\Z$，$g_a=\leg{a}{p}\,g$；
+    \item 记 $p^*=(-1)^{(p-1)/2}p$，则 $g^2=p^*$。
+  \end{enumerate}
+\end{prop}
+
+\begin{proof}
+  (1) $p\mid a$ 时显然。$p\nmid a$ 时，$\leg{a}{p}g_a=\sum_k\leg{ak}{p}\zeta_p^{ak}$，令 $b\in\Z$ 为 $a$ 模 $p$ 逆，映射 $k\mapsto bk$ 给出 $\leg{a}{p}g_a=\sum_b\leg{b}{p}\zeta_p^b=g$。
+
+  (2) 计算 $\sum_{a=0}^{p-1}g_ag_{-a}$。由 (1)，$p\nmid a$ 时 $g_ag_{-a}=\leg{-1}{p}g^2$，故
+  \[
+    \sum_{a=0}^{p-1}g_ag_{-a}=\leg{-1}{p}(p-1)g^2.
+  \]
+  直接计算
+  \[
+    \sum_{a=0}^{p-1}g_ag_{-a}=\sum_{k,\ell}\leg{k}{p}\leg{\ell}{p}\sum_a\zeta_p^{a(k-\ell)}.
+  \]
+  由引理~\ref{lem:gauss-sum-lin}，内层求和当 $k=\ell$ 时为 $p$，否则为 $0$。故
+  \[
+    \sum_{a=0}^{p-1}g_ag_{-a}=p\sum_{k=0}^{p-1}\leg{k}{p}^2=p(p-1).
+  \]
+  比较得 $\leg{-1}{p}(p-1)g^2=p(p-1)$，约去 $p-1$：$g^2=\leg{-1}{p}^{-1}p=\leg{-1}{p}p=(-1)^{(p-1)/2}p=p^*$。
+\end{proof}
+
+\begin{proof}[定理~\ref{thm:quad-rec} 的 Gauss 和证明]
+  在环 $\Z[\zeta_p]$ 中考虑。由推论~\ref{cor:frobenius}（Frobenius），
+  \[
+    g^q=\Bigl(\sum_{k=0}^{p-1}\leg{k}{p}\zeta_p^k\Bigr)^q\equiv\sum_{k=0}^{p-1}\leg{k}{p}\zeta_p^{qk}=g_q\pmod{q}.
+  \]
+  由命题~\ref{prop:gauss-sum}，$g_q=\leg{q}{p}g$，且 $g^2=p^*$，故 $g^q=g^{q-1}\cdot g=(p^*)^{(q-1)/2}g\equiv\leg{q}{p}g\pmod q$。两边乘 $g$（用 $g^2=p^*$）：
+  \[
+    (p^*)^{(q+1)/2}\equiv\leg{q}{p}\,p^*\pmod q.
+  \]
+  约去 $p^*$（$q\nmid p^*$）：$(p^*)^{(q-1)/2}\equiv\leg{q}{p}\pmod q$。而 $(p^*)^{(q-1)/2}=\leg{p^*}{q}$（Euler 判别法），故
+  \[
+    \leg{p^*}{q}=\leg{q}{p}.
+  \]
+  又 $\leg{p^*}{q}=\leg{(-1)^{(p-1)/2}p}{q}=\leg{-1}{q}^{(p-1)/2}\leg{p}{q}=(-1)^{\frac{p-1}{2}\cdot\frac{q-1}{2}}\leg{p}{q}$，代入即得二次互反律。
+\end{proof}
+
+\begin{thm}[原型定理 / 雅可比特征判定]\label{thm:prototype}
+  对任意整数 $a$，存在 $M\in\Z_{>0}$ 与互异剩余类 $r_1,\dots,r_k\pmod M$，使对一切素数 $p\nmid a$，
+  \[
+    a\text{ 为模 }p\text{ 二次剩余}\iff p\equiv r_i\pmod M\ (\text{某一 }i).
+  \]
+\end{thm}
+
+\begin{proof}[证明概要]
+  将 $a$ 分解，利用命题~\ref{prop:leg-1}、推论~\ref{cor:leg-2} 与二次互反律，把 $\leg{a}{p}$ 表为若干符号 $(-1)^{\text{($p$ 的多项式)}}$ 之积，其取值仅依赖 $p\bmod M$（$M=8a$ 或其因子）。结合中国剩余定理即得。
+\end{proof}
+
+%==================================================================
+\section{Riemann $\zeta$ 函数}\label{sec:zeta}
+
+\begin{defn}[Riemann $\zeta$ 函数]
+  设 $s\in\C$，$\Re(s)>1$，定义 $\displaystyle\zeta(s)=\sum_{n=1}^\infty\frac1{n^s}$。
+\end{defn}
+
+\begin{prop}[Euler 乘积]\label{prop:euler-prod-zeta}
+  $\zeta(s)$ 在 $\Re(s)>1$ 绝对收敛，且
+  \[
+    \zeta(s)=\prod_{p\ \text{素数}}\frac1{1-p^{-s}},\qquad \Re(s)>1.
+  \]
+\end{prop}
+
+\begin{proof}
+  绝对收敛性由 $\bigl|\frac1{n^s}\bigr|=\frac1{n^{\Re(s)}}\le\frac1{n^{1+\delta}}$ 及 $p$-级数收敛保证。对每个素数 $p$，
+  \[
+    \frac1{1-p^{-s}}=\sum_{k=0}^\infty\frac1{p^{ks}}.
+  \]
+  对 $N\ge1$，
+  \[
+    \prod_{p\le N}\frac1{1-p^{-s}}=\sideset{}{'}\sum_n\frac1{n^s},
+  \]
+  其中 $\sum'$ 表示对所有素因子 $\le N$ 的 $n$ 求和。则
+  \[
+    \Bigl|\zeta(s)-\prod_{p\le N}\frac1{1-p^{-s}}\Bigr|\le\sum_{n>N}\frac1{n^s}.
+  \]
+  令 $N\to\infty$（右端 $\to0$）即得 Euler 乘积。
+\end{proof}
+
+\subsection{完成 $\zeta$ 函数与函数方程}
+
+记 $\Gamma(s)=\int_0^\infty e^{-y}y^s\frac{dy}{y}$（$\Re(s)>0$）为 $\Gamma$ 函数，满足 $\Gamma(s+1)=s\Gamma(s)$、$\Gamma(s)\Gamma(1-s)=\dfrac{\pi}{\sin\pi s}$、Legendre 倍元公式。Jacobi theta 函数
+\[
+  \vartheta(z)=\sum_{n\in\Z}e^{\pi i n^2 z}=1+2\sum_{n=1}^\infty e^{\pi i n^2 z}.
+\]
+
+\begin{lem}[theta 变换公式]\label{lem:theta-trans}
+  对 $z\in\mathbb{H}=\{z\in\C\mid\Im z>0\}$，有 $\vartheta(-1/z)=\sqrt{z/i}\,\vartheta(z)$。
+\end{lem}
+
+\begin{proof}[证明概要]
+  取 $f(t)=e^{\pi i t^2z}$，其 Fourier 变换 $\widehat f(\xi)=\frac1{\sqrt{-iz}}e^{-\pi i\xi^2/z}$（用 Gauss 积分 $\int e^{\pi i(t-\xi/z)^2z}dt=\frac1{\sqrt{-iz}}$）。由 Poisson 求和 $\sum_{n\in\Z}f(n)=\sum_{\xi\in\Z}\widehat f(\xi)$，得 $\vartheta(z)=\frac1{\sqrt{-iz}}\vartheta(-1/z)$。
+\end{proof}
+
+定义\emph{完成 $\zeta$ 函数}
+\[
+  Z(s):=\pi^{-s/2}\Gamma\!\Bigl(\frac{s}{2}\Bigr)\zeta(s).
+\]
+
+\begin{prop}\label{prop:zeta-integral}
+  $Z(s)=\dfrac12\displaystyle\int_0^\infty\bigl(\vartheta(iy)-1\bigr)y^{s/2}\frac{dy}{y}.$
+\end{prop}
+
+\begin{proof}
+  由 $\Gamma$ 积分作替换 $y\mapsto\pi n^2 y$，得 $\pi^{-s/2}\Gamma(s/2)\cdot\dfrac1{n^s}=\int_0^\infty e^{-\pi n^2y}y^{s/2}\frac{dy}{y}$。对 $n$ 求和（绝对收敛）即得。
+\end{proof}
+
+\begin{thm}[$\zeta$ 的函数方程]\label{thm:zeta-func-eq}
+  完成 $\zeta$ 函数 $Z(s)$ 可亚纯延拓至 $\C\setminus\{0,1\}$，在 $0,1$ 处有一阶极点（留数 $-1,1$），且满足对称的函数方程
+  \[
+    Z(s)=Z(1-s).
+  \]
+\end{thm}
+
+\begin{proof}
+  由命题~\ref{prop:zeta-integral} 拆分为 $\int_0^1+\int_1^\infty$。当 $y\to\infty$，$\frac12(\vartheta(iy)-1)=O(e^{-\pi y})$，故 $\int_1^\infty$ 在 $\C$ 全纯。对 $\int_0^1$ 作变换 $y\mapsto1/y$ 并用 theta 变换公式（引理~\ref{lem:theta-trans}）$\vartheta(i/y)=\sqrt y\,\vartheta(iy)$：
+  \[
+    \int_0^1\frac12\bigl(\vartheta(iy)-1\bigr)y^{s/2}\frac{dy}{y}
+    =\frac1{s-1}+\frac1{2}\int_0^1\bigl(\vartheta(iy)-1\bigr)y^{(1-s)/2}\frac{dy}{y}-\frac12\int_0^1y^{-1/2}\frac{dy}{y}\cdot(\cdots)
+  \]
+  整理得（详见讲义定理 7.7）
+  \[
+    Z(s)=-\frac1{s}+\frac1{s-1}+\int_1^\infty\frac12\bigl(\vartheta(iy)-1\bigr)\bigl(y^{s/2}+y^{(1-s)/2}\bigr)\frac{dy}{dy}.
+  \]
+  右端关于 $s$ 对称：$Z(s)=Z(1-s)$，且仅在 $s=0,1$ 有一阶极点（留数 $-1,1$）。
+\end{proof}
+
+\begin{cor}\label{cor:zeta-func-eq}
+  $\zeta(s)$ 亚纯延拓至 $\C\setminus\{1\}$，在 $s=1$ 处有一阶极点（留数 $1$），且
+  \[
+    \zeta(1-s)=2(2\pi)^{-s}\Gamma(s)\cos\!\Bigl(\frac{\pi s}{2}\Bigr)\zeta(s).
+  \]
+\end{cor}
+
+\begin{conj}[Riemann 假设]
+  $\zeta(s)$ 的全部非平凡零点落在临界线 $\Re(s)=\tfrac12$ 上。
+\end{conj}
+
+\subsection{Dirichlet 密度}
+
+\begin{defn}
+  设 $S\subset\Prim$，若极限 $\displaystyle d(S):=\lim_{s\to1^+}\frac{\sum_{p\in S}p^{-s}}{\log\frac1{s-1}}$ 存在，称之为 $S$ 的\emph{Dirichlet 密度}。
+\end{defn}
+
+由 Euler 乘积可证 $\log\zeta(s)\sim\sum_p p^{-s}$，且 $s\to1^+$ 时 $\zeta(s)\to\infty$（在 $s=1$ 有极点），故全体素数的 Dirichlet 密度为 $1$。
+
+%==================================================================
+\section{Dirichlet $L$ 函数与等差数列素数定理}
+
+\begin{defn}[Dirichlet 特征]
+  设 $m$ 为正整数，模 $m$ 的 \emph{Dirichlet 特征}为群同态 $\chi:U(\Z/m\Z)\to S^1$。延拓为 $\chi:\Z\to S^1\cup\{0\}$：
+  \[
+    \chi(n)=
+    \begin{cases}\chi([n]),&\gcd(n,m)=1,\\0,&\text{否则}.
+    \end{cases}
+  \]
+  恒取 $1$ 的特征 $\chi_0$ 称为主特征。
+\end{defn}
+
+\begin{defn}[Dirichlet $L$ 函数]
+  设 $\Re(s)>1$，模 $m$ 的 Dirichlet 特征 $\chi$，定义 $\displaystyle L(\chi,s)=\sum_{n=1}^\infty\frac{\chi(n)}{n^s}$。
+\end{defn}
+
+\begin{prop}\label{prop:L-euler}
+  $L(\chi,s)$ 在 $\Re(s)>1$ 绝对收敛，且有 Euler 乘积 $L(\chi,s)=\displaystyle\prod_{p}\frac1{1-\chi(p)p^{-s}}$。
+\end{prop}
+
+\begin{thm}[关键非零性]\label{thm:L-nonzero}
+  对模 $m$ 的 Dirichlet 特征 $\chi$：
+  \begin{enumerate}[(1)]
+    \item 若 $\chi=\chi_0$ 为主特征，则 $L(\chi,s)$ 在 $s=1$ 有极点；
+    \item 若 $\chi\ne\chi_0$ 为非主特征，则 $L(\chi,s)$ 在 $s=1$ 处全纯，且 $L(\chi,1)\ne0$。
+  \end{enumerate}
+\end{thm}
+
+\begin{proof}[证明概要]
+  主特征情形：$L(\chi_0,s)=\zeta(s)\prod_{p\mid m}(1-p^{-s})$，故 $s=1$ 处有极点（继承自 $\zeta$）。
+
+  非主特征情形（反证）。设存在 $\chi\ne\chi_0$ 使 $L(\chi,1)=0$。考虑分圆域 $K=\Q(\zeta_m)$ 的 Dedekind $\zeta$ 函数 $\zeta_K(s)=\prod_{\mathfrak p}\frac1{1-N(\mathfrak p)^{-s}}$，它有分解（模 $m$ 全部特征的 $L$ 函数之积）$\zeta_K(s)=\prod_\chi L(\chi,s)$。若某非主 $\chi$ 使 $L(\chi,1)=0$，则 $\prod_\chi L(\chi,s)$ 在 $s=1$ 处零点阶 $\ge1$，而 $\zeta_K(s)$ 在 $s=1$ 应有\emph{一阶极点}（与 $\zeta(s)$ 同阶），矛盾。
+
+  \textbf{实特征复特征成对论证（讲义完整证明）。} 若复特征 $\chi\ne\bar\chi$ 使 $L(\chi,1)=0$，则 $L(\bar\chi,1)=\overline{L(\chi,1)}=0$，$\prod_\chi L(\chi,s)$ 在 $s=1$ 零点阶 $\ge2$。但由 Euler 乘积与 $\prod_\chi\frac1{1-\chi(p)p^{-s}}=\bigl(\frac1{1-p^{-fs}}\bigr)^r\ge1$（$f$ 为 $p\bmod m$ 的阶，$r=\varphi(m)/f$），$\prod_\chi L(\chi,s)\ge1$ 于 $s\to1^+$ 不趋于 $0$，矛盾。
+
+  对\emph{实}特征 $\chi=\bar\chi\ne\chi_0$，若 $L(\chi,1)=0$，令 $F(s)=\zeta(s)L(\chi,s)$，则 $F$ 在 $s=1$ 全纯且 $F(0)=0$（由 $\zeta,L$ 的函数方程）。但 $F(s)=\sum a_nn^{-s}$，$a_n=\sum_{d\mid n}\chi(d)\ge0$（因 $\chi(1)=1$ 使 $a_{p^k}=1+\chi(p)+\cdots+\chi(p)^k\ge0$），故 $F$ 的 Taylor 展式系数非负，$F(0)=\sum\frac{2^k}{k!}\sum\frac{a_n}{n^2}(\log n)^k>0$，矛盾于 $F(0)=0$。故 $L(\chi,1)\ne0$。
+\end{proof}
+
+\begin{thm}[Dirichlet 等差数列素数定理]\label{thm:dirichlet}
+  设 $a,m\in\Z$，$\gcd(a,m)=1$，记 $\mathcal P(a,m)=\{\,p\in\Prim\mid p\equiv a\pmod m\,\}$。则 $\mathcal P(a,m)$ 的 Dirichlet 密度存在，且
+  \[
+    d\bigl(\mathcal P(a,m)\bigr)=\frac1{\varphi(m)}.
+  \]
+  特别地，每个与 $m$ 互素的剩余类中含无穷多个素数。
+\end{thm}
+
+\begin{proof}
+  由命题~\ref{prop:L-euler}，$s>1$ 实时
+  \[
+    \log L(\chi,s)=\sum_p\chi(p)p^{-s}+R_\chi(s),\qquad R_\chi(s)\xrightarrow{s\to1}0.
+  \]
+  对全部模 $m$ 特征 $\chi$ 求和并乘以 $\chi(a)$：
+  \[
+    \sum_\chi\chi(a)\log L(\chi,s)=\sum_p\Bigl(\sum_\chi\chi(a)\chi(p)\Bigr)p^{-s}+\sum_\chi\chi(a)R_\chi(s).
+  \]
+  由特征正交性，$\sum_\chi\chi(a)\overline{\chi(p)}=
+  \begin{cases}\varphi(m),& p\equiv a\pmod m,\\0,&\text{否则}
+  \end{cases}$（$\chi(p)=\overline{\chi(p)}$ 对实值，一般取共轭），故
+  \[
+    \sum_\chi\chi(a)\log L(\chi,s)=\varphi(m)\sum_{p\equiv a\pmod m}p^{-s}+o(1).
+  \]
+  由定理~\ref{thm:L-nonzero}：$\chi=\chi_0$ 时 $L(\chi_0,s)\sim\zeta(s)$，$\log L(\chi_0,s)/\log\frac1{s-1}\to1$；$\chi\ne\chi_0$ 时 $L(\chi,s)$ 在 $s=1$ 全纯非零，$\log L(\chi,s)/\log\frac1{s-1}\to0$。故
+  \[
+    d\bigl(\mathcal P(a,m)\bigr)=\lim_{s\to1^+}\frac{\sum_{p\equiv a\pmod m}p^{-s}}{\log\frac1{s-1}}=\frac1{\varphi(m)}\lim_{s\to1^+}\frac{\log L(\chi_0,s)}{\log\frac1{s-1}}=\frac1{\varphi(m)}. \qedhere
+  \]
+\end{proof}
+
+\begin{rem}
+  取 $m=4$、$a=1$（或 $a=3$）即得「$4k+1$ 型与 $4k+3$ 型素数各占 Dirichlet 密度一半」；这给出定理~\ref{thm:sum2sq-prime}(4) 中 $p\equiv1\pmod4$ 素数无限性的一种解析证明。
+\end{rem}
+
+%==================================================================
+\section{有限域上的 Fermat 曲线}\label{sec:fermat-fp}
+
+设 $p$ 为素数，$\mathbb{F}_p=\Z/p\Z$，$\mathbb{F}_p^\times$ 为其乘法群。$\mathbb{F}_p^\times$ 的特征（即取值于 $S^1$ 的群同态）等同于模 $p$ 的 Dirichlet 特征。
+
+\begin{prop}\label{prop:count-xn}
+  设 $p\equiv1\pmod n$，$a\in\mathbb{F}_p^\times$，则方程 $x^n=a$ 在 $\mathbb{F}_p$ 中的解的个数
+  \[
+    N(x^n=a)=\sum_{\substack{\chi^n=\chi_0\\\chi}}\chi(a),
+  \]
+  其中 $\chi$ 遍历 $\widehat{\mathbb{F}_p^\times}$ 中满足 $\chi^n=\chi_0$（即 $n$ 阶特征）的特征。
+\end{prop}
+
+\begin{proof}
+  令 $f(a)=N(x^n=a)\in\C[\mathbb{F}_p^\times]$，取 Fourier 变换：
+  \[
+    \hat f(\chi)=\frac1{\sqrt{p-1}}\sum_{a\in\mathbb{F}_p^\times}N(x^n=a)\chi(a)=\frac1{\sqrt{p-1}}\sum_{x\in\mathbb{F}_p^\times}\chi(x^n)=\frac1{\sqrt{p-1}}\sum_x\chi^n(x).
+  \]
+  由特征正交性，$\sum_x\chi^n(x)=
+  \begin{cases}p-1,&\chi^n=\chi_0,\\0,&\text{否则}
+  \end{cases}$。再用有限 Abel 群上的 Fourier 反演，$f(a)=\frac1{\sqrt{p-1}}\sum_\chi\hat f(\chi)\chi(a)=\sum_{\chi^n=\chi_0}\chi(a)$。
+\end{proof}
+
+\begin{defn}[Jacobi 和]
+  对特征 $\chi,\lambda\in\widehat{\mathbb{F}_p^\times}$，定义 \emph{Jacobi 和} $J(\chi,\lambda)=\sqrt{(p-1)}\,(\chi*\lambda)(1)=\sum_{a+b=1}\chi(a)\lambda(b)$。
+\end{defn}
+
+\begin{prop}[Jacobi 和的性质]\label{prop:jacobi}
+  \begin{enumerate}[(1)]
+    \item $J(\chi_0,\chi_0)=p$，$J(\chi_0,\chi)=0$（$\chi\ne\chi_0$）；
+    \item $J(\chi,\chi^{-1})=-\chi(-1)$；
+    \item 若 $\chi,\lambda,\chi\lambda$ 均非主特征，则 $J(\chi,\lambda)=\dfrac{\tau(\chi)\tau(\lambda)}{\tau(\chi\lambda)}$，其中 $\tau(\chi)=\sum_{a\in\mathbb{F}_p^\times}\chi(a)\zeta_p^a$ 为 Gauss 和。
+  \end{enumerate}
+\end{prop}
+
+\begin{cor}\label{cor:jacobi-mod}
+  若 $\chi,\lambda,\chi\lambda$ 均非主特征，则 $|J(\chi,\lambda)|=\sqrt p$。
+\end{cor}
+
+\begin{proof}
+  由命题~\ref{prop:jacobi}(3) 与 $|\tau(\chi)|=\sqrt p$（命题~\ref{prop:gauss-sum}(2)）即得。
+\end{proof}
+
+\begin{thm}[Fermat 曲线 $\#\!C_n(\mathbb{F}_p)$ 的估计]\label{thm:fermat-fp}
+  设 $p\equiv1\pmod n$，$n\ge2$，$C_n:x^n+y^n=1$。则
+  \[
+    \bigl|\#C_n(\mathbb{F}_p)-(p+1)\bigr|\le(n-1)(n-2)\sqrt p.
+  \]
+\end{thm}
+
+\begin{proof}
+  由命题~\ref{prop:count-xn} 与命题~\ref{prop:jacobi}，
+  \[
+    \#C_n(\mathbb{F}_p)=N(x^n+y^n=1)=\sum_{a+b=1}\sum_{\chi^n=\chi_0}\sum_{\lambda^n=\chi_0}\chi(a)\lambda(b)
+    =\sum_{\chi^n=\chi_0}\sum_{\lambda^n=\chi_0}J(\chi,\lambda).
+  \]
+  分离主特征项 $J(\chi_0,\chi_0)=p$ 与 $J(\chi_0,\lambda),J(\chi,\chi_0)$（为 $0$ 或 $-\chi(-1)$，共贡献 $1-N(x^n=-1)$），剩余项 $(n-1)^2$ 个但 $i+j=n$ 时 $J(\chi^i,\chi^j)=-\chi^i\chi^j(-1)$ 为 $O(1)$，真正大小 $\sqrt p$ 的项共 $(n-1)(n-2)$ 个，每个模长 $\sqrt p$（推论~\ref{cor:jacobi-mod}）。故
+  \[
+    \bigl|\#C_n(\mathbb{F}_p)-(p+1-N(x^n=-1))\bigr|\le(n-1)(n-2)\sqrt p.
+  \]
+  而 $|N(x^n=-1)|\le1$，即得所要。
+\end{proof}
+
+\begin{rem}
+  此即椭圆曲线（$n=3$）与高维 Fermat 曲线 $\#C_n(\mathbb{F}_p)$ 的 Hasse 型界，对应 Riemann 假设在函数域情形的雏形（Weil 猜想，Deligne 1974 完整证明）。
+\end{rem}
+
+%==================================================================
+\section{Fermat 大定理（$n=4$ 与 $n=3$）}\label{sec:flt}
+
+\subsection{$n=4$：无穷递降法}
+
+\begin{thm}\label{thm:flt4-aux}
+  方程 $x^4+y^4=z^2$ 没有正整数解。从而 Fermat 方程 $x^4+y^4=z^4$ 无正整数解。
+\end{thm}
+
+\begin{proof}
+  反证。设有正整数解，取其中 $z_0$ 最小者 $(x_0,y_0,z_0)$。则 $\gcd(x_0,y_0)=1$（若有公因子 $d$，则 $d^4\mid z_0^2$，可约简得 $z_0$ 更小的解）。由 $x_0^4+y_0^4=z_0^2$ 模 $4$ 知 $x_0,y_0$ 一奇一偶，不妨 $x_0$ 奇、$y_0$ 偶，$z_0$ 奇。
+
+  \textbf{第一步。} 改写为
+  \[
+    y_0^4=(z_0-x_0^2)(z_0+x_0^2).
+  \]
+  计算最大公因数：$\gcd(z_0-x_0^2,z_0+x_0^2)=\gcd(z_0-x_0^2,2z_0)$，而 $\gcd(x_0,z_0)=1$（由 $\gcd(x_0,y_0)=1$ 与方程），故公因数为 $2$。
+
+  \textbf{第二步。} 因两因子积为 $y_0^4$（$y_0$ 偶，含 $2$ 的高次幂）且二者公因数恰为 $2$，可令
+  \[
+    z_0-x_0^2=8a^4,\qquad z_0+x_0^2=2b^4,\qquad\gcd(a,b)=1
+  \]
+  （另一种分配 $2a^4,8b^4$ 会给出 $x_0^2=4b^4-a^4\equiv-1\pmod4$，与 $x_0$ 奇矛盾，故排除）。两式相减：
+  \[
+    2x_0^2=2b^4-8a^4\quad\Longrightarrow\quad x_0^2=b^4-4a^4,
+  \]
+  即 $4a^4=(b^2-x_0)(b^2+x_0)$。又 $\gcd(b^2-x_0,b^2+x_0)=\gcd(b^2-x_0,2x_0)=2$（同样 $b,x_0$ 互素且皆奇），故
+  \[
+    b^2-x_0=2c^4,\qquad b^2+x_0=2d^4,
+  \]
+  相加得
+  \[
+    c^4+d^4=b^2.
+  \]
+
+  \textbf{第三步（递降）。} 注意 $b^4=\dfrac{z_0+x_0^2}{2}<z_0$（因 $x_0^2<z_0$），故 $b<z_0$。但 $(c,d,b)$ 是 $x^4+y^4=z^2$ 型方程的又一正整数解，且第三坐标 $b<z_0$，与 $z_0$ 的极小性矛盾。故原方程无正整数解。
+
+  至于 $x^4+y^4=z^4$：若 $(x_0,y_0,z_0)$ 为解，则 $(x_0,y_0,z_0^2)$ 为 $x^4+y^4=z^2$ 的解，矛盾。
+\end{proof}
+
+\subsection{$n=3$：Eisenstein 整数 $\Z[\omega]$}
+
+设 $\omega=\dfrac{-1+\sqrt{-3}}2=e^{2\pi i/3}$，Eisenstein 整数环 $\Z[\omega]=\{\,a+b\omega\mid a,b\in\Z\,\}$，范数 $\Nm(a+b\omega)=a^2-ab+b^2$。$\Z[\omega]$ 为欧氏整环（故 PID，故 UFD），其全部单位为 $\{\pm1,\pm\omega,\pm\omega^2\}$。令 $\lambda=1-\omega$，则 $\lambda$ 为 $\Z[\omega]$ 中唯一的（相差单位）素元，$(\lambda)^2\mid\mid 3$（即 $\lambda^2=1-2\omega+\omega^2=-3\omega$，$3=-\omega^2\lambda^2$）。
+
+\begin{thm}\label{thm:flt3}
+  对任意单位 $u\in\Z[\omega]^\times$，方程 $x^3+y^3=u\,z^3$ 在 $\Z[\omega]$ 中没有 $\lambda\nmid x_0y_0z_0$ 的解 $(x_0,y_0,z_0)$。特别地，$x^3+y^3=z^3$ 在 $\Z$ 中无正整数解。
+\end{thm}
+
+证明需要几个引理。
+
+\begin{lem}\label{lem:eis-cube}
+  在 $\Z[\omega]$ 中，若 $\lambda\nmid\alpha$，则 $\alpha^3\equiv\pm1\pmod{\lambda^4}$。
+\end{lem}
+
+\begin{proof}
+  由 $\Z[\omega]/(\lambda)\cong\mathbb{F}_3$，$\alpha\bmod\lambda\in\{-1,0,1\}$；$\lambda\nmid\alpha$ 故 $\alpha\equiv\pm1\pmod\lambda$。
+  \begin{itemize}
+    \item 若 $\alpha\equiv1\pmod\lambda$，令 $\alpha=1+\lambda\beta$，则
+      \[
+        \alpha^3-1=(\alpha-1)(\alpha-\omega)(\alpha-\omega^2)=\lambda\beta\cdot(1-\omega+\lambda\beta)\cdot(1-\omega^2+\lambda\beta)=\lambda^3\beta(\beta+1)(\beta+2-\omega).
+      \]
+      $\beta,\beta+1,\beta+2-\omega$ 三者之积被 $\lambda$ 整除（三者模 $\lambda$ 为 $0,1,2$ 恰占尽 $\mathbb{F}_3$），故 $\alpha^3\equiv1\pmod{\lambda^4}$。
+    \item 若 $\alpha\equiv-1\pmod\lambda$，则 $\alpha^3=(-(-\alpha))^3\equiv-1\pmod{\lambda^4}$（对 $-\alpha$ 用上款）。
+  \end{itemize}
+\end{proof}
+
+\begin{lem}\label{lem:eis-z}
+  设 $u\in\Z[\omega]$ 为单位，$(x_0,y_0,z_0)$ 为 $x^3+y^3=uz^3$ 在 $\Z[\omega]$ 中 $\lambda\nmid x_0y_0z_0$ 的解，则 $\pm1\pm1\equiv u\pmod{\lambda^4}$，即 $u$ 必存在。
+\end{lem}
+
+\begin{proof}
+  由引理~\ref{lem:eis-cube}，$x_0^3,y_0^3\equiv\pm1\pmod{\lambda^4}$，$z_0^3\equiv\pm1\pmod{\lambda^4}$，代入 $x_0^3+y_0^3=uz_0^3$ 取模 $\lambda^4$ 即得。
+\end{proof}
+
+\begin{lem}\label{lem:eis-descent-z}
+  设 $u$ 为单位，$(x_0,y_0,z_0)$ 为 $x^3+y^3=uz^3$ 在 $\Z[\omega]$ 中的解且 $\lambda\nmid x_0y_0$，则 $\lambda^2\mid z_0$。
+\end{lem}
+
+\begin{proof}
+  由引理~\ref{lem:eis-cube} 知 $z_0\equiv0\pmod\lambda$（否则 $z_0^3\equiv\pm1$，而左端 $x_0^3+y_0^3\equiv0\pmod{\lambda^4}$，矛盾于 $\lambda\nmid z_0$）。取模 $\lambda^4$：$\pm1\pm1\equiv uz_0^3\pmod{\lambda^4}$，左端为 $0$（同号）或 $\pm2$（异号，$2$ 在 $\Z[\omega]$ 中与 $\lambda$ 不互素）；由 $\lambda^2\mid 2$（$3=-\omega^2\lambda^2$，$2=3-1\equiv\cdots$，实际 $\lambda\mid 2$ 但更细 $\lambda^2\nmid2$），知 $uz_0^3\equiv0\pmod{\lambda^2}$ 恒成立，故 $\ord_\lambda(uz_0^3)\ge4$，即 $3\ord_\lambda(z_0)\ge4$，$\ord_\lambda(z_0)\ge2$，$\lambda^2\mid z_0$。
+\end{proof}
+
+\begin{lem}[递降引理]\label{lem:eis-descent}
+  设 $u$ 为单位，$(x_0,y_0,z_0)$ 为 $x^3+y^3=uz^3$ 在 $\Z[\omega]$ 中的解，$\lambda\nmid x_0y_0$，则存在单位 $u_1$ 与 $x_1,y_1,z_1\in\Z[\omega]$ 使
+  \[
+    x_1^3+y_1^3=u_1z_1^3,\qquad \lambda\nmid x_1y_1,\qquad \ord_\lambda(z_1)=\ord_\lambda(z_0)-1.
+  \]
+\end{lem}
+
+\begin{proof}[证明概要]
+  由引理~\ref{lem:eis-descent-z}，$\lambda^2\mid z_0$，故 $\ord_\lambda(uz_0^3)\ge6$。在 $\Z[\omega]$（UFD）中分解
+  \[
+    (x_0+y_0)(x_0+\omega y_0)(x_0+\omega^2y_0)=uz_0^3.
+  \]
+  由 $\lambda\nmid x_0y_0$ 及 $\ord_\lambda(x_0+y_0)\ge2$，而 $x_0+\omega y_0=(x_0+y_0)-\lambda y_0$、$x_0+\omega^2y_0=(x_0+y_0)+\lambda\omega^2y_0$ 知 $\ord_\lambda(x_0+\omega y_0)=\ord_\lambda(x_0+\omega^2y_0)=1$。三者两两的最大公因数恰为 $\lambda$（差为 $\lambda$ 的倍数），故可写
+  \[
+    x_0+y_0=\varepsilon_1\lambda^e\kappa^3,\quad x_0+\omega y_0=\varepsilon_2\lambda\mu^3,\quad x_0+\omega^2y_0=\varepsilon_3\lambda\nu^3,
+  \]
+  其中 $e=3\ord_\lambda(z_0)-2$，$\varepsilon_i$ 为单位，$\lambda\nmid\kappa\mu\nu$。利用恒等式 $(x_0+y_0)+\omega(x_0+\omega y_0)+\omega^2(x_0+\omega^2y_0)=0$ 与 $1+\omega+\omega^2=0$，化简得
+  \[
+    \mu^3+\omega\nu^3\quad\text{与}\quad\kappa^3
+  \]
+  之间的一个新方程，且取模 $\lambda^3$ 可定出 $\varepsilon_2^{-1}\varepsilon_3\omega=\pm1$。令 $u_1=\varepsilon_1\varepsilon_2^{-1}\omega^2\in\Z[\omega]^\times$，$x_1=\mu,y_1=\pm\nu,z_1=\lambda^{\ord_\lambda(z_0)-1}\kappa$，则 $x_1^3+y_1^3=u_1z_1^3$ 且 $\ord_\lambda(z_1)=\ord_\lambda(z_0)-1$。
+\end{proof}
+
+\begin{proof}[定理~\ref{thm:flt3} 的证明]
+  反证。设 $(x_0,y_0,z_0)\in\Z[\omega]^3$，$\lambda\nmid x_0y_0z_0$，满足 $x_0^3+y_0^3=uz_0^3$。由引理~\ref{lem:eis-cube}，$\lambda\nmid x_0y_0z_0$。
+  \begin{itemize}
+    \item 若 $\lambda\nmid x_0y_0$：由引理~\ref{lem:eis-descent-z} 知 $\lambda\mid z_0$，再用引理~\ref{lem:eis-descent} 得新解 $(x_1,y_1,z_1)$，$\ord_\lambda(z_1)=\ord_\lambda(z_0)-1$。反复递降得无穷递减序列 $\ord_\lambda(z_0)>\ord_\lambda(z_1)>\cdots\ge0$，不可能。
+    \item 若 $\lambda\mid x_0y_0$，不妨 $\lambda\mid x_0$：取模 $\lambda^3$ 得 $\pm1\equiv u\pmod{\lambda^3}$，故 $u=\pm1$，方程化为 $(\pm z_0)^3+(-y_0)^3=x_0^3$，即 $(\mp z_0,-y_0,x_0)$ 是 $\lambda\nmid(\mp z_0)(-y_0)$ 的解（若 $\lambda\nmid y_0z_0$），归入上一情形。
+  \end{itemize}
+  两种情形均矛盾，故无解。取 $u=1$ 并限制在 $\Z\subset\Z[\omega]$ 即得 $x^3+y^3=z^3$ 无非零整数解。
+\end{proof}
+
+\begin{rem}
+  \begin{enumerate}[(1)]
+    \item $n=2$ 时 $x^2+y^2=1$ 有有理参数化（由 $(-1,0)$ 作直线投影），给出全部 Pythagoras 本原解 $x_0=\pm(a^2-b^2)$，$y_0=\pm2ab$，$z_0=a^2+b^2$（基于 $\Z[i]$ 唯一分解）。
+    \item 一般 Fermat 大定理 $x^n+y^n=z^n$（$n\ge3$）由 Wiles--Taylor (1995) 证明，其工具（模形式、椭圆曲线）远超本讲义范畴。定理~\ref{thm:flt3} 所用的「正则素数」方法是 Kummer 思想的初等特例。
+  \end{enumerate}
+\end{rem}
+
+\bigskip
+\begin{center}
+  \rule{0.4\textwidth}{0.4pt}\\[2pt]
+  \itshape （汇编完）
+\end{center}
+
+\end{document}

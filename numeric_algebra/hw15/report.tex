@@ -1,0 +1,139 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{luacode}
+
+% import common macros
+\input{../../common/macros.tex}
+
+\newcommand{\tridiag}{\operatorname{tridiag}}
+\newcommand{\off}{\operatorname{off}}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Configure listings for Python code highlighting
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=4,
+  frame=single,
+  framesep=5pt,
+  rulecolor=\color{gray},
+  backgroundcolor=\color{white},
+  captionpos=b,
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=5,
+}
+
+\lstnewenvironment{plaintext}[1][]{
+  \lstset{
+    language=none,
+    basicstyle=\ttfamily\small,
+    keywordstyle=,
+    commentstyle=,
+    stringstyle=,
+    numbers=none,
+    frame=single,
+    backgroundcolor=\color{white},
+    #1
+  }
+}{}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{数值代数}
+\newcommand{\hwNum}{15}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name (\uid)}
+\chead{\course \#\hwNum}
+\rhead{\today}
+
+\section{实对称三对角阵的过关 Jacobi 方法}
+
+求实对称三对角阵的全部特征值和特征向量.
+
+\begin{enumerate}[(1)]
+  \item 用熟悉的计算机语言编制利用过关 Jacobi 方法求实对称三对角阵全部特征值和特征向量的通用子程序.
+  \item 利用所编制的子程序求矩阵（从 $50$ 阶到 $100$ 阶）
+    \[
+      A = \tridiag(1,4,1)
+      =
+      \begin{bmatrix}
+        4 & 1 \\
+        1 & 4 & 1 \\
+          & \ddots & \ddots & \ddots \\
+          &        & 1 & 4 & 1 \\
+          &        &   & 1 & 4
+      \end{bmatrix}
+    \]
+    的全部特征值和特征向量.
+\end{enumerate}
+
+\begin{solution}
+
+  设当前矩阵为 $B=(b_{ij})$. 过关 Jacobi 方法每一趟先取
+  \[
+    \eta = \frac{\norm{\off(B)}_F}{4n},
+  \]
+  然后按 $1\le p<q\le n$ 扫描上三角元. 只有当 $\abs{b_{pq}}\ge \eta$ 时，才对
+  $(p,q)$ 平面作 Jacobi 旋转. 旋转参数取
+  \[
+    \tau = \frac{b_{qq}-b_{pp}}{2b_{pq}},\qquad
+    t = \frac{\operatorname{sgn}(\tau)}{\abs{\tau}+\sqrt{1+\tau^2}},\qquad
+    c = \frac{1}{\sqrt{1+t^2}},\quad s=tc .
+  \]
+  用 $J(p,q,c,s)$ 作相似变换 $B\leftarrow J^\T BJ$，同时累积
+  $V\leftarrow VJ$. 当 $\norm{\off(B)}_F$ 小于给定容差时，$B$ 的对角元为全部特征值，
+  $V$ 的列向量为对应特征向量.
+
+  对本题的 Toeplitz 三对角矩阵，还可以用解析公式检查结果：
+  \[
+    \lambda_k = 4 + 2\cos\frac{k\pi}{n+1},\qquad
+    u_j^{(k)} = \sqrt{\frac{2}{n+1}}\sin\frac{jk\pi}{n+1},
+    \quad k,j=1,\ldots,n.
+  \]
+  程序中不使用该公式求解，只用它计算误差.
+
+  对 $n=50,51,\ldots,100$ 的全部阶数，过关 Jacobi 程序都完成了全部特征值和特征向量计算.
+  其中 $n=100$ 时：
+  \[
+    \lambda_{\min}=2.000967435416,\qquad
+    \lambda_{\max}=5.999032564584.
+  \]
+  此时最大特征值误差约为 $1.33\times10^{-14}$，最大特征向量误差约为
+  $1.22\times10^{-10}$，最大残差
+  $\max_j\norm{Av_j-\lambda_jv_j}_2$ 约为 $4.19\times10^{-12}$，
+  正交性误差 $\norm{V^\T V-I}_\infty$ 约为 $4.59\times10^{-14}$.
+
+  运行输出中逐阶列出边端特征值、误差和残差；由于完整特征向量表过长，只打印了
+  $n=50,75,100$ 的若干代表性特征向量分量. 程序本身对每个 $n$ 均返回完整的
+  $\lambda_1,\ldots,\lambda_n$ 和 $v_1,\ldots,v_n$.
+
+  代码与运行结果如下：
+  \lstinputlisting[language=Python, caption={实对称三对角矩阵的过关 Jacobi 方法}]{exercise.py}
+  \lstinputlisting[language={}, caption={过关 Jacobi 运行结果}]{output.txt}
+
+\end{solution}
+
+\end{document}

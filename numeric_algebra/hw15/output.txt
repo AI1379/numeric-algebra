@@ -1,0 +1,606 @@
+========================================================================
+Threshold Jacobi method for real symmetric tridiagonal matrices
+A = tridiag(1, 4, 1), n = 50, 51, ..., 100
+========================================================================
+The program computes all eigenvalues and eigenvectors for every n. For compact output, only edge eigenvalues and selected eigenvectors are printed.
+
+A = tridiag(1, 4, 1), n = 50
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 6015
+  final offdiag norm  : 3.151e-12
+  max eigenvalue error: 1.155e-14
+  max eigenvector err : 1.050e-11
+  max residual        : 7.291e-13
+  orthogonality error : 2.000e-14
+  smallest eigenvalues: [2.003793342526 2.015158980656 2.034053800632 2.06040612793 ]
+  largest  eigenvalues: [5.93959387207  5.965946199368 5.984841019344 5.996206657474]
+  eigenvector for lambda[0] = 2.003793342526
+    first 8 entries: [-0.012191  0.024336 -0.036388  0.048302 -0.060033  0.071537 -0.082768
+  0.093686]
+    last  8 entries: [-0.093686  0.082768 -0.071537  0.060033 -0.048302  0.036388 -0.024336
+  0.012191]
+  eigenvector for lambda[25] = 4.061590117112
+    first 8 entries: [ 0.197936  0.012191 -0.197185 -0.024336  0.195686  0.036388 -0.193445
+ -0.048302]
+    last  8 entries: [-0.048302 -0.193445  0.036388  0.195686 -0.024336 -0.197185  0.012191
+  0.197936]
+  eigenvector for lambda[49] = 5.996206657474
+    first 8 entries: [0.012191 0.024336 0.036388 0.048302 0.060033 0.071537 0.082768 0.093686]
+    last  8 entries: [0.093686 0.082768 0.071537 0.060033 0.048302 0.036388 0.024336 0.012191]
+
+A = tridiag(1, 4, 1), n = 51
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 6294
+  final offdiag norm  : 2.952e-12
+  max eigenvalue error: 7.994e-15
+  max eigenvector err : 1.081e-11
+  max residual        : 7.543e-13
+  orthogonality error : 2.265e-14
+  smallest eigenvalues: [2.003648891553 2.014582251804 2.032760186106 2.058116365148]
+  largest  eigenvalues: [5.941883634852 5.967239813894 5.985417748196 5.996351108447]
+
+A = tridiag(1, 4, 1), n = 52
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 6556
+  final offdiag norm  : 2.481e-12
+  max eigenvalue error: 7.994e-15
+  max eigenvector err : 6.767e-12
+  max residual        : 5.383e-13
+  orthogonality error : 1.878e-14
+  smallest eigenvalues: [2.003512536471 2.014037807973 2.031538844105 2.055954171839]
+  largest  eigenvalues: [5.944045828161 5.968461155895 5.985962192027 5.996487463529]
+
+A = tridiag(1, 4, 1), n = 53
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 6714
+  final offdiag norm  : 3.028e-12
+  max eigenvalue error: 9.770e-15
+  max eigenvector err : 1.915e-11
+  max residual        : 6.477e-13
+  orthogonality error : 2.207e-14
+  smallest eigenvalues: [2.003383683457 2.013523284516 2.030384493976 2.05391025884 ]
+  largest  eigenvalues: [5.94608974116  5.969615506024 5.986476715484 5.996616316543]
+
+A = tridiag(1, 4, 1), n = 54
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 7085
+  final offdiag norm  : 2.630e-12
+  max eigenvalue error: 7.105e-15
+  max eigenvector err : 8.655e-12
+  max residual        : 5.792e-13
+  orthogonality error : 2.085e-14
+  smallest eigenvalues: [2.003261792148 2.013036529303 2.029292328305 2.051976166115]
+  largest  eigenvalues: [5.948023833885 5.970707671695 5.986963470697 5.996738207852]
+
+A = tridiag(1, 4, 1), n = 55
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 7323
+  final offdiag norm  : 2.933e-12
+  max eigenvalue error: 7.105e-15
+  max eigenvector err : 1.283e-11
+  max residual        : 6.554e-13
+  orthogonality error : 2.430e-14
+  smallest eigenvalues: [2.003146369964 2.012575580214 2.028257962964 2.050144175636]
+  largest  eigenvalues: [5.949855824364 5.971742037036 5.987424419786 5.996853630036]
+
+A = tridiag(1, 4, 1), n = 56
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 7581
+  final offdiag norm  : 3.352e-12
+  max eigenvalue error: 6.217e-15
+  max eigenvector err : 9.524e-12
+  max residual        : 6.867e-13
+  orthogonality error : 2.253e-14
+  smallest eigenvalues: [2.003036967133 2.012138645364 2.027277393195 2.048407234745]
+  largest  eigenvalues: [5.951592765255 5.972722606805 5.987861354636 5.996963032867]
+
+A = tridiag(1, 4, 1), n = 57
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 7878
+  final offdiag norm  : 4.068e-12
+  max eigenvalue error: 7.994e-15
+  max eigenvector err : 2.202e-11
+  max residual        : 9.401e-13
+  orthogonality error : 2.497e-14
+  smallest eigenvalues: [2.002933172298 2.011724085691 2.026346954917 2.04675888858 ]
+  largest  eigenvalues: [5.95324111142  5.973653045083 5.988275914309 5.997066827702]
+
+A = tridiag(1, 4, 1), n = 58
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 8068
+  final offdiag norm  : 3.371e-12
+  max eigenvalue error: 8.882e-15
+  max eigenvector err : 2.573e-12
+  max residual        : 7.262e-13
+  orthogonality error : 2.282e-14
+  smallest eigenvalues: [2.002834608646 2.01133039958  2.025463290557 2.045193220364]
+  largest  eigenvalues: [5.954806779636 5.974536709443 5.98866960042  5.997165391354]
+
+A = tridiag(1, 4, 1), n = 59
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 8426
+  final offdiag norm  : 4.103e-12
+  max eigenvalue error: 7.105e-15
+  max eigenvector err : 9.541e-12
+  max residual        : 8.508e-13
+  orthogonality error : 2.349e-14
+  smallest eigenvalues: [2.002740930491 2.010956209263 2.02462331881  2.043704798532]
+  largest  eigenvalues: [5.956295201468 5.97537668119  5.989043790737 5.997259069509]
+
+A = tridiag(1, 4, 1), n = 60
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 8693
+  final offdiag norm  : 5.194e-12
+  max eigenvalue error: 7.994e-15
+  max eigenvector err : 9.572e-12
+  max residual        : 1.129e-12
+  orthogonality error : 2.446e-14
+  smallest eigenvalues: [2.00265182023  2.010600248771 2.023824207818 2.042288629809]
+  largest  eigenvalues: [5.957711370191 5.976175792182 5.989399751229 5.99734817977 ]
+
+A = tridiag(1, 4, 1), n = 61
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 9049
+  final offdiag norm  : 4.403e-12
+  max eigenvalue error: 7.105e-15
+  max eigenvector err : 8.774e-12
+  max residual        : 8.905e-13
+  orthogonality error : 2.649e-14
+  smallest eigenvalues: [2.002566985658 2.010261353216 2.023063351344 2.040940117495]
+  largest  eigenvalues: [5.959059882505 5.976936648656 5.989738646784 5.997433014342]
+
+A = tridiag(1, 4, 1), n = 62
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 9319
+  final offdiag norm  : 3.581e-12
+  max eigenvalue error: 7.994e-15
+  max eigenvector err : 2.943e-11
+  max residual        : 6.897e-13
+  orthogonality error : 2.544e-14
+  smallest eigenvalues: [2.002486157562 2.009938449269 2.02233834755  2.039655024303]
+  largest  eigenvalues: [5.960344975697 5.97766165245  5.990061550731 5.997513842438]
+
+A = tridiag(1, 4, 1), n = 63
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 9709
+  final offdiag norm  : 5.547e-12
+  max eigenvalue error: 7.994e-15
+  max eigenvector err : 2.185e-11
+  max residual        : 1.010e-12
+  orthogonality error : 2.475e-14
+  smallest eigenvalues: [2.00240908759  2.009630546656 2.02164698007  2.038429439194]
+  largest  eigenvalues: [5.961570560806 5.97835301993  5.990369453344 5.99759091241 ]
+
+A = tridiag(1, 4, 1), n = 64
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 10047
+  final offdiag norm  : 6.828e-12
+  max eigenvalue error: 9.770e-15
+  max eigenvector err : 1.832e-11
+  max residual        : 1.350e-12
+  orthogonality error : 2.612e-14
+  smallest eigenvalues: [2.002335546335 2.009336730565 2.020987201098 2.037259747721]
+  largest  eigenvalues: [5.962740252279 5.979012798902 5.990663269435 5.997664453665]
+
+A = tridiag(1, 4, 1), n = 65
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 10252
+  final offdiag norm  : 5.414e-12
+  max eigenvalue error: 5.329e-15
+  max eigenvector err : 1.526e-11
+  max residual        : 1.162e-12
+  orthogonality error : 2.699e-14
+  smallest eigenvalues: [2.002265321634 2.009056154854 2.020357116238 2.036142605475]
+  largest  eigenvalues: [5.963857394525 5.979642883762 5.990943845146 5.997734678366]
+
+A = tridiag(1, 4, 1), n = 66
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 10687
+  final offdiag norm  : 6.427e-12
+  max eigenvalue error: 8.882e-15
+  max eigenvector err : 1.472e-11
+  max residual        : 1.390e-12
+  orthogonality error : 3.198e-14
+  smallest eigenvalues: [2.002198217029 2.008788035956 2.019754970931 2.035074914249]
+  largest  eigenvalues: [5.964925085751 5.980245029069 5.991211964044 5.997801782971]
+
+A = tridiag(1, 4, 1), n = 67
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 10989
+  final offdiag norm  : 7.640e-12
+  max eigenvalue error: 5.329e-15
+  max eigenvector err : 1.615e-11
+  max residual        : 1.526e-12
+  orthogonality error : 2.574e-14
+  smallest eigenvalues: [2.002134050395 2.00853164741  2.01917913825  2.034053800632]
+  largest  eigenvalues: [5.965946199368 5.98082086175  5.99146835259  5.997865949605]
+
+A = tridiag(1, 4, 1), n = 68
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 11315
+  final offdiag norm  : 9.337e-12
+  max eigenvalue error: 9.770e-15
+  max eigenvector err : 1.450e-11
+  max residual        : 1.971e-12
+  orthogonality error : 2.700e-14
+  smallest eigenvalues: [2.002072652707 2.008286314937 2.018628107927 2.033076596733]
+  largest  eigenvalues: [5.966923403267 5.981371892073 5.991713685063 5.997927347293]
+
+A = tridiag(1, 4, 1), n = 69
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 11645
+  final offdiag norm  : 1.230e-11
+  max eigenvalue error: 1.066e-14
+  max eigenvector err : 6.999e-11
+  max residual        : 2.534e-12
+  orthogonality error : 2.664e-14
+  smallest eigenvalues: [2.002013866917 2.00805141201  2.018100476464 2.032140822803]
+  largest  eigenvalues: [5.967859177197 5.981899523536 5.99194858799  5.997986133083]
+
+A = tridiag(1, 4, 1), n = 70
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 11988
+  final offdiag norm  : 9.723e-12
+  max eigenvalue error: 1.066e-14
+  max eigenvector err : 2.832e-11
+  max residual        : 1.901e-12
+  orthogonality error : 3.076e-14
+  smallest eigenvalues: [2.00195754696  2.00782635585  2.017594938201 2.031244171555]
+  largest  eigenvalues: [5.968755828445 5.982405061799 5.99217364415  5.99804245304 ]
+
+A = tridiag(1, 4, 1), n = 71
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 12280
+  final offdiag norm  : 7.953e-12
+  max eigenvalue error: 6.217e-15
+  max eigenvector err : 6.409e-11
+  max residual        : 1.580e-12
+  orthogonality error : 2.927e-14
+  smallest eigenvalues: [2.001903556836 2.007610603817 2.017110277252 2.030384493976]
+  largest  eigenvalues: [5.969615506024 5.982889722748 5.992389396183 5.998096443164]
+
+A = tridiag(1, 4, 1), n = 72
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 12702
+  final offdiag norm  : 9.477e-12
+  max eigenvalue error: 9.770e-15
+  max eigenvector err : 2.238e-11
+  max residual        : 1.718e-12
+  orthogonality error : 3.006e-14
+  smallest eigenvalues: [2.001851769796 2.007403650131 2.016645360201 2.029559786488]
+  largest  eigenvalues: [5.970440213512 5.983354639799 5.992596349869 5.998148230204]
+
+A = tridiag(1, 4, 1), n = 73
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 13127
+  final offdiag norm  : 9.029e-12
+  max eigenvalue error: 1.066e-14
+  max eigenvector err : 5.213e-11
+  max residual        : 1.689e-12
+  orthogonality error : 3.063e-14
+  smallest eigenvalues: [2.001802067591 2.007205022915 2.016199129482 2.028768179305]
+  largest  eigenvalues: [5.971231820695 5.983800870518 5.992794977085 5.998197932409]
+
+A = tridiag(1, 4, 1), n = 74
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 13506
+  final offdiag norm  : 7.108e-12
+  max eigenvalue error: 9.770e-15
+  max eigenvector err : 3.615e-11
+  max residual        : 1.440e-12
+  orthogonality error : 3.440e-14
+  smallest eigenvalues: [2.001754339802 2.007014281501 2.015770597371 2.028007925859]
+  largest  eigenvalues: [5.971992074141 5.984229402629 5.992985718499 5.998245660198]
+
+A = tridiag(1, 4, 1), n = 75
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 13996
+  final offdiag norm  : 9.560e-12
+  max eigenvalue error: 7.994e-15
+  max eigenvector err : 3.667e-11
+  max residual        : 1.910e-12
+  orthogonality error : 3.196e-14
+  smallest eigenvalues: [2.001708483225 2.006831013987 2.015358840526 2.027277393195]
+  largest  eigenvalues: [5.972722606805 5.984641159474 5.993168986013 5.998291516775]
+  eigenvector for lambda[0] = 2.001708483225
+    first 8 entries: [-0.006704  0.013396 -0.020066  0.026701 -0.03329   0.039823 -0.046288
+  0.052673]
+    last  8 entries: [ 0.052673 -0.046288  0.039823 -0.03329   0.026701 -0.020066  0.013396
+ -0.006704]
+  eigenvector for lambda[37] = 4.000000000000
+    first 8 entries: [-0.162221 -0.        0.162221  0.       -0.162221 -0.        0.162221
+  0.      ]
+    last  8 entries: [-0.       -0.162221  0.        0.162221 -0.       -0.162221  0.
+  0.162221]
+  eigenvector for lambda[74] = 5.998291516775
+    first 8 entries: [0.006704 0.013396 0.020066 0.026701 0.03329  0.039823 0.046288 0.052673]
+    last  8 entries: [0.052673 0.046288 0.039823 0.03329  0.026701 0.020066 0.013396 0.006704]
+
+A = tridiag(1, 4, 1), n = 76
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 14192
+  final offdiag norm  : 8.962e-12
+  max eigenvalue error: 9.770e-15
+  max eigenvector err : 5.996e-11
+  max residual        : 1.637e-12
+  orthogonality error : 3.365e-14
+  smallest eigenvalues: [2.001664401311 2.006654835012 2.014962995018 2.026575053217]
+  largest  eigenvalues: [5.973424946783 5.985037004982 5.993345164988 5.998335598689]
+
+A = tridiag(1, 4, 1), n = 77
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 14605
+  final offdiag norm  : 7.038e-12
+  max eigenvalue error: 8.882e-15
+  max eigenvector err : 1.145e-11
+  max residual        : 1.285e-12
+  orthogonality error : 3.265e-14
+  smallest eigenvalues: [2.001622003657 2.006485383732 2.014582251804 2.025899474724]
+  largest  eigenvalues: [5.974100525276 5.985417748196 5.993514616268 5.998377996343]
+
+A = tridiag(1, 4, 1), n = 78
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 15094
+  final offdiag norm  : 1.126e-11
+  max eigenvalue error: 7.994e-15
+  max eigenvector err : 8.194e-11
+  max residual        : 1.916e-12
+  orthogonality error : 3.295e-14
+  smallest eigenvalues: [2.001581205545 2.006322321971 2.014215852596 2.025249316127]
+  largest  eigenvalues: [5.974750683873 5.985784147404 5.993677678029 5.998418794455]
+
+A = tridiag(1, 4, 1), n = 79
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 15338
+  final offdiag norm  : 8.945e-12
+  max eigenvalue error: 9.770e-15
+  max eigenvector err : 2.811e-11
+  max residual        : 1.507e-12
+  orthogonality error : 3.331e-14
+  smallest eigenvalues: [2.001541927519 2.006165332534 2.01386308609  2.02462331881 ]
+  largest  eigenvalues: [5.97537668119  5.98613691391  5.993834667466 5.998458072481]
+
+A = tridiag(1, 4, 1), n = 80
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 15870
+  final offdiag norm  : 7.516e-12
+  max eigenvalue error: 9.770e-15
+  max eigenvector err : 2.154e-11
+  max residual        : 1.186e-12
+  orthogonality error : 3.743e-14
+  smallest eigenvalues: [2.001504094992 2.006014117664 2.013523284516 2.024020301046]
+  largest  eigenvalues: [5.975979698954 5.986476715484 5.993985882336 5.998495905008]
+
+A = tridiag(1, 4, 1), n = 81
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 16150
+  final offdiag norm  : 6.905e-12
+  max eigenvalue error: 9.770e-15
+  max eigenvector err : 2.383e-11
+  max residual        : 1.165e-12
+  orthogonality error : 3.389e-14
+  smallest eigenvalues: [2.001467637898 2.005868397633 2.013195820481 2.023439152439]
+  largest  eigenvalues: [5.976560847561 5.986804179519 5.994131602367 5.998532362102]
+
+A = tridiag(1, 4, 1), n = 82
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 16578
+  final offdiag norm  : 8.320e-12
+  max eigenvalue error: 7.994e-15
+  max eigenvector err : 9.249e-11
+  max residual        : 1.457e-12
+  orthogonality error : 3.558e-14
+  smallest eigenvalues: [2.001432490367 2.005727909441 2.012880104074 2.022878828816]
+  largest  eigenvalues: [5.977121171184 5.987119895926 5.994272090559 5.998567509633]
+
+A = tridiag(1, 4, 1), n = 83
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 16655
+  final offdiag norm  : 2.160e-11
+  max eigenvalue error: 1.155e-14
+  max eigenvector err : 9.498e-11
+  max residual        : 3.946e-12
+  orthogonality error : 3.284e-14
+  smallest eigenvalues: [2.001398590423 2.005592405638 2.012575580214 2.02233834755 ]
+  largest  eigenvalues: [5.97766165245  5.987424419786 5.994407594362 5.998601409577]
+
+A = tridiag(1, 4, 1), n = 84
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 17428
+  final offdiag norm  : 1.012e-11
+  max eigenvalue error: 7.105e-15
+  max eigenvector err : 4.382e-11
+  max residual        : 1.663e-12
+  orthogonality error : 3.380e-14
+  smallest eigenvalues: [2.001365879714 2.005461653228 2.012281726209 2.021816783258]
+  largest  eigenvalues: [5.978183216742 5.987718273791 5.994538346772 5.998634120286]
+
+A = tridiag(1, 4, 1), n = 85
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 17996
+  final offdiag norm  : 1.727e-11
+  max eigenvalue error: 8.882e-15
+  max eigenvector err : 8.383e-11
+  max residual        : 2.888e-12
+  orthogonality error : 3.678e-14
+  smallest eigenvalues: [2.00133430326  2.005335432673 2.01199804952  2.02131326385 ]
+  largest  eigenvalues: [5.97868673615  5.98800195048  5.994664567327 5.99866569674 ]
+
+A = tridiag(1, 4, 1), n = 86
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 18223
+  final offdiag norm  : 1.571e-11
+  max eigenvalue error: 1.066e-14
+  max eigenvector err : 2.119e-10
+  max residual        : 2.603e-12
+  orthogonality error : 3.574e-14
+  smallest eigenvalues: [2.001303809221 2.005213536964 2.011724085691 2.020826966889]
+  largest  eigenvalues: [5.979173033111 5.988275914309 5.994786463036 5.998696190779]
+
+A = tridiag(1, 4, 1), n = 87
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 18577
+  final offdiag norm  : 1.741e-11
+  max eigenvalue error: 7.994e-15
+  max eigenvector err : 7.211e-11
+  max residual        : 3.199e-12
+  orthogonality error : 3.721e-14
+  smallest eigenvalues: [2.001274348686 2.005095770779 2.011459396456 2.020357116238]
+  largest  eigenvalues: [5.979642883762 5.988540603544 5.994904229221 5.998725651314]
+
+A = tridiag(1, 4, 1), n = 88
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 19295
+  final offdiag norm  : 1.665e-11
+  max eigenvalue error: 7.994e-15
+  max eigenvector err : 2.922e-11
+  max residual        : 2.992e-12
+  orthogonality error : 3.940e-14
+  smallest eigenvalues: [2.001245875476 2.004981949698 2.011203567984 2.019902978971]
+  largest  eigenvalues: [5.980097021029 5.988796432016 5.995018050302 5.998754124524]
+
+A = tridiag(1, 4, 1), n = 89
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 19465
+  final offdiag norm  : 3.297e-11
+  max eigenvalue error: 1.332e-14
+  max eigenvector err : 1.382e-10
+  max residual        : 5.721e-12
+  orthogonality error : 3.844e-14
+  smallest eigenvalues: [2.001218345962 2.00487189948  2.010956209263 2.019463862517]
+  largest  eigenvalues: [5.980536137483 5.989043790737 5.99512810052  5.998781654038]
+
+A = tridiag(1, 4, 1), n = 90
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 20251
+  final offdiag norm  : 1.466e-11
+  max eigenvalue error: 1.066e-14
+  max eigenvector err : 2.959e-11
+  max residual        : 2.445e-12
+  orthogonality error : 3.861e-14
+  smallest eigenvalues: [2.001191718898 2.004765455398 2.01071695061  2.019039112025]
+  largest  eigenvalues: [5.980960887975 5.98928304939  5.995234544602 5.998808281102]
+
+A = tridiag(1, 4, 1), n = 91
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 20387
+  final offdiag norm  : 2.410e-11
+  max eigenvalue error: 1.510e-14
+  max eigenvector err : 5.965e-11
+  max residual        : 3.660e-12
+  orthogonality error : 3.655e-14
+  smallest eigenvalues: [2.001165955268 2.004662461619 2.010485442284 2.018628107927]
+  largest  eigenvalues: [5.981371892073 5.989514557716 5.995337538381 5.998834044732]
+
+A = tridiag(1, 4, 1), n = 92
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 21028
+  final offdiag norm  : 1.723e-11
+  max eigenvalue error: 9.770e-15
+  max eigenvector err : 3.239e-11
+  max residual        : 3.128e-12
+  orthogonality error : 4.199e-14
+  smallest eigenvalues: [2.001141018141 2.00456277064  2.010261353216 2.018230263684]
+  largest  eigenvalues: [5.981769736316 5.989738646784 5.99543722936  5.998858981859]
+
+A = tridiag(1, 4, 1), n = 93
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 21561
+  final offdiag norm  : 1.997e-11
+  max eigenvalue error: 1.066e-14
+  max eigenvector err : 1.177e-10
+  max residual        : 3.126e-12
+  orthogonality error : 3.874e-14
+  smallest eigenvalues: [2.001116872539 2.004466242754 2.010044369823 2.01784502369 ]
+  largest  eigenvalues: [5.98215497631  5.989955630177 5.995533757246 5.998883127461]
+
+A = tridiag(1, 4, 1), n = 94
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 21848
+  final offdiag norm  : 1.387e-11
+  max eigenvalue error: 1.510e-14
+  max eigenvector err : 5.332e-11
+  max residual        : 2.282e-12
+  orthogonality error : 4.225e-14
+  smallest eigenvalues: [2.001093485318 2.004372745562 2.00983419491  2.017471861346]
+  largest  eigenvalues: [5.982528138654 5.99016580509  5.995627254438 5.998906514682]
+
+A = tridiag(1, 4, 1), n = 95
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 22444
+  final offdiag norm  : 2.497e-11
+  max eigenvalue error: 7.105e-15
+  max eigenvector err : 2.337e-10
+  max residual        : 4.197e-12
+  orthogonality error : 4.059e-14
+  smallest eigenvalues: [2.001070825047 2.004282153523 2.009630546656 2.017110277252]
+  largest  eigenvalues: [5.982889722748 5.990369453344 5.995717846477 5.998929174953]
+
+A = tridiag(1, 4, 1), n = 96
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 22974
+  final offdiag norm  : 3.102e-11
+  max eigenvalue error: 8.882e-15
+  max eigenvector err : 4.654e-11
+  max residual        : 5.776e-12
+  orthogonality error : 4.072e-14
+  smallest eigenvalues: [2.001048861909 2.004194347525 2.009433157667 2.016759797547]
+  largest  eigenvalues: [5.983240202453 5.990566842333 5.995805652475 5.998951138091]
+
+A = tridiag(1, 4, 1), n = 97
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 23399
+  final offdiag norm  : 2.275e-11
+  max eigenvalue error: 8.882e-15
+  max eigenvector err : 1.195e-10
+  max residual        : 3.732e-12
+  orthogonality error : 4.309e-14
+  smallest eigenvalues: [2.001027567599 2.004109214499 2.009241774102 2.016419972354]
+  largest  eigenvalues: [5.983580027646 5.990758225898 5.995890785501 5.998972432401]
+
+A = tridiag(1, 4, 1), n = 98
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 24024
+  final offdiag norm  : 2.854e-11
+  max eigenvalue error: 1.066e-14
+  max eigenvector err : 5.328e-11
+  max residual        : 4.473e-12
+  orthogonality error : 4.418e-14
+  smallest eigenvalues: [2.001006915234 2.004026647056 2.009056154854 2.016090374338]
+  largest  eigenvalues: [5.983909625662 5.990943845146 5.995973352944 5.998993084766]
+
+A = tridiag(1, 4, 1), n = 99
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 24251
+  final offdiag norm  : 2.323e-11
+  max eigenvalue error: 9.770e-15
+  max eigenvector err : 3.773e-11
+  max residual        : 4.212e-12
+  orthogonality error : 4.256e-14
+  smallest eigenvalues: [2.000986879269 2.003946543143 2.008876070794 2.015770597371]
+  largest  eigenvalues: [5.984229402629 5.991123929206 5.996053456857 5.999013120731]
+
+A = tridiag(1, 4, 1), n = 100
+  Jacobi sweeps       : 13
+  Jacobi rotations    : 25063
+  final offdiag norm  : 2.551e-11
+  max eigenvalue error: 1.332e-14
+  max eigenvector err : 1.218e-10
+  max residual        : 4.190e-12
+  orthogonality error : 4.585e-14
+  smallest eigenvalues: [2.000967435416 2.003868805733 2.008701304062 2.015460255273]
+  largest  eigenvalues: [5.984539744727 5.991298695938 5.996131194267 5.999032564584]
+  eigenvector for lambda[0] = 2.000967435416
+    first 8 entries: [-0.004376  0.008748 -0.013112  0.017463 -0.021797  0.02611  -0.030398
+  0.034656]
+    last  8 entries: [-0.034656  0.030398 -0.02611   0.021797 -0.017463  0.013112 -0.008748
+  0.004376]
+  eigenvector for lambda[50] = 4.031103623841
+    first 8 entries: [-0.140702 -0.004376  0.140566  0.008748 -0.140294 -0.013112  0.139886
+  0.017463]
+    last  8 entries: [-0.017463 -0.139886  0.013112  0.140294 -0.008748 -0.140566  0.004376
+  0.140702]
+  eigenvector for lambda[99] = 5.999032564584
+    first 8 entries: [0.004376 0.008748 0.013112 0.017463 0.021797 0.02611  0.030398 0.034656]
+    last  8 entries: [0.034656 0.030398 0.02611  0.021797 0.017463 0.013112 0.008748 0.004376]
+
