@@ -24,20 +24,241 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
 
+\newcommand{\reviewkey}{\textcolor{red!65!black}{\textbf{\ensuremath{\star}\ Key (重点)}}}
+
 \begin{document}
 
 \pagestyle{fancy}
 \fancyhead{}
-\lhead{Point Set Topology --- Midterm Reference}
+\lhead{Point Set Topology --- Review Outline \& Reference}
 \rhead{\today}
 
 \begin{center}
-  {\Large\bfseries Point Set Topology --- Midterm Exam Reference Sheet}\\[6pt]
-  {\large Table of Contents}
+  {\Large\bfseries Point Set Topology --- Review Outline \& Reference}\\[6pt]
+  {\large Course Topics, Homework, and Exam Preparation}
 \end{center}
 \vspace{6pt}
 
 \tableofcontents
+\newpage
+
+%=====================================================================
+\section*{Course Review Outline (课程复习大纲)}
+\addcontentsline{toc}{section}{Course Review Outline (课程复习大纲)}
+%=====================================================================
+
+\noindent This section is organized by conceptual dependency and exam reuse,
+rather than by lecture date. \reviewkey{} marks a result, counterexample, or
+proof pattern that recurs in class or homework. The later sections provide
+definitions, proofs, and examples; use this outline to choose a review route,
+then return to the linked sections for details.
+
+\subsection*{I. Course Language, Set Theory, and Countability
+(课程语言、集合论与可数性)}
+
+\begin{enumerate}
+  \item \textbf{Course language and motivation (课程语言与动机).} Be fluent with
+  Theorem, Definition, Proposition, Corollary, Example, and Exercise, and
+  translate informal statements into quantified statements about sets and maps.
+  A set may carry different structures: for example, $\Z$ can be discrete,
+  while the circle $S^1$ is compact. Topology is the additional structure
+  specified by open sets, not merely the underlying set. \reviewkey{} Every
+  topological property is relative to the chosen topology.
+
+  \item \textbf{ZF/ZFC and safe set formation (集合构造).} Know the roles of
+  the empty-set, pairing, union, power-set, separation, replacement, infinity,
+  regularity, and choice axioms (see \S\ref{def:extensionality}--
+  \S\ref{def:ac}). Russell's paradox explains why one first chooses an ambient
+  set and then forms a subset, rather than declaring every property to define a set.
+
+  \item \textbf{Finite, countable, and uncountable sets (可数性).} Prove
+  cardinality statements with bijections, injections, or surjections:
+  $\N\times\N$ and $\Q$ are countable, while $\R$ is uncountable by Cantor's
+  diagonal argument (\S\ref{def:countable}--\S\ref{def:cantor-diag}).
+  \reviewkey{} For countability, try an encoding, a countable union, or an
+  injection into $\N$; for uncountability, try diagonalization or an injection
+  from a known uncountable set.
+\end{enumerate}
+
+\subsection*{II. Topological Spaces, Bases, Subspaces, and Products
+(拓扑空间、基、子空间与积空间)}
+
+\begin{enumerate}
+  \item \textbf{Topological spaces and standard examples (基本例子).} Know the
+  topology axioms, open and closed sets, and the discrete, indiscrete, and
+  cofinite topologies (\S\ref{def:topology}--\S\ref{def:cofinite}).
+  \reviewkey{} Whether a set is open, closed, compact, or connected depends on
+  the topology, not only on its elements.
+
+  \item \textbf{Bases and generated topologies (基与生成拓扑).} Verify the
+  covering and local-intersection conditions for a basis; express open sets as
+  unions of basis elements; and use a basis to test openness, continuity, and
+  neighborhoods (\S\ref{def:basis}--\S\ref{def:generate-topo}).
+  \reviewkey{} The standard template is: choose $x$, then find a basis element
+  containing $x$ and contained in the target set. Rational-endpoint intervals
+  form the standard countable basis of $\R$.
+
+  \item \textbf{Subspace topology (子空间拓扑).} For $A\subseteq X$, the open
+  subsets of $A$ have the form $A\cap U$, with $U$ open in $X$
+  (\S\ref{def:subspace-topo}). \reviewkey{} Never confuse open/closed in $A$
+  with open/closed in $X$; always state the ambient space when computing
+  closure, interior, or boundary.
+
+  \item \textbf{Product and box topologies (积拓扑与盒拓扑).} Finite-product
+  intuition does not automatically extend to infinite products. In $\R^\omega$,
+  a product-basic open set restricts only finitely many coordinates, whereas a
+  box-basic open set may restrict every coordinate
+  (\S\ref{def:product-topo}--\S\ref{def:box-topo}). \reviewkey{} Learn to use
+  free coordinates to build counterexamples: eventually-zero sequences,
+  metrizability/connectedness of $\R^\omega$, and disconnectedness of the box
+  topology are central homework templates.
+\end{enumerate}
+
+\subsection*{III. Closure, Limit Points, and Continuous Maps
+(闭包、极限点与连续映射)}
+
+\begin{enumerate}
+  \item \textbf{Closure, interior, boundary, and limit points (闭包与极限点).}
+  Use the neighborhood characterizations fluently: $x\in\overline{A}$ iff
+  every neighborhood of $x$ meets $A$, and $x$ is a limit point iff every
+  neighborhood meets $A\setminus\{x\}$ (\S\ref{def:closure}--
+  \S\ref{def:derived}). \reviewkey{} Be able to compute $A^\circ$,
+  $\overline A$, the derived set, and the boundary in abstract spaces and
+  subspaces of $\R^n$, and prove $\overline A=A\cup LP(A)$.
+
+  \item \textbf{Continuity and homeomorphism (连续与同胚).} A map $f:X\to Y$
+  is continuous iff the preimage of every open subset of $Y$ is open in $X$;
+  equivalent tests use closed-set preimages, neighborhoods, or bases
+  (\S\ref{def:continuous}). A homeomorphism is a bijection that is continuous
+  with continuous inverse. \reviewkey{} Topological continuity is an
+  open-preimage property, not an $\varepsilon$--$\delta$ condition. To disprove
+  homeomorphism, seek compactness, connectedness, point-removal behavior, or
+  another topological invariant (\S\ref{def:homeomorphism}--
+  \S\ref{def:topo-invariant}).
+\end{enumerate}
+
+\subsection*{IV. Connectedness and Path Connectedness (连通性与道路连通性)}
+
+\begin{enumerate}
+  \item \textbf{Connectedness (连通性).} Use both equivalent viewpoints:
+  there is no nontrivial clopen subset, and there is no separation into two
+  nonempty disjoint open sets. Know connected components, preservation under
+  continuous images, and the technique of mapping continuously to a discrete
+  space to prove disconnection (\S\ref{def:connected}--\S\ref{def:component}).
+
+  \item \textbf{Path connectedness (道路连通性).} A path is a continuous map
+  $[0,1]\to X$. Path connectedness implies connectedness, but not conversely.
+  \reviewkey{} Prove path connected $\Rightarrow$ connected, and distinguish
+  the two notions using the topologist's sine curve. Also know that connected
+  plus locally path connected implies path connected: fix $x$ and show its
+  path component $S_x$ is both open and closed
+  (\S\ref{def:path-connected}--\S\ref{def:sine-curve}).
+\end{enumerate}
+
+\subsection*{V. Compactness (紧致性)}
+
+\begin{enumerate}
+  \item \textbf{Definition and basic moves (定义与基本操作).} A space is compact
+  if every open cover has a finite subcover. Closed intervals and finite spaces
+  are basic examples; $(0,1)$ and $\R^n$ are standard nonexamples
+  (\S\ref{def:compact}--\S\ref{def:heine-borel}). \reviewkey{} When
+  compactness appears, look for an open cover, a finite subcover, or an
+  equivalent finite-intersection argument.
+
+  \item \textbf{Results to invoke fluently (高频结论).} Closed subsets of
+  compact spaces are compact; continuous images of compact spaces are compact;
+  compact subsets of Hausdorff spaces are closed; and a continuous bijection
+  from compact to Hausdorff is a homeomorphism. \reviewkey{} An arbitrary
+  subspace of a compact space need not be compact. Countable-product
+  compactness, local compactness, and one-point compactification should be
+  reviewed alongside the homework problems.
+\end{enumerate}
+
+\subsection*{VI. Separation Axioms (分离公理)}
+
+\begin{enumerate}
+  \item \textbf{Remember the separated objects (按分离对象记忆).} $T_1$ means
+  points are closed, or two distinct points can be separated one-sidedly;
+  $T_2$ (Hausdorff) separates two points by disjoint open neighborhoods;
+  $T_3$ (regular) separates a point from a disjoint closed set; and $T_4$
+  (normal) separates two disjoint closed sets (\S\ref{def:T1}--
+  \S\ref{def:T4}). The cofinite topology is the standard $T_1$ but
+  non-Hausdorff counterexample.
+
+  \item \textbf{Hierarchy and consequences (层级与推论).} Under this
+  reference's convention, $T_3$ and $T_4$ include $T_1$. \reviewkey{} The
+  correct implication direction is
+  \[
+    T_4\ \Longrightarrow\ T_3\ \Longrightarrow\ T_2\ \Longrightarrow\ T_1\ \Longrightarrow\ T_0,
+  \]
+  and the reverse implications generally fail. Draw this diagram, and know
+  which separation properties are preserved by subspaces and products. In a
+  Hausdorff space, closedness of the diagonal and closedness of compact subsets
+  are high-frequency corollaries.
+\end{enumerate}
+
+\subsection*{VII. Countability Axioms and Metrizability (可数性公理与可度量化)}
+
+\begin{enumerate}
+  \item \textbf{First-countable, second-countable, and separable spaces
+  (第一可数、第二可数、可分).} First-countable means each point has a countable
+  local basis; second-countable means the whole space has a countable basis;
+  separable means it has a countable dense subset
+  (\S\ref{def:first-countable}, \S\ref{def:second-countable}).
+  \reviewkey{} Second-countable implies first-countable; in metric spaces,
+  second-countability, the Lindel\"of property, and separability are equivalent.
+
+  \item \textbf{Metrizability (可度量化).} A topology is metrizable if there is
+  a metric $d$ whose induced topology is exactly $\mathcal T_d$; it is not
+  enough that some metric can be defined on the underlying set
+  (\S\ref{def:metrizable}). \reviewkey{} Distinguish having a topology, having
+  a metric, and having the given topology induced by a metric; infinite products
+  are the main testing ground for this distinction.
+
+  \item \textbf{Urysohn Metrization Theorem (Urysohn 可度量化定理).} A
+  second-countable $T_3$ space is metrizable (\S\ref{thm:urysohn-metrization}).
+  Know the proof idea: construct countably many separating functions from a
+  countable basis, embed the space in a function or sequence space, and pull
+  back a metric. The difficult construction rests on Urysohn's lemma.
+\end{enumerate}
+
+\subsection*{VIII. Normal Spaces and Urysohn's Lemma (正规空间与 Urysohn 引理)}
+
+\begin{enumerate}
+  \item \textbf{Urysohn's Lemma (Urysohn 引理).} In a normal space, disjoint
+  closed sets $A,B$ can be separated by a continuous $f:X\to[0,1]$ with
+  $f(A)=\{0\}$ and $f(B)=\{1\}$ (\S\ref{def:T4}). \reviewkey{} This is the
+  key transition from separation by open sets to separation by continuous
+  functions, and the key input to the metrization theorem.
+
+  \item \textbf{Proof framework (证明框架).} Understand the nested construction
+  of open sets $U_r$, indexed by rational or dyadic rational $r$, with
+  $\overline{U_r}\subseteq U_s$ whenever $r<s$. The levels define the function.
+  Even when a full proof is not required, explain why the construction gives
+  continuity and the prescribed endpoint values.
+\end{enumerate}
+
+\subsection*{IX. Scope and Examination Strategy (范围边界与考试策略)}
+
+\begin{itemize}
+  \item Complete metric spaces, function spaces, the compact-open topology,
+  some fixed-point theorems, and Stone-type results are useful extensions, but
+  the course transcription does not identify them as first-priority exam topics.
+  \item The transcription gives an approximate grading split of 40\% homework,
+  20\% midterm/class examination, and 40\% final examination. The midterm/class
+  examination is described as open-book, 90 minutes, and five questions; printed
+  or handwritten material is allowed, but phones and computers are not. Confirm
+  all logistics against the final course announcement.
+  \item The final is described as mainly variations of homework, midterm,
+  handout, and in-class problems: usually about five questions, mostly familiar
+  types plus possibly one transfer problem. \reviewkey{} Review to the standard
+  of writing each proof independently, not merely recognizing a solution.
+  \item \textbf{Suggested priority (建议优先级):} compactness $>$ separation
+  axioms $>$ Urysohn lemma/metrization $>$ subspace and product topologies $>$
+  connectedness and path connectedness $>$ closure/interior/continuity $>$ set
+  theory and countability.
+\end{itemize}
+
 \newpage
 
 %=====================================================================
@@ -194,8 +415,14 @@ $|A| < |B|$ means: there exists an injection $A \hookrightarrow B$
 but no bijection $A \to B$.
 
 \subsection{$\aleph_0$ and $\aleph_1$}\label{def:aleph}
-$\aleph_0 = |\N|$ (cardinality of countably infinite sets).
-$\aleph_1 = |\R| = |\mathcal{P}(\N)|$ (cardinality of the continuum).
+$\aleph_0 = |\N|$ is the cardinality of a countably infinite set.
+$\aleph_1$ is the emph{least uncountable} cardinal.  The cardinality of
+the continuum is
+\[
+  \mathfrak{c}=|\R|=|\mathcal{P}(\N)|,
+\]
+and one always has $\aleph_1\leq\mathfrak{c}$; equality is precisely the
+continuum hypothesis.
 
 \subsection{Continuum Hypothesis --- CH (连续统假设)}\label{def:ch}
 There is no set $A$ with $\aleph_0 < |A| < \aleph_1$.
@@ -393,8 +620,7 @@ closed sets, or pairs of closed sets) can be ``separated'' by open sets.  These
 conditions are important in their own right and are the central tool for
 characterizing metrizability.
 
-\subsection{Overview: $T_0 \Rightarrow T_1 \Rightarrow T_2
-\Rightarrow T_3 \Rightarrow T_{3\frac{1}{2}} \Rightarrow T_4$}
+\subsection{Overview of the Separation-Axiom Hierarchy}
 
 \begin{center}
   \begin{tabular}{lll}
@@ -417,6 +643,13 @@ characterizing metrizability.
 ``$T_3$'' = regular + $T_1$; ``$T_4$'' = normal + $T_1$. Some authors write
 ``regular'' for $T_3$ without $T_1$; we follow the convention that
 $T_3$ \emph{includes} $T_1$.
+
+\textbf{Implication direction (under this convention):}
+\[
+  T_4 \Longrightarrow T_{3\frac{1}{2}} \Longrightarrow T_3
+  \Longrightarrow T_2 \Longrightarrow T_1 \Longrightarrow T_0.
+\]
+None of the reverse implications holds in general.
 
 \subsection{$T_0$ Space --- Kolmogorov Space (Kolmogorov 空间)}\label{def:T0}
 \begin{definition}
@@ -462,8 +695,9 @@ $\{\varnothing, \{1\}, \{0,1\}\}$ is $T_0$ but not $T_1$: $\{0\}$ is not closed.
 
 \textbf{Key consequences of $T_1$:}
 \begin{itemize}
-  \item A sequence can have \emph{at most one} limit (limits need not exist,
-    but they are unique when they do).
+  \item Points are closed, but $T_1$ alone does \emph{not} imply that
+    sequential limits are unique; uniqueness of limits follows from the
+    stronger Hausdorff ($T_2$) axiom.
   \item $T_1$ is \textbf{hereditary}: every subspace of a $T_1$ space is $T_1$.
   \item Products of $T_1$ spaces are $T_1$.
 \end{itemize}

@@ -1,0 +1,313 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+% \usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+
+% import common macros
+\input{../../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Point Set Topology}
+\newcommand{\hwNum}{9}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+\section{Question 1}
+
+Show that if $X_i$ is separable for each $i\in\N$, then the product space
+\[
+  \left(\prod_{i\in\N}X_i,\mathcal{T}_p\right)
+\]
+is separable.
+
+\begin{solution}
+  If some $X_i$ is empty, then the product is empty and is trivially
+  separable. Hence assume every $X_i$ is nonempty. For each $i\in\N$,
+  choose a countable dense set $D_i\subseteq X_i$ and fix $a_i\in D_i$.
+
+  Let $D$ be the set of sequences which agree with $(a_i)_{i\in\N}$ at
+  all but finitely many coordinates and whose remaining coordinates belong
+  to the corresponding $D_i$:
+  \[
+    D=\left\{x=(x_i)\in\prod_{i\in\N}X_i:
+      x_i\in D_i\ \text{for all }i,\quad
+    \{i:x_i\ne a_i\}\ \text{is finite}\right\}.
+  \]
+  This set is countable. Indeed, for each finite $F\subseteq\N$, the set
+  of elements of $D$ which can differ from $(a_i)$ only on $F$ is a finite
+  product of countable sets. There are only countably many finite subsets
+  of $\N$, so $D$ is a countable union of countable sets.
+
+  It remains to show that $D$ is dense. Let
+  \[
+    W=\prod_{i\in\N}U_i
+  \]
+  be a nonempty basic open set in the product topology. There is a finite
+  set $F\subseteq\N$ such that $U_i=X_i$ for every $i\notin F$. For each
+  $i\in F$, density of $D_i$ gives $d_i\in D_i\cap U_i$. Define
+  \[
+    d_i'=
+    \begin{cases}
+      d_i,&i\in F,\\
+      a_i,&i\notin F.
+    \end{cases}
+  \]
+  Then $d'=(d_i')\in D\cap W$. Thus every nonempty basic open set meets
+  $D$, so $D$ is dense and the product is separable.
+\end{solution}
+
+\section{Question 2}
+
+Let $(X,d)$ be a metric space. Show that the following properties are
+equivalent:
+\begin{enumerate}[(i)]
+  \item $X$ is second countable;
+  \item $X$ is Lindel\"of;
+  \item $X$ is separable.
+\end{enumerate}
+
+\begin{solution}
+  We prove that each condition is equivalent to (i).
+
+  \textbf{(i) $\Rightarrow$ (ii).}
+  Let $\mathcal{B}$ be a countable base for $X$, and let $\mathcal{U}$ be
+  an open cover of $X$. For every $B\in\mathcal{B}$ which is contained in
+  at least one member of $\mathcal{U}$, choose one such member $U_B$.
+  The collection of the chosen $U_B$'s is countable. It covers $X$:
+  if $x\in X$, choose $U\in\mathcal{U}$ with $x\in U$, then choose
+  $B\in\mathcal{B}$ with $x\in B\subseteq U$. Thus $x\in U_B$.
+  Therefore $X$ is Lindel\"of.
+
+  \textbf{(ii) $\Rightarrow$ (i).}
+  For each $n\in\N$, the family
+  \[
+    \{B(x,1/n):x\in X\}
+  \]
+  is an open cover of $X$. By the Lindel\"of property, choose a countable
+  subcover
+  \[
+    \{B(x_{n,k},1/n):k\in\N\}.
+  \]
+  Set
+  \[
+    \mathcal{B}=\{B(x_{n,k},1/n):n,k\in\N\}.
+  \]
+  This is countable. To see that it is a base, let $O$ be open and let
+  $x\in O$. Choose $\varepsilon>0$ such that $B(x,\varepsilon)\subseteq O$,
+  and then choose $n$ with $2/n<\varepsilon$. Since the selected balls of
+  radius $1/n$ cover $X$, there is $k$ such that
+  \[
+    x\in B(x_{n,k},1/n).
+  \]
+  For $y\in B(x_{n,k},1/n)$, the triangle inequality gives
+  \[
+    d(x,y)<\frac1n+\frac1n=\frac2n<\varepsilon.
+  \]
+  Hence
+  \[
+    x\in B(x_{n,k},1/n)\subseteq B(x,\varepsilon)\subseteq O,
+  \]
+  proving that $\mathcal{B}$ is a countable base.
+
+  \textbf{(i) $\Rightarrow$ (iii).}
+  Let $\mathcal{B}$ be a countable base. For every nonempty
+  $B\in\mathcal{B}$, choose a point $x_B\in B$, and put
+  \[
+    D=\{x_B:B\in\mathcal{B},\ B\ne\varnothing\}.
+  \]
+  The set $D$ is countable. If $O$ is a nonempty open set, then it contains
+  a nonempty basic open set $B\in\mathcal{B}$, so $x_B\in D\cap O$.
+  Thus $D$ is dense, and $X$ is separable.
+
+  \textbf{(iii) $\Rightarrow$ (i).}
+  Let $D\subseteq X$ be a countable dense set. The family
+  \[
+    \mathcal{C}=\{B(a,1/n):a\in D,\ n\in\N\}
+  \]
+  is countable. Let $O$ be open and $x\in O$. Choose $\varepsilon>0$ such
+  that $B(x,\varepsilon)\subseteq O$, and choose $n$ with $2/n<\varepsilon$.
+  Since $D$ is dense, there is
+  \[
+    a\in D\cap B(x,1/n).
+  \]
+  Then $x\in B(a,1/n)$; moreover, if $y\in B(a,1/n)$, then
+  \[
+    d(x,y)\le d(x,a)+d(a,y)<\frac2n<\varepsilon.
+  \]
+  Consequently,
+  \[
+    x\in B(a,1/n)\subseteq B(x,\varepsilon)\subseteq O.
+  \]
+  So $\mathcal{C}$ is a countable base for $X$.
+\end{solution}
+
+\section{Question 3}
+
+Let $(X,d)$ be a pseudometric space. Let $\mathcal{T}_d$ be the topology on
+$X$ generated by
+\[
+  \{B(x,\varepsilon):x\in X,\ \varepsilon\in\R_{>0}\},
+\]
+where $B(x,\varepsilon):=\{y\in X:d(x,y)<\varepsilon\}$. Show that
+$(X,\mathcal{T}_d)$ is $T_0$ if and only if $d$ is a metric.
+
+\begin{solution}
+  Suppose first that $d$ is a metric. If $x\ne y$, then $d(x,y)>0$.
+  The open ball
+  \[
+    B\left(x,\frac{d(x,y)}2\right)
+  \]
+  contains $x$ but not $y$. Hence $(X,\mathcal{T}_d)$ is $T_0$.
+
+  Conversely, suppose $(X,\mathcal{T}_d)$ is $T_0$. Let $x,y\in X$ satisfy
+  $d(x,y)=0$. For every $\varepsilon>0$,
+  \[
+    y\in B(x,\varepsilon)\qquad\text{and}\qquad
+    x\in B(y,\varepsilon).
+  \]
+  Therefore, every open set containing $x$ also contains $y$, and every
+  open set containing $y$ also contains $x$. The $T_0$ property now implies
+  $x=y$. Thus
+  \[
+    d(x,y)=0\implies x=y.
+  \]
+  A pseudometric already satisfies all the other metric axioms, so $d$ is a
+  metric.
+\end{solution}
+
+\section{Question 4}
+
+Prove the following for a topological space $(X,\mathcal{T})$:
+\begin{enumerate}[(i)]
+  \item if $X$ is $T_3$, then for every distinct $x,y\in X$, there exist
+    open sets $U,V$ such that $x\in U$, $y\in V$, and
+    $\overline{U}\cap\overline{V}=\varnothing$;
+  \item if $X$ is $T_4$, then for every disjoint closed sets $A,B\subseteq X$,
+    there exist open sets $U,V$ such that $A\subseteq U$, $B\subseteq V$, and
+    $\overline{U}\cap\overline{V}=\varnothing$.
+\end{enumerate}
+
+\begin{solution}
+  We first record two useful consequences of regularity and normality.
+
+  If $X$ is regular, $x\in O$, and $O$ is open, then there is an open set
+  $W$ such that
+  \[
+    x\in W\subseteq\overline{W}\subseteq O.
+  \]
+  Indeed, separate $x$ and the closed set $X\setminus O$ by disjoint open
+  sets $W$ and $G$, respectively. Since $W\cap G=\varnothing$ and $G$ is
+  open, $\overline{W}\subseteq X\setminus G\subseteq O$.
+
+  Similarly, if $X$ is normal, $C\subseteq O$, $C$ is closed, and $O$ is
+  open, then there is an open set $W$ such that
+  \[
+    C\subseteq W\subseteq\overline{W}\subseteq O.
+  \]
+  Separate the disjoint closed sets $C$ and $X\setminus O$ by disjoint open
+  sets $W$ and $G$, respectively. The same closure argument gives
+  $\overline{W}\subseteq X\setminus G\subseteq O$.
+
+  \textbf{(i)} Since a $T_3$ space is $T_1$, the singleton $\{y\}$ is
+  closed. By regularity, there are disjoint open sets $O_x,O_y$ such that
+  \[
+    x\in O_x,\qquad y\in O_y.
+  \]
+  Apply the regularity consequence above to $x\in O_x$ and $y\in O_y$.
+  We obtain open sets $U,V$ satisfying
+  \[
+    x\in U\subseteq\overline{U}\subseteq O_x,
+    \qquad
+    y\in V\subseteq\overline{V}\subseteq O_y.
+  \]
+  Since $O_x\cap O_y=\varnothing$, it follows that
+  \[
+    \overline{U}\cap\overline{V}=\varnothing.
+  \]
+
+  \textbf{(ii)} Since $X$ is $T_4$, it is normal. Thus the disjoint closed
+  sets $A$ and $B$ have disjoint open neighborhoods $O_A$ and $O_B$:
+  \[
+    A\subseteq O_A,\qquad B\subseteq O_B,\qquad O_A\cap O_B=\varnothing.
+  \]
+  Apply the normality consequence to the closed set $A$ contained in $O_A$
+  and to the closed set $B$ contained in $O_B$. This gives open sets $U,V$
+  with
+  \[
+    A\subseteq U\subseteq\overline{U}\subseteq O_A,
+    \qquad
+    B\subseteq V\subseteq\overline{V}\subseteq O_B.
+  \]
+  Therefore $\overline{U}\cap\overline{V}=\varnothing$.
+\end{solution}
+
+\section{Question 5}
+
+Show that every locally compact Hausdorff space is regular, i.e.,
+``local compactness $+\ T_2\Rightarrow T_3$.''
+
+\begin{solution}
+  Let $X$ be locally compact and Hausdorff. It is $T_1$ because every
+  Hausdorff space is $T_1$. It remains to separate a point from a disjoint
+  closed set.
+
+  Let $x\in X$ and let $F\subseteq X$ be closed with $x\notin F$.
+  By local compactness, $x$ has an open neighborhood $W$ contained in a
+  compact set $K$. Since $X$ is Hausdorff, $K$ is closed. Put
+  \[
+    A=K\cap F.
+  \]
+  The set $A$ is closed in the compact space $K$, hence compact.
+
+  For every $a\in A$, the Hausdorff property gives disjoint open sets
+  $U_a,V_a\subseteq X$ such that
+  \[
+    x\in U_a,\qquad a\in V_a.
+  \]
+  The family $\{V_a:a\in A\}$ covers $A$. If $A\ne\varnothing$,
+  compactness gives $a_1,\ldots,a_m\in A$ such that
+  \[
+    A\subseteq V_{a_1}\cup\cdots\cup V_{a_m}.
+  \]
+  If $A=\varnothing$, put $m=0$. In either case, define
+  \[
+    U=W\cap\bigcap_{j=1}^m U_{a_j},
+  \]
+  where the empty intersection is $X$.
+  Then $U$ is an open neighborhood of $x$ and $U\subseteq K$. Hence
+  $\overline{U}\subseteq K$, because $K$ is closed. Moreover,
+  $U\cap V_{a_j}=\varnothing$ for every $j$, so, as $V_{a_j}$ is open,
+  \[
+    \overline{U}\cap V_{a_j}=\varnothing\qquad (1\le j\le m).
+  \]
+  Thus $\overline{U}\cap A=\varnothing$. Since $\overline{U}\subseteq K$,
+  we obtain
+  \[
+    \overline{U}\cap F
+    =\overline{U}\cap K\cap F
+    =\overline{U}\cap A
+    =\varnothing.
+  \]
+  Therefore $V=X\setminus\overline{U}$ is an open set containing $F$, and
+  $U\cap V=\varnothing$. We have separated the arbitrary point $x$ from
+  the arbitrary disjoint closed set $F$. Consequently $X$ is regular and,
+  together with $T_1$, is a $T_3$ space.
+\end{solution}
+
+\end{document}

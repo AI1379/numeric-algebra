@@ -1,0 +1,834 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% import common macros
+\input{../../common/macros.tex}
+
+\providecommand{\Chat}{\overline{\C}}
+\providecommand{\Mob}{\mathfrak{M}}
+\providecommand{\GL}{\operatorname{GL}}
+\providecommand{\SL}{\operatorname{SL}}
+\providecommand{\Aut}{\operatorname{Aut}}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Complex Analysis}
+\newcommand{\hwNum}{12}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+\section{Exercise 4.134}
+
+\textbf{Lemma 4.133.}
+A set $\mathcal D\subseteq \Chat$ is open if and only if the set
+\[
+  \{z\in\Chat:z^{-1}\in \mathcal D\}
+\]
+is open in $\Chat$.
+
+\begin{solution}
+  Let
+  \[
+    I:\Chat\to\Chat,\qquad I(z)=z^{-1},
+  \]
+  where $0^{-1}=\infty$ and $\infty^{-1}=0$. Then $I\circ I=\operatorname{id}$.
+  It suffices to show that if $\mathcal D$ is open in $\Chat$, then
+  $I^{-1}(\mathcal D)$ is open in $\Chat$.
+
+  Put
+  \[
+    \widehat{\mathcal D}:=I^{-1}(\mathcal D)
+    =\{z\in\Chat:z^{-1}\in\mathcal D\}.
+  \]
+  We verify openness by Definition~4.132.
+
+  First consider finite points. Let $z_0\in \widehat{\mathcal D}\cap\C$.
+
+  If $z_0\ne0$, then $z_0^{-1}\in \mathcal D\cap\C$. Since
+  $\mathcal D\cap\C$ is open in $\C$ and $z\mapsto z^{-1}$ is continuous on
+  $\C^\ast$, there is a small disk around $z_0$ contained in
+  $\widehat{\mathcal D}\cap\C$.
+
+  If $z_0=0$, then $\infty=0^{-1}\in\mathcal D$. Since $\mathcal D$ is open in
+  $\Chat$, Definition~4.132 gives some $R>0$ such that
+  \[
+    \{w\in\C:|w|>R\}\subseteq \mathcal D.
+  \]
+  Thus whenever $0<|z|<1/R$, we have $|z^{-1}|>R$, so $z^{-1}\in\mathcal D$.
+  Also $0^{-1}=\infty\in\mathcal D$. Hence a disk around $0$ is contained in
+  $\widehat{\mathcal D}\cap\C$.
+
+  Therefore $\widehat{\mathcal D}\cap\C$ is open in $\C$.
+
+  It remains to check the neighborhood condition at $\infty$. If
+  $\infty\in\widehat{\mathcal D}$, then $0=\infty^{-1}\in\mathcal D$. Since
+  $\mathcal D\cap\C$ is open in $\C$, there exists $r>0$ such that
+  \[
+    U_r(0)\subseteq \mathcal D.
+  \]
+  Then for $|z|>1/r$, we have $|z^{-1}|<r$, hence $z^{-1}\in\mathcal D$.
+  Therefore
+  \[
+    \{z\in\C:|z|>1/r\}\subseteq \widehat{\mathcal D}.
+  \]
+  So $\widehat{\mathcal D}$ is open in $\Chat$.
+
+  Conversely, if $\widehat{\mathcal D}$ is open, then
+  \[
+    \mathcal D=I^{-1}(\widehat{\mathcal D})
+  \]
+  is open by the same argument, because $I^{-1}=I$. Hence the equivalence is
+  proved.
+\end{solution}
+
+\section{Exercise 4.153}
+
+\textbf{Theorem 4.152.}
+A function $f:\Chat\to\Chat$ is meromorphic if and only if it is rational,
+i.e. of the form
+\[
+  f(z)=\frac{P(z)}{Q(z)},
+\]
+where $P$ and $Q$ are complex polynomials.
+
+\textbf{Problem.}
+Give an alternative proof of the necessity part of Theorem~4.152 using
+Laurent expansions and Liouville's theorem~3.94.
+
+\begin{solution}
+  Assume $f:\Chat\to\Chat$ is meromorphic. We prove that $f$ is rational.
+
+  Since $f$ is meromorphic on $\Chat$, its pole set is discrete in $\Chat$.
+  The Riemann sphere $\Chat$ is compact, so a discrete subset of $\Chat$ must be
+  finite. Hence $f$ has only finitely many finite poles, say
+  \[
+    z_1,z_2,\dots,z_m\in\C,
+  \]
+  with pole orders $k_1,k_2,\dots,k_m$.
+
+  Define
+  \[
+    Q(z):=\prod_{j=1}^m (z-z_j)^{k_j}.
+  \]
+  Then
+  \[
+    F(z):=Q(z)f(z)
+  \]
+  has removable singularities at all finite poles of $f$. After removing those
+  singularities, $F$ is entire on $\C$.
+
+  It remains to show that $F$ is a polynomial. Since $f$ is meromorphic at
+  $\infty$, the function
+  \[
+    \widehat f(\zeta):=f(\zeta^{-1})
+  \]
+  has a non-essential singularity at $\zeta=0$. Also $Q(\zeta^{-1})$ has at
+  worst a pole at $\zeta=0$. Therefore
+  \[
+    \widehat F(\zeta):=F(\zeta^{-1})=Q(\zeta^{-1})f(\zeta^{-1})
+  \]
+  has at worst a pole at $\zeta=0$. Thus the Laurent expansion of
+  $\widehat F$ at $0$ has only finitely many negative powers.
+
+  Equivalently, the Laurent expansion of $F$ at $\infty$ has only finitely many
+  positive powers. Hence there exists a polynomial $P$ such that
+  \[
+    F(z)-P(z)\to 0
+    \qquad (z\to\infty).
+  \]
+  The function $F-P$ is entire and bounded outside a sufficiently large disk;
+  it is also bounded on the remaining compact disk. Thus $F-P$ is a bounded
+  entire function. By Liouville's theorem~3.94, $F-P$ is constant. Since
+  $F(z)-P(z)\to0$ as $z\to\infty$, this constant is $0$. Hence
+  \[
+    F=P.
+  \]
+  Therefore
+  \[
+    f(z)=\frac{P(z)}{Q(z)}
+  \]
+  is rational. This proves the necessity part of Theorem~4.152.
+\end{solution}
+
+\section{Exercise 4.155*}
+
+Let $f$ be a monic polynomial of degree $d$, and
+\[
+  M(f):=\max_{z\in\partial E}|f(z)|.
+\]
+Show that
+
+\begin{enumerate}
+  \item[(a)] $\forall |z|>1,\ |f(z)|\le |z|^dM(f)$.
+  \item[(b)] $M(f)\ge1$; the equality holds if and only if $f(z)=z^d$.
+\end{enumerate}
+
+\begin{solution}
+  Since $f$ is monic of degree $d$, write
+  \[
+    f(z)=z^d+a_{d-1}z^{d-1}+\cdots+a_1z+a_0.
+  \]
+  Define
+  \[
+    g(w):=w^d f(w^{-1}).
+  \]
+  Then
+  \[
+    g(w)=1+a_{d-1}w+\cdots+a_1w^{d-1}+a_0w^d,
+  \]
+  so $g$ is analytic in a neighborhood of $\overline E$ and $g(0)=1$.
+
+  For $|z|>1$, put $w=z^{-1}$. Then $|w|<1$, and
+  \[
+    |f(z)|=|z|^d |z^{-d}f(z)|
+    =|z|^d |g(z^{-1})|.
+  \]
+  By the maximum modulus principle applied to $g$ on $E$,
+  \[
+    |g(z^{-1})|
+    \le \max_{|w|=1}|g(w)|.
+  \]
+  For $|w|=1$,
+  \[
+    |g(w)|=|w^d f(w^{-1})|=|f(w^{-1})|.
+  \]
+  Since $w^{-1}\in\partial E$, we get
+  \[
+    \max_{|w|=1}|g(w)|=M(f).
+  \]
+  Therefore
+  \[
+    |f(z)|\le |z|^dM(f),
+  \]
+  which proves (a).
+
+  For (b), since $g(0)=1$, the maximum modulus principle gives
+  \[
+    1=|g(0)|\le \max_{|w|=1}|g(w)|=M(f).
+  \]
+  Thus $M(f)\ge1$.
+
+  If $M(f)=1$, then $|g(0)|=1$ equals the maximum modulus of $g$ on $E$.
+  Hence $g$ attains its maximum modulus at an interior point. By the maximum
+  modulus theorem, $g$ is constant. Since $g(0)=1$, we have $g\equiv1$.
+  Therefore
+  \[
+    w^d f(w^{-1})=1,
+  \]
+  so $f(z)=z^d$.
+
+  Conversely, if $f(z)=z^d$, then clearly
+  \[
+    M(f)=\max_{|z|=1}|z^d|=1.
+  \]
+  This completes the proof.
+\end{solution}
+
+\section{Exercise 4.158}
+
+Show that the singularity of $f$ is a pole in the proof of Theorem~4.156 by
+applying the Casorati-Weierstrass theorem~4.108 and the open mapping theorem
+4.41 to $f(1/z)$.
+
+\begin{solution}
+  In the proof of Theorem~4.156, $f:\C\to\C$ is assumed to be globally
+  conformal. Thus $f$ is entire, bijective, and nonconstant.
+
+  Consider
+  \[
+    g(z):=f(1/z),
+  \]
+  which is analytic in a punctured disk $0<|z|<r$. We prove that the isolated
+  singularity of $g$ at $0$ is a pole.
+
+  First, $g$ cannot have an essential singularity at $0$. Suppose it did. By
+  the Casorati-Weierstrass theorem~4.108, for every $r>0$,
+  \[
+    g(U_r^\bullet(0))
+  \]
+  is dense in $\C$. Equivalently, for every $R>0$,
+  \[
+    f(\{z\in\C:|z|>R\})
+  \]
+  is dense in $\C$.
+
+  On the other hand, since $f$ is nonconstant and analytic, the open mapping
+  theorem~4.41 implies that
+  \[
+    f(U_R(0))
+  \]
+  is a nonempty open subset of $\C$. A dense subset of $\C$ must intersect this
+  open set. Hence
+  \[
+    f(\{z:|z|>R\})\cap f(U_R(0))\ne\varnothing.
+  \]
+  This contradicts the injectivity of $f$, because the two subsets
+  $\{z:|z|>R\}$ and $U_R(0)$ are disjoint. Therefore $g$ is not essential at
+  $0$.
+
+  Next, $g$ cannot have a removable singularity at $0$. Suppose $g$ extends
+  analytically to $0$, and denote the extension by $G$. The extension $G$ is
+  nonconstant; otherwise $f$ would be constant outside a disk, hence constant
+  on $\C$ by the identity theorem. Thus the open mapping theorem implies that
+  $G(U_r(0))$ is open and contains $G(0)$. Let $a=G(0)$. Since $f$ is
+  surjective, choose $z_0\in\C$ such that
+  \[
+    f(z_0)=a.
+  \]
+  Choose $r>0$ sufficiently small and then choose $R$ such that
+  \[
+    |z_0|<R<1/r.
+  \]
+  The set $f(U_R(0))$ is open and contains $a$. Also $G(U_r(0))$ is open and
+  contains $a$. Thus their intersection contains some point $b\ne a$.
+
+  Since $b\in G(U_r(0))$ and $b\ne a=G(0)$, there exists some
+  $\zeta\in U_r^\bullet(0)$ such that
+  \[
+    b=G(\zeta)=f(1/\zeta),
+  \]
+  where $|1/\zeta|>1/r>R$. Since $b\in f(U_R(0))$, there also exists
+  $w\in U_R(0)$ such that
+  \[
+    b=f(w).
+  \]
+  Thus $f(w)=f(1/\zeta)$ with $w\in U_R(0)$ and $|1/\zeta|>R$, contradicting
+  the injectivity of $f$.
+
+  Therefore the singularity of $g(z)=f(1/z)$ at $0$ is neither removable nor
+  essential. By the classification of isolated singularities, it must be a
+  pole. Hence the singularity of $f$ at $\infty$ is a pole.
+\end{solution}
+
+\section{Exercise 4.159}
+
+Find all entire functions $f$ satisfying
+\[
+  f(f(z))=z
+  \qquad \text{for all }z\in\C.
+\]
+
+\begin{solution}
+  The equation
+  \[
+    f(f(z))=z
+  \]
+  implies that $f$ is injective. Indeed, if $f(z_1)=f(z_2)$, then applying $f$
+  to both sides gives
+  \[
+    z_1=f(f(z_1))=f(f(z_2))=z_2.
+  \]
+  It also implies that $f$ is surjective: for any $w\in\C$,
+  \[
+    w=f(f(w)).
+  \]
+  Hence every $w$ lies in the image of $f$.
+
+  Therefore $f$ is an entire bijection. By Theorem~4.156, $f$ must be affine:
+  \[
+    f(z)=az+b,
+    \qquad a\in\C^\ast,\ b\in\C.
+  \]
+  Now compute
+  \[
+    f(f(z))=a(az+b)+b=a^2z+(a+1)b.
+  \]
+  Since $f(f(z))=z$ for all $z$, we need
+  \[
+    a^2=1,
+    \qquad
+    (a+1)b=0.
+  \]
+  Thus $a=1$ or $a=-1$.
+
+  If $a=1$, then $2b=0$, so $b=0$, giving
+  \[
+    f(z)=z.
+  \]
+  If $a=-1$, then $(a+1)b=0$ is automatic, so $b$ is arbitrary, giving
+  \[
+    f(z)=b-z,
+    \qquad b\in\C.
+  \]
+  Therefore all solutions are
+  \[
+    \boxed{f(z)=z}
+    \qquad\text{and}\qquad
+    \boxed{f(z)=b-z,\ b\in\C}.
+  \]
+\end{solution}
+
+\section{Exercise 4.165}
+
+Explain how to normalize any nonsingular Mobius transformation $M$.
+
+\begin{solution}
+  Let
+  \[
+    M(z)=\frac{az+b}{cz+d}
+  \]
+  be a nonsingular Mobius transformation. By Definition~4.162,
+  \[
+    ad-bc\ne0.
+  \]
+  Multiplying all coefficients by the same nonzero complex number does not
+  change the Mobius transformation:
+  \[
+    \frac{az+b}{cz+d}
+    =
+    \frac{\lambda az+\lambda b}{\lambda cz+\lambda d},
+    \qquad \lambda\in\C^\ast.
+  \]
+  We want the new coefficients to satisfy Definition~4.164, namely
+  \[
+    (\lambda a)(\lambda d)-(\lambda b)(\lambda c)=1.
+  \]
+  This condition is
+  \[
+    \lambda^2(ad-bc)=1.
+  \]
+  Since $ad-bc\ne0$, we can choose
+  \[
+    \lambda=(ad-bc)^{-1/2},
+  \]
+  where either square root may be chosen. Then
+  \[
+    (\lambda a)(\lambda d)-(\lambda b)(\lambda c)=1.
+  \]
+  Thus every nonsingular Mobius transformation can be normalized by multiplying
+  all four coefficients by a common factor $\lambda$ satisfying
+  \[
+    \lambda^2(ad-bc)=1.
+  \]
+  The two possible choices differ by a sign.
+\end{solution}
+
+\section{Exercise 4.173}
+
+Prove
+
+\begin{enumerate}
+  \item[(i)] $[f^{-1}(z)]=[f]^{-1}$;
+  \item[(ii)] $[f_2][f_1]=[f_2\circ f_1]$
+\end{enumerate}
+for two nonsingular Mobius transformations $f_1(z),f_2(z)$.
+
+\begin{solution}
+  Let
+  \[
+    f(z)=\frac{az+b}{cz+d},
+    \qquad
+    [f]=
+    \begin{bmatrix}
+      a & b \\
+      c & d
+    \end{bmatrix},
+  \]
+  where $ad-bc\ne0$.
+
+  For (i), the inverse matrix is
+  \[
+    [f]^{-1}
+    =
+    \frac1{ad-bc}
+    \begin{bmatrix}
+      d & -b \\
+      -c & a
+    \end{bmatrix}.
+  \]
+  Since multiplying all coefficients by the same nonzero scalar does not
+  change the corresponding Mobius transformation, this matrix represents
+  \[
+    z\mapsto
+    \frac{dz-b}{-cz+a}.
+  \]
+  A direct calculation shows that this is the inverse of
+  \[
+    z\mapsto \frac{az+b}{cz+d}.
+  \]
+  Indeed, if $w=f(z)$, then
+  \[
+    w=\frac{az+b}{cz+d}
+    \implies
+    w(cz+d)=az+b
+    \implies
+    (cw-a)z=b-dw,
+  \]
+  so
+  \[
+    z=\frac{dw-b}{-cw+a}.
+  \]
+  Therefore
+  \[
+    [f^{-1}]=[f]^{-1}.
+  \]
+
+  For (ii), write
+  \[
+    f_1(z)=\frac{a_1z+b_1}{c_1z+d_1},
+    \qquad
+    f_2(z)=\frac{a_2z+b_2}{c_2z+d_2}.
+  \]
+  Then
+  \[
+    [f_1]=
+    \begin{bmatrix}
+      a_1 & b_1 \\
+      c_1 & d_1
+    \end{bmatrix},
+    \qquad
+    [f_2]=
+    \begin{bmatrix}
+      a_2 & b_2 \\
+      c_2 & d_2
+    \end{bmatrix}.
+  \]
+  Compute
+  \[
+    f_2(f_1(z))
+    =
+    \frac{
+      a_2\frac{a_1z+b_1}{c_1z+d_1}+b_2
+    }{
+      c_2\frac{a_1z+b_1}{c_1z+d_1}+d_2
+    }.
+  \]
+  Multiplying numerator and denominator by $c_1z+d_1$, we get
+  \[
+    f_2(f_1(z))
+    =
+    \frac{
+      (a_2a_1+b_2c_1)z+(a_2b_1+b_2d_1)
+    }{
+      (c_2a_1+d_2c_1)z+(c_2b_1+d_2d_1)
+    }.
+  \]
+  Thus
+  \[
+    [f_2\circ f_1]
+    =
+    \begin{bmatrix}
+      a_2a_1+b_2c_1 & a_2b_1+b_2d_1 \\
+      c_2a_1+d_2c_1 & c_2b_1+d_2d_1
+    \end{bmatrix}
+    =
+    [f_2][f_1].
+  \]
+\end{solution}
+
+\section{Exercise 4.176}
+
+Prove Lemma~4.167 using Lemma~4.175.
+
+\textbf{Hint.} Use
+\[
+  \det([g][f])=\det[g]\det[f].
+\]
+
+\begin{solution}
+  Lemma~4.167 states that if $f,g$ are two Mobius transformations, then so is
+  $g\circ f$.
+
+  By Lemma~4.175, the map
+  \[
+    \psi:\GL_2(\C)\to\Mob
+  \]
+  defined by
+  \[
+    \psi([f])=f
+  \]
+  is a group homomorphism from $\GL_2(\C)$ onto the Mobius group $\Mob$.
+
+  Let $f,g\in\Mob$. Then there exist matrices
+  \[
+    A=[f]\in\GL_2(\C),
+    \qquad
+    B=[g]\in\GL_2(\C)
+  \]
+  such that
+  \[
+    \psi(A)=f,
+    \qquad
+    \psi(B)=g.
+  \]
+  Since $A,B\in\GL_2(\C)$, we have
+  \[
+    \det A\ne0,
+    \qquad
+    \det B\ne0.
+  \]
+  By the hint,
+  \[
+    \det(BA)=\det B\det A\ne0.
+  \]
+  Hence
+  \[
+    BA\in\GL_2(\C).
+  \]
+  Using the homomorphism property of $\psi$ from Lemma~4.175,
+  \[
+    \psi(BA)=\psi(B)\circ\psi(A)=g\circ f.
+  \]
+  Since $BA\in\GL_2(\C)$, $\psi(BA)$ is a nonsingular Mobius transformation.
+  Therefore $g\circ f$ is a Mobius transformation. This proves Lemma~4.167.
+\end{solution}
+
+\section{Exercise 4.182}
+
+Prove the sufficiency part of Lemma~4.181.
+
+\textbf{Lemma 4.181.}
+Two points $u,v\in S^2$ are antipodal if and only if their images
+$p:=\sigma(u)$ and $q:=\sigma(v)$ under the stereographic projection are
+related as
+\[
+  p=-\frac1{\overline q}.
+\]
+
+\begin{solution}
+  We prove the sufficiency. Assume
+  \[
+    p=-\frac1{\overline q}.
+  \]
+  Equivalently, for finite nonzero $p,q$,
+  \[
+    q=-\frac1{\overline p}.
+  \]
+
+  Recall the inverse stereographic projection:
+  \[
+    \sigma^{-1}(z)
+    =
+    \left(
+      \frac{2z}{1+|z|^2},
+      \frac{|z|^2-1}{1+|z|^2}
+    \right),
+    \qquad z\in\C,
+  \]
+  and
+  \[
+    \sigma^{-1}(\infty)=N=(0,1).
+  \]
+
+  First suppose $p,q\in\C^\ast$. Let
+  \[
+    u=\sigma^{-1}(p),
+    \qquad
+    v=\sigma^{-1}(q).
+  \]
+  Then
+  \[
+    u=
+    \left(
+      \frac{2p}{1+|p|^2},
+      \frac{|p|^2-1}{1+|p|^2}
+    \right).
+  \]
+  Since $q=-1/\overline p$, we have $|q|=1/|p|$. Therefore
+  \[
+    \frac{2q}{1+|q|^2}
+    =
+    \frac{2(-1/\overline p)}{1+1/|p|^2}
+    =
+    -\frac{2p}{1+|p|^2},
+  \]
+  and
+  \[
+    \frac{|q|^2-1}{1+|q|^2}
+    =
+    \frac{1/|p|^2-1}{1+1/|p|^2}
+    =
+    -\frac{|p|^2-1}{1+|p|^2}.
+  \]
+  Hence
+  \[
+    v=-u.
+  \]
+  Thus $u$ and $v$ are antipodal.
+
+  It remains to check the exceptional cases. If $p=\infty$, then the relation
+  $p=-1/\overline q$ forces $q=0$. Then
+  \[
+    u=\sigma^{-1}(\infty)=N=(0,1),
+    \qquad
+    v=\sigma^{-1}(0)=(0,-1),
+  \]
+  so $v=-u$. The case $q=\infty$ is symmetric.
+
+  Therefore in every case, the relation
+  \[
+    p=-\frac1{\overline q}
+  \]
+  implies that $u$ and $v$ are antipodal. This proves the sufficiency part of
+  Lemma~4.181.
+\end{solution}
+
+\section{Exercise 4.187}
+
+For a Mobius transformation $M(z)$ with two fixed points $p\ne q$, show that
+if
+\[
+  M(z_0)=\infty
+  \qquad\text{and}\qquad
+  M(\infty)=w_0,
+\]
+then
+
+\begin{enumerate}
+  \item[(a)] $z_0+w_0=p+q$;
+  \item[(b)] $\displaystyle M(z)=\frac{w_0z-pq}{z-z_0}$.
+\end{enumerate}
+
+\begin{solution}
+  Write
+  \[
+    M(z)=\frac{az+b}{cz+d}.
+  \]
+  Since $M(z_0)=\infty$, the denominator vanishes at $z_0$, so
+  \[
+    cz_0+d=0.
+  \]
+  In particular, $c\ne0$. Also
+  \[
+    M(\infty)=\frac ac=w_0.
+  \]
+  Dividing numerator and denominator by $c$, we may write
+  \[
+    M(z)=\frac{w_0z+\beta}{z-z_0}
+  \]
+  for some $\beta\in\C$.
+
+  Since $p$ and $q$ are fixed points of $M$, they are the two roots of
+  \[
+    z=M(z).
+  \]
+  Using the above form of $M$, this equation becomes
+  \[
+    z=\frac{w_0z+\beta}{z-z_0}.
+  \]
+  Equivalently,
+  \[
+    z(z-z_0)=w_0z+\beta,
+  \]
+  so
+  \[
+    z^2-(z_0+w_0)z-\beta=0.
+  \]
+  The two roots of this quadratic are $p$ and $q$. Therefore, by Vieta's
+  formulas,
+  \[
+    p+q=z_0+w_0
+  \]
+  and
+  \[
+    pq=-\beta.
+  \]
+  This proves (a), and also gives
+  \[
+    \beta=-pq.
+  \]
+  Substituting this into the expression for $M$, we obtain
+  \[
+    M(z)=\frac{w_0z-pq}{z-z_0}.
+  \]
+  This proves (b).
+\end{solution}
+
+\section{Exercise 4.189}
+
+Prove Lemma~4.188.
+
+\textbf{Lemma 4.188.}
+Let $z=z_1/z_2\in\Chat$. Then $z$ is a fixed point of a Mobius
+transformation $M$ if and only if
+\[
+  [z_1,z_2]^T
+\]
+is an eigenvector of the coefficient matrix $[M]$.
+
+\begin{solution}
+  Let
+  \[
+    M(z)=\frac{az+b}{cz+d},
+    \qquad
+    [M]=
+    \begin{bmatrix}
+      a & b \\
+      c & d
+    \end{bmatrix}.
+  \]
+  Let
+  \[
+    v=
+    \begin{bmatrix}
+      z_1 \\
+      z_2
+    \end{bmatrix}
+    \ne0
+  \]
+  be homogeneous coordinates for $z$, so that
+  \[
+    z=\frac{z_1}{z_2}.
+  \]
+
+  The Mobius transformation $M$ sends $z$ to
+  \[
+    M(z)
+    =
+    \frac{az_1+bz_2}{cz_1+dz_2}.
+  \]
+  In homogeneous coordinates, this means that $M(z)$ is represented by
+  \[
+    [M]v
+    =
+    \begin{bmatrix}
+      a & b \\
+      c & d
+    \end{bmatrix}
+    \begin{bmatrix}
+      z_1 \\
+      z_2
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      az_1+bz_2 \\
+      cz_1+dz_2
+    \end{bmatrix}.
+  \]
+
+  Now $z$ is a fixed point of $M$ if and only if $M(z)=z$. In homogeneous
+  coordinates, two nonzero vectors represent the same point of $\Chat$ if and
+  only if they differ by multiplication by a nonzero scalar. Hence
+  \[
+    M(z)=z
+  \]
+  if and only if there exists $\lambda\in\C^\ast$ such that
+  \[
+    [M]v=\lambda v.
+  \]
+  But this is exactly the statement that $v=[z_1,z_2]^T$ is an eigenvector of
+  $[M]$.
+
+  Therefore $z=z_1/z_2$ is a fixed point of $M$ if and only if
+  $[z_1,z_2]^T$ is an eigenvector of $[M]$.
+\end{solution}
+
+\end{document}

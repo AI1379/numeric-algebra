@@ -1,0 +1,2005 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\DeclareMathOperator{\interior}{int}
+\DeclareMathOperator{\diam}{diam}
+\newcommand{\LP}{\operatorname{LP}}
+
+\newcommand{\name}{NAME}
+\newcommand{\uid}{UID}
+\newcommand{\course}{Point Set Topology}
+\newcommand{\important}{\texorpdfstring{\textbf{[\(\star\) Important]}}{[Important]}}
+
+% solution environment (used in hw4/hw5/hw9)
+\newenvironment{solution}{\par\noindent\textbf{Solution.}\quad}{\par}
+
+\title{\textbf{Point Set Topology\\All Homeworks}}
+\author{}
+\date{}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name\ (\uid)}
+\chead{\course\ -- All Homeworks}
+\rhead{\thepage}
+
+\maketitle
+\thispagestyle{fancy}
+\tableofcontents
+\newpage
+
+\noindent\textbf{Study note.} Subsections marked \important{} are selected for their
+recurring use as standard results, counterexample templates, or proof techniques.
+\medskip
+
+\section{Homework 1}
+
+\subsection{Question 1}
+Let $A$ be a nonempty finite set. Let $\mathcal{P}(A) := \{A' : A' \subseteq A\}$ be the power set of $A$. Denote by $2^A$ the set of all functions of the form $f : A \to \{\pm 1\}$. Prove that there is a bijection between $\mathcal{P}(A)$ and $2^A$, and compute the cardinality of $\mathcal{P}(A)$.
+
+\begin{solution}
+For each subset $B\subseteq A$, define
+\[
+  \chi_B:A\to\{\pm1\},\qquad
+  \chi_B(a)=
+  \begin{cases}
+    1,&a\in B,\\
+    -1,&a\notin B.
+  \end{cases}
+\]
+This gives a map $\Phi:\mathcal P(A)\to 2^A$ by $\Phi(B)=\chi_B$.
+It is injective because $B$ can be recovered as
+\[
+  B=\{a\in A:\chi_B(a)=1\}.
+\]
+It is also surjective: if $f\in 2^A$, then $f=\chi_B$ for
+$B=f^{-1}(\{1\})$.
+Hence $\Phi$ is a bijection.
+
+If $|A|=n$, then there are two independent choices for the value of a
+function $A\to\{\pm1\}$ at each element of $A$, so
+\[
+  |\mathcal P(A)|=|2^A|=2^n=2^{|A|}.
+\]
+\end{solution}
+
+\subsection{Question 2}
+Let $A$ be a nonempty finite set. Denote by $\mathcal{F}(A)$ the set of all bijections $f : A \to A$. Prove that $\mathcal{F}(A)$ is a group with respect to the composition $g \circ f$ for arbitrary $g, f \in \mathcal{F}(A)$. When is $\mathcal{F}(A)$ an abelian group?
+
+\begin{solution}
+The composition of two bijections $A\to A$ is again a bijection, so
+$\mathcal F(A)$ is closed under composition. Composition of functions is
+associative. The identity map $\operatorname{id}_A$ is a bijection and is
+the identity element. Finally, every bijection $f:A\to A$ has an inverse
+bijection $f^{-1}:A\to A$. Therefore $\mathcal F(A)$ is a group.
+
+This is the symmetric group on $A$. If $|A|=1$, it is the trivial group; if
+$|A|=2$, it has two elements and is cyclic of order $2$. Hence it is
+abelian when $|A|\le 2$.
+
+If $|A|\ge3$, choose three distinct elements $a,b,c\in A$. Let
+$\sigma$ swap $a,b$ and fix all other elements, and let $\tau$ swap $b,c$
+and fix all other elements. Then
+\[
+  (\sigma\circ\tau)(a)=b,\qquad
+  (\tau\circ\sigma)(a)=c,
+\]
+so $\sigma\circ\tau\ne\tau\circ\sigma$. Thus $\mathcal F(A)$ is not
+abelian. Therefore $\mathcal F(A)$ is abelian exactly when $|A|\le2$.
+\end{solution}
+
+\subsection{Question 3}
+Let $p_n$ be the $n$-th prime number in ascending order, e.g., $p_1 = 2$, $p_2 = 3$ and $p_3 = 5$. Prove (using mathematical induction or otherwise) that $p_n < 2^{2^n}$ for every $n$.
+
+\begin{solution}
+We prove the claim by induction. For $n=1$,
+\[
+  p_1=2<4=2^{2^1}.
+\]
+Assume $p_i<2^{2^i}$ for $1\le i\le n$. By Euclid's argument, the integer
+\[
+  N=p_1p_2\cdots p_n+1
+\]
+has a prime divisor different from $p_1,\ldots,p_n$. Hence
+$p_{n+1}\le N$. Moreover,
+\[
+  p_1p_2\cdots p_n
+  <2^{2^1+2^2+\cdots+2^n}
+  =2^{2^{n+1}-2}.
+\]
+Since $p_1p_2\cdots p_n$ is an integer, this implies
+$p_1p_2\cdots p_n+1\le 2^{2^{n+1}-2}$. Thus
+\[
+  p_{n+1}\le p_1p_2\cdots p_n+1
+  \le 2^{2^{n+1}-2}<2^{2^{n+1}},
+\]
+This completes the induction.
+\end{solution}
+
+\subsection{Question 4}
+Let $S$ and $S'$ be the following subsets of $\R \times \R$:
+\[
+  S = \{(x, y) : y = x + 1 \text{ and } 0 < x < 3\},
+  \qquad
+  S' = \{(x, y) : y - x \in \Z\}.
+\]
+\begin{enumerate}[(i)]
+  \item Prove that $S'$ is an equivalence relation on $\R$. Describe the equivalence classes of $S'$.
+  \item Let $\{R_i\}_{i \in I}$ be a set of equivalence relations on $\R$ indexed by a nonempty set $I$. Prove that $\bigcap_{i \in I} R_i$ is also an equivalence relation on $\R$.
+  \item Describe the equivalence relation $T$ on $\R$ that is the intersection of all equivalence relations on $\R$ that contain $S$. Describe the equivalence classes of $T$.
+\end{enumerate}
+
+\begin{solution}
+\textbf{(i)} The relation $S'$ is reflexive because $x-x=0\in\Z$.
+It is symmetric because $y-x\in\Z$ implies $x-y=-(y-x)\in\Z$.
+It is transitive because if $y-x\in\Z$ and $z-y\in\Z$, then
+\[
+  z-x=(z-y)+(y-x)\in\Z.
+\]
+Thus $S'$ is an equivalence relation. The equivalence class of $x\in\R$ is
+\[
+  [x]_{S'}=x+\Z=\{x+k:k\in\Z\}.
+\]
+
+\textbf{(ii)} Let $R=\bigcap_{i\in I}R_i$. Since each $R_i$ is reflexive,
+$(x,x)\in R_i$ for every $i$, hence $(x,x)\in R$. If $(x,y)\in R$, then
+$(x,y)\in R_i$ for every $i$, so $(y,x)\in R_i$ for every $i$, hence
+$(y,x)\in R$. If $(x,y),(y,z)\in R$, then for every $i$ we have
+$(x,z)\in R_i$, so $(x,z)\in R$. Therefore $R$ is an equivalence relation.
+
+\textbf{(iii)} The desired relation $T$ is the equivalence relation
+generated by the pairs $(x,x+1)$ with $0<x<3$. Equivalently,
+\[
+  T=\Delta_{\R}
+  \cup \{(t+i,t+j):0<t<1,\ i,j\in\{0,1,2,3\}\}
+  \cup \{(i,j):i,j\in\{1,2,3\}\},
+\]
+where $\Delta_{\R}=\{(x,x):x\in\R\}$.
+
+Indeed, the original relation connects $x$ to $x+1$ exactly for
+$0<x<3$. For each $0<t<1$, this produces the chain
+\[
+  t\sim t+1\sim t+2\sim t+3,
+\]
+and for the integer case it produces
+\[
+  1\sim2\sim3.
+\]
+No other points can be connected, because every step changes a number by
+an integer and the lower endpoint of each allowed step must lie in
+$(0,3)$.
+
+Thus the non-singleton equivalence classes are
+\[
+  \{t,t+1,t+2,t+3\}\quad(0<t<1),
+  \qquad
+  \{1,2,3\},
+\]
+and every other real number is a singleton class.
+\end{solution}
+
+\subsection{Question 5}
+\begin{enumerate}[(i)]
+  \item Arrange Cantor, Russell, G\"odel, Zermelo, Fraenkel in a linear order according to their birth dates, i.e., $A_i < A_j$ if $A_i$ was born earlier than $A_j$.
+  \item From the picture in the original PDF, determine the name of the middle gentleman who is sitting, and describe briefly his mathematical achievement.
+\end{enumerate}
+
+\begin{solution}
+For part (i), the birth years are:
+\[
+  \text{Cantor }(1845),\quad
+  \text{Zermelo }(1871),\quad
+  \text{Russell }(1872),\quad
+  \text{Fraenkel }(1891),\quad
+  \text{G\"odel }(1906).
+\]
+Hence the required order is
+\[
+  \text{Cantor}<\text{Zermelo}<\text{Russell}<\text{Fraenkel}<\text{G\"odel}.
+\]
+
+Part (ii) is omitted.
+\end{solution}
+
+\section{Homework 2}
+
+\subsection{\important{} Question 1}
+A real number $x \in \R$ is called \textbf{algebraic} if it satisfies some rational polynomial equation of positive degree $x^n + a_{n-1}x^{n-1} + \cdots + a_1 x + a_0 = 0$ with $a_i \in \Q$ for all $0 \le i \le n-1$; otherwise it is called \textbf{transcendental}. Assuming that every such polynomial equation has only finitely many roots in $\R$, show that the set $A \subset \R$ of real algebraic numbers is countable. Deduce that the set $\R \setminus A$ of real transcendental numbers is uncountable. (Hint: show that there are countably many rational polynomials in total.)
+
+\begin{solution}
+For each $n\ge1$, the set of monic rational polynomials
+\[
+  x^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0
+\]
+is in bijection with $\Q^n$, hence is countable. Taking the union over
+$n\in\N^+$, the set of all such rational polynomials is countable.
+
+Each polynomial has only finitely many real roots by assumption. Therefore
+the set of real algebraic numbers is contained in a countable union of
+finite sets, so it is countable.
+
+Since $\R$ is uncountable, $\R\setminus A$ cannot be countable; otherwise
+\[
+  \R=A\cup(\R\setminus A)
+\]
+would be a countable union of countable sets. Hence the set of real
+transcendental numbers is uncountable.
+\end{solution}
+
+\subsection{Question 2}
+Let $X := \{0, 1\}$. Let $X^{\N}$ be the set of all functions $f : \N \to X$. Define the \textbf{support} of $f \in X^{\N}$ to be $\operatorname{supp}(f) = f^{-1}(\{1\})$. Consider the set $X_0^{\N} = \{f \in X^{\N} : \operatorname{supp}(f) \text{ is finite}\}$. Is $X_0^{\N}$ countable or uncountable? Justify your answer.
+
+\begin{solution}
+The function $f\in X_0^\N$ is uniquely determined by its finite support
+$\operatorname{supp}(f)\subseteq\N$. Thus $X_0^\N$ is in bijection with
+the set of finite subsets of $\N$.
+
+For each $k\ge0$, the collection of $k$-element subsets of $\N$ is
+countable: it injects into $\N^k$, which is countable. Therefore the set
+of all finite subsets of $\N$ is
+\[
+  \bigcup_{k=0}^{\infty}\{F\subseteq\N:|F|=k\},
+\]
+a countable union of countable sets. Hence $X_0^\N$ is countable.
+\end{solution}
+
+\medskip\noindent\textbf{Definition 0.1}\quad The following definition will be used for Questions 3--5 below. A \textbf{pseudo-metric space} is a pair $(S, d)$, where $S$ is a nonempty set and $d : S \times S \to \R_{\ge 0}$ (called a pseudo-metric on $S$) satisfying: (1) $d(x, x) = 0$; (2) $d(x, y) = d(y, x)$ for all $x, y \in S$; (3) $d(x, z) \le d(x, y) + d(y, z)$ for all $x, y, z \in S$. If furthermore $d(x, y) = 0$ implies $x = y$, it is called a \textbf{metric space}.
+
+\subsection{\important{} Question 3}
+Let $(S, d)$ be a pseudo-metric space. We write $x \sim y$ if $d(x, y) = 0$. Prove that (i) $\sim$ is an equivalence relation on $S$ (and thus we denote by $S/\!\sim$ the set of equivalence classes of $S$); (ii) for every $[x], [y] \in S/\!\sim$, the function $\bar d([x], [y]) := d(x, y)$ gives a well-defined metric on $S/\!\sim$.
+
+\begin{solution}
+\textbf{(i)} Reflexivity follows from $d(x,x)=0$. Symmetry follows from
+the symmetry of $d$. If $x\sim y$ and $y\sim z$, then
+\[
+  d(x,z)\le d(x,y)+d(y,z)=0,
+\]
+so $d(x,z)=0$ and $x\sim z$. Hence $\sim$ is an equivalence relation.
+
+\textbf{(ii)} We first prove well-definedness. Suppose $x\sim x'$ and
+$y\sim y'$. Then
+\[
+  d(x,y)\le d(x,x')+d(x',y')+d(y',y)=d(x',y').
+\]
+By the same argument with $(x,y)$ and $(x',y')$ exchanged,
+$d(x',y')\le d(x,y)$. Hence $d(x,y)=d(x',y')$, so $\bar d$ is
+well-defined.
+
+Non-negativity, symmetry, and the triangle inequality for $\bar d$ follow
+directly from the corresponding properties of $d$. Finally,
+\[
+  \bar d([x],[y])=0
+  \iff d(x,y)=0
+  \iff x\sim y
+  \iff [x]=[y].
+\]
+Therefore $\bar d$ is a metric on $S/\!\sim$.
+\end{solution}
+
+\subsection{\important{} Question 4}
+Let $n \in \N$, $n \ge 1$. Consider the function $d_n : \R^2 \times \R^2 \to \R_{\ge 0}$ given by $d_n(x, y) := (|x_1 - y_1| + |x_2 - y_2|)^n$ for all $x = (x_1, x_2), y = (y_1, y_2) \in \R^2$. Determine the $n$ such that $(\R^2, d_n)$ is a metric space.
+
+\begin{solution}
+For $n=1$, $d_1$ is the usual $\ell^1$ metric on $\R^2$, so it is a
+metric.
+
+For $n>1$, the triangle inequality fails. Take
+\[
+  x=(0,0),\qquad y=(1,0),\qquad z=(2,0).
+\]
+Then
+\[
+  d_n(x,z)=2^n,\qquad d_n(x,y)=1,\qquad d_n(y,z)=1.
+\]
+Since $2^n>2$ for $n>1$,
+\[
+  d_n(x,z)>d_n(x,y)+d_n(y,z).
+\]
+Thus $d_n$ is a metric exactly for $n=1$.
+\end{solution}
+
+\subsection{Question 5}
+Let $(S, d)$ be a metric space. Can one always define a metric $\bar d$ on the power set $\mathcal{P}(S)$ of $S$ such that $\bar d(\{x\}, \{y\}) = d(x, y)$ for every $x, y \in S$? Justify your answer.
+
+\begin{solution}
+Yes. If $S=\varnothing$, then $\mathcal P(S)=\{\varnothing\}$ and the
+unique metric works. Assume $S\ne\varnothing$ and fix $x_0\in S$.
+
+Let
+\[
+  \mathcal S_1=\{\{x\}:x\in S\}
+\]
+be the family of singleton subsets of $S$. Define $\bar d$ on
+$\mathcal P(S)$ as follows:
+\[
+  \bar d(\{x\},\{y\})=d(x,y),
+\]
+\[
+  \bar d(A,\{x\})=\bar d(\{x\},A)=1+d(x_0,x)
+  \quad(A\notin\mathcal S_1),
+\]
+and, for $A,B\notin\mathcal S_1$,
+\[
+  \bar d(A,B)=
+  \begin{cases}
+    0,&A=B,\\
+    2,&A\ne B.
+  \end{cases}
+\]
+This clearly gives $\bar d(A,B)=0$ exactly when $A=B$, and it is symmetric.
+
+It remains only to check the triangle inequality in the mixed cases. For
+singletons it is just the triangle inequality for $d$. If $A\notin
+\mathcal S_1$ and $x,y\in S$, then
+\[
+  \bar d(A,\{x\})=1+d(x_0,x)
+  \le 1+d(x_0,y)+d(y,x)
+  =\bar d(A,\{y\})+\bar d(\{y\},\{x\}).
+\]
+Also
+\[
+  d(x,y)\le d(x,x_0)+d(x_0,y)
+  \le \bigl(1+d(x_0,x)\bigr)+\bigl(1+d(x_0,y)\bigr),
+\]
+which handles triangles with two singletons and one non-singleton. Finally,
+if $A,B\notin\mathcal S_1$ are distinct, then
+\[
+  \bar d(A,B)=2\le \bar d(A,\{x\})+\bar d(\{x\},B)
+\]
+for every $x\in S$, and the remaining cases are immediate from
+non-negativity. Thus $\bar d$ is a metric extending $d$ on singleton
+subsets.
+\end{solution}
+
+\section{Homework 3}
+
+\subsection{\important{} Question 1}
+Let $S$ be a nonempty set.
+\begin{enumerate}[(i)]
+  \item Consider the discrete metric $d : S \times S \to \R_{\ge 0}$ given by $d(x, x) = 0$ and $d(x, y) = 1$ if $x \ne y$. Show that the topology $\mathcal{T}_d$ on $S$ induced from this metric is just $\mathcal{P}(S)$, i.e., every subset of $S$ is an open set for the metric space $(S, d)$.
+  \item Is there always a metric on $S$ such that the induced topology is the trivial topology $\{\varnothing, S\}$?
+\end{enumerate}
+
+\begin{solution}
+\textbf{(i)} Let $A\subseteq S$. If $x\in A$, then
+\[
+  B_d(x,1/2)=\{x\}\subseteq A.
+\]
+Thus every point of $A$ has an open ball contained in $A$, so $A$ is open.
+Since $A$ was arbitrary, $\mathcal T_d=\mathcal P(S)$.
+
+\textbf{(ii)} Not always. If $|S|=1$, then the only topology on $S$ is
+$\{\varnothing,S\}$, and it is induced by the unique metric.
+
+If $|S|\ge2$, no metric can induce the trivial topology. Indeed, for
+distinct $x,y\in S$, a metric satisfies $d(x,y)>0$, and
+\[
+  B_d\left(x,\frac{d(x,y)}2\right)
+\]
+is an open set containing $x$ but not $y$. This open set is neither
+$\varnothing$ nor $S$.
+\end{solution}
+
+\subsection{\important{} Question 2}
+Show that $\mathcal{B} := \{(a, b) : a < b \text{ and } a, b \in \Q\}$ is a basis for the standard topology on $\R$ (i.e., the one induced from the metric $d(x, y) = |x - y|$). Also show that $\operatorname{Card}(\mathcal{B}) = \aleph_0$.
+
+\begin{solution}
+Every interval $(a,b)$ with rational endpoints is open in the standard
+topology, so every union of elements of $\mathcal B$ is standard open.
+
+Conversely, let $U\subseteq\R$ be standard open and let $x\in U$. Choose
+$\varepsilon>0$ such that $(x-\varepsilon,x+\varepsilon)\subseteq U$.
+By density of $\Q$ in $\R$, choose rational numbers $a,b$ with
+\[
+  x-\varepsilon<a<x<b<x+\varepsilon.
+\]
+Then $x\in(a,b)\subseteq U$ and $(a,b)\in\mathcal B$. Hence
+$\mathcal B$ is a basis for the standard topology.
+
+The map $(a,b)\mapsto(a,b)$ realizes $\mathcal B$ as a subset of
+$\Q\times\Q$, so $\mathcal B$ is countable. It is infinite, for example
+because the intervals $(0,n)$ are distinct for $n\in\N^+$. Therefore
+\[
+  \operatorname{Card}(\mathcal B)=\aleph_0.
+\]
+\end{solution}
+
+\subsection{Question 3}
+For $n \in \N$, $n \ge 1$, consider the finite set $X_n := \{1, 2, 3, \dots, n\}$ of size $n$. How many topologies are there on $X_n$? Also, consider the set $\Omega := \{\mathcal{T} : \mathcal{T} \text{ is a topology on } X_n\}$ of all topologies on $X_n$. Define $\mathcal{T}_i < \mathcal{T}_j$ if $\mathcal{T}_i \subsetneq \mathcal{T}_j$ (i.e., $\mathcal{T}_i$ is properly contained in $\mathcal{T}_j$). When does $(\Omega, <)$ give a linear-order relation on $\Omega$?
+
+\begin{solution}
+There is no simple closed formula for the number of topologies on an
+$n$-element labelled set. An exact characterization is as follows: finite
+topologies on $X_n$ are in bijection with preorders on $X_n$.
+
+Given a topology $\mathcal T$ on the finite set $X_n$, define
+\[
+  x\preceq y
+  \quad\Longleftrightarrow\quad
+  \text{every open set containing }x\text{ also contains }y.
+\]
+This is a preorder. Conversely, given a preorder $\preceq$, declare
+$U\subseteq X_n$ to be open if
+\[
+  x\in U,\ x\preceq y \quad\Longrightarrow\quad y\in U.
+\]
+The resulting upward-closed subsets form a topology. These two
+constructions are inverse to each other for finite spaces. Thus the number
+of topologies on $X_n$ is the number of preorders on an $n$-element
+labelled set. In particular it is finite; the first values are
+\[
+  1,\ 4,\ 29,\ 355,\ldots\quad(n=1,2,3,4,\ldots).
+\]
+
+Now consider the order by proper inclusion on $\Omega$. If $n=1$, there is
+only one topology on $X_n$, so the strict order is vacuously linear.
+
+If $n\ge2$, the two topologies
+\[
+  \mathcal T_1=\{\varnothing,\{1\},X_n\},\qquad
+  \mathcal T_2=\{\varnothing,\{2\},X_n\}
+\]
+are both elements of $\Omega$, but neither is contained in the other.
+Hence the inclusion order is not linear. Therefore $(\Omega,<)$ is a
+linear order exactly when $n=1$.
+\end{solution}
+
+\subsection{\important{} Question 4}
+Fix a set $S$.
+\begin{enumerate}[(i)]
+  \item Let $\{\mathcal{T}_i\}_{i \in I}$ be a family of topologies on $S$ indexed by $i \in I$. Prove that $\bigcap_{i \in I} \mathcal{T}_i$ is a topology on $S$.
+  \item Give an example of $S$ and two topologies $\mathcal{T}_1$ and $\mathcal{T}_2$ such that the set $\mathcal{T}_1 \cup \mathcal{T}_2$ is not a topology on $S$. Find the unique minimal topology on $S$ which contains $\mathcal{T}_1 \cup \mathcal{T}_2$.
+\end{enumerate}
+
+\begin{solution}
+\textbf{(i)} Put $\mathcal T=\bigcap_{i\in I}\mathcal T_i$. Since every
+$\mathcal T_i$ contains $\varnothing$ and $S$, so does $\mathcal T$.
+
+If $\{U_\alpha\}_{\alpha\in A}\subseteq\mathcal T$, then
+$U_\alpha\in\mathcal T_i$ for every $\alpha$ and every $i$. Since each
+$\mathcal T_i$ is a topology,
+\[
+  \bigcup_{\alpha\in A}U_\alpha\in\mathcal T_i
+  \quad(\forall i),
+\]
+so $\bigcup_\alpha U_\alpha\in\mathcal T$. Similarly, if
+$U,V\in\mathcal T$, then $U\cap V\in\mathcal T_i$ for every $i$, hence
+$U\cap V\in\mathcal T$. Therefore $\mathcal T$ is a topology on $S$.
+
+\textbf{(ii)} Let $S=\{a,b,c\}$ and define
+\[
+  \mathcal T_1=\{\varnothing,\{a\},S\},\qquad
+  \mathcal T_2=\{\varnothing,\{b\},S\}.
+\]
+Then $\mathcal T_1$ and $\mathcal T_2$ are topologies, but
+$\mathcal T_1\cup\mathcal T_2$ is not a topology because it contains
+$\{a\}$ and $\{b\}$ but not their union $\{a,b\}$.
+
+The unique minimal topology containing $\mathcal T_1\cup\mathcal T_2$ is
+\[
+  \{\varnothing,\{a\},\{b\},\{a,b\},S\}.
+\]
+It is a topology, it contains $\mathcal T_1\cup\mathcal T_2$, and any
+topology containing $\{a\}$ and $\{b\}$ must also contain
+$\{a,b\}$.
+\end{solution}
+
+\subsection{Question 5}
+A subset of $\R^2$ is called \textbf{radially open} if it contains an open line segment in each direction about each of its points. Consider the set $\mathcal{T}_{\mathrm{ro}} = \{S \subseteq \R^2 : S \text{ is radially open}\}$ of radially open sets in $\R^2$.
+\begin{enumerate}[(i)]
+  \item Prove that $\mathcal{T}_{\mathrm{ro}}$ is a topology for $\R^2$.
+  \item Let $\mathcal{T}$ be the standard topology on $\R^2$ induced from the standard metric
+  \[
+    d((x_1, y_1), (x_2, y_2))
+    =\sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}.
+  \]
+  Is there any relation between $\mathcal{T}$ and $\mathcal{T}_{\mathrm{ro}}$?
+\end{enumerate}
+
+\begin{solution}
+We use the following equivalent formulation: $U\subseteq\R^2$ is radially
+open if and only if, for every affine line $L\subseteq\R^2$, the set
+$U\cap L$ is open in the usual topology of the line $L$.
+
+\textbf{(i)} Clearly $\varnothing$ and $\R^2$ are radially open. If
+$\{U_\alpha\}_{\alpha\in A}$ is a family of radially open sets and $L$ is
+any line, then
+\[
+  \left(\bigcup_{\alpha\in A}U_\alpha\right)\cap L
+  =\bigcup_{\alpha\in A}(U_\alpha\cap L),
+\]
+which is open in $L$. Hence arbitrary unions are radially open.
+
+If $U,V$ are radially open, then for every line $L$,
+\[
+  (U\cap V)\cap L=(U\cap L)\cap(V\cap L),
+\]
+which is open in $L$. Hence finite intersections are radially open.
+Therefore $\mathcal T_{\mathrm{ro}}$ is a topology.
+
+\textbf{(ii)} Every standard open set is radially open, because its
+intersection with any line is open in that line. Hence
+\[
+  \mathcal T\subseteq\mathcal T_{\mathrm{ro}}.
+\]
+The inclusion is strict. Let
+\[
+  F=\{(x,x^2):x\ne0\},\qquad U=\R^2\setminus F.
+\]
+The set $F$ is not closed in the standard topology because
+$(0,0)\in\overline F\setminus F$. Hence $U$ is not standard open.
+
+On the other hand, every affine line meets the parabola $F$ in at most two
+points, so $F\cap L$ is closed in $L$ for every line $L$. Thus
+$U\cap L=L\setminus(F\cap L)$ is open in $L$ for every line $L$, and $U$
+is radially open. Therefore
+\[
+  \mathcal T\subsetneq\mathcal T_{\mathrm{ro}}.
+\]
+\end{solution}
+
+
+\section{Homework 4}
+
+
+
+\subsection{\important{} Question 1}
+
+Let
+\[
+A=\{(x,\sin(1/x)):x\in(0,1]\}\subset\R^2
+\]
+with the standard topology on $\R^2$. Compute $A^{\circ}$, $\overline{A}$, $LP(A)$, and $\overline{A}\cap(\R^2\setminus A)$.
+
+\begin{solution}
+The set $A$ is the graph of a function over $(0,1]$, so it has empty interior in $\R^2$:
+\[
+A^{\circ}=\varnothing.
+\]
+
+For closure, note first that $A\subset\overline A$. For $x\to0^+$, the values $\sin(1/x)$ oscillate in $[-1,1]$.
+Given any $y\in[-1,1]$, choose $t_n\to\infty$ with $\sin t_n\to y$ and put $x_n=1/t_n$. Then $x_n\to0^+$ and
+\[
+(x_n,\sin(1/x_n))=(x_n,\sin t_n)\to(0,y).
+\]
+So $\{0\}\times[-1,1]\subset\overline A$.
+Conversely, if a sequence in $A$ converges to $(a,b)$, then either $a>0$ and continuity of $x\mapsto\sin(1/x)$ on $(0,1]$ gives $b=\sin(1/a)$, or $a=0$ and necessarily $b\in[-1,1]$. Hence
+\[
+\overline A=A\cup(\{0\}\times[-1,1]).
+\]
+
+Now compute limit points.
+Every point of $A$ is a limit point of $A$ because near each $x_0\in(0,1]$ there are infinitely many nearby $x\neq x_0$ in $(0,1]$, hence nearby points of the graph.
+Every point of $\{0\}\times[-1,1]$ is also a limit point by the construction above.
+There are no other limit points, so
+\[
+LP(A)=A\cup(\{0\}\times[-1,1]).
+\]
+
+Therefore
+\[
+\overline A\cap(\R^2\setminus A)=\{0\}\times[-1,1].
+\]
+\end{solution}
+
+\subsection{\important{} Question 2}
+
+Let $X$ be a set and $f:\mathcal P(X)\to\mathcal P(X)$ satisfy:
+\[
+\text{(i) }f(\varnothing)=\varnothing,\quad
+\text{(ii) }A\subseteq f(A),\quad
+\text{(iii) }f(f(A))=f(A),\quad
+\text{(iv) }f(A\cup B)=f(A)\cup f(B).
+\]
+Define
+\[
+\mathcal{T}_f:=\{X\setminus C:\ C\subseteq X,\ f(C)=C\}.
+\]
+Prove: (1) $\mathcal{T}_f$ is a topology on $X$; (2) closure in $\mathcal{T}_f$ is exactly $f(A)$.
+
+\begin{solution}
+\textbf{Step 1: closed-set viewpoint.}
+Let
+\[
+\mathcal C_f:=\{C\subseteq X:f(C)=C\}.
+\]
+Then $\mathcal{T}_f$ is exactly the family of complements of sets in $\mathcal C_f$.
+So it is enough to show $\mathcal C_f$ is a closed-set system.
+
+We first prove monotonicity of $f$.
+If $A\subseteq B$, then $B=A\cup B$, so
+\[
+f(B)=f(A\cup B)=f(A)\cup f(B),
+\]
+hence $f(A)\subseteq f(B)$.
+
+Now verify closed-set axioms:
+\[
+f(X)=f(X\cup\varnothing)=f(X)\cup f(\varnothing)=f(X),
+\]
+trivial; and by (ii), $X\subseteq f(X)\subseteq X$, so $f(X)=X$. Thus $X\in\mathcal C_f$.
+Also $\varnothing\in\mathcal C_f$ by (i).
+
+If $C_1,C_2\in\mathcal C_f$, then
+\[
+f(C_1\cup C_2)=f(C_1)\cup f(C_2)=C_1\cup C_2,
+\]
+so finite unions stay in $\mathcal C_f$.
+
+If $\{C_i\}_{i\in I}\subseteq\mathcal C_f$ and $C=\bigcap_{i\in I}C_i$, then $C\subseteq C_i$ for all $i$, hence by monotonicity
+\[
+f(C)\subseteq f(C_i)=C_i\quad(\forall i),
+\]
+so $f(C)\subseteq\bigcap_i C_i=C$. By (ii), $C\subseteq f(C)$. Therefore $f(C)=C$ and $C\in\mathcal C_f$.
+
+So $\mathcal C_f$ is exactly the family of closed sets of a topology, and therefore $\mathcal{T}_f$ is a topology.
+
+\textbf{Step 2: closure is $f(A)$.}
+Take any $A\subseteq X$.
+By (iii),
+\[
+f(f(A))=f(A),
+\]
+so $f(A)$ is $\mathcal{T}_f$-closed; by (ii), $A\subseteq f(A)$.
+Hence $f(A)$ is a closed superset of $A$.
+
+Now let $C$ be any $\mathcal{T}_f$-closed set with $A\subseteq C$.
+Then $f(C)=C$. By monotonicity,
+\[
+f(A)\subseteq f(C)=C.
+\]
+So $f(A)$ is contained in every closed superset of $A$, i.e. it is the closure:
+\[
+\overline A^{\,\mathcal{T}_f}=f(A).
+\]
+\end{solution}
+
+\subsection{\important{} Question 3}
+
+Consider
+\[
+f:[0,1)\to S^1,\qquad f(t)=(\cos(2\pi t),\sin(2\pi t)).
+\]
+Show $f$ is not a homeomorphism (with standard subspace topologies). Is there any homeomorphism between $[0,1)$ and $S^1$?
+
+\begin{solution}
+The map $f$ is continuous and bijective.
+If it were a homeomorphism, then $[0,1)$ and $S^1$ would be homeomorphic.
+But compactness is a topological invariant:
+\begin{itemize}
+\item $S^1$ is compact (closed and bounded in $\R^2$).
+\item $[0,1)$ is not compact in $\R$.
+\end{itemize}
+Contradiction. So $f$ is not a homeomorphism.
+
+Consequently, there is no homeomorphism between $[0,1)$ and $S^1$ at all.
+\end{solution}
+
+\subsection{Question 4}
+
+Fix a topological space $(X,\mathcal{T})$. A set $A\subseteq X$ is regularly open if
+\[
+A=(\overline A)^\circ.
+\]
+(i) Give an open set in $\R$ (standard topology) that is not regularly open, and characterize regularly open sets in $\R$.
+(ii) Prove that $(\overline A)^\circ$ is regularly open for any $A\subseteq X$.
+
+\begin{solution}
+\textbf{(i) Example and characterization in $\R$.}
+
+Take
+\[
+U=(0,1)\cup(1,2).
+\]
+Then $U$ is open, but
+\[
+\overline U=[0,2],\qquad (\overline U)^\circ=(0,2)\neq U.
+\]
+So $U$ is not regularly open.
+
+A useful characterization (in any topological space, hence in $\R$) is:
+\[
+U\text{ is regularly open }\Longleftrightarrow U=\operatorname{int}(F)\text{ for some closed }F.
+\]
+Indeed, if $U$ is regularly open, take $F=\overline U$.
+Conversely, if $U=\operatorname{int}(F)$ with $F$ closed, then
+\[
+\overline U\subseteq\overline F=F
+\]
+and $U\subseteq\operatorname{int}(\overline U)$ since $U$ is open. Also
+\[
+\operatorname{int}(\overline U)\subseteq\operatorname{int}(F)=U.
+\]
+Hence $\operatorname{int}(\overline U)=U$.
+
+\textbf{(ii) $(\overline A)^\circ$ is regularly open.}
+
+Set
+\[
+B=(\overline A)^\circ.
+\]
+Since $B$ is open, $B\subseteq(\overline B)^\circ$.
+Also $B\subseteq\overline A$, so by monotonicity of closure
+\[
+\overline B\subseteq\overline{\overline A}=\overline A.
+\]
+Taking interiors,
+\[
+(\overline B)^\circ\subseteq(\overline A)^\circ=B.
+\]
+Thus $(\overline B)^\circ=B$, i.e. $B$ is regularly open.
+\end{solution}
+
+\subsection{\important{} Question 5}
+
+Let $A\subseteq(X,\mathcal{T})$. Prove
+\[
+\overline A=A\cup LP(A).
+\]
+
+\begin{solution}
+First show $A\cup LP(A)\subseteq\overline A$.
+Clearly $A\subseteq\overline A$.
+If $x\in LP(A)$, every neighborhood $U$ of $x$ meets $A\setminus\{x\}$, hence meets $A$; therefore $x\in\overline A$.
+So $A\cup LP(A)\subseteq\overline A$.
+
+Now show $\overline A\subseteq A\cup LP(A)$.
+Take $x\in\overline A$.
+If $x\in A$, done.
+If $x\notin A$, then for any neighborhood $U$ of $x$, because $x\in\overline A$, we have $U\cap A\neq\varnothing$.
+Since $x\notin A$, this implies
+\[
+U\cap(A\setminus\{x\})\neq\varnothing.
+\]
+Hence $x\in LP(A)$.
+So $\overline A\subseteq A\cup LP(A)$.
+
+Combining both inclusions gives
+\[
+\overline A=A\cup LP(A).
+\]
+\end{solution}
+
+\section{Homework 5}
+
+
+
+\subsection{\important{} Question 1}
+
+Let $(X,d)$ be a metric space and define
+\[
+  d^*(x,y)=\min\{d(x,y),1\}.
+\]
+Show that: (i) $d^*$ is a metric; (ii) the induced topology $\mathcal{T}^*$
+equals the topology $\mathcal{T}$ induced by $d$.
+Also decide whether there always exists $A>0$ such that
+\[
+  A\,d(x,y)\le d^*(x,y)\quad (\forall x,y\in X).
+\]
+
+\begin{solution}
+  \textbf{(i) $d^*$ is a metric.}
+
+  Non-negativity and symmetry are immediate from the definition of
+  $\min$ and from the same properties of $d$.
+  Also,
+  \[
+    d^*(x,y)=0 \iff \min\{d(x,y),1\}=0 \iff d(x,y)=0 \iff x=y.
+  \]
+  So only the triangle inequality needs proof.
+  For $x,y,z\in X$,
+  \[
+    d^*(x,z)=\min\{d(x,z),1\}\le \min\{d(x,y)+d(y,z),1\}.
+  \]
+  Hence it is enough to show
+  \[
+    \min\{a+b,1\}\le \min\{a,1\}+\min\{b,1\}\quad (a,b\ge 0).
+  \]
+  If $a\ge 1$ or $b\ge 1$, the right-hand side is at least $1$, while
+  the left-hand side is at most $1$.
+  If $a<1$ and $b<1$, then the right-hand side is $a+b$, so
+  \[
+    \min\{a+b,1\}\le a+b=\min\{a,1\}+\min\{b,1\}.
+  \]
+  Therefore $d^*$ satisfies the triangle inequality.
+
+  \textbf{(ii) $\mathcal{T}^*=\mathcal{T}$.}
+
+  If $0<r\le 1$, then
+  \[
+    B_{d^*}(x,r)=\{y: d^*(x,y)<r\}=\{y:d(x,y)<r\}=B_d(x,r).
+  \]
+  Thus small open balls are identical for both metrics.
+
+  Now prove both inclusions.
+
+  $\mathcal{T}\subseteq \mathcal{T}^*$: let $U\in \mathcal{T}$ and $x\in U$. Choose $\varepsilon>0$
+  with $B_d(x,\varepsilon)\subseteq U$.
+  Set $r=\min\{\varepsilon,1/2\}$.
+  Then $0<r\le 1$ and
+  \[
+    B_{d^*}(x,r)=B_d(x,r)\subseteq B_d(x,\varepsilon)\subseteq U.
+  \]
+  So $U\in \mathcal{T}^*$.
+
+  $\mathcal{T}^*\subseteq \mathcal{T}$: let $U\in \mathcal{T}^*$ and $x\in U$. Choose $r>0$ with
+  $B_{d^*}(x,r)\subseteq U$.
+  Set $s=\min\{r,1/2\}>0$.
+  Then $B_d(x,s)=B_{d^*}(x,s)\subseteq B_{d^*}(x,r)\subseteq U$, hence $U\in \mathcal{T}$.
+
+  So $\mathcal{T}^*=\mathcal{T}$.
+
+  \textbf{(iii) Existence of a uniform $A>0$.}
+
+  Not always.
+  Take $X=\R$ with the usual metric $d(x,y)=|x-y|$. If such $A>0$
+  existed, then for all $x,y$,
+  \[
+    A|x-y|\le d^*(x,y)=\min\{|x-y|,1\}\le 1.
+  \]
+  Choose $|x-y|>1/A$. Then $A|x-y|>1$, contradiction.
+  Hence in general no such $A$ exists.
+\end{solution}
+
+\subsection{\important{} Question 2}
+
+Let
+\[
+  \R^\omega=\prod_{i\in\N}\R,
+\]
+and let $\R^\omega_{\mathrm{ez}}$ be the set of eventually-zero sequences.
+Find interior and closure of $\R^\omega_{\mathrm{ez}}$ in $\R^\omega$ under:
+(1) product topology $\mathcal{T}_p$;
+(2) box topology $\mathcal{T}_b$.
+
+\begin{solution}
+  \textbf{A. In $(\R^\omega,\mathcal{T}_p)$:}
+
+  A basic neighborhood has the form
+  \[
+    \prod_{i\in\N}U_i,
+  \]
+  where $U_i\subseteq\R$ is open and $U_i=\R$ for all but finitely many $i$.
+
+  \emph{Interior is empty.}
+  Let $x\in \R^\omega_{\mathrm{ez}}$ and let $N=\prod_i U_i$ be any
+  basic neighborhood of $x$.
+  Only finitely many coordinates are restricted. Let $F$ be that finite set.
+  Define
+  \[
+    y_i=
+    \begin{cases}
+      x_i,& i\in F,\\
+      1,& i\notin F.
+    \end{cases}
+  \]
+  Then $y\in N$ (because unrestricted coordinates allow any real
+  value), but $y$ has infinitely many nonzero entries, so $y\notin
+  \R^\omega_{\mathrm{ez}}$.
+  Hence no neighborhood of $x$ is contained in
+  $\R^\omega_{\mathrm{ez}}$; therefore
+  \[
+    \operatorname{int}_{\mathcal{T}_p}(\R^\omega_{\mathrm{ez}})=\varnothing.
+  \]
+
+  \emph{Closure is all of $\R^\omega$.}
+  Take any $x\in\R^\omega$ and any basic neighborhood $N=\prod_i U_i$ of $x$.
+  Again, only finitely many coordinates are restricted; call that set $F$.
+  Define
+  \[
+    z_i=
+    \begin{cases}
+      x_i,& i\in F,\\
+      0,& i\notin F.
+    \end{cases}
+  \]
+  Then $z\in N$ and $z$ is eventually zero.
+  So every nonempty basic neighborhood meets $\R^\omega_{\mathrm{ez}}$.
+  Hence
+  \[
+    \overline{\R^\omega_{\mathrm{ez}}}^{\,\mathcal{T}_p}=\R^\omega.
+  \]
+
+  \textbf{B. In $(\R^\omega,\mathcal{T}_b)$:}
+
+  A basic neighborhood is still $\prod_i U_i$, but now every
+  coordinate may be restricted.
+
+  \emph{Interior is empty.}
+  Fix $x\in\R^\omega_{\mathrm{ez}}$ and a box-basic neighborhood
+  $N=\prod_i U_i$ of $x$.
+  For all sufficiently large $i$, $x_i=0$, and since each $U_i$ is
+  open containing $0$, choose $t_i\in U_i$ with $t_i\ne 0$.
+  Define
+  \[
+    y_i=
+    \begin{cases}
+      x_i,& x_i\ne 0,\\
+      t_i,& x_i=0.
+    \end{cases}
+  \]
+  Then $y\in N$, and $y_i\ne 0$ for infinitely many $i$, so $y\notin
+  \R^\omega_{\mathrm{ez}}$.
+  Thus
+  \[
+    \operatorname{int}_{\mathcal{T}_b}(\R^\omega_{\mathrm{ez}})=\varnothing.
+  \]
+
+  \emph{Closure equals $\R^\omega_{\mathrm{ez}}$.}
+  It suffices to show the complement is open.
+  Take $x\notin \R^\omega_{\mathrm{ez}}$; then
+  \[
+    I=\{i\in\N: x_i\ne 0\}
+  \]
+  is infinite.
+  For each $i\in I$, choose an open interval $V_i\ni x_i$ with $0\notin V_i$.
+  For $i\notin I$, set $V_i=\R$.
+  Then $N=\prod_i V_i$ is a box-basic neighborhood of $x$.
+  Any $y\in N$ satisfies $y_i\ne 0$ for all $i\in I$, so $y$ has
+  infinitely many nonzero coordinates.
+  Hence $y\notin \R^\omega_{\mathrm{ez}}$.
+  Therefore $N\subseteq \R^\omega\setminus \R^\omega_{\mathrm{ez}}$,
+  and the complement is open.
+  So $\R^\omega_{\mathrm{ez}}$ is closed in $\mathcal{T}_b$, and
+  \[
+    \overline{\R^\omega_{\mathrm{ez}}}^{\,\mathcal{T}_b}=\R^\omega_{\mathrm{ez}}.
+  \]
+\end{solution}
+
+\subsection{\important{} Question 3}
+
+Is $(\R^\omega,\mathcal{T}_p)$ metrizable? Is it connected?
+
+\begin{solution}
+  \textbf{Metrizable: yes.}
+  Define
+  \[
+    d_\omega(x,y)=\sup_{i\in\N}\frac{d^*(x_i,y_i)}{i+1},
+  \]
+  where $d^*(u,v)=\min\{|u-v|,1\}$ on $\R$.
+  Since $0\le d^*(x_i,y_i)\le 1$, the supremum is finite and $d_\omega\le 1$.
+
+  Metric axioms follow from coordinatewise properties of $d^*$.
+  For triangle inequality,
+  \[
+    \frac{d^*(x_i,z_i)}{i+1}
+    \le \frac{d^*(x_i,y_i)+d^*(y_i,z_i)}{i+1},
+  \]
+  then take supremum over $i$:
+  \[
+    d_\omega(x,z)\le d_\omega(x,y)+d_\omega(y,z).
+  \]
+  So $d_\omega$ is a metric.
+
+  Now compare topologies.
+
+  Every $d_\omega$-ball is $\mathcal{T}_p$-open:
+  fix $x$ and $\varepsilon>0$. Choose $N$ with $1/(N+1)<\varepsilon/2$.
+  If for $1\le i\le N$ we require
+  \[
+    |y_i-x_i|<\frac{\varepsilon(i+1)}{2},
+  \]
+  then for $i\le N$,
+  \[
+    \frac{d^*(x_i,y_i)}{i+1}\le \frac{|x_i-y_i|}{i+1}<\frac\varepsilon2,
+  \]
+  and for $i>N$,
+  \[
+    \frac{d^*(x_i,y_i)}{i+1}\le \frac{1}{i+1}<\frac\varepsilon2.
+  \]
+  Hence $d_\omega(x,y)<\varepsilon$. This gives a cylinder
+  neighborhood inside the ball.
+
+  Every $\mathcal{T}_p$-basic neighborhood contains a $d_\omega$-ball:
+  let
+  \[
+    N=\left(\prod_{i\in F}U_i\right)\times\left(\prod_{i\notin F}\R\right)
+  \]
+  be basic with finite $F$, and $x\in N$.
+  Choose $\delta_i\in(0,1)$ such that
+  $(x_i-\delta_i,x_i+\delta_i)\subseteq U_i$ for $i\in F$.
+  Set
+  \[
+    \delta=\min_{i\in F}\frac{\delta_i}{i+1}>0.
+  \]
+  If $d_\omega(x,y)<\delta$, then for each $i\in F$,
+  \[
+    d^*(x_i,y_i)<(i+1)\delta\le \delta_i<1,
+  \]
+  so $|x_i-y_i|=d^*(x_i,y_i)<\delta_i$, hence $y_i\in U_i$.
+  Thus $y\in N$.
+  So topologies coincide: $\mathcal{T}_{d_\omega}=\mathcal{T}_p$.
+
+  \textbf{Connected: yes (in fact path connected).}
+  For $x=(x_i)$ and $y=(y_i)$, define
+  \[
+    H:[0,1]\to\R^\omega,\qquad H(t)=((1-t)x_i+ty_i)_i.
+  \]
+  Each coordinate map $t\mapsto (1-t)x_i+ty_i$ is continuous in $\R$.
+  Therefore $H$ is continuous for the product topology (continuity of
+  all coordinate projections).
+  Also $H(0)=x$, $H(1)=y$.
+  So any two points are joined by a path; hence $(\R^\omega,\mathcal{T}_p)$ is connected.
+\end{solution}
+
+\subsection{\important{} Question 4}
+
+Let $(\R^\omega,\mathcal{T}_b)$ and let
+\[
+  U=\{x=(x_i): \exists C_x>0\text{ such that }|x_i|\le C_x\ \forall i\}
+\]
+(the set of bounded sequences).
+Prove that $U$ and $\R^\omega\setminus U$ form a nontrivial
+separation, and conclude $(\R^\omega,\mathcal{T}_b)$ is disconnected.
+
+\begin{solution}
+  First, both sets are nonempty:
+  \[
+    (0,0,\dots)\in U,
+  \]
+  while
+  \[
+    (1,2,3,\dots)\notin U.
+  \]
+  Clearly
+  \[
+    U\cap(\R^\omega\setminus U)=\varnothing,
+    \qquad
+    U\cup(\R^\omega\setminus U)=\R^\omega.
+  \]
+  So it remains to show both are open in $\mathcal{T}_b$.
+
+  \textbf{$U$ is open.}
+  Take $x\in U$. Choose $C_x$ with $|x_i|\le C_x$ for all $i$.
+  Define box neighborhood
+  \[
+    N_x=\prod_{i\in\N}(x_i-1,x_i+1).
+  \]
+  If $y\in N_x$, then
+  \[
+    |y_i|\le |x_i|+1\le C_x+1\quad(\forall i),
+  \]
+  so $y$ is bounded, i.e. $y\in U$.
+  Hence $N_x\subseteq U$, thus $U$ is open.
+
+  \textbf{$\R^\omega\setminus U$ is open.}
+  Take $x\notin U$ (so $x$ is unbounded).
+  Use the same box neighborhood
+  \[
+    N_x=\prod_{i\in\N}(x_i-1,x_i+1).
+  \]
+  For any $y\in N_x$ and each $i$,
+  \[
+    |y_i|\ge |x_i|-1.
+  \]
+  Given $M>0$, unboundedness of $x$ gives some $i$ with $|x_i|>M+1$.
+  Then $|y_i|>|x_i|-1>M$.
+  So $y$ is unbounded, hence $y\notin U$.
+  Therefore $N_x\subseteq \R^\omega\setminus U$, and the complement is open.
+
+  Thus $U$ and $\R^\omega\setminus U$ are two disjoint nonempty open
+  sets whose union is the whole space: a nontrivial separation.
+  So $(\R^\omega,\mathcal{T}_b)$ is disconnected.
+\end{solution}
+
+\subsection{Question 5}
+
+Let
+\[
+  X=\{(x,0):x\in\R\}\cup\{(x,1/x):x>0\}\subseteq\R^2
+\]
+with the subspace topology from $\R^2$. Determine whether $X$ is connected.
+
+\begin{solution}
+  Define
+  \[
+    f:X\to\R,\qquad f(x,y)=xy.
+  \]
+  This is continuous as the restriction to $X$ of the continuous
+  multiplication map on $\R^2$.
+
+  Now compute values on the two pieces of $X$:
+  \[
+    (x,0)\in X \implies f(x,0)=0,
+  \]
+  \[
+    (x,1/x)\in X,\ x>0 \implies f(x,1/x)=1.
+  \]
+  Hence
+  \[
+    f(X)=\{0,1\}.
+  \]
+  Suppose $X$ were connected. Then its continuous image $f(X)$ would
+  have to be connected in $\R$.
+  But $\{0,1\}$ is not connected.
+  Contradiction.
+
+  Therefore $X$ is disconnected.
+\end{solution}
+
+\section{Homework 6}
+
+\textit{For all questions below, we assume that every $X \subseteq \R^n$ is endowed with the standard subspace topology, unless stated otherwise.}
+
+\subsection{\important{} Question 1}
+Show that the following subspace $X = \{(0,0)\} \cup \{(x,\sin(1/x)) : x \in \R_{>0}\}$ of $\R^2$ is not path-connected.
+
+\begin{solution}
+Suppose, for contradiction, that there is a path
+\[
+  \gamma:[0,1]\to X
+\]
+from $(0,0)$ to some point $(x_1,\sin(1/x_1))$ with $x_1>0$. Write
+\[
+  \gamma(t)=(u(t),v(t)).
+\]
+Then $u,v$ are continuous, $u(0)=0$, and $u(1)=x_1>0$.
+
+Choose $b\in[0,1]$ with $u(b)>0$, and let
+\[
+  a=\max\{t\in[0,b]:u(t)=0\}.
+\]
+Then $u(a)=0$ and $u(t)>0$ for $a<t\le b$. Hence for $a<t\le b$,
+\[
+  v(t)=\sin(1/u(t)).
+\]
+
+For large $n$, the numbers
+\[
+  r_n=\frac1{\pi/2+2\pi n},
+  \qquad
+  q_n=\frac1{3\pi/2+2\pi n}
+\]
+lie in $(0,u(b))$. By the intermediate value theorem and the choice of
+$a$, there exist $\alpha_n,\beta_n\in(a,b]$ with
+\[
+  u(\alpha_n)=r_n,\qquad u(\beta_n)=q_n.
+\]
+Taking the first such times after $a$, we have
+$\alpha_n\to a$ and $\beta_n\to a$.
+But
+\[
+  v(\alpha_n)=1,\qquad v(\beta_n)=-1,
+\]
+which contradicts the continuity of $v$ at $a$, where
+$v(a)=0$. Therefore no such path exists, and $X$ is not path-connected.
+\end{solution}
+
+\subsection{\important{} Question 2}
+Prove that none of the three spaces $(0,1)$, $(0,1]$ and $[0,1]$ is homeomorphic to the other two. (Hint: connectedness.)
+
+\begin{solution}
+Use the number of non-cut points, which is a topological invariant. A
+point $p$ of a connected space $X$ is a cut point if $X\setminus\{p\}$ is
+disconnected.
+
+In $(0,1)$, every point is a cut point:
+\[
+  (0,1)\setminus\{p\}=(0,p)\cup(p,1).
+\]
+Thus $(0,1)$ has no non-cut points.
+
+In $(0,1]$, the point $1$ is not a cut point because
+$(0,1]\setminus\{1\}=(0,1)$ is connected. Every point $p\in(0,1)$ is a
+cut point because
+\[
+  (0,1]\setminus\{p\}=(0,p)\cup(p,1].
+\]
+Thus $(0,1]$ has exactly one non-cut point.
+
+In $[0,1]$, the endpoints $0$ and $1$ are not cut points, while every
+interior point is a cut point. Thus $[0,1]$ has exactly two non-cut
+points.
+
+Since the three spaces have different numbers of non-cut points, no two
+of them are homeomorphic.
+\end{solution}
+
+\subsection{\important{} Question 3}
+Show that every continuous function $f : [0,1] \to [0,1]$ has a fixed point $x \in [0,1]$, i.e., $f(x) = x$. (Hint: intermediate value theorem.) Is it still true if $[0,1]$ is replaced by $(0,1)$ or $(0,1]$? Justify your answer.
+
+\begin{solution}
+Define
+\[
+  g(x)=f(x)-x.
+\]
+Then $g$ is continuous,
+\[
+  g(0)=f(0)\ge0,\qquad g(1)=f(1)-1\le0.
+\]
+By the intermediate value theorem, there is $x\in[0,1]$ with $g(x)=0$,
+that is, $f(x)=x$.
+
+The statement is false for $(0,1)$ and for $(0,1]$. In both cases,
+\[
+  f(x)=\frac{x}{2}
+\]
+defines a continuous self-map. Its only fixed point in $\R$ is $0$, which
+does not belong to either $(0,1)$ or $(0,1]$. Hence this map has no fixed
+point in those spaces.
+\end{solution}
+
+\subsection{\important{} Question 4}
+Fix a topological space $(X, \mathcal{T})$. An \textbf{open neighborhood basis} of $x \in X$ is a collection of open sets $\{B_i\}_{i \in I}$ such that $x \in B_i$ for every $i$, and for every open set $U$ containing $x$, there is a $B_i$ with $B_i \subseteq U$. We call $X$ \textbf{locally path-connected} if every point has an open neighborhood basis consisting of path-connected sets. Show that if $X$ is connected and locally path-connected, then it is path-connected. (Hint: fix $x \in X$ and consider the set $S_x$ of points in $X$ which can be joined to $x$ by a path. Show that $S_x$ is clopen.)
+
+\begin{solution}
+Fix $x\in X$ and let
+\[
+  S_x=\{y\in X:\text{there is a path in }X\text{ from }x\text{ to }y\}.
+\]
+We show that $S_x$ is both open and closed.
+
+First let $y\in S_x$. Since $X$ is locally path-connected, choose a
+path-connected open neighborhood $B$ of $y$. For every $z\in B$, there is
+a path from $y$ to $z$ inside $B$, and there is a path from $x$ to $y$ by
+the definition of $S_x$. Concatenating these paths gives a path from $x$
+to $z$. Hence $B\subseteq S_x$, so $S_x$ is open.
+
+Now let $y\notin S_x$. Choose a path-connected open neighborhood $B$ of
+$y$. If $B$ met $S_x$, say $z\in B\cap S_x$, then a path from $x$ to $z$
+followed by a path in $B$ from $z$ to $y$ would give a path from $x$ to
+$y$, contradiction. Hence $B\subseteq X\setminus S_x$. Thus
+$X\setminus S_x$ is open, so $S_x$ is closed.
+
+Since $x\in S_x$, the set $S_x$ is nonempty. Connectedness of $X$ forces
+$S_x=X$. Therefore every point of $X$ can be joined to $x$ by a path, and
+$X$ is path-connected.
+\end{solution}
+
+\subsection{\important{} Question 5}
+Consider $(\R, \mathcal{T})$ with the topology given by $\mathcal{T} = \{\varnothing\} \cup \{\R \setminus A : A \subseteq \R \text{ is finite}\}$. Show that every subset $X \subseteq \R$ (endowed with the subspace topology from $\mathcal{T}$) is compact.
+
+\begin{solution}
+Let $X\subseteq\R$ and let $\{U_\alpha\}_{\alpha\in A}$ be an open cover of
+$X$ in the subspace topology. If $X=\varnothing$, there is nothing to
+prove. Otherwise choose $x_0\in X$ and choose $U_{\alpha_0}$ containing
+$x_0$.
+
+Since $U_{\alpha_0}$ is open in the subspace topology, there is an open
+set $O\in\mathcal T$ such that
+\[
+  U_{\alpha_0}=X\cap O.
+\]
+Because $x_0\in U_{\alpha_0}$, the set $O$ is nonempty, so
+$O=\R\setminus F$ for some finite $F\subseteq\R$. Therefore
+\[
+  X\setminus U_{\alpha_0}\subseteq F,
+\]
+so $X\setminus U_{\alpha_0}$ is finite. Choose finitely many members of
+the cover to cover these remaining finitely many points. Together with
+$U_{\alpha_0}$, they form a finite subcover of $X$.
+
+Thus every subspace $X\subseteq\R$ is compact.
+\end{solution}
+
+
+\section{Homework 7}
+
+\subsection{\important{} Question 1}
+Let $(X, \mathcal{T})$ be a Hausdorff space. Let $A, B \subseteq X$ be two disjoint compact subsets. Show that there exist disjoint open sets $U, V$ of $X$ such that $A \subseteq U$, $B \subseteq V$.
+
+\begin{solution}
+If $A=\varnothing$ or $B=\varnothing$, the result is immediate: take one
+of the open sets to be $\varnothing$ and the other to be $X$.
+
+First separate one point from the compact set $B$. Fix $a\in A$. For each
+$b\in B$, Hausdorffness gives disjoint open sets $U_b$ and $V_b$ such that
+\[
+  a\in U_b,\qquad b\in V_b.
+\]
+The sets $\{V_b:b\in B\}$ cover $B$, so compactness of $B$ gives
+$b_1,\ldots,b_m\in B$ with
+\[
+  B\subseteq V_{b_1}\cup\cdots\cup V_{b_m}.
+\]
+Set
+\[
+  U_a=U_{b_1}\cap\cdots\cap U_{b_m},\qquad
+  W_a=V_{b_1}\cup\cdots\cup V_{b_m}.
+\]
+Then $U_a$ is an open neighborhood of $a$, $W_a$ is an open neighborhood of
+$B$, and $U_a\cap W_a=\varnothing$.
+
+Now the family $\{U_a:a\in A\}$ covers $A$. By compactness of $A$, choose
+$a_1,\ldots,a_k\in A$ such that
+\[
+  A\subseteq U_{a_1}\cup\cdots\cup U_{a_k}.
+\]
+Define
+\[
+  U=U_{a_1}\cup\cdots\cup U_{a_k},\qquad
+  V=W_{a_1}\cap\cdots\cap W_{a_k}.
+\]
+Then $U,V$ are open, $A\subseteq U$, $B\subseteq V$, and
+$U\cap V=\varnothing$.
+\end{solution}
+
+\subsection{\important{} Question 2}
+Show that a connected metric space $(X, d)$ having more than one point is uncountable. (Hint: pick $a \in X$ and consider the function $d_a : X \to \R$ given by $d_a(x) := d(a, x)$. Can a countable set in $\R$ be connected?)
+
+\begin{solution}
+Choose distinct points $a,b\in X$ and put $r=d(a,b)>0$. The map
+\[
+  d_a:X\to\R,\qquad d_a(x)=d(a,x),
+\]
+is continuous. Since $X$ is connected, $d_a(X)$ is a connected subset of
+$\R$. It contains $0=d_a(a)$ and $r=d_a(b)$, so it contains the whole
+interval $[0,r]$.
+
+Thus $d_a(X)$ is uncountable. Since $d_a(X)$ is the image of $X$, the
+space $X$ must also be uncountable.
+\end{solution}
+
+\subsection{\important{} Question 3}
+(Baire category theorem --- a special case) Let $(X, \mathcal{T})$ be a compact Hausdorff space. Let $\{A_i : i \in \N\}$ be a collection of closed subsets of $X$. Assume that $(A_i)^\circ = \varnothing$ for every $i$. Show that $\bigl(\bigcup_{i \in \N} A_i\bigr)^\circ = \varnothing$.
+
+\begin{solution}
+We use that compact Hausdorff spaces are regular: if $O$ is a nonempty
+open set and $x\in O$, then there is an open set $W$ with
+\[
+  x\in W\subseteq\overline W\subseteq O.
+\]
+
+Suppose, for contradiction, that
+\[
+  U\subseteq \bigcup_{i\in\N}A_i
+\]
+for some nonempty open set $U$. Since $A_1$ has empty interior,
+$U\setminus A_1$ is nonempty and open. By regularity, choose a nonempty
+open set $U_1$ such that
+\[
+  \overline{U_1}\subseteq U\setminus A_1.
+\]
+Inductively, after $U_{n-1}$ has been chosen, the open set
+$U_{n-1}\setminus A_n$ is nonempty because $A_n$ has empty interior.
+Choose a nonempty open set $U_n$ with
+\[
+  \overline{U_n}\subseteq U_{n-1}\setminus A_n.
+\]
+
+Then the compact closed sets $\overline{U_n}$ are nested and nonempty:
+\[
+  \overline{U_1}\supseteq \overline{U_2}\supseteq\cdots.
+\]
+By compactness,
+\[
+  \bigcap_{n=1}^{\infty}\overline{U_n}\ne\varnothing.
+\]
+Choose $x$ in this intersection. Since $\overline{U_1}\subseteq U$, we
+have $x\in U$. Also $\overline{U_n}\cap A_n=\varnothing$ for every $n$, so
+$x\notin A_n$ for all $n$. This contradicts
+$U\subseteq\bigcup_n A_n$. Therefore
+\[
+  \left(\bigcup_{i\in\N}A_i\right)^\circ=\varnothing.
+\]
+\end{solution}
+
+\subsection{\important{} Question 4}
+(Cantor set) Set $A_0 = [0,1]$, and for each $n \in \N$ we define $A_n$ recursively by
+\[
+  A_n = A_{n-1} \setminus \bigcup_{k=0}^{3^{n-1}-1} \left(\frac{1+3k}{3^n},\,\frac{2+3k}{3^n}\right).
+\]
+Take $C := \bigcap_{n \ge 0} A_n$ with the standard subspace topology from $\R$. Prove the following:
+\begin{enumerate}[(i)]
+  \item $C$ is totally disconnected, i.e., the connected components of $C$ are singletons.
+  \item $C$ is compact and has no isolated points, and thus conclude that $C$ is uncountable.
+\end{enumerate}
+
+\begin{solution}
+\textbf{(i)} Each $A_n$ is a union of $2^n$ pairwise disjoint closed
+intervals, each of length $3^{-n}$. Let $x,y\in C$ with $x<y$. Choose
+$n$ so large that $3^{-n}<y-x$. Then $x$ and $y$ cannot lie in the same
+component interval of $A_n$. Hence some removed middle-third gap separates
+them.
+
+More explicitly, choose a gap $(\alpha,\beta)$ in the complement of
+$A_n$ with $x\le\alpha<\beta\le y$. Then
+\[
+  U=C\cap(-\infty,\beta),\qquad
+  V=C\cap(\alpha,\infty)
+\]
+are disjoint open subsets of $C$ and
+\[
+  x\in U,\qquad y\in V,\qquad C=U\cup V.
+\]
+Any connected subset of $C$ containing both $x$ and $y$ would then be
+disconnected, impossible. Therefore no connected subset of $C$ contains
+two distinct points, so every connected component of $C$ is a singleton.
+Hence $C$ is totally disconnected.
+
+\textbf{(ii)} Each $A_n$ is closed in $[0,1]$, so
+\[
+  C=\bigcap_{n=0}^{\infty}A_n
+\]
+is closed in $[0,1]$. Since $[0,1]$ is compact, $C$ is compact.
+
+Now fix $x\in C$. For each $n$, the point $x$ lies in one of the level
+$n$ closed intervals $I_n\subseteq A_n$ of length $3^{-n}$. The set
+$I_n$ has two endpoints, and both endpoints belong to $C$. Choose one of
+these endpoints different from $x$ and call it $y_n$. Then
+\[
+  |y_n-x|\le 3^{-n}\to0.
+\]
+Thus every point of $C$ is a limit point of $C$, so $C$ has no isolated
+points.
+
+Finally, if $C$ were countable, then
+\[
+  C=\bigcup_{x\in C}\{x\}
+\]
+would be a countable union of closed subsets of the compact Hausdorff
+space $C$. Since $C$ has no isolated points, each singleton has empty
+interior in $C$. By the Baire theorem special case from Question 3, the
+union would have empty interior in $C$, contradicting the fact that
+$C$ has interior $C$ in itself. Hence $C$ is uncountable.
+\end{solution}
+
+\subsection{Question 5}
+Fix a compact topological space $(X, \mathcal{T})$. Prove the equivalence of the following two statements:
+\begin{enumerate}[(i)]
+  \item with respect to $\mathcal{T}$, every compact subset of $X$ is closed;
+  \item for every topology $\mathcal{T}'$ strictly containing $\mathcal{T}$, the space $(X, \mathcal{T}')$ is non-compact.
+\end{enumerate}
+Also, give an example of $(X, \mathcal{T})$ satisfying (the equivalent) (i) and (ii) above.
+
+\begin{solution}
+\textbf{(i) $\Rightarrow$ (ii).}
+Let $\mathcal T'\supsetneq\mathcal T$. Suppose, for contradiction, that
+$(X,\mathcal T')$ is compact. The identity map
+\[
+  \operatorname{id}:(X,\mathcal T')\to(X,\mathcal T)
+\]
+is continuous because $\mathcal T\subseteq\mathcal T'$.
+
+If $F$ is closed in $\mathcal T'$, then $F$ is compact as a closed subset
+of the compact space $(X,\mathcal T')$. Its image under the identity map is
+compact in $(X,\mathcal T)$, hence closed by (i). Therefore every
+$\mathcal T'$-closed set is $\mathcal T$-closed, so every $\mathcal T'$-open
+set is $\mathcal T$-open. Hence $\mathcal T'\subseteq\mathcal T$,
+contradicting $\mathcal T'\supsetneq\mathcal T$. Thus $(X,\mathcal T')$ is
+not compact.
+
+\textbf{(ii) $\Rightarrow$ (i).}
+Suppose that some compact subset $K\subseteq X$ is not closed in
+$\mathcal T$. Let $\mathcal T'$ be the topology generated by
+\[
+  \mathcal T\cup\{X\setminus K\}.
+\]
+Since $X\setminus K$ is not $\mathcal T$-open, we have
+$\mathcal T'\supsetneq\mathcal T$.
+
+We show that $(X,\mathcal T')$ is still compact. A base for
+$\mathcal T'$ consists of sets of the form
+\[
+  U\quad\text{and}\quad U\cap(X\setminus K),
+  \qquad U\in\mathcal T.
+\]
+Let $\mathcal U$ be a $\mathcal T'$-open cover of $X$. On $K$, the
+subspace topology induced by $\mathcal T'$ agrees with the subspace
+topology induced by $\mathcal T$, because the added open set
+$X\setminus K$ has empty intersection with $K$. Since $K$ is compact,
+choose finitely many members of $\mathcal U$ whose union $W$ covers $K$.
+
+For each point of $K$, we may choose a $\mathcal T$-open neighborhood
+contained in $W$; by compactness of $K$, finitely many of these give a
+$\mathcal T$-open set $G$ with
+\[
+  K\subseteq G\subseteq W.
+\]
+Then $F=X\setminus G$ is $\mathcal T$-closed, hence compact in
+$(X,\mathcal T)$, and $F\subseteq X\setminus K$.
+
+Restricted to $F$, every $\mathcal T'$-basic open set is $\mathcal T$-open
+in the subspace $F$: sets of the form $U\cap(X\setminus K)$ become
+$U\cap F$. Thus $\mathcal U$ gives a $\mathcal T$-open cover of the compact
+set $F$, so finitely many more members of $\mathcal U$ cover $F$. Together
+with the finite subcover of $K$, this gives a finite subcover of $X$.
+Hence $(X,\mathcal T')$ is compact, contradicting (ii). Therefore every
+compact subset of $(X,\mathcal T)$ is closed.
+
+As an example, take $X=[0,1]$ with the usual topology. It is compact
+Hausdorff, and every compact subset of a Hausdorff space is closed, so it
+satisfies the equivalent conditions.
+\end{solution}
+
+
+\section{Homework 8}
+
+\subsection{\important{} Question 1}
+Are the following two spaces locally compact:
+\begin{enumerate}[(i)]
+  \item $\Q$ with the standard topology,
+  \item $(\R, \mathcal{T})$ with $\mathcal{T}$ being generated by the basis $\{(a,b] : a, b \in \R,\ a < b\}$?
+\end{enumerate}
+Justify your answer.
+
+\begin{solution}
+\textbf{(i)} The space $\Q$ is not locally compact. Suppose a compact set
+$K\subseteq\Q$ contained a neighborhood of some $q\in\Q$. Then for some
+$a<b$ with $q\in(a,b)$,
+\[
+  (a,b)\cap\Q\subseteq K.
+\]
+Choose an irrational number $\alpha\in(a,b)$ and a sequence of rationals
+$q_n\in(a,b)\cap\Q$ with $q_n\to\alpha$ in $\R$. Since $K$ is compact
+metric, some subsequence $q_{n_j}$ converges in $K\subseteq\Q$ to a
+rational number. But as a real sequence the same subsequence converges to
+$\alpha$, a contradiction. Thus no point of $\Q$ has a compact
+neighborhood.
+
+\textbf{(ii)} This space is also not locally compact. Fix $x\in\R$ and
+let $(a,b]$ be a basic open neighborhood of $x$, with $a<x\le b$. Put
+\[
+  d_n=a+\frac{x-a}{n}\qquad(n\ge1),
+\]
+and set $D=\{d_n:n\ge1\}\subseteq(a,b]$.
+
+In the topology generated by intervals $(c,d]$, the set $D$ is closed and
+discrete. Indeed,
+\[
+  (d_{n+1},d_n]\cap D=\{d_n\},
+\]
+so each point of $D$ is isolated in $D$; and every point outside $D$ has a
+basic neighborhood avoiding $D$.
+
+If a compact set $K$ contained the neighborhood $(a,b]$, then $D$ would be
+a closed subset of $K$, hence compact. But $D$ is an infinite discrete
+space, and the open cover by its singleton neighborhoods has no finite
+subcover. This is impossible. Hence no point has a compact neighborhood,
+so the space is not locally compact.
+\end{solution}
+
+\subsection{\important{} Question 2}
+Prove that the product space $\bigl(\prod_{i=1}^{\infty} A_i,\ \mathcal{T}_p\bigr)$, where each $A_i$ is a nonempty finite set with the discrete topology, is compact with respect to the product topology $\mathcal{T}_p$. (Hint: consider HW5 Question 3, consider sequential compactness.)
+
+\begin{solution}
+Let
+\[
+  X=\prod_{i=1}^{\infty}A_i.
+\]
+Since each $A_i$ is finite and discrete, the product topology is induced by
+the metric
+\[
+  d(x,y)=\sum_{i=1}^{\infty}2^{-i}\delta_i(x,y),
+  \qquad
+  \delta_i(x,y)=
+  \begin{cases}
+    0,&x_i=y_i,\\
+    1,&x_i\ne y_i.
+  \end{cases}
+\]
+Thus it is enough to prove sequential compactness.
+
+Let $(x^{(m)})_{m\ge1}$ be a sequence in $X$. Since $A_1$ is finite, there
+is a subsequence on which the first coordinate is constant. From that
+subsequence, choose a further subsequence on which the second coordinate is
+constant. Continuing inductively and taking the diagonal subsequence, we
+obtain a subsequence $x^{(m_j)}$ such that for each fixed coordinate $i$,
+the sequence $x_i^{(m_j)}$ is eventually constant.
+
+Define $x_i$ to be this eventual value in $A_i$. Then
+$x=(x_i)\in X$, and $x^{(m_j)}\to x$ coordinatewise. Coordinatewise
+convergence is exactly convergence in the product topology. Hence every
+sequence has a convergent subsequence.
+
+Since $X$ is metrizable, sequential compactness implies compactness. Thus
+$\prod_i A_i$ is compact in the product topology.
+\end{solution}
+
+\subsection{Question 3}
+($p$-adic integers) Fix a prime number $p$. For each $i \in \N$, $i \ge 1$, we have the set $\Z/p^i\Z$ of equivalence classes of $\Z$ given by the equivalence relation $a \sim b$ if $a - b \in p^i\Z$. Consider
+\[
+  \Z_p := \Bigl\{(a_i)_{i \in \N^+} \in \prod_{i=1}^{\infty} \Z/p^i\Z : \varphi_{i+1}(a_{i+1}) = a_i,\ \forall i \Bigr\},
+\]
+where $\varphi_i : \Z/p^i\Z \to \Z/p^{i-1}\Z$, $i \ge 2$, is the natural surjection, sending the equivalence class of $a \in \Z$ in $\Z/p^i\Z$ to the equivalence class of $a$ in $\Z/p^{i-1}\Z$. Endow each $\Z/p^i\Z$ with the discrete topology and $\prod_{i=1}^{\infty}(\Z/p^i\Z)$ the product topology.
+\begin{enumerate}[(i)]
+  \item Show that $\Z_p$ is closed and compact inside $\prod_{i=1}^{\infty}(\Z/p^i\Z)$.
+  \item For each $i \ge 1$, let $f_i : \Z \to \Z/p^i\Z$ be the canonical quotient. Consider the embedding $f : \Z \to \Z_p$ given by $f(a) = (f_i(a))_{i \ge 1}$. Prove that $f(\Z)$ is dense in $\Z_p$, that is, $\overline{f(\Z)}^{\,\Z_p} = \Z_p$.
+\end{enumerate}
+
+\begin{solution}
+\textbf{(i)} The product
+\[
+  P=\prod_{i=1}^{\infty}\Z/p^i\Z
+\]
+is compact by Question 2, because each factor is finite and discrete.
+
+For each $i\ge1$, let
+\[
+  E_i=\{(a_j)\in P:\varphi_{i+1}(a_{i+1})=a_i\}.
+\]
+The set $E_i$ is closed: it is the preimage of the diagonal in
+$(\Z/p^i\Z)\times(\Z/p^i\Z)$ under the continuous map
+\[
+  (a_j)\mapsto (a_i,\varphi_{i+1}(a_{i+1})).
+\]
+The diagonal is closed because the factor is finite discrete. Since
+\[
+  \Z_p=\bigcap_{i=1}^{\infty}E_i,
+\]
+the set $\Z_p$ is closed in $P$. Therefore $\Z_p$ is compact.
+
+\textbf{(ii)} First, $f$ is injective. If $a\ne b$, then
+$a-b\ne0$, so for sufficiently large $i$ we have $p^i\nmid(a-b)$; hence
+$f_i(a)\ne f_i(b)$. Also $f(a)$ lies in $\Z_p$, because
+\[
+  \varphi_{i+1}(f_{i+1}(a))=f_i(a)
+\]
+for every $i$.
+
+Now let $a=(a_i)\in\Z_p$ and let $W$ be a basic open neighborhood of $a$
+inside $\Z_p$. Then $W$ is determined by finitely many coordinate
+conditions. Let $N$ be at least as large as all coordinates involved.
+Choose an integer $m$ representing the residue class $a_N\in\Z/p^N\Z$.
+By compatibility of the coordinates of $a$, for every $i\le N$ we have
+\[
+  f_i(m)=a_i.
+\]
+Therefore $f(m)\in W$. Every basic neighborhood of every point of $\Z_p$
+meets $f(\Z)$, so $f(\Z)$ is dense in $\Z_p$.
+\end{solution}
+
+\subsection{\important{} Question 4}
+Consider $Y = \{0\} \cup \{1/n : n \in \N,\ n \ge 1\}$ with the subspace topology inherited from $\R$. Is $Y$ homeomorphic to the one-point compactification $(\N_{\ge 1} \cup \{\infty\}, \mathcal{T})$ of $(\N_{\ge 1}, \mathcal{T}_d)$, where $\mathcal{T}_d$ is the standard (discrete) topology on $\N_{\ge 1}$? Justify your answer.
+
+\begin{solution}
+Yes. Define
+\[
+  h:\N_{\ge1}\cup\{\infty\}\to Y,\qquad
+  h(n)=\frac1n,\quad h(\infty)=0.
+\]
+This map is bijective.
+
+In the one-point compactification of the discrete space $\N_{\ge1}$, every
+subset of $\N_{\ge1}$ is open, and a neighborhood of $\infty$ contains
+$\infty$ together with all but finitely many natural numbers. Under $h$,
+this corresponds exactly to the subspace topology on $Y$: every point
+$1/n$ is isolated in $Y$, and every neighborhood of $0$ in $Y$ contains
+$0$ together with all but finitely many points $1/n$.
+
+Thus $h$ is a homeomorphism.
+\end{solution}
+
+\subsection{\important{} Question 5}
+Show that $(\R^\omega, \mathcal{T}_p)$ (given as in HW5 Question 2) has no one-point compactification. (Hint: is $\R^\omega$ locally compact?)
+
+\begin{solution}
+In the usual Hausdorff sense, a space with a one-point compactification
+must be locally compact. Indeed, if $X\subseteq Y=X\cup\{\infty\}$ and
+$Y$ is compact Hausdorff, then for any $x\in X$ we can choose disjoint
+open sets $U,V\subseteq Y$ with $x\in U$ and $\infty\in V$. Then
+\[
+  \overline U^{\,Y}\subseteq Y\setminus V\subseteq X,
+\]
+so $\overline U^{\,Y}$ is a compact neighborhood of $x$ contained in $X$.
+
+Therefore it is enough to show that $(\R^\omega,\mathcal T_p)$ is not
+locally compact.
+
+Let $x\in\R^\omega$ and let $U$ be any basic product neighborhood of $x$:
+\[
+  U=\prod_{i=1}^{\infty}U_i,
+\]
+where each $U_i\subseteq\R$ is open and $U_i=\R$ for all but finitely many
+$i$. Suppose that a compact set $K\subseteq\R^\omega$ contained $U$.
+Choose a coordinate $j$ for which $U_j=\R$. The coordinate projection
+\[
+  \pi_j:\R^\omega\to\R
+\]
+is continuous, so $\pi_j(K)$ is compact in $\R$, hence bounded. But
+$U\subseteq K$ implies
+\[
+  \pi_j(K)\supseteq\pi_j(U)=\R,
+\]
+which is impossible.
+
+Therefore no basic neighborhood of any point is contained in a compact
+set. The space is not locally compact, and hence it has no Hausdorff
+one-point compactification.
+\end{solution}
+
+
+\section{Homework 9}
+
+
+
+\subsection{\important{} Question 1}
+
+Show that if $X_i$ is separable for each $i\in\N$, then the product space
+\[
+  \left(\prod_{i\in\N}X_i,\mathcal{T}_p\right)
+\]
+is separable.
+
+\begin{solution}
+  If some $X_i$ is empty, then the product is empty and is trivially
+  separable. Hence assume every $X_i$ is nonempty. For each $i\in\N$,
+  choose a countable dense set $D_i\subseteq X_i$ and fix $a_i\in D_i$.
+
+  Let $D$ be the set of sequences which agree with $(a_i)_{i\in\N}$ at
+  all but finitely many coordinates and whose remaining coordinates belong
+  to the corresponding $D_i$:
+  \[
+    D=\left\{x=(x_i)\in\prod_{i\in\N}X_i:
+      x_i\in D_i\ \text{for all }i,\quad
+    \{i:x_i\ne a_i\}\ \text{is finite}\right\}.
+  \]
+  This set is countable. Indeed, for each finite $F\subseteq\N$, the set
+  of elements of $D$ which can differ from $(a_i)$ only on $F$ is a finite
+  product of countable sets. There are only countably many finite subsets
+  of $\N$, so $D$ is a countable union of countable sets.
+
+  It remains to show that $D$ is dense. Let
+  \[
+    W=\prod_{i\in\N}U_i
+  \]
+  be a nonempty basic open set in the product topology. There is a finite
+  set $F\subseteq\N$ such that $U_i=X_i$ for every $i\notin F$. For each
+  $i\in F$, density of $D_i$ gives $d_i\in D_i\cap U_i$. Define
+  \[
+    d_i'=
+    \begin{cases}
+      d_i,&i\in F,\\
+      a_i,&i\notin F.
+    \end{cases}
+  \]
+  Then $d'=(d_i')\in D\cap W$. Thus every nonempty basic open set meets
+  $D$, so $D$ is dense and the product is separable.
+\end{solution}
+
+\subsection{\important{} Question 2}
+
+Let $(X,d)$ be a metric space. Show that the following properties are
+equivalent:
+\begin{enumerate}[(i)]
+  \item $X$ is second countable;
+  \item $X$ is Lindel\"of;
+  \item $X$ is separable.
+\end{enumerate}
+
+\begin{solution}
+  We prove that each condition is equivalent to (i).
+
+  \textbf{(i) $\Rightarrow$ (ii).}
+  Let $\mathcal{B}$ be a countable base for $X$, and let $\mathcal{U}$ be
+  an open cover of $X$. For every $B\in\mathcal{B}$ which is contained in
+  at least one member of $\mathcal{U}$, choose one such member $U_B$.
+  The collection of the chosen $U_B$'s is countable. It covers $X$:
+  if $x\in X$, choose $U\in\mathcal{U}$ with $x\in U$, then choose
+  $B\in\mathcal{B}$ with $x\in B\subseteq U$. Thus $x\in U_B$.
+  Therefore $X$ is Lindel\"of.
+
+  \textbf{(ii) $\Rightarrow$ (i).}
+  For each $n\in\N$, the family
+  \[
+    \{B(x,1/n):x\in X\}
+  \]
+  is an open cover of $X$. By the Lindel\"of property, choose a countable
+  subcover
+  \[
+    \{B(x_{n,k},1/n):k\in\N\}.
+  \]
+  Set
+  \[
+    \mathcal{B}=\{B(x_{n,k},1/n):n,k\in\N\}.
+  \]
+  This is countable. To see that it is a base, let $O$ be open and let
+  $x\in O$. Choose $\varepsilon>0$ such that $B(x,\varepsilon)\subseteq O$,
+  and then choose $n$ with $2/n<\varepsilon$. Since the selected balls of
+  radius $1/n$ cover $X$, there is $k$ such that
+  \[
+    x\in B(x_{n,k},1/n).
+  \]
+  For $y\in B(x_{n,k},1/n)$, the triangle inequality gives
+  \[
+    d(x,y)<\frac1n+\frac1n=\frac2n<\varepsilon.
+  \]
+  Hence
+  \[
+    x\in B(x_{n,k},1/n)\subseteq B(x,\varepsilon)\subseteq O,
+  \]
+  proving that $\mathcal{B}$ is a countable base.
+
+  \textbf{(i) $\Rightarrow$ (iii).}
+  Let $\mathcal{B}$ be a countable base. For every nonempty
+  $B\in\mathcal{B}$, choose a point $x_B\in B$, and put
+  \[
+    D=\{x_B:B\in\mathcal{B},\ B\ne\varnothing\}.
+  \]
+  The set $D$ is countable. If $O$ is a nonempty open set, then it contains
+  a nonempty basic open set $B\in\mathcal{B}$, so $x_B\in D\cap O$.
+  Thus $D$ is dense, and $X$ is separable.
+
+  \textbf{(iii) $\Rightarrow$ (i).}
+  Let $D\subseteq X$ be a countable dense set. The family
+  \[
+    \mathcal{C}=\{B(a,1/n):a\in D,\ n\in\N\}
+  \]
+  is countable. Let $O$ be open and $x\in O$. Choose $\varepsilon>0$ such
+  that $B(x,\varepsilon)\subseteq O$, and choose $n$ with $2/n<\varepsilon$.
+  Since $D$ is dense, there is
+  \[
+    a\in D\cap B(x,1/n).
+  \]
+  Then $x\in B(a,1/n)$; moreover, if $y\in B(a,1/n)$, then
+  \[
+    d(x,y)\le d(x,a)+d(a,y)<\frac2n<\varepsilon.
+  \]
+  Consequently,
+  \[
+    x\in B(a,1/n)\subseteq B(x,\varepsilon)\subseteq O.
+  \]
+  So $\mathcal{C}$ is a countable base for $X$.
+\end{solution}
+
+\subsection{\important{} Question 3}
+
+Let $(X,d)$ be a pseudometric space. Let $\mathcal{T}_d$ be the topology on
+$X$ generated by
+\[
+  \{B(x,\varepsilon):x\in X,\ \varepsilon\in\R_{>0}\},
+\]
+where $B(x,\varepsilon):=\{y\in X:d(x,y)<\varepsilon\}$. Show that
+$(X,\mathcal{T}_d)$ is $T_0$ if and only if $d$ is a metric.
+
+\begin{solution}
+  Suppose first that $d$ is a metric. If $x\ne y$, then $d(x,y)>0$.
+  The open ball
+  \[
+    B\left(x,\frac{d(x,y)}2\right)
+  \]
+  contains $x$ but not $y$. Hence $(X,\mathcal{T}_d)$ is $T_0$.
+
+  Conversely, suppose $(X,\mathcal{T}_d)$ is $T_0$. Let $x,y\in X$ satisfy
+  $d(x,y)=0$. For every $\varepsilon>0$,
+  \[
+    y\in B(x,\varepsilon)\qquad\text{and}\qquad
+    x\in B(y,\varepsilon).
+  \]
+  Therefore, every open set containing $x$ also contains $y$, and every
+  open set containing $y$ also contains $x$. The $T_0$ property now implies
+  $x=y$. Thus
+  \[
+    d(x,y)=0\implies x=y.
+  \]
+  A pseudometric already satisfies all the other metric axioms, so $d$ is a
+  metric.
+\end{solution}
+
+\subsection{\important{} Question 4}
+
+Prove the following for a topological space $(X,\mathcal{T})$:
+\begin{enumerate}[(i)]
+  \item if $X$ is $T_3$, then for every distinct $x,y\in X$, there exist
+    open sets $U,V$ such that $x\in U$, $y\in V$, and
+    $\overline{U}\cap\overline{V}=\varnothing$;
+  \item if $X$ is $T_4$, then for every disjoint closed sets $A,B\subseteq X$,
+    there exist open sets $U,V$ such that $A\subseteq U$, $B\subseteq V$, and
+    $\overline{U}\cap\overline{V}=\varnothing$.
+\end{enumerate}
+
+\begin{solution}
+  We first record two useful consequences of regularity and normality.
+
+  If $X$ is regular, $x\in O$, and $O$ is open, then there is an open set
+  $W$ such that
+  \[
+    x\in W\subseteq\overline{W}\subseteq O.
+  \]
+  Indeed, separate $x$ and the closed set $X\setminus O$ by disjoint open
+  sets $W$ and $G$, respectively. Since $W\cap G=\varnothing$ and $G$ is
+  open, $\overline{W}\subseteq X\setminus G\subseteq O$.
+
+  Similarly, if $X$ is normal, $C\subseteq O$, $C$ is closed, and $O$ is
+  open, then there is an open set $W$ such that
+  \[
+    C\subseteq W\subseteq\overline{W}\subseteq O.
+  \]
+  Separate the disjoint closed sets $C$ and $X\setminus O$ by disjoint open
+  sets $W$ and $G$, respectively. The same closure argument gives
+  $\overline{W}\subseteq X\setminus G\subseteq O$.
+
+  \textbf{(i)} Since a $T_3$ space is $T_1$, the singleton $\{y\}$ is
+  closed. By regularity, there are disjoint open sets $O_x,O_y$ such that
+  \[
+    x\in O_x,\qquad y\in O_y.
+  \]
+  Apply the regularity consequence above to $x\in O_x$ and $y\in O_y$.
+  We obtain open sets $U,V$ satisfying
+  \[
+    x\in U\subseteq\overline{U}\subseteq O_x,
+    \qquad
+    y\in V\subseteq\overline{V}\subseteq O_y.
+  \]
+  Since $O_x\cap O_y=\varnothing$, it follows that
+  \[
+    \overline{U}\cap\overline{V}=\varnothing.
+  \]
+
+  \textbf{(ii)} Since $X$ is $T_4$, it is normal. Thus the disjoint closed
+  sets $A$ and $B$ have disjoint open neighborhoods $O_A$ and $O_B$:
+  \[
+    A\subseteq O_A,\qquad B\subseteq O_B,\qquad O_A\cap O_B=\varnothing.
+  \]
+  Apply the normality consequence to the closed set $A$ contained in $O_A$
+  and to the closed set $B$ contained in $O_B$. This gives open sets $U,V$
+  with
+  \[
+    A\subseteq U\subseteq\overline{U}\subseteq O_A,
+    \qquad
+    B\subseteq V\subseteq\overline{V}\subseteq O_B.
+  \]
+  Therefore $\overline{U}\cap\overline{V}=\varnothing$.
+\end{solution}
+
+\subsection{\important{} Question 5}
+
+Show that every locally compact Hausdorff space is regular, i.e.,
+``local compactness $+\ T_2\Rightarrow T_3$.''
+
+\begin{solution}
+  Let $X$ be locally compact and Hausdorff. It is $T_1$ because every
+  Hausdorff space is $T_1$. It remains to separate a point from a disjoint
+  closed set.
+
+  Let $x\in X$ and let $F\subseteq X$ be closed with $x\notin F$.
+  By local compactness, $x$ has an open neighborhood $W$ contained in a
+  compact set $K$. Since $X$ is Hausdorff, $K$ is closed. Put
+  \[
+    A=K\cap F.
+  \]
+  The set $A$ is closed in the compact space $K$, hence compact.
+
+  For every $a\in A$, the Hausdorff property gives disjoint open sets
+  $U_a,V_a\subseteq X$ such that
+  \[
+    x\in U_a,\qquad a\in V_a.
+  \]
+  The family $\{V_a:a\in A\}$ covers $A$. If $A\ne\varnothing$,
+  compactness gives $a_1,\ldots,a_m\in A$ such that
+  \[
+    A\subseteq V_{a_1}\cup\cdots\cup V_{a_m}.
+  \]
+  If $A=\varnothing$, put $m=0$. In either case, define
+  \[
+    U=W\cap\bigcap_{j=1}^m U_{a_j},
+  \]
+  where the empty intersection is $X$.
+  Then $U$ is an open neighborhood of $x$ and $U\subseteq K$. Hence
+  $\overline{U}\subseteq K$, because $K$ is closed. Moreover,
+  $U\cap V_{a_j}=\varnothing$ for every $j$, so, as $V_{a_j}$ is open,
+  \[
+    \overline{U}\cap V_{a_j}=\varnothing\qquad (1\le j\le m).
+  \]
+  Thus $\overline{U}\cap A=\varnothing$. Since $\overline{U}\subseteq K$,
+  we obtain
+  \[
+    \overline{U}\cap F
+    =\overline{U}\cap K\cap F
+    =\overline{U}\cap A
+    =\varnothing.
+  \]
+  Therefore $V=X\setminus\overline{U}$ is an open set containing $F$, and
+  $U\cap V=\varnothing$. We have separated the arbitrary point $x$ from
+  the arbitrary disjoint closed set $F$. Consequently $X$ is regular and,
+  together with $T_1$, is a $T_3$ space.
+\end{solution}
+\end{document}

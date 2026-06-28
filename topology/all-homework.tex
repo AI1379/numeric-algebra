@@ -1,0 +1,910 @@
+% ============================================================
+%  点集拓扑 作业汇总（hw1–hw9 合并，中文）
+%  建议使用 XeLaTeX 或 LuaLaTeX 编译（ctex 中文支持）。
+%  说明：hw1–hw3、hw6–hw8 仅有原始 PDF 习题，此处仅录入题目；
+%        hw4、hw5、hw9 含题目与解答。
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+% ---- 中文支持 ----
+\usepackage[UTF8]{ctex}
+
+% ---- 页面 ----
+\usepackage{geometry}
+\geometry{margin=1.8cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1.1cm}
+\setlength{\headheight}{14pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% ---- 数学与排版宏包 ----
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta}
+\usepackage{hyperref}
+
+% ---- 数学宏 ----
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\interior}{int}
+\DeclareMathOperator{\diam}{diam}
+% 极限点集（沿用课程记号）
+\newcommand{\LP}{\operatorname{LP}}
+
+% ---- 中文定理类环境 ----
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{definition}{定义}[section]
+\newtheorem{remark}[theorem]{注}
+\newtheorem{exercise}{习题}[section]
+
+% 证明与解答的中文标题
+\renewcommand{\proofname}{证明}
+\newenvironment{solution}{\begin{proof}[解]}{\end{proof}}
+
+% 姓名 / 学号（请自行修改）
+\newcommand{\name}{姓名}
+\newcommand{\uid}{学号}
+\newcommand{\course}{点集拓扑}
+
+\title{\textbf{点集拓扑\ 作业汇总}}
+\author{}
+\date{}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\name\ (\uid)}
+\chead{\course\ 作业汇总}
+\rhead{\thepage}
+
+\maketitle
+\thispagestyle{fancy}
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{第一次作业}
+% ============================================================
+
+\textit{（本次作业仅录入原始题目。）}
+
+\subsection{第 1 题}
+
+设 $A$ 为非空有限集，$\mathcal{P}(A) := \{A' : A' \subseteq A\}$ 为 $A$ 的幂集。记 $2^A$ 为所有形如
+\[
+  f : A \to \{-1, +1\}
+\]
+的函数构成的集合。证明 $\mathcal{P}(A)$ 与 $2^A$ 之间存在双射，并计算 $\mathcal{P}(A)$ 的基数。
+
+\subsection{第 2 题}
+
+设 $A$ 为非空有限集。记 $\mathcal{F}(A)$ 为所有双射 $f : A \to A$ 构成的集合。证明 $\mathcal{F}(A)$ 关于任意 $g, f \in \mathcal{F}(A)$ 的复合 $g \circ f$ 构成一个群。何时 $\mathcal{F}(A)$ 是交换群？
+
+\subsection{第 3 题}
+
+设 $p_n$ 为按升序排列的第 $n$ 个素数，例如 $p_1 = 2$，$p_2 = 3$，$p_3 = 5$。证明（可用数学归纳法或其他方法）
+\[
+  p_n < 2^{2^n}, \qquad \forall\, n.
+\]
+
+\subsection{第 4 题}
+
+设 $S$ 与 $S'$ 为 $\R \times \R$ 的如下子集：
+\[
+  S = \{(x, y) : y = x + 1 \text{ 且 } 0 < x < 3\},
+  \qquad
+  S' = \{(x, y) : y - x \in \Z\}.
+\]
+\begin{enumerate}[(i)]
+  \item 证明 $S'$ 是 $\R$ 上的等价关系，并描述 $S'$ 的等价类。
+  \item 设 $\{R_i\}_{i \in I}$ 为 $\R$ 上一族以非空集 $I$ 为指标的等价关系。证明 $\bigcap_{i \in I} R_i$ 也是 $\R$ 上的等价关系。
+  \item 描述 $\R$ 上包含 $S$ 的所有等价关系的交 $T$，并描述 $T$ 的等价类。
+\end{enumerate}
+
+\subsection{第 5 题}
+
+\begin{enumerate}[(i)]
+  \item 按出生日期将 Cantor、Russell、G\"odel、Zermelo、Fraenkel 排成线性序，即 $A_i < A_j$ 当且仅当 $A_i$ 出生早于 $A_j$。
+  \item 根据下图判断居中就坐的那位绅士的姓名，并简述其数学成就。（原图见原始 PDF。）
+\end{enumerate}
+
+% ============================================================
+\section{第二次作业}
+% ============================================================
+
+\textit{（本次作业仅录入原始题目。）}
+
+\subsection{第 1 题}
+
+实数 $x \in \R$ 称为\textbf{代数数}，若它满足某个正次数的有理系数多项式方程
+\[
+  x^n + a_{n-1}x^{n-1} + \cdots + a_1 x + a_0 = 0,
+\]
+其中 $a_i \in \Q$（$0 \le i \le n-1$）；否则称为\textbf{超越数}。假设每个这样的多项式方程在 $\R$ 中只有有限个根，证明实代数数构成的集合 $A \subset \R$ 是可数的。进而推出实超越数构成的集合 $\R \setminus A$ 不可数。（提示：证明有理系数多项式总共只有可数个。）
+
+\subsection{第 2 题}
+
+设 $X := \{0, 1\}$，$X^{\N}$ 为所有函数 $f : \N \to X$ 的集合。定义 $f \in X^{\N}$ 的\textbf{支撑}为
+\[
+  \operatorname{supp}(f) = f^{-1}(\{1\}).
+\]
+考虑集合
+\[
+  X_0^{\N} = \{f \in X^{\N} : \operatorname{supp}(f) \text{ 是有限集}\}.
+\]
+问 $X_0^{\N}$ 可数还是不可数？说明理由。
+
+\medskip
+\noindent\textbf{定义 0.1}\quad 以下第 3--5 题将使用此定义。一个\textbf{伪度量空间}是一个对 $(S, d)$，其中 $S$ 为非空集，$d : S \times S \to \R_{\ge 0}$（称为 $S$ 上的伪度量）满足：
+\begin{enumerate}
+  \item $d(x, x) = 0$；
+  \item 对所有 $x, y \in S$，$d(x, y) = d(y, x)$；
+  \item 对所有 $x, y, z \in S$，$d(x, z) \le d(x, y) + d(y, z)$。
+\end{enumerate}
+若进一步有 $d(x, y) = 0 \Rightarrow x = y$，则称之为\textbf{度量空间}。
+
+\subsection{第 3 题}
+
+设 $(S, d)$ 为伪度量空间。当 $d(x, y) = 0$ 时记 $x \sim y$。证明：
+\begin{enumerate}[(i)]
+  \item $\sim$ 是 $S$ 上的等价关系（从而以 $S/\!\sim$ 记等价类之集）；
+  \item 对任意 $[x], [y] \in S/\!\sim$，
+    \[
+      \bar d([x], [y]) := d(x, y)
+    \]
+    给出 $S/\!\sim$ 上一个良定义的度量。
+\end{enumerate}
+
+\subsection{第 4 题}
+
+设 $n \in \N$，$n \ge 1$。考虑函数 $d_n : \R^2 \times \R^2 \to \R_{\ge 0}$：
+\[
+  d_n(x, y) := \bigl(|x_1 - y_1| + |x_2 - y_2|\bigr)^n,
+\]
+其中 $x = (x_1, x_2)$，$y = (y_1, y_2) \in \R^2$。确定 $n$，使得 $(\R^2, d_n)$ 是度量空间。
+
+\subsection{第 5 题}
+
+设 $(S, d)$ 为度量空间。是否总能在幂集 $\mathcal{P}(S)$ 上定义一个度量 $\bar d$，使得对任意 $x, y \in S$ 有 $\bar d(\{x\}, \{y\}) = d(x, y)$？说明理由。
+
+% ============================================================
+\section{第三次作业}
+% ============================================================
+
+\textit{（本次作业仅录入原始题目。）}
+
+\subsection{第 1 题}
+
+设 $S$ 为非空集。
+\begin{enumerate}[(i)]
+  \item 考虑\textbf{离散度量} $d : S \times S \to \R_{\ge 0}$，定义为 $d(x, x) = 0$，$x \ne y$ 时 $d(x, y) = 1$。证明由此度量诱导的 $S$ 上的拓扑 $\mathcal{T}_d$ 恰为 $\mathcal{P}(S)$，即对度量空间 $(S, d)$ 而言 $S$ 的每个子集都是开集。
+  \item 是否总存在 $S$ 上的度量，使其诱导拓扑为（所谓的\textbf{平凡}拓扑）$\{\varnothing, S\}$？
+\end{enumerate}
+
+\subsection{第 2 题}
+
+证明
+\[
+  \mathcal{B} := \{(a, b) : a < b \text{ 且 } a, b \in \Q\}
+\]
+是 $\R$ 上标准拓扑（即由度量 $d(x, y) = |x - y|$ 诱导的拓扑）的一组基。并证明 $\operatorname{Card}(\mathcal{B}) = \aleph_0$。
+
+\subsection{第 3 题}
+
+设 $n \in \N$，$n \ge 1$，考虑有限集 $X_n := \{1, 2, 3, \dots, n\}$（大小为 $n$）。$X_n$ 上有多少个拓扑？又考虑所有拓扑构成的集合
+\[
+  \Omega := \{\mathcal{T} : \mathcal{T} \text{ 是 } X_n \text{ 上的拓扑}\}.
+\]
+定义 $\mathcal{T}_i < \mathcal{T}_j$ 为 $\mathcal{T}_i \subsetneq \mathcal{T}_j$（即 $\mathcal{T}_i$ 真包含于 $\mathcal{T}_j$）。$(\Omega, <)$ 何时给出 $\Omega$ 上的线性序？
+
+\subsection{第 4 题}
+
+固定集合 $S$。
+\begin{enumerate}[(i)]
+  \item 设 $\{\mathcal{T}_i\}_{i \in I}$ 为 $S$ 上一族以 $i \in I$ 为指标的拓扑。证明 $\bigcap_{i \in I} \mathcal{T}_i$ 是 $S$ 上的拓扑。
+  \item 给出 $S$ 与两个拓扑 $\mathcal{T}_1$、$\mathcal{T}_2$ 的例子，使得 $\mathcal{T}_1 \cup \mathcal{T}_2$ 不是 $S$ 上的拓扑。并求包含 $\mathcal{T}_1 \cup \mathcal{T}_2$ 的唯一最小拓扑。
+\end{enumerate}
+
+\subsection{第 5 题}
+
+$\R^2$ 的子集称为\textbf{径向开}的（radially open），若它在其每个点处都含有一个各方向上的开线段。考虑 $\R^2$ 中所有径向开集构成的集合
+\[
+  \mathcal{T}_{\mathrm{ro}} = \{S \subseteq \R^2 : S \text{ 径向开}\}.
+\]
+\begin{enumerate}[(i)]
+  \item 证明 $\mathcal{T}_{\mathrm{ro}}$ 是 $\R^2$ 的一个拓扑。
+  \item 设 $\mathcal{T}$ 为 $\R^2$ 上由标准度量
+    \[
+      d\bigl((x_1, y_1), (x_2, y_2)\bigr) = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}
+    \]
+    诱导的标准拓扑。$\mathcal{T}$ 与 $\mathcal{T}_{\mathrm{ro}}$ 之间有何关系？
+\end{enumerate}
+
+% ============================================================
+\section{第四次作业}
+% ============================================================
+
+\textit{（下列各题除特别说明外，均假设 $\R^n$ 赋予标准拓扑，即由度量 $d(x,y)=\bigl(\sum_{i=1}^{n}(x_i-y_i)^2\bigr)^{1/2}$ 诱导的拓扑。）}
+
+\subsection{第 1 题}
+
+设 $X = \R^2$ 赋予标准拓扑。考虑子集
+\[
+  A = \{(x,\sin(1/x)) : x \in (0,1]\} \subset X.
+\]
+计算下列四个集合：$A^\circ$、$\overline{A}$、$LP(A)$、$\overline{A} \cap (\R^2 \setminus A)$。
+
+\begin{solution}
+$A$ 是某个函数在 $(0,1]$ 上的图像，故它在 $\R^2$ 中内部为空：
+\[
+  A^\circ = \varnothing.
+\]
+
+关于闭包，先注意 $A \subset \overline{A}$。当 $x \to 0^+$ 时，$\sin(1/x)$ 的值在 $[-1,1]$ 中振荡。对任意 $y \in [-1,1]$，取 $t_n \to \infty$ 使 $\sin t_n \to y$，令 $x_n = 1/t_n$。则 $x_n \to 0^+$，且
+\[
+  (x_n,\sin(1/x_n)) = (x_n,\sin t_n) \to (0,y).
+\]
+故 $\{0\}\times[-1,1] \subset \overline{A}$。反之，若 $A$ 中序列收敛到 $(a,b)$，则要么 $a>0$（由 $x \mapsto \sin(1/x)$ 在 $(0,1]$ 上的连续性得 $b = \sin(1/a)$），要么 $a=0$（此时必有 $b \in [-1,1]$）。故
+\[
+  \overline{A} = A \cup (\{0\}\times[-1,1]).
+\]
+
+下计算极限点。$A$ 的每个点都是 $A$ 的极限点，因为在每个 $x_0 \in (0,1]$ 附近都有无穷多个邻近的 $x \ne x_0$ 属于 $(0,1]$，从而有图像上的邻近点。$\{0\}\times[-1,1]$ 的每个点也由上述构造是极限点。没有其他极限点，故
+\[
+  LP(A) = A \cup (\{0\}\times[-1,1]).
+\]
+
+因此
+\[
+  \overline{A} \cap (\R^2 \setminus A) = \{0\}\times[-1,1].
+\]
+\end{solution}
+
+\subsection{第 2 题}
+
+设 $X$ 为集合，$f : \mathcal{P}(X) \to \mathcal{P}(X)$ 满足：对任意 $A, B \in \mathcal{P}(X)$，
+\[
+  \text{(i) } f(\varnothing) = \varnothing,\quad
+  \text{(ii) } A \subseteq f(A),\quad
+  \text{(iii) } f(f(A)) = f(A),\quad
+  \text{(iv) } f(A \cup B) = f(A) \cup f(B).
+\]
+定义
+\[
+  \mathcal{T}_f := \{X \setminus C : C \subseteq X,\ f(C) = C\}.
+\]
+证明：(1) $\mathcal{T}_f$ 是 $X$ 上的拓扑；(2) 在 $\mathcal{T}_f$ 下任意 $A \subseteq X$ 的闭包恰为 $f(A)$。
+
+\begin{solution}
+\textbf{第一步：闭集观点。}令
+\[
+  \mathcal{C}_f := \{C \subseteq X : f(C) = C\}.
+\]
+则 $\mathcal{T}_f$ 恰为 $\mathcal{C}_f$ 中集合的余集族。故只需证 $\mathcal{C}_f$ 构成一个闭集系。
+
+先证 $f$ 的单调性。若 $A \subseteq B$，则 $B = A \cup B$，故
+\[
+  f(B) = f(A \cup B) = f(A) \cup f(B),
+\]
+从而 $f(A) \subseteq f(B)$。
+
+验证闭集公理：
+\[
+  f(X) = f(X \cup \varnothing) = f(X) \cup f(\varnothing) = f(X),
+\]
+平凡；又由 (ii)，$X \subseteq f(X) \subseteq X$，故 $f(X) = X$，即 $X \in \mathcal{C}_f$。又由 (i)，$\varnothing \in \mathcal{C}_f$。
+
+若 $C_1, C_2 \in \mathcal{C}_f$，则
+\[
+  f(C_1 \cup C_2) = f(C_1) \cup f(C_2) = C_1 \cup C_2,
+\]
+故有限并仍在 $\mathcal{C}_f$ 中。
+
+若 $\{C_i\}_{i \in I} \subseteq \mathcal{C}_f$，$C = \bigcap_{i \in I} C_i$，则对所有 $i$ 有 $C \subseteq C_i$，由单调性
+\[
+  f(C) \subseteq f(C_i) = C_i \quad (\forall i),
+\]
+故 $f(C) \subseteq \bigcap_i C_i = C$。又由 (ii)，$C \subseteq f(C)$。因此 $f(C) = C$，$C \in \mathcal{C}_f$。
+
+故 $\mathcal{C}_f$ 恰为某拓扑的闭集族，从而 $\mathcal{T}_f$ 是拓扑。
+
+\textbf{第二步：闭包为 $f(A)$。}对任意 $A \subseteq X$，由 (iii)，$f(f(A)) = f(A)$，故 $f(A)$ 是 $\mathcal{T}_f$-闭集；又由 (ii)，$A \subseteq f(A)$。即 $f(A)$ 是 $A$ 的闭的上方集。
+
+设 $C$ 是任意 $\mathcal{T}_f$-闭集且 $A \subseteq C$。则 $f(C) = C$。由单调性，
+\[
+  f(A) \subseteq f(C) = C.
+\]
+故 $f(A)$ 含于 $A$ 的每个闭的上方集，即它是闭包：
+\[
+  \overline{A}^{\,\mathcal{T}_f} = f(A).
+\]
+\end{solution}
+
+\subsection{第 3 题}
+
+考虑
+\[
+  f : [0,1) \to S^1, \qquad f(t) = (\cos(2\pi t),\sin(2\pi t)).
+\]
+证明 $f$ 不是同胚（$[0,1)$ 与 $S^1$ 取标准子空间拓扑）。$[0,1)$ 与 $S^1$ 之间是否存在同胚？
+
+\begin{solution}
+$f$ 连续且双射。若它是同胚，则 $[0,1)$ 与 $S^1$ 同胚。但紧性是拓扑不变量：
+\begin{itemize}
+  \item $S^1$ 紧（在 $\R^2$ 中闭且有界）；
+  \item $[0,1)$ 在 $\R$ 中不紧。
+\end{itemize}
+矛盾。故 $f$ 不是同胚。
+
+从而 $[0,1)$ 与 $S^1$ 之间根本不存在同胚。
+\end{solution}
+
+\subsection{第 4 题}
+
+固定拓扑空间 $(X, \mathcal{T})$。子集 $A \subseteq X$ 称为\textbf{正则开}的（regularly open），若
+\[
+  A = (\overline{A})^\circ.
+\]
+(i) 在 $\R$（标准拓扑）中给出一个不是正则开的开集，并刻画 $\R$ 中的正则开集。
+(ii) 证明对任意 $A \subseteq X$，$(\overline{A})^\circ$ 是正则开的。
+
+\begin{solution}
+\textbf{(i) $\R$ 中的例子与刻画。}取
+\[
+  U = (0,1) \cup (1,2).
+\]
+$U$ 开，但
+\[
+  \overline{U} = [0,2], \qquad (\overline{U})^\circ = (0,2) \ne U.
+\]
+故 $U$ 不是正则开。
+
+一个有用的刻画（在任意拓扑空间中，从而在 $\R$ 中成立）是：
+\[
+  U \text{ 正则开} \iff U = \operatorname{int}(F) \text{ 对某闭集 } F.
+\]
+事实上，若 $U$ 正则开，取 $F = \overline{U}$。反之，若 $U = \operatorname{int}(F)$（$F$ 闭），则
+\[
+  \overline{U} \subseteq \overline{F} = F,
+\]
+且因 $U$ 开有 $U \subseteq \operatorname{int}(\overline{U})$。又
+\[
+  \operatorname{int}(\overline{U}) \subseteq \operatorname{int}(F) = U.
+\]
+故 $\operatorname{int}(\overline{U}) = U$。
+
+\textbf{(ii) $(\overline{A})^\circ$ 正则开。}令 $B = (\overline{A})^\circ$。因 $B$ 开，$B \subseteq (\overline{B})^\circ$。又 $B \subseteq \overline{A}$，由闭包的单调性
+\[
+  \overline{B} \subseteq \overline{\overline{A}} = \overline{A}.
+\]
+取内部，
+\[
+  (\overline{B})^\circ \subseteq (\overline{A})^\circ = B.
+\]
+故 $(\overline{B})^\circ = B$，即 $B$ 正则开。
+\end{solution}
+
+\subsection{第 5 题}
+
+设 $A \subseteq (X, \mathcal{T})$。证明
+\[
+  \overline{A} = A \cup LP(A).
+\]
+
+\begin{solution}
+先证 $A \cup LP(A) \subseteq \overline{A}$。显然 $A \subseteq \overline{A}$。若 $x \in LP(A)$，则 $x$ 的每个邻域都与 $A \setminus \{x\}$ 相交，从而与 $A$ 相交；故 $x \in \overline{A}$。所以 $A \cup LP(A) \subseteq \overline{A}$。
+
+再证 $\overline{A} \subseteq A \cup LP(A)$。取 $x \in \overline{A}$。若 $x \in A$，已证。若 $x \notin A$，则对 $x$ 的任意邻域 $U$，因 $x \in \overline{A}$，有 $U \cap A \ne \varnothing$。又 $x \notin A$，故
+\[
+  U \cap (A \setminus \{x\}) \ne \varnothing.
+\]
+从而 $x \in LP(A)$。所以 $\overline{A} \subseteq A \cup LP(A)$。
+
+合并两包含关系得
+\[
+  \overline{A} = A \cup LP(A).
+\]
+\end{solution}
+
+% ============================================================
+\section{第五次作业}
+% ============================================================
+
+\subsection{第 1 题}
+
+设 $(X, d)$ 为度量空间，$\mathcal{T}$ 为 $d$ 诱导的拓扑。定义
+\[
+  d^*(x,y) = \min\{d(x,y),\,1\}.
+\]
+证明：(i) $d^*$ 是 $X$ 上的度量；(ii) 其诱导拓扑 $\mathcal{T}^*$ 等于 $d$ 诱导的拓扑 $\mathcal{T}$。并判断是否总存在 $A > 0$ 使
+\[
+  A\,d(x,y) \le d^*(x,y) \quad (\forall x,y \in X).
+\]
+
+\begin{solution}
+\textbf{(i) $d^*$ 是度量。}
+
+非负性与对称性由 $\min$ 的定义及 $d$ 的相应性质直接可得。又
+\[
+  d^*(x,y) = 0 \iff \min\{d(x,y),1\} = 0 \iff d(x,y) = 0 \iff x = y.
+\]
+故只需证三角不等式。对 $x,y,z \in X$，
+\[
+  d^*(x,z) = \min\{d(x,z),1\} \le \min\{d(x,y)+d(y,z),\,1\}.
+\]
+故只需证
+\[
+  \min\{a+b,\,1\} \le \min\{a,1\} + \min\{b,1\} \quad (a,b \ge 0).
+\]
+若 $a \ge 1$ 或 $b \ge 1$，右端至少为 $1$，而左端至多为 $1$。若 $a < 1$ 且 $b < 1$，则右端为 $a+b$，故
+\[
+  \min\{a+b,1\} \le a+b = \min\{a,1\} + \min\{b,1\}.
+\]
+故 $d^*$ 满足三角不等式。
+
+\textbf{(ii) $\mathcal{T}^* = \mathcal{T}$。}
+
+若 $0 < r \le 1$，则
+\[
+  B_{d^*}(x,r) = \{y : d^*(x,y) < r\} = \{y : d(x,y) < r\} = B_d(x,r).
+\]
+即两个度量的小开球相同。
+
+下证两包含。$\mathcal{T} \subseteq \mathcal{T}^*$：设 $U \in \mathcal{T}$，$x \in U$。取 $\varepsilon > 0$ 使 $B_d(x,\varepsilon) \subseteq U$。令 $r = \min\{\varepsilon,1/2\}$。则 $0 < r \le 1$ 且
+\[
+  B_{d^*}(x,r) = B_d(x,r) \subseteq B_d(x,\varepsilon) \subseteq U.
+\]
+故 $U \in \mathcal{T}^*$。
+
+$\mathcal{T}^* \subseteq \mathcal{T}$：设 $U \in \mathcal{T}^*$，$x \in U$。取 $r > 0$ 使 $B_{d^*}(x,r) \subseteq U$。令 $s = \min\{r,1/2\} > 0$。则 $B_d(x,s) = B_{d^*}(x,s) \subseteq B_{d^*}(x,r) \subseteq U$，故 $U \in \mathcal{T}$。
+
+所以 $\mathcal{T}^* = \mathcal{T}$。
+
+\textbf{(iii) 一致常数 $A > 0$ 是否存在。}
+
+未必。取 $X = \R$，通常度量 $d(x,y) = |x-y|$。若这样的 $A > 0$ 存在，则对所有 $x,y$，
+\[
+  A|x-y| \le d^*(x,y) = \min\{|x-y|,1\} \le 1.
+\]
+取 $|x-y| > 1/A$，则 $A|x-y| > 1$，矛盾。故一般情况下不存在这样的 $A$。
+\end{solution}
+
+\subsection{第 2 题}
+
+设
+\[
+  \R^\omega = \prod_{i \in \N} \R,
+\]
+$\R^\omega_{\mathrm{ez}}$ 为最终为零的序列构成的集合。求 $\R^\omega_{\mathrm{ez}}$ 在 $\R^\omega$ 中的内部与闭包：(1) 乘积拓扑 $\mathcal{T}_p$ 下；(2) 盒拓扑 $\mathcal{T}_b$ 下。
+
+\begin{solution}
+\textbf{A. 在 $(\R^\omega, \mathcal{T}_p)$ 下：}
+
+基本邻域形如 $\prod_{i \in \N} U_i$，其中 $U_i \subseteq \R$ 开且除有限多个 $i$ 外 $U_i = \R$。
+
+\emph{内部为空。}设 $x \in \R^\omega_{\mathrm{ez}}$，$N = \prod_i U_i$ 是 $x$ 的任一基本邻域。仅有限多个坐标受约束，记该有限集为 $F$。定义
+\[
+  y_i = \begin{cases} x_i, & i \in F, \\ 1, & i \notin F. \end{cases}
+\]
+则 $y \in N$（因未受限的坐标可取任意实值），但 $y$ 有无穷多个非零项，故 $y \notin \R^\omega_{\mathrm{ez}}$。从而 $x$ 的任一邻域都不含于 $\R^\omega_{\mathrm{ez}}$，故
+\[
+  \interior_{\mathcal{T}_p}(\R^\omega_{\mathrm{ez}}) = \varnothing.
+\]
+
+\emph{闭包为全空间。}取任意 $x \in \R^\omega$ 及其基本邻域 $N = \prod_i U_i$。同样仅有限多个坐标受限，记为 $F$。定义
+\[
+  z_i = \begin{cases} x_i, & i \in F, \\ 0, & i \notin F. \end{cases}
+\]
+则 $z \in N$ 且 $z$ 最终为零。故每个非空基本邻域都与 $\R^\omega_{\mathrm{ez}}$ 相交，从而
+\[
+  \overline{\R^\omega_{\mathrm{ez}}}^{\,\mathcal{T}_p} = \R^\omega.
+\]
+
+\textbf{B. 在 $(\R^\omega, \mathcal{T}_b)$ 下：}
+
+基本邻域仍为 $\prod_i U_i$，但此时每个坐标都可受限。
+
+\emph{内部为空。}固定 $x \in \R^\omega_{\mathrm{ez}}$ 及其盒基本邻域 $N = \prod_i U_i$。对足够大的 $i$，$x_i = 0$，且每个 $U_i$ 是含 $0$ 的开集，取 $t_i \in U_i$，$t_i \ne 0$。定义
+\[
+  y_i = \begin{cases} x_i, & x_i \ne 0, \\ t_i, & x_i = 0. \end{cases}
+\]
+则 $y \in N$ 且对无穷多个 $i$ 有 $y_i \ne 0$，故 $y \notin \R^\omega_{\mathrm{ez}}$。故
+\[
+  \interior_{\mathcal{T}_b}(\R^\omega_{\mathrm{ez}}) = \varnothing.
+\]
+
+\emph{闭包等于 $\R^\omega_{\mathrm{ez}}$。}只需证余集开。取 $x \notin \R^\omega_{\mathrm{ez}}$，则 $I = \{i \in \N : x_i \ne 0\}$ 无穷。对每个 $i \in I$，取开区间 $V_i \ni x_i$ 使 $0 \notin V_i$；对 $i \notin I$ 令 $V_i = \R$。则 $N = \prod_i V_i$ 是 $x$ 的盒基本邻域。任意 $y \in N$ 对所有 $i \in I$ 有 $y_i \ne 0$，故 $y$ 有无穷多个非零坐标，$y \notin \R^\omega_{\mathrm{ez}}$。从而 $N \subseteq \R^\omega \setminus \R^\omega_{\mathrm{ez}}$，余集开。故 $\R^\omega_{\mathrm{ez}}$ 在 $\mathcal{T}_b$ 下闭，
+\[
+  \overline{\R^\omega_{\mathrm{ez}}}^{\,\mathcal{T}_b} = \R^\omega_{\mathrm{ez}}.
+\]
+\end{solution}
+
+\subsection{第 3 题}
+
+$(\R^\omega, \mathcal{T}_p)$ 是否可度量化？是否连通？
+
+\begin{solution}
+\textbf{可度量化：是。}定义
+\[
+  d_\omega(x,y) = \sup_{i \in \N} \frac{d^*(x_i,y_i)}{i+1},
+\]
+其中 $\R$ 上 $d^*(u,v) = \min\{|u-v|,1\}$。因 $0 \le d^*(x_i,y_i) \le 1$，上确界有限且 $d_\omega \le 1$。
+
+度量公理由 $d^*$ 的逐坐标性质得到。三角不等式：由
+\[
+  \frac{d^*(x_i,z_i)}{i+1} \le \frac{d^*(x_i,y_i) + d^*(y_i,z_i)}{i+1},
+\]
+再对 $i$ 取上确界：
+\[
+  d_\omega(x,z) \le d_\omega(x,y) + d_\omega(y,z).
+\]
+故 $d_\omega$ 是度量。
+
+比较两拓扑。每个 $d_\omega$-开球都是 $\mathcal{T}_p$-开：固定 $x$ 与 $\varepsilon > 0$。取 $N$ 使 $1/(N+1) < \varepsilon/2$。若对 $1 \le i \le N$ 要求 $|y_i - x_i| < \varepsilon(i+1)/2$，则 $i \le N$ 时 $\frac{d^*(x_i,y_i)}{i+1} \le \frac{|x_i-y_i|}{i+1} < \frac\varepsilon2$，$i > N$ 时 $\frac{d^*(x_i,y_i)}{i+1} \le \frac{1}{i+1} < \frac\varepsilon2$。故 $d_\omega(x,y) < \varepsilon$。这给出一个含于球内的柱形邻域。
+
+每个 $\mathcal{T}_p$-基本邻域都含一个 $d_\omega$-球：设
+\[
+  N = \Bigl(\prod_{i \in F} U_i\Bigr) \times \Bigl(\prod_{i \notin F} \R\Bigr)
+\]
+（$F$ 有限）为基本邻域，$x \in N$。取 $\delta_i \in (0,1)$ 使 $(x_i - \delta_i, x_i + \delta_i) \subseteq U_i$（$i \in F$）。令 $\delta = \min_{i \in F} \frac{\delta_i}{i+1} > 0$。若 $d_\omega(x,y) < \delta$，则对每个 $i \in F$，$d^*(x_i,y_i) < (i+1)\delta \le \delta_i < 1$，故 $|x_i - y_i| = d^*(x_i,y_i) < \delta_i$，$y_i \in U_i$。从而 $y \in N$。故两拓扑一致：$\mathcal{T}_{d_\omega} = \mathcal{T}_p$。
+
+\textbf{连通：是（事实上道路连通）。}对 $x = (x_i)$ 与 $y = (y_i)$，定义
+\[
+  H : [0,1] \to \R^\omega, \qquad H(t) = \bigl((1-t)x_i + t y_i\bigr)_i.
+\]
+每个坐标映射 $t \mapsto (1-t)x_i + t y_i$ 在 $\R$ 中连续。故 $H$ 在乘积拓扑下连续（所有坐标投影连续）。又 $H(0) = x$，$H(1) = y$。故任意两点可由道路连接；$(\R^\omega, \mathcal{T}_p)$ 连通。
+\end{solution}
+
+\subsection{第 4 题}
+
+设 $(\R^\omega, \mathcal{T}_b)$，令
+\[
+  U = \{x = (x_i) : \exists\, C_x > 0 \text{ 使 } |x_i| \le C_x,\ \forall i\}
+\]
+（有界序列之集）。证明 $U$ 与 $\R^\omega \setminus U$ 构成非平凡分离，从而 $(\R^\omega, \mathcal{T}_b)$ 不连通。
+
+\begin{solution}
+首先两集都非空：$(0,0,\dots) \in U$，而 $(1,2,3,\dots) \notin U$。显然
+\[
+  U \cap (\R^\omega \setminus U) = \varnothing, \qquad U \cup (\R^\omega \setminus U) = \R^\omega.
+\]
+故只需证两者都在 $\mathcal{T}_b$ 下开。
+
+\textbf{$U$ 开。}取 $x \in U$，取 $C_x$ 使 $|x_i| \le C_x$（$\forall i$）。定义盒邻域
+\[
+  N_x = \prod_{i \in \N} (x_i - 1,\, x_i + 1).
+\]
+若 $y \in N_x$，则 $|y_i| \le |x_i| + 1 \le C_x + 1$（$\forall i$），故 $y$ 有界，$y \in U$。从而 $N_x \subseteq U$，$U$ 开。
+
+\textbf{$\R^\omega \setminus U$ 开。}取 $x \notin U$（$x$ 无界）。用同一盒邻域 $N_x = \prod_{i \in \N} (x_i - 1,\, x_i + 1)$。对任意 $y \in N_x$ 及每个 $i$，$|y_i| \ge |x_i| - 1$。给定 $M > 0$，由 $x$ 无界，存在 $i$ 使 $|x_i| > M+1$，则 $|y_i| > |x_i| - 1 > M$。故 $y$ 无界，$y \notin U$。从而 $N_x \subseteq \R^\omega \setminus U$，余集开。
+
+故 $U$ 与 $\R^\omega \setminus U$ 是两个不相交非空开集，其并为全空间：非平凡分离。$(\R^\omega, \mathcal{T}_b)$ 不连通。
+\end{solution}
+
+\subsection{第 5 题}
+
+设
+\[
+  X = \{(x,0) : x \in \R\} \cup \{(x,1/x) : x > 0\} \subseteq \R^2,
+\]
+取 $\R^2$ 的子空间拓扑。判断 $X$ 是否连通。
+
+\begin{solution}
+定义
+\[
+  f : X \to \R, \qquad f(x,y) = xy.
+\]
+它是 $\R^2$ 上连续乘法映射在 $X$ 上的限制，故连续。
+
+计算 $f$ 在 $X$ 两部分上的值：
+\[
+  (x,0) \in X \implies f(x,0) = 0,
+\]
+\[
+  (x,1/x) \in X,\ x > 0 \implies f(x,1/x) = 1.
+\]
+故 $f(X) = \{0,1\}$。若 $X$ 连通，则其连续像 $f(X)$ 在 $\R$ 中也连通。但 $\{0,1\}$ 不连通，矛盾。
+
+故 $X$ 不连通。
+\end{solution}
+
+% ============================================================
+\section{第六次作业}
+% ============================================================
+
+\textit{（本次作业仅录入原始题目。下列各题除特别说明外，均假设 $X \subseteq \R^n$ 赋予标准子空间拓扑。）}
+
+\subsection{第 1 题}
+
+证明 $\R^2$ 的如下子空间
+\[
+  X = \{(0,0)\} \cup \{(x,\sin(1/x)) : x \in \R_{>0}\}
+\]
+不是道路连通的。
+
+\subsection{第 2 题}
+
+证明 $(0,1)$、$(0,1]$、$[0,1]$ 这三个空间中没有任何一个与另外两个同胚。（提示：连通性。）
+
+\subsection{第 3 题}
+
+证明每个连续函数 $f : [0,1] \to [0,1]$ 都有不动点 $x \in [0,1]$，即 $f(x) = x$。（提示：介值定理。）若把 $[0,1]$ 换成 $(0,1)$ 或 $(0,1]$，结论是否仍成立？说明理由。
+
+\subsection{第 4 题}
+
+固定拓扑空间 $(X, \mathcal{T})$。$x \in X$ 的一个\textbf{开邻域基}是一族开集 $\{B_i\}_{i \in I}$，满足：
+\begin{itemize}
+  \item 对每个 $i$，$x \in B_i$；
+  \item 对每个含 $x$ 的开集 $U$，存在 $B_i$ 使 $B_i \subseteq U$。
+\end{itemize}
+称 $X$ \textbf{局部道路连通}，若每个点都有由道路连通集构成的开邻域基。证明：若 $X$ 连通且局部道路连通，则 $X$ 道路连通。
+
+（提示：固定 $x \in X$，考虑 $X$ 中可与 $x$ 用道路连接的点构成的集合 $S_x$。证明 $S_x$ 既开又闭。）
+
+\subsection{第 5 题}
+
+考虑 $(\R, \mathcal{T})$，其拓扑为
+\[
+  \mathcal{T} = \{\varnothing\} \cup \{\R \setminus A : A \subseteq \R \text{ 是有限集}\}.
+\]
+证明 $\R$ 的每个子集 $X$（取 $\mathcal{T}$ 的子空间拓扑）都是紧的。
+
+% ============================================================
+\section{第七次作业}
+% ============================================================
+
+\textit{（本次作业仅录入原始题目。）}
+
+\subsection{第 1 题}
+
+设 $(X, \mathcal{T})$ 为 Hausdorff 空间。设 $A, B \subseteq X$ 为两个不相交的紧子集。证明存在 $X$ 的不相交开集 $U, V$ 使 $A \subseteq U$，$B \subseteq V$。
+
+\subsection{第 2 题}
+
+证明：多于一个点的连通度量空间 $(X, d)$ 是不可数的。
+
+（提示：取 $a \in X$，考虑函数 $d_a : X \to \R$，$d_a(x) := d(a,x)$。$\R$ 中的可数集能否连通？）
+
+\subsection{第 3 题}
+
+（Baire 纲定理——一个特例）设 $(X, \mathcal{T})$ 为紧 Hausdorff 空间。设 $\{A_i : i \in \N\}$ 为 $X$ 的一族闭子集。假设对每个 $i$ 都有 $(A_i)^\circ = \varnothing$。证明
+\[
+  \Bigl(\bigcup_{i \in \N} A_i\Bigr)^\circ = \varnothing.
+\]
+
+\subsection{第 4 题}
+
+（Cantor 集）令 $A_0 = [0,1]$，对每个 $n \in \N$ 递归定义
+\[
+  A_n = A_{n-1} \setminus \bigcup_{k=0}^{3^{n-1}-1} \left(\frac{1+3k}{3^n},\,\frac{2+3k}{3^n}\right).
+\]
+取 $C := \bigcap_{n \ge 0} A_n$，赋予 $\R$ 的标准子空间拓扑。证明：
+\begin{enumerate}[(i)]
+  \item $C$ 全不连通，即 $C$ 的连通分支都是单点集。
+  \item $C$ 紧、且无孤立点，进而推出 $C$ 不可数。
+\end{enumerate}
+
+\subsection{第 5 题}
+
+固定紧拓扑空间 $(X, \mathcal{T})$。证明下列两条等价：
+\begin{enumerate}[(i)]
+  \item 在 $\mathcal{T}$ 下，$X$ 的每个紧子集都是闭集；
+  \item 对每个真包含 $\mathcal{T}$ 的拓扑 $\mathcal{T}'$，空间 $(X, \mathcal{T}')$ 都不紧。
+\end{enumerate}
+并给出一个满足上述（等价的）(i)、(ii) 的 $(X, \mathcal{T})$ 的例子。
+
+% ============================================================
+\section{第八次作业}
+% ============================================================
+
+\textit{（本次作业仅录入原始题目。）}
+
+\subsection{第 1 题}
+
+下列两个空间是否局部紧？
+\begin{enumerate}[(i)]
+  \item 赋予标准拓扑的 $\Q$；
+  \item $(\R, \mathcal{T})$，其中 $\mathcal{T}$ 由基 $\{(a,b] : a, b \in \R,\ a < b\}$ 生成。
+\end{enumerate}
+说明理由。
+
+\subsection{第 2 题}
+
+证明乘积空间 $\bigl(\prod_{i=1}^{\infty} A_i,\ \mathcal{T}_p\bigr)$ 在乘积拓扑 $\mathcal{T}_p$ 下是紧的，其中每个 $A_i$ 是赋予离散拓扑的非空有限集。
+
+（提示：参考第 5 次作业第 3 题，考虑序列紧性。）
+
+\subsection{第 3 题}
+
+（$p$-adic 整数）固定素数 $p$。对每个 $i \in \N$，$i \ge 1$，有 $\Z/p^i\Z$，即 $\Z$ 关于等价关系 $a \sim b \iff a - b \in p^i\Z$ 的等价类之集。考虑
+\[
+  \Z_p := \Bigl\{(a_i)_{i \in \N^+} \in \prod_{i=1}^{\infty} \Z/p^i\Z \ :\ \varphi_{i+1}(a_{i+1}) = a_i,\ \forall i \Bigr\},
+\]
+其中 $\varphi_i : \Z/p^i\Z \to \Z/p^{i-1}\Z$（$i \ge 2$）是自然满射，把 $a \in \Z$ 在 $\Z/p^i\Z$ 中的等价类映到 $a$ 在 $\Z/p^{i-1}\Z$ 中的等价类。每个 $\Z/p^i\Z$ 赋予离散拓扑，$\prod_{i=1}^{\infty}(\Z/p^i\Z)$ 赋予乘积拓扑。
+\begin{enumerate}[(i)]
+  \item 证明 $\Z_p$ 在 $\prod_{i=1}^{\infty}(\Z/p^i\Z)$ 中闭且紧。
+  \item 对每个 $i \ge 1$，令 $f_i : \Z \to \Z/p^i\Z$ 为标准商映射。考虑嵌入 $f : \Z \to \Z_p$，$f(a) = (f_i(a))_{i \ge 1}$。证明 $f(\Z)$ 在 $\Z_p$ 中稠密，即 $\overline{f(\Z)}^{\,\Z_p} = \Z_p$。
+\end{enumerate}
+
+\subsection{第 4 题}
+
+考虑 $Y = \{0\} \cup \{1/n : n \in \N,\ n \ge 1\}$，取 $\R$ 的子空间拓扑。$Y$ 是否同胚于 $(\N_{\ge 1}, \mathcal{T}')$ 的一点紧致化 $(\N_{\ge 1} \cup \{\infty\}, \mathcal{T})$？其中 $\mathcal{T}'$ 是 $\N_{\ge 1}$ 上的标准（离散）拓扑。说明理由。
+
+\subsection{第 5 题}
+
+证明 $(\R^\omega, \mathcal{T}_p)$（如第 5 次作业第 2 题所给）没有一点紧致化。（提示：$\R^\omega$ 是否局部紧？）
+
+% ============================================================
+\section{第九次作业}
+% ============================================================
+
+\subsection{第 1 题}
+
+证明：若对每个 $i \in \N$，$X_i$ 都是可分的，则乘积空间
+\[
+  \Bigl(\prod_{i \in \N} X_i,\ \mathcal{T}_p\Bigr)
+\]
+是可分的。
+
+\begin{solution}
+若某个 $X_i$ 为空，则乘积为空，平凡可分。故设每个 $X_i$ 非空。对每个 $i \in \N$，取可数稠密子集 $D_i \subseteq X_i$，并固定 $a_i \in D_i$。
+
+令 $D$ 为所有除了有限多个坐标外都与 $(a_i)_{i \in \N}$ 一致、且其余坐标取自相应 $D_i$ 的序列之集：
+\[
+  D = \Bigl\{x = (x_i) \in \prod_{i \in \N} X_i :
+    x_i \in D_i\ (\forall i),\quad
+    \{i : x_i \ne a_i\} \text{ 有限}\Bigr\}.
+\]
+此集可数。事实上，对每个有限集 $F \subseteq \N$，$D$ 中仅在 $F$ 上可与 $(a_i)$ 不同的元素构成一个可数集的有限乘积。$\N$ 的有限子集只有可数个，故 $D$ 是可数个可数集的并。
+
+下证 $D$ 稠密。设 $W = \prod_{i \in \N} U_i$ 是乘积拓扑中一个非空基本开集。存在有限集 $F \subseteq \N$ 使对每个 $i \notin F$ 有 $U_i = X_i$。对每个 $i \in F$，由 $D_i$ 稠密，取 $d_i \in D_i \cap U_i$。定义
+\[
+  d_i' = \begin{cases} d_i, & i \in F, \\ a_i, & i \notin F. \end{cases}
+\]
+则 $d' = (d_i') \in D \cap W$。从而每个非空基本开集都与 $D$ 相交，$D$ 稠密，乘积可分。
+\end{solution}
+
+\subsection{第 2 题}
+
+设 $(X, d)$ 为度量空间。证明下列性质等价：
+\begin{enumerate}[(i)]
+  \item $X$ 第二可数；
+  \item $X$ 是 Lindel\"of 的；
+  \item $X$ 可分。
+\end{enumerate}
+
+\begin{solution}
+我们证明每个条件都与 (i) 等价。
+
+\textbf{(i) $\Rightarrow$ (ii)。}设 $\mathcal{B}$ 为 $X$ 的可数基，$\mathcal{U}$ 为 $X$ 的开覆盖。对每个 $\mathcal{B}$ 中含于 $\mathcal{U}$ 某成员的 $B$，选一个这样的成员 $U_B$。所选 $U_B$ 的族可数。它覆盖 $X$：若 $x \in X$，取 $U \in \mathcal{U}$ 使 $x \in U$，再取 $B \in \mathcal{B}$ 使 $x \in B \subseteq U$。则 $x \in U_B$。故 $X$ 是 Lindel\"of 的。
+
+\textbf{(ii) $\Rightarrow$ (i)。}对每个 $n \in \N$，族 $\{B(x,1/n) : x \in X\}$ 是 $X$ 的开覆盖。由 Lindel\"of 性，取可数子覆盖 $\{B(x_{n,k},1/n) : k \in \N\}$。令
+\[
+  \mathcal{B} = \{B(x_{n,k},1/n) : n,k \in \N\}.
+\]
+它可数。为证它是基，设 $O$ 开，$x \in O$。取 $\varepsilon > 0$ 使 $B(x,\varepsilon) \subseteq O$，再取 $n$ 使 $2/n < \varepsilon$。由半径 $1/n$ 的选定球覆盖 $X$，存在 $k$ 使 $x \in B(x_{n,k},1/n)$。对 $y \in B(x_{n,k},1/n)$，三角不等式给出
+\[
+  d(x,y) < \frac1n + \frac1n = \frac2n < \varepsilon.
+\]
+故
+\[
+  x \in B(x_{n,k},1/n) \subseteq B(x,\varepsilon) \subseteq O,
+\]
+即 $\mathcal{B}$ 是可数基。
+
+\textbf{(i) $\Rightarrow$ (iii)。}设 $\mathcal{B}$ 为可数基。对每个非空 $B \in \mathcal{B}$，取一点 $x_B \in B$，令
+\[
+  D = \{x_B : B \in \mathcal{B},\ B \ne \varnothing\}.
+\]
+$D$ 可数。若 $O$ 是非空开集，则它含某非空基本开集 $B \in \mathcal{B}$，故 $x_B \in D \cap O$。从而 $D$ 稠密，$X$ 可分。
+
+\textbf{(iii) $\Rightarrow$ (i)。}设 $D \subseteq X$ 为可数稠密集。族
+\[
+  \mathcal{C} = \{B(a,1/n) : a \in D,\ n \in \N\}
+\]
+可数。设 $O$ 开，$x \in O$。取 $\varepsilon > 0$ 使 $B(x,\varepsilon) \subseteq O$，取 $n$ 使 $2/n < \varepsilon$。由 $D$ 稠密，存在 $a \in D \cap B(x,1/n)$。则 $x \in B(a,1/n)$；又 $y \in B(a,1/n)$ 时
+\[
+  d(x,y) \le d(x,a) + d(a,y) < \frac2n < \varepsilon.
+\]
+故
+\[
+  x \in B(a,1/n) \subseteq B(x,\varepsilon) \subseteq O.
+\]
+即 $\mathcal{C}$ 是 $X$ 的可数基。
+\end{solution}
+
+\subsection{第 3 题}
+
+设 $(X, d)$ 为伪度量空间。令 $\mathcal{T}_d$ 为 $X$ 上由
+\[
+  \{B(x,\varepsilon) : x \in X,\ \varepsilon \in \R_{>0}\}
+\]
+生成的拓扑，其中 $B(x,\varepsilon) := \{y \in X : d(x,y) < \varepsilon\}$。证明 $(X, \mathcal{T}_d)$ 是 $T_0$ 的当且仅当 $d$ 是度量。
+
+\begin{solution}
+设 $d$ 是度量。若 $x \ne y$，则 $d(x,y) > 0$。开球 $B(x, d(x,y)/2)$ 含 $x$ 但不含 $y$。故 $(X, \mathcal{T}_d)$ 是 $T_0$ 的。
+
+反之，设 $(X, \mathcal{T}_d)$ 是 $T_0$ 的。设 $x, y \in X$ 满足 $d(x,y) = 0$。对每个 $\varepsilon > 0$，
+\[
+  y \in B(x,\varepsilon) \quad \text{且} \quad x \in B(y,\varepsilon).
+\]
+故每个含 $x$ 的开集也含 $y$，每个含 $y$ 的开集也含 $x$。由 $T_0$ 性得 $x = y$。从而
+\[
+  d(x,y) = 0 \implies x = y.
+\]
+伪度量已满足其余度量公理，故 $d$ 是度量。
+\end{solution}
+
+\subsection{第 4 题}
+
+对拓扑空间 $(X, \mathcal{T})$ 证明：
+\begin{enumerate}[(i)]
+  \item 若 $X$ 是 $T_3$ 的，则对任意不同的 $x, y \in X$，存在开集 $U, V$ 使 $x \in U$，$y \in V$，且 $\overline{U} \cap \overline{V} = \varnothing$；
+  \item 若 $X$ 是 $T_4$ 的，则对任意不相交闭集 $A, B \subseteq X$，存在开集 $U, V$ 使 $A \subseteq U$，$B \subseteq V$，且 $\overline{U} \cap \overline{V} = \varnothing$。
+\end{enumerate}
+
+\begin{solution}
+先记录正则性与正规性的两个有用推论。
+
+若 $X$ 正则，$x \in O$，$O$ 开，则存在开集 $W$ 使
+\[
+  x \in W \subseteq \overline{W} \subseteq O.
+\]
+事实上，用不相交开集 $W$、$G$ 分别分离 $x$ 与闭集 $X \setminus O$。因 $W \cap G = \varnothing$ 且 $G$ 开，$\overline{W} \subseteq X \setminus G \subseteq O$。
+
+类似地，若 $X$ 正规，$C \subseteq O$，$C$ 闭，$O$ 开，则存在开集 $W$ 使
+\[
+  C \subseteq W \subseteq \overline{W} \subseteq O.
+\]
+用不相交开集 $W$、$G$ 分别分离不相交闭集 $C$ 与 $X \setminus O$。同样的闭包论证给出 $\overline{W} \subseteq X \setminus G \subseteq O$。
+
+\textbf{(i)} 因 $T_3$ 空间是 $T_1$ 的，单点集 $\{y\}$ 闭。由正则性，存在不相交开集 $O_x, O_y$ 使 $x \in O_x$，$y \in O_y$。对 $x \in O_x$ 与 $y \in O_y$ 应用上述正则性推论，得开集 $U, V$ 满足
+\[
+  x \in U \subseteq \overline{U} \subseteq O_x, \qquad y \in V \subseteq \overline{V} \subseteq O_y.
+\]
+因 $O_x \cap O_y = \varnothing$，故 $\overline{U} \cap \overline{V} = \varnothing$。
+
+\textbf{(ii)} 因 $X$ 是 $T_4$ 的，故正规。从而不相交闭集 $A$、$B$ 有不相交开邻域 $O_A$、$O_B$：$A \subseteq O_A$，$B \subseteq O_B$，$O_A \cap O_B = \varnothing$。对闭集 $A \subseteq O_A$ 与闭集 $B \subseteq O_B$ 应用正规性推论，得开集 $U, V$ 使
+\[
+  A \subseteq U \subseteq \overline{U} \subseteq O_A, \qquad B \subseteq V \subseteq \overline{V} \subseteq O_B.
+\]
+故 $\overline{U} \cap \overline{V} = \varnothing$。
+\end{solution}
+
+\subsection{第 5 题}
+
+证明每个局部紧的 Hausdorff 空间都是正则的，即“局部紧 $+\ T_2 \Rightarrow T_3$”。
+
+\begin{solution}
+设 $X$ 局部紧且 Hausdorff。因每个 Hausdorff 空间都是 $T_1$ 的，故 $X$ 是 $T_1$ 的。只需分离一个点与一个不相交的闭集。
+
+设 $x \in X$，$F \subseteq X$ 闭且 $x \notin F$。由局部紧性，$x$ 有一个含于某紧集 $K$ 的开邻域 $W$。因 $X$ 是 Hausdorff 的，$K$ 闭。令 $A = K \cap F$。$A$ 在紧空间 $K$ 中闭，故紧。
+
+对每个 $a \in A$，Hausdorff 性给出不相交开集 $U_a, V_a \subseteq X$ 使 $x \in U_a$，$a \in V_a$。族 $\{V_a : a \in A\}$ 覆盖 $A$。若 $A \ne \varnothing$，由紧性，存在 $a_1, \dots, a_m \in A$ 使 $A \subseteq V_{a_1} \cup \cdots \cup V_{a_m}$。若 $A = \varnothing$，令 $m = 0$。无论哪种情形，令
+\[
+  U = W \cap \bigcap_{j=1}^m U_{a_j},
+\]
+其中空交集理解为 $X$。则 $U$ 是 $x$ 的开邻域且 $U \subseteq K$。因 $K$ 闭，$\overline{U} \subseteq K$。又对每个 $j$，$U \cap V_{a_j} = \varnothing$，因 $V_{a_j}$ 开，故
+\[
+  \overline{U} \cap V_{a_j} = \varnothing \quad (1 \le j \le m).
+\]
+从而 $\overline{U} \cap A = \varnothing$。因 $\overline{U} \subseteq K$，
+\[
+  \overline{U} \cap F = \overline{U} \cap K \cap F = \overline{U} \cap A = \varnothing.
+\]
+故 $V = X \setminus \overline{U}$ 是含 $F$ 的开集，且 $U \cap V = \varnothing$。我们分离了任意点 $x$ 与任意不相交闭集 $F$。从而 $X$ 正则，连同 $T_1$ 即为 $T_3$ 空间。
+\end{solution}
+
+\end{document}

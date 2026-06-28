@@ -1,0 +1,360 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={1.2cm,1.2cm}}
+
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{enumerate}
+\usepackage{hyperref}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\PV}{\operatorname{p.v.}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+
+\newenvironment{solution}{%
+  \par\medskip\noindent\textbf{Solution.}\par
+}{\par\medskip}
+
+\title{\textbf{MIT Complex Analysis Recommended Exercises}}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent
+These exercises are selected and retypeset from MIT OpenCourseWare
+\href{https://ocw.mit.edu/courses/18-04-complex-variables-with-applications-spring-2018/}{18.04 Complex Variables with Applications, Spring 2018}.
+The source problem sets are:
+\href{https://ocw.mit.edu/courses/18-04-complex-variables-with-applications-spring-2018/mit18_04_s18_pset04.pdf}{PS4},
+\href{https://ocw.mit.edu/courses/18-04-complex-variables-with-applications-spring-2018/mit18_04_s18_pset06.pdf}{PS6},
+\href{https://ocw.mit.edu/courses/18-04-complex-variables-with-applications-spring-2018/mit18_04_s18_pset07.pdf}{PS7},
+\href{https://ocw.mit.edu/courses/18-04-complex-variables-with-applications-spring-2018/mit18_04_s18_pset08.pdf}{PS8}, and
+\href{https://ocw.mit.edu/courses/18-04-complex-variables-with-applications-spring-2018/mit18_04_s18_pset09.pdf}{PS9}.
+
+\section{Priority Problems}
+
+\subsection*{18.04 PS9, Problem 2}
+
+Consider
+\[
+  f(z)=z^5-2z.
+\]
+\begin{enumerate}[(a)]
+  \item How many times does $f$ wind the circle $|z|=3$ around the origin?
+  That is, let $\gamma(\theta)$ parametrize the circle. How many times does
+  the curve $f\circ\gamma(\theta)$ wind around the origin?
+
+  \item How many times does $f$ wind the circle $|z|=1$ around the origin?
+
+  \item How many times does $f$ wind the circle $|z|=3$ around the point
+  $z=-2$?
+\end{enumerate}
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS9, Problem 3}
+
+\begin{enumerate}[(a)]
+  \item Show that
+  \[
+    f(z)=z^3+9z+30
+  \]
+  has no roots in the disk $|z|<2$.
+
+  \item Show that
+  \[
+    f(z)=z^6+4z^2-1
+  \]
+  has exactly two roots in the disk $|z|<1$.
+\end{enumerate}
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS9, Problem 4}
+
+Suppose $f(z)$ is analytic on a region containing $|z|\le 1$. Suppose also
+that $|f(z)|<1$ on $|z|=1$. Show that $f(z)-z$ has exactly one zero in the
+disk $|z|<1$.
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS6, Problem 4(b)}
+
+Suppose $f$ is analytic and has a zero of order $m$ at $z_0$. Show that
+\[
+  g(z)=\frac{f'(z)}{f(z)}
+\]
+has a simple pole at $z_0$ with
+\[
+  \Res(g,z_0)=m.
+\]
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS6, Problem 8}
+
+Using variations of the geometric series, find the following series
+expansions of
+\[
+  f(z)=\frac{1}{4-z^2}
+\]
+about $z_0=1$.
+\begin{enumerate}[(a)]
+  \item The Taylor series. What is the radius of convergence?
+
+  \item The Laurent series on $1<|z-1|<R_1$. What is $R_1$?
+
+  \item The Laurent series for $|z-1|>3$.
+\end{enumerate}
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS6, Problem 5(b,c,d)}
+
+\begin{enumerate}[(a)]
+  \setcounter{enumi}{1}
+  \item Find the residue of
+  \[
+    f_2(z)=\frac{z^2+1}{2z\cos z}
+  \]
+  at $z=0$.
+
+  \item Let
+  \[
+    f_3(z)=\frac{e^z}{z(z+1)^3}.
+  \]
+  Find all the isolated singularities and compute the residue at each one.
+
+  \item Find the residue at infinity of
+  \[
+    f_4(z)=\frac{1}{1-z}.
+  \]
+\end{enumerate}
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS6, Problem 6}
+
+Write the principal part of each function at the isolated singularity.
+Compute the corresponding residue.
+\begin{enumerate}[(a)]
+  \item
+  \[
+    f_1(z)=z^3e^{1/z}.
+  \]
+
+  \item
+  \[
+    f_2(z)=\frac{1-\cosh z}{z^3}.
+  \]
+\end{enumerate}
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS7, Problem 1(c)}
+
+Compute
+\[
+  \int_0^{2\pi}\frac{\sin^2\theta}{a+b\cos\theta}\,\dd\theta,
+  \qquad a>|b|>0.
+\]
+MIT gives the answer as
+\[
+  \frac{2\pi}{b^2}\left(a-\sqrt{a^2-b^2}\right).
+\]
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS7, Problem 2(c)}
+
+Show
+\[
+  \int_0^\infty \frac{1}{x^3+1}\,\dd x
+  =
+  \frac{2\pi\sqrt{3}}{9}
+\]
+by integrating around the boundary of a circular sector and letting
+$R\to\infty$. The vertex angle of the sector is $2\pi/3$.
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS7, Problem 6}
+
+Compute
+\[
+  \int_0^\infty\frac{\sqrt{x}}{x^2+1}\,\dd x.
+\]
+MIT gives the answer as
+\[
+  \frac{\pi}{\sqrt{2}}.
+\]
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS8, Problem 2(b,c)}
+
+\begin{enumerate}[(a)]
+  \setcounter{enumi}{1}
+  \item A fixed point $z$ of a transformation $T$ is one where $T(z)=z$.
+  Let $T$ be a fractional linear transformation. Assume $T$ is not the
+  identity map. Show $T$ has at most two fixed points.
+
+  \item Let $S$ be a circle and $z_1$ a point not on the circle. Show that
+  there is exactly one point $z_2$ such that $z_1$ and $z_2$ are symmetric
+  with respect to $S$.
+
+  Hint: start by proving this for $S$ a line.
+\end{enumerate}
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS8, Problem 4}
+
+\begin{enumerate}[(a)]
+  \item Show that the mapping
+  \[
+    w=z+\frac{1}{z}
+  \]
+  maps the circle $|z|=a$, where $a\ne 1$, to the ellipse
+  \[
+    \frac{u^2}{(a+1/a)^2}+\frac{v^2}{(a-1/a)^2}=1.
+  \]
+
+  \item Where does it map the circle $|z|=1$?
+\end{enumerate}
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS8, Problem 3}
+
+Suppose you want to find a function $u$ harmonic on the right half-plane that
+takes the values
+\[
+  u(0,y)=\frac{y}{1+y^2}
+\]
+on the imaginary axis. The first obvious guess is
+\[
+  u(z)=\Im\left(\frac{z}{1-z^2}\right).
+\]
+But this fails because $z/(1-z^2)$ has a singularity at $z=1$. Find a valid
+$u$ using the following steps. Forget about this guess and go back to only
+knowing that $u$ is harmonic and $u(0,y)=y/(1+y^2)$.
+
+\begin{enumerate}[(a)]
+  \item Show that rotation by $\alpha$ is a fractional linear transformation
+  which corresponds to the matrix
+  \[
+    \begin{pmatrix}
+      e^{i\alpha/2} & 0\\
+      0 & e^{-i\alpha/2}
+    \end{pmatrix}.
+  \]
+
+  \item Find a fractional linear transformation that maps the right half-plane
+  to the unit disk, so that $u$ is transformed to a function $\phi$ with
+  \[
+    \phi(e^{i\theta})=\frac{\sin\theta}{2}.
+  \]
+  Hint: make sure $1$ is mapped to $0$. If your transformation still does not
+  transform $u$ to the correct $\phi$, try composing with a rotation.
+
+  \item Show that
+  \[
+    \phi(w)=\frac{1}{2}\Im(w).
+  \]
+
+  \item Use the fractional linear transform to take $\phi$ back to $u$ on the
+  right half-plane.
+\end{enumerate}
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\section{Optional Warm-ups}
+
+\subsection*{18.04 PS4, Problem 6}
+
+\begin{enumerate}[(a)]
+  \item Suppose that $f(z)$ is analytic on a region $A$ that contains the disk
+  $|z-z_0|\le r$. Use Cauchy's integral formula to prove the mean value
+  property
+  \[
+    f(z_0)=\frac{1}{2\pi}\int_0^{2\pi}
+    f(z_0+re^{i\theta})\,\dd\theta.
+  \]
+
+  \item Prove the more general formula
+  \[
+    f^{(n)}(z_0)
+    =
+    \frac{n!}{2\pi r^n}
+    \int_0^{2\pi}f(z_0+re^{i\theta})e^{-in\theta}\,\dd\theta.
+  \]
+\end{enumerate}
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\subsection*{18.04 PS4, Problem 10}
+
+Suppose $f(z)$ is entire and
+\[
+  \lim_{z\to\infty}\frac{f(z)}{z}=0.
+\]
+Show that $f(z)$ is constant.
+
+You may use Morera's theorem: if $g(z)$ is analytic on $A-\{z_0\}$ and
+continuous on $A$, then $g$ is analytic on $A$.
+
+\begin{solution}
+% Write your solution here.
+\end{solution}
+
+\section{Optional 18.112 References}
+
+The following are useful harder references from MIT OCW
+\href{https://ocw.mit.edu/courses/18-112-functions-of-a-complex-variable-fall-2008/pages/assignments/}{18.112 Functions of a Complex Variable, Fall 2008}.
+They are assigned from Ahlfors, \emph{Complex Analysis}, 3rd edition, so this
+file records the references rather than retyping the textbook problem
+statements.
+
+\begin{enumerate}
+  \item Problem set 4: Ahlfors p.~130, Problem 3. Use it for essential
+  singularities at infinity of $e^z$, $\sin z$, and $\cos z$.
+
+  \item Problem set 5: Ahlfors p.~161, Problems 3(b), 3(f), and 3(h). Use them
+  for residue-theorem definite integrals and logarithm branch choices.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,282 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{tikz}
+
+% import common macros
+\input{../common/macros.tex}
+
+% Name and uID
+\newcommand{\name}{\getEnv{NAME}{NAME}}
+\newcommand{\uid}{\getEnv{UID}{UID}}
+\newcommand{\course}{Real Analysis}
+\newcommand{\hwNum}{16}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{\zhstr{\name} (\uid)}
+\chead{\course\ \#\hwNum}
+\rhead{\today}
+
+% ==============================================================================
+% Page 135, Exercise 8
+% ==============================================================================
+\section{P136 Exercise 8}
+
+设 $1<p<\infty$.
+\begin{enumerate}
+  \renewcommand{\labelenumi}{(\roman{enumi})}
+  \item 证明 $\dfrac{\sin x}{x}\in L^p((0,\infty))$;
+  \item 若 $f\in L^p((0,\infty))$, 求证:
+    \[
+      g(x)=\int_0^\infty f(t)\frac{\sin xt}{t}\,\dif t
+    \]
+    存在且 $h^{-1/p}[g(x+h)-g(x)]$ 有界, $x>0,\ h>0$.
+\end{enumerate}
+
+\begin{solution}
+  (i)\; 在 $(0,1)$ 上, $\left|\dfrac{\sin x}{x}\right|\le1$.
+  在 $(1,\infty)$ 上, $\left|\dfrac{\sin x}{x}\right|^p\le x^{-p}$.
+  由于 $p>1$, $\int_1^\infty x^{-p}\,\dif x<\infty$, 故
+  \[
+    \frac{\sin x}{x}\in L^p((0,\infty)).
+  \]
+
+  (ii)\; 令 $q$ 为 $p$ 的共轭指数. 对任意固定的 $x>0$,
+  \[
+    \int_0^\infty\left|\frac{\sin xt}{t}\right|^q\,\dif t
+    =x^{q-1}\int_0^\infty\left|\frac{\sin u}{u}\right|^q\,\dif u<\infty,
+  \]
+  其中最后一步由 (i) 对指数 $q>1$ 的情形得到. 因此
+  $\dfrac{\sin xt}{t}\in L^q((0,\infty))$. 由 Hölder 不等式,
+  $g(x)$ 对每个 $x>0$ 都存在.
+
+  又
+  \[
+    g(x+h)-g(x)
+    =\int_0^\infty f(t)
+      \frac{\sin((x+h)t)-\sin xt}{t}\,\dif t.
+  \]
+  由
+  \[
+    |\sin((x+h)t)-\sin xt|
+    =2\left|\cos\left(xt+\frac{ht}{2}\right)\sin\frac{ht}{2}\right|
+    \le 2\left|\sin\frac{ht}{2}\right|,
+  \]
+  可得
+  \begin{align*}
+    \left\|\frac{\sin((x+h)t)-\sin xt}{t}\right\|_q^q
+    &\le
+    2^q\int_0^\infty\frac{|\sin(ht/2)|^q}{t^q}\,\dif t  \\
+    &=2h^{q-1}\int_0^\infty\left|\frac{\sin u}{u}\right|^q\,\dif u.
+  \end{align*}
+  所以存在只依赖于 $p$ 的常数 $C_p$, 使得
+  \[
+    |g(x+h)-g(x)|
+    \le C_p\|f\|_p h^{1/p}.
+  \]
+  于是
+  \[
+    h^{-1/p}|g(x+h)-g(x)|\le C_p\|f\|_p,
+  \]
+  即 $h^{-1/p}[g(x+h)-g(x)]$ 关于 $x>0,\ h>0$ 有界.
+\end{solution}
+
+% ==============================================================================
+% Page 135, Exercise 10
+% ==============================================================================
+\section{P136 Exercise 10}
+
+设 $f\in L^2([0,1])$, $F(x)=\displaystyle\int_0^x f(t)\,\dif t$.
+求证:
+\[
+  \|F\|_2\le \frac1{\sqrt2}\|f\|_2.
+\]
+
+\begin{solution}
+  对每个 $x\in[0,1]$, 由 Cauchy--Schwarz 不等式,
+  \[
+    |F(x)|^2
+    =\left|\int_0^x f(t)\,\dif t\right|^2
+    \le x\int_0^x|f(t)|^2\,\dif t.
+  \]
+  两边关于 $x$ 积分并交换积分次序:
+  \begin{align*}
+    \|F\|_2^2
+    &\le \int_0^1x\int_0^x|f(t)|^2\,\dif t\,\dif x  \\
+    &=\int_0^1|f(t)|^2\int_t^1x\,\dif x\,\dif t  \\
+    &=\frac12\int_0^1(1-t^2)|f(t)|^2\,\dif t
+    \le\frac12\|f\|_2^2.
+  \end{align*}
+  开方即得
+  \[
+    \|F\|_2\le\frac1{\sqrt2}\|f\|_2. \qed
+  \]
+\end{solution}
+
+% ==============================================================================
+% Page 135, Exercise 11
+% ==============================================================================
+\section{P136 Exercise 11}
+
+设 $f\in L^p(\mathbf R)$, $1\le p<\infty$,
+$\dfrac1p+\dfrac1q=1$, $F(x)=\displaystyle\int_0^x f(t)\,\dif t$.
+求证: 对任何 $x$,
+\[
+  F(x+h)-F(x)=o(|h|^{1/q})\qquad (h\to0).
+\]
+
+\begin{solution}
+  先设 $1<p<\infty$. 对任意固定的 $x\in\mathbf R$,
+  \[
+    F(x+h)-F(x)=\int_x^{x+h}f(t)\,\dif t.
+  \]
+  由 Hölder 不等式,
+  \[
+    |F(x+h)-F(x)|
+    \le |h|^{1/q}
+      \left(\int_{I_h}|f(t)|^p\,\dif t\right)^{1/p},
+  \]
+  其中 $I_h$ 是端点为 $x$ 与 $x+h$ 的区间. 因为
+  $|f|^p\in L^1(\mathbf R)$, 积分的绝对连续性给出
+  \[
+    \int_{I_h}|f(t)|^p\,\dif t\longrightarrow0
+    \qquad(h\to0).
+  \]
+  因而
+  \[
+    \frac{|F(x+h)-F(x)|}{|h|^{1/q}}\longrightarrow0.
+  \]
+
+  当 $p=1$ 时 $q=\infty$, 即 $1/q=0$. 此时
+  \[
+    |F(x+h)-F(x)|\le\int_{I_h}|f(t)|\,\dif t\longrightarrow0,
+  \]
+  同样得到结论. \qed
+\end{solution}
+
+% ==============================================================================
+% Page 135, Exercise 13
+% ==============================================================================
+\section{P136 Exercise 13}
+
+设 $1<p<\infty$, $f,f_k\in L^p(E)\ (k\ge1)$. 求证: 当
+$f_k(x)\to f(x)$ a.e. 且 $\sup_k\|f_k\|_p<\infty$ 时, 对任何
+$g\in L^q(E)$, $\dfrac1p+\dfrac1q=1$, 有
+\[
+  \int_E f_k(x)g(x)\,\dif x
+  \longrightarrow
+  \int_E f(x)g(x)\,\dif x.
+\]
+
+\begin{solution}
+  由 Fatou 引理,
+  \[
+    \|f\|_p^p
+    \le \liminf_{k\to\infty}\|f_k\|_p^p<\infty,
+  \]
+  故 $f\in L^p(E)$. 记
+  \[
+    M=\sup_k\|f_k-f\|_p
+    \le \sup_k\|f_k\|_p+\|f\|_p<\infty.
+  \]
+
+  先证结论对有界且支集测度有限的函数 $\varphi$ 成立. 设
+  $A=\{x:\varphi(x)\ne0\}$, $m(A)<\infty$. 由于 $f_k-f\to0$ a.e. 于
+  $A$ 上, 由 Egorov 定理, 任给 $\delta>0$, 存在
+  $B\subset A$ 且 $m(B)<\delta$, 使得 $f_k-f$ 在 $A\setminus B$ 上一致收敛到 $0$.
+  因此
+  \[
+    \int_{A\setminus B}|f_k-f||\varphi|
+    \le \|\varphi\|_\infty m(A)
+      \sup_{A\setminus B}|f_k-f|
+    \longrightarrow0.
+  \]
+  另一方面, Hölder 不等式给出
+  \[
+    \int_B|f_k-f||\varphi|
+    \le \|\varphi\|_\infty\|f_k-f\|_p\,m(B)^{1/q}
+    \le \|\varphi\|_\infty M\delta^{1/q}.
+  \]
+  令 $\delta\to0^+$, 得
+  \[
+    \int_E(f_k-f)\varphi\,\dif x\longrightarrow0.
+  \]
+
+  对一般的 $g\in L^q(E)$, 取有界且支集测度有限的 $\varphi$, 使
+  $\|g-\varphi\|_q<\varepsilon$. 则
+  \[
+    \left|\int_E(f_k-f)(g-\varphi)\right|
+    \le \|f_k-f\|_p\|g-\varphi\|_q
+    \le M\varepsilon.
+  \]
+  又已知 $\int_E(f_k-f)\varphi\to0$, 所以
+  \[
+    \limsup_{k\to\infty}
+    \left|\int_E(f_k-f)g\right|
+    \le M\varepsilon.
+  \]
+  令 $\varepsilon\to0^+$, 即得
+  \[
+    \int_E f_k g\to\int_E fg. \qed
+  \]
+\end{solution}
+
+% ==============================================================================
+% Page 135, Exercise 15
+% ==============================================================================
+\section{P136 Exercise 15}
+
+设 $f$ 和 $f_k\ (k\ge1)$ 都是 $L^p(\mathbf R)$ 中的非负函数,
+$1\le p<\infty$. 此外,
+\[
+  \liminf_{k\to\infty} f_k(x)\ge f(x)\quad \text{a.e.},\qquad
+  \|f_k\|_p\to\|f\|_p.
+\]
+求证:
+\[
+  \|f_k-f\|_p\to0.
+\]
+
+\begin{solution}
+  令
+  \[
+    h_k(x)=\min\{f_k(x),f(x)\},\qquad
+    r_k(x)=f_k(x)-h_k(x)=(f_k(x)-f(x))^+.
+  \]
+  由 $\liminf f_k\ge f$ a.e. 可知 $h_k(x)\to f(x)$ a.e.
+  又 $0\le h_k\le f$, 故由控制收敛定理,
+  \[
+    \|h_k-f\|_p\to0,\qquad \|h_k\|_p^p\to\|f\|_p^p.
+  \]
+
+  因为 $f_k=h_k+r_k$ 且 $h_k,r_k\ge0$, 对 $p\ge1$ 有
+  \[
+    f_k^p=(h_k+r_k)^p\ge h_k^p+r_k^p.
+  \]
+  于是
+  \[
+    0\le \|r_k\|_p^p
+    \le \|f_k\|_p^p-\|h_k\|_p^p\longrightarrow0.
+  \]
+  所以 $\|r_k\|_p\to0$. 最后
+  \[
+    \|f_k-f\|_p
+    \le \|f_k-h_k\|_p+\|h_k-f\|_p
+    =\|r_k\|_p+\|h_k-f\|_p\to0.
+  \]
+  证毕.
+\end{solution}
+
+\end{document}

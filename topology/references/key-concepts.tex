@@ -1,0 +1,923 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
+
+\input{../../common/macros.tex}
+
+% amsthm theorem environments are not used in this document
+% (ctex pre-defines \theorem, \definition etc.)
+
+\newcommand{\starKey}{\textcolor{red!65!black}{\textbf{$\star$}}}
+\newcommand{\examKey}{\textcolor{red!65!black}{\textbf{[High-frequency exam topic]}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{Point Set Topology --- Key Concepts \& Theorems}
+\rhead{\today}
+
+\begin{center}
+  {\Large\bfseries Point Set Topology --- Key Concepts \& Theorems}\\[6pt]
+  {\large 点集拓扑重要概念与定理汇总}
+\end{center}
+\vspace{6pt}
+
+\noindent Compiled from \texttt{report.tex} (Review Outline \& Reference) and
+\texttt{all-homework-en.tex} (All Homeworks).
+\starKey{} marks high-priority exam topics; \examKey{} marks especially frequent exam topics.
+Brief Chinese translations are provided for key concepts and theorems.
+
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section{Set Theory \& Countability}
+%=====================================================================
+
+\subsection{Key Concepts}
+
+\begin{itemize}
+  \item \textbf{ZFC Axioms} (ZFC 公理系统): Extensionality, Empty Set, Pairing,
+  Union, Power Set, Separation, Replacement, Infinity, Regularity, Choice (AC).
+  \item \textbf{Russell's Paradox} (罗素悖论): Unrestricted comprehension
+  $\{x\mid P(x)\}$ leads to contradiction; ZFC avoids this via the Separation axiom.
+  \item \textbf{Countable} (可数): Finite or countably infinite;
+  $\N$, $\Z$, $\Q$, $\N\times\N$ are countable.
+  \item \textbf{Uncountable} (不可数): $\R$, $\{0,1\}^\N$, $\mathcal{P}(\N)$ are uncountable.
+  \item \textbf{Cardinality} (基数): $\aleph_0=|\N|$, $\mathfrak{c}=|\R|=|\mathcal{P}(\N)|$.
+  \item \textbf{Continuum Hypothesis --- CH} (连续统假设): No set $A$ satisfies
+  $\aleph_0<|A|<\mathfrak{c}$; independent of ZFC (G\"odel 1940, Cohen 1963).
+  \item \textbf{Algebraic numbers} (代数数): countable;
+  \textbf{Transcendental numbers} (超越数): uncountable (HW2 Q1).
+\end{itemize}
+
+\subsection{Key Theorems \& Proof Techniques}
+
+\begin{itemize}
+  \item \starKey \textbf{Cantor's diagonal argument} (Cantor 对角线论证):
+  $\{0,1\}^\N$ is uncountable.
+  Assume a countable list $x_1,x_2,\ldots$, construct $y$ with $y_i\neq x_{ii}$;
+  then $y$ is not in the list.
+  \item \textbf{Cantor's Theorem} (Cantor 定理): $|A|<|\mathcal{P}(A)|$ for any set $A$.
+  Proof: suppose $g:A\to\mathcal{P}(A)$ is surjective, consider
+  $B=\{a\in A:a\notin g(a)\}$, derive a contradiction.
+  \item Strategy for countability: construct an injection into $\N$; or write as
+  a countable union of countable (finite) sets.
+  \item Strategy for uncountability: diagonalization; or inject from a known uncountable set.
+\end{itemize}
+
+%=====================================================================
+\section{Topological Spaces \& Bases}
+%=====================================================================
+
+\subsection{Key Concepts}
+
+\begin{itemize}
+  \item \textbf{Topology} (拓扑) $\mathcal{T}\subseteq\mathcal{P}(X)$: contains
+  $\varnothing, X$; closed under arbitrary unions; closed under finite intersections.
+  \item \textbf{Open set} (开集): $U\in\mathcal{T}$;
+  \textbf{Closed set} (闭集): complement is open;
+  \textbf{Clopen set} (既开又闭集): both open and closed.
+  \item \starKey ``Open/closed'' is always relative to the topology --- never absolute!
+  \item \textbf{Discrete topology} (离散拓扑): $\mathcal{T}=\mathcal{P}(X)$.
+  \textbf{Indiscrete (trivial) topology} (平凡拓扑/密着拓扑): $\mathcal{T}=\{\varnothing,X\}$.
+  \item \textbf{Cofinite topology} (余有限拓扑):
+  $\mathcal{T}=\{\varnothing\}\cup\{X\setminus F:F\text{ finite}\}$.
+  \item \textbf{Finer / Coarser} (更细/更粗): $\mathcal{T}_1\subseteq\mathcal{T}_2$
+  means $\mathcal{T}_2$ is finer (more open sets).
+  \item \textbf{Basis} (基) $\mathcal{B}$: (1) covers $X$;
+  (2) if $x\in B_1\cap B_2$ then $\exists B_3\ni x$ with $B_3\subseteq B_1\cap B_2$.
+  Open sets = arbitrary unions of basis elements.
+  \item \textbf{Subbasis} (子基) $\mathcal{S}$: finite intersections form a basis.
+  \item \textbf{First-countable} (第一可数): each point has a countable neighborhood basis;
+  sequences suffice for topology.
+  \item \textbf{Second-countable} (第二可数): the whole space has a countable basis;
+  $\R$ has standard basis $\{(a,b):a,b\in\Q\}$ of cardinality $\aleph_0$.
+\end{itemize}
+
+\subsection{Key Theorems}
+
+\begin{itemize}
+  \item \starKey Second-countable $\Rightarrow$ first-countable. Converse false:
+  an uncountable set with discrete topology is first-countable but not second-countable.
+  \item Metrizable $\Rightarrow$ first-countable ($\{B(x,1/n)\}$ is a countable local basis).
+  \item \textbf{Intersection of topologies is a topology}; union of topologies need not be
+  (take it as a subbasis to generate the smallest containing topology).
+  \item Topologies on a finite set $\leftrightarrow$ preorders (HW3 Q3).
+  \item $\R_\ell$ (lower limit topology, basis $\{[a,b)\}$): first-countable, separable,
+  but \textbf{not} second-countable; $\R_\ell\times\R_\ell$ is not normal.
+\end{itemize}
+
+%=====================================================================
+\section{Metric Spaces}
+%=====================================================================
+
+\subsection{Key Concepts}
+
+\begin{itemize}
+  \item \textbf{Metric} (度量) $d$: non-negativity, symmetry, triangle inequality,
+  $d(x,y)=0\iff x=y$.
+  \item \textbf{Pseudometric} (伪度量): may have $d(x,y)=0$ even if $x\neq y$.
+  \item \textbf{Open ball / Closed ball} (开球/闭球): $B(x,\varepsilon)$, $\bar{B}(x,\varepsilon)$.
+  \item \textbf{Bounded set} (有界集): $\operatorname{diam}(A)<\infty$.
+  \item \textbf{Bounded metric} (有界度量): $d^*(x,y)=\min\{d(x,y),1\}$
+  induces the same topology (HW5 Q1).
+  \item \textbf{Equivalent metrics} (等价度量): induce the same topology;
+  sufficient condition: $\exists c_1,c_2>0$ such that $c_1d_1\le d_2\le c_2d_1$.
+  \item \textbf{Metrizable} (可度量化): there exists a metric $d$ with $\mathcal{T}=\mathcal{T}_d$.
+  \item Three classical metrics on $\R^n$: Euclidean ($\ell^2$), Taxicab ($\ell^1$),
+  Supremum ($\ell^\infty$); all equivalent in finite dimensions.
+\end{itemize}
+
+\subsection{Key Theorems}
+
+\begin{itemize}
+  \item \starKey Metrizable $\Rightarrow$ $T_4$ (normal), $T_2$ (Hausdorff),
+  first-countable (these are necessary conditions --- use them to disprove metrizability).
+  \item \textbf{Urysohn Metrization Theorem} (Urysohn 可度量化定理):
+  $T_3$ + second-countable $\Rightarrow$ metrizable (embed into the Hilbert cube $[0,1]^\omega$).
+  \item Compact + metrizable $\Rightarrow$ second-countable
+  (compact $\Rightarrow$ totally bounded $\Rightarrow$ separable).
+  \item \textbf{For compact spaces: metrizable $\iff$ second-countable $\iff$ separable}.
+  \item A pseudometric space is $T_0$ $\iff$ it is a metric space (HW9 Q3).
+  \item \examKey Quick reference --- metrizability of common spaces:
+  \begin{center}
+    \begin{tabular}{@{}lll@{}}
+      \hline
+      \textbf{Space} & \textbf{Metrizable?} & \textbf{Reason} \\
+      \hline
+      $\R^n$, standard topology & Yes & $d_2(x,y)=\|x-y\|$ \\
+      Discrete topology on any set & Yes & Discrete metric \\
+      Indiscrete topology ($|X|\ge2$) & No & Not Hausdorff \\
+      Cofinite topology on infinite set & No & Not Hausdorff \\
+      $\R^\omega$, product topology & Yes & $d_\omega=\sup_i d^*(x_i,y_i)/(i+1)$ \\
+      $\R^\omega$, box topology & No & Not first-countable \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{itemize}
+
+%=====================================================================
+\section{Subspace, Product \& Box Topologies}
+%=====================================================================
+
+\subsection{Key Concepts}
+
+\begin{itemize}
+  \item \textbf{Subspace topology} (子空间拓扑): $\mathcal{T}_Y=\{Y\cap U:U\in\mathcal{T}\}$.
+  Open in $Y$ $\neq$ open in $X$ --- always specify the ambient space!
+  \item \textbf{Hereditary property} (遗传性质): $X$ has it $\Rightarrow$ every subspace has it.
+  Examples: $T_0,T_1,T_2$, second-countable.
+  Compactness is \textbf{not} hereditary (only to closed subspaces).
+  \item \starKey \textbf{Product topology} (积拓扑): basis $\prod U_i$,
+  where $U_i=X_i$ for all but finitely many $i$ (only finitely many coordinates restricted).
+  \item \textbf{Box topology} (箱拓扑): basis $\prod U_i$,
+  each $U_i$ open --- every coordinate may be restricted.
+  \item \textbf{Projection map} (投影映射) $\pi_i$: continuous and open in both topologies.
+  \item \textbf{Universal property} (泛性质) --- product topology only:
+  $f:Y\to\prod X_i$ is continuous $\iff$ each coordinate $\pi_i\circ f$ is continuous.
+  \item \textbf{Eventually-zero sequences} (终零序列) $\R^\omega_{\mathrm{ez}}$:
+  sequences with only finitely many nonzero terms.
+  \item \textbf{Bounded sequences} (有界序列): $\{x:\exists C,\forall i,|x_i|\le C\}$.
+\end{itemize}
+
+\subsection{Key Comparisons \& Theorems}
+
+\begin{itemize}
+  \item \starKey For \textbf{finite} products: product topology = box topology.
+  For \textbf{infinite} products: box topology is \textbf{strictly finer}.
+  \item \examKey Product vs.\ box topology on $\R^\omega$ --- critical comparison:
+  \begin{center}
+    \begin{tabular}{@{}lcc@{}}
+      \hline
+      \textbf{Property} & \textbf{Product $\mathcal{T}_p$} & \textbf{Box $\mathcal{T}_b$} \\
+      \hline
+      Metrizable & Yes ($d_\omega$) & No (not first-countable) \\
+      Connected & Yes (path connected) & No (bounded/unbounded separation) \\
+      $\operatorname{int}(\R^\omega_{\mathrm{ez}})$ & $\varnothing$ & $\varnothing$ \\
+      $\overline{\R^\omega_{\mathrm{ez}}}$ & $\R^\omega$ (dense) & $\R^\omega_{\mathrm{ez}}$ (closed) \\
+      Universal property & Holds & Fails \\
+      \hline
+    \end{tabular}
+  \end{center}
+
+  \item Product of connected spaces is connected (in product topology).
+  \item Countable product of separable spaces is separable (HW9 Q1).
+  \item In box topology, bounded and unbounded sequences form a nontrivial separation,
+  so $(\R^\omega,\mathcal{T}_b)$ is disconnected (HW5 Q4).
+  \item \textbf{Box topology is not first-countable}: diagonal argument ---
+  suppose $\{U_n\}$ is a countable neighborhood basis of $\mathbf{0}$, each
+  $U_n$ contains $\prod_i(-\varepsilon_{n,i},\varepsilon_{n,i})$;
+  construct $V=\prod_i(-\varepsilon_{i,i}/2,\varepsilon_{i,i}/2)$;
+  then no $U_n\subseteq V$.
+\end{itemize}
+
+%=====================================================================
+\section{Closure, Interior, Boundary \& Limit Points}
+%=====================================================================
+
+\subsection{Key Concepts}
+
+\begin{itemize}
+  \item \textbf{Closure} (闭包) $\overline{A}$: smallest closed superset of $A$;
+  $x\in\overline{A}\iff$ every neighborhood of $x$ meets $A$.
+  \item \textbf{Interior} (内部) $A^\circ$: largest open subset of $A$.
+  \item \textbf{Boundary} (边界) $\partial A=\overline{A}\setminus A^\circ$;
+  $x\in\partial A\iff$ every neighborhood meets both $A$ and $X\setminus A$.
+  \item \textbf{Neighborhood} (邻域): a set containing an open set that contains $x$.
+  \item \textbf{Limit point / Accumulation point} (极限点/聚点):
+  every neighborhood of $x$ meets $A\setminus\{x\}$.
+  \item \textbf{Isolated point} (孤立点): $x\in A$ and some neighborhood contains
+  no other point of $A$.
+  \item \textbf{Derived set} (导集) $A'$ or $LP(A)$: the set of all limit points of $A$.
+  \item \textbf{Dense set} (稠密集): $\overline{A}=X$
+  (equivalently, meets every nonempty open set).
+  \item \textbf{Nowhere dense} (疏集/无处稠密): $\operatorname{int}(\overline{A})=\varnothing$.
+  Note: $\Q$ is \textbf{not} nowhere dense in $\R$ ($\overline{\Q}=\R$ has nonempty interior).
+  \item \textbf{Regularly open} (正则开集): $A=(\overline{A})^\circ$.
+\end{itemize}
+
+\subsection{Key Theorems}
+
+\begin{itemize}
+  \item \starKey $\overline{A}=A\cup LP(A)$ (closure = set $\cup$ limit points) --- HW4 Q5.
+  \item $\overline{A\cup B}=\overline{A}\cup\overline{B}$.
+  \item $A\subseteq B\Rightarrow\overline{A}\subseteq\overline{B}$;
+  $\overline{\overline{A}}=\overline{A}$ (idempotence).
+  \item $\operatorname{int}(A\cap B)=\operatorname{int}(A)\cap\operatorname{int}(B)$.
+  \item \textbf{Kuratowski closure axioms} (Kuratowski 闭包公理):
+  If $f:\mathcal{P}(X)\to\mathcal{P}(X)$ satisfies
+  $f(\varnothing)=\varnothing$, $A\subseteq f(A)$, $f(f(A))=f(A)$,
+  $f(A\cup B)=f(A)\cup f(B)$, then $f(A)=\overline{A}^{\mathcal{T}_f}$
+  defines a topology (HW4 Q2).
+  \item $(\overline{A})^\circ$ is always regularly open (HW4 Q4).
+  \item In a first-countable space, $x\in\overline{A}\iff\exists$ a sequence in $A$
+  converging to $x$.
+\end{itemize}
+
+%=====================================================================
+\section{Continuous Maps \& Homeomorphisms}
+%=====================================================================
+
+\subsection{Key Concepts}
+
+\begin{itemize}
+  \item \starKey \textbf{Continuity} (连续性) --- four equivalent definitions:
+  \begin{enumerate}
+    \item $f^{-1}(\text{open})$ is open (global continuity).
+    \item Pointwise: $\forall V\ni f(x),\exists U\ni x: f(U)\subseteq V$.
+    \item $f^{-1}(\text{closed})$ is closed.
+    \item $f(\overline{A})\subseteq\overline{f(A)}$ for all $A$.
+  \end{enumerate}
+  In metric spaces, (2) reduces to the $\varepsilon$-$\delta$ formulation.
+  \item \textbf{Homeomorphism} (同胚): continuous bijection with continuous inverse.
+  Denoted $X\cong Y$.
+  \item \textbf{Topological invariant} (拓扑不变量): property preserved by homeomorphism
+  (compactness, connectedness, Hausdorff, cardinality, etc.).
+  \item \textbf{Embedding} (嵌入): $f:X\to Y$ is a homeomorphism onto its image
+  (with subspace topology).
+  \item \textbf{Pasting Lemma} (粘接引理): $X=A\cup B$ with $A,B$ both closed (or both open),
+  $f$ continuous on each piece and agrees on $A\cap B$ $\Rightarrow$ $f$ continuous on $X$.
+  \item \textbf{Open map / Closed map} (开映射/闭映射): $f$ sends open/closed sets
+  to open/closed sets.
+\end{itemize}
+
+\subsection{Six Techniques for Proving/Disproving Homeomorphism}
+
+\begin{enumerate}
+  \item \textbf{Explicit construction} (显式构造): write down $f$ and $f^{-1}$,
+  verify both are continuous. E.g.\ $(0,1)\cong\R$ via $f(x)=\tan(\pi(x-1/2))$.
+  \item \textbf{Topological invariants} (拓扑不变量): find a property $X$ has
+  but $Y$ lacks. E.g.\ $[0,1]$ compact, $(0,1)$ not.
+  \item \starKey \textbf{Point-removal argument} (去点论证):
+  If $X\cong Y$, then $X\setminus\{p\}\cong Y\setminus\{f(p)\}$.
+  E.g.\ $\R\not\cong\R^2$ (removing a point disconnects one but not the other).
+  \item \textbf{Open/closed mapping criterion} (开/闭映射准则):
+  $f$ is a homeomorphism $\iff$ $f$ is a continuous bijection and is open (or closed).
+  \item \starKey \textbf{Compact $\to$ Hausdorff shortcut} (紧致到Hausdorff的捷径):
+  A continuous bijection from a compact space to a Hausdorff space is automatically
+  a homeomorphism --- the most-used tool!
+  Proof: $F\subseteq X$ closed $\Rightarrow$ $F$ compact $\Rightarrow$
+  $f(F)$ compact $\Rightarrow$ $f(F)$ closed, so $f$ is a closed map.
+  \item \textbf{Show a continuous bijection is NOT a homeomorphism}: find an open set
+  whose image is not open. E.g.\ $f:[0,1)\to S^1$, $f(t)=(\cos2\pi t,\sin2\pi t)$:
+  $[0,1/2)$ is open but its image is not open in $S^1$.
+\end{enumerate}
+
+\subsection{Key Theorems}
+
+\begin{itemize}
+  \item \examKey Compact + Hausdorff + continuous bijection $\Rightarrow$ homeomorphism
+  (one of the most frequently tested facts).
+  \item Composition of continuous maps is continuous; restriction of a continuous map
+  is continuous.
+  \item $f:Y\to\prod X_i$ (product topology) is continuous $\iff$
+  each $\pi_i\circ f$ is continuous (universal property).
+\end{itemize}
+
+%=====================================================================
+\section{Connectedness \& Path Connectedness}
+%=====================================================================
+
+\subsection{Key Concepts}
+
+\begin{itemize}
+  \item \textbf{Connected} (连通): no separation into two nonempty disjoint open sets;
+  equivalently, the only clopen subsets are $\varnothing$ and $X$.
+  \item \textbf{Disconnected} (不连通): there exists a \textbf{separation} (分离).
+  \item \textbf{Totally disconnected} (完全不连通): only connected subsets are
+  singletons (e.g.\ $\Q$, Cantor set).
+  \item \textbf{Connected component} (连通分支): maximal connected subset; always closed.
+  \item \textbf{Path connected} (道路连通): $\forall a,b\in X$, $\exists$ continuous
+  $\gamma:[0,1]\to X$ with $\gamma(0)=a$, $\gamma(1)=b$.
+  \item \textbf{Path component} (道路连通分支): equivalence class under
+  ``can be joined by a path''; contained in a connected component.
+  \item \textbf{Locally path connected} (局部道路连通): every point has a
+  path-connected neighborhood basis.
+  \item \starKey \textbf{Topologist's sine curve} (拓扑学家的正弦曲线):
+  $\{(x,\sin(1/x)):x\in(0,1]\}\cup(\{0\}\times[-1,1])$
+  --- connected but NOT path connected. The canonical counterexample.
+\end{itemize}
+
+\subsection{Key Theorems}
+
+\begin{itemize}
+  \item \starKey \textbf{Path connected $\Rightarrow$ connected}.
+  Converse false (see topologist's sine curve).
+  \item \starKey \textbf{Connected + locally path connected $\Rightarrow$ path connected}
+  (HW6 Q4).
+  Proof: Fix $x$, let $S_x=\{y:\exists\text{ path from }x\text{ to }y\}$.
+  Show $S_x$ is clopen and nonempty, so $S_x=X$ by connectedness.
+  \item \textbf{Continuous image of connected is connected}.
+  \item \textbf{Closure of connected is connected}.
+  \item \textbf{Union of connected sets with nonempty intersection is connected}.
+  \item \textbf{Product of connected spaces is connected} (in product topology).
+  \item \textbf{Connected subsets of $\R$ are exactly intervals}.
+  Proof: If $A$ is not an interval, $\exists a<c<b$ with $a,b\in A$, $c\notin A$;
+  then $A\cap(-\infty,c)$ and $A\cap(c,\infty)$ form a separation.
+  \item $\R^n$ is connected; $\R^n\setminus\{0\}$ is connected for $n\ge2$ (path connected).
+  \item \starKey \textbf{A connected metric space with more than one point is uncountable}
+  (HW7 Q2).
+  Proof: pick distinct $a,b$, consider $d_a(x)=d(a,x)$; its continuous image is connected
+  in $\R$, hence contains the interval $[0,d(a,b)]$, so it is uncountable.
+  \item \textbf{Every continuous $f:[0,1]\to[0,1]$ has a fixed point}
+  (1D Brouwer; HW6 Q3).
+  Proof: define $g(x)=f(x)-x$, use IVT.
+  \item Techniques to prove disconnectedness:
+  \begin{enumerate}
+    \item Construct a separation $U,V$ directly.
+    \item Find a continuous surjection $f:X\to\{0,1\}$ (discrete);
+    then $f^{-1}(0),f^{-1}(1)$ form a separation.
+    \item Find continuous $f:X\to Y$ with $f(X)$ disconnected
+    (contrapositive of ``continuous image of connected is connected'').
+  \end{enumerate}
+  \item $(0,1)$, $(0,1]$, $[0,1]$ are pairwise non-homeomorphic:
+  they have different numbers of non-cut points (0, 1, 2 respectively) --- HW6 Q2.
+\end{itemize}
+
+%=====================================================================
+\section{Compactness}
+%=====================================================================
+
+\subsection{Key Concepts}
+
+\begin{itemize}
+  \item \starKey \textbf{Compact} (紧致): every open cover has a finite subcover.
+  \item \textbf{Open cover} (开覆盖) / \textbf{Finite subcover} (有限子覆盖):
+  core definitions for all compactness proofs.
+  \item \textbf{Sequentially compact} (列紧): every sequence has a convergent subsequence
+  (equivalent to compact in metric spaces).
+  \item \textbf{Locally compact} (局部紧致): every point has a compact neighborhood.
+  \item \textbf{One-point compactification} (一点紧化): add $\infty$ to a locally compact
+  Hausdorff space to make it compact.
+  \item \textbf{Heine--Borel Theorem} (Heine--Borel 定理):
+  $A\subseteq\R^n$ is compact $\iff$ closed and bounded.
+\end{itemize}
+
+\subsection{Key Theorems --- Highest Exam Priority}
+
+\begin{itemize}
+  \item \starKey \textbf{Closed subset of compact is compact}.
+  Proof: given an open cover of $F$, add $X\setminus F$ to cover $X$; use compactness of $X$.
+
+  \item \starKey \textbf{Continuous image of compact is compact}.
+  Proof: pull back an open cover of $f(X)$ to $X$, extract finite subcover, push forward.
+
+  \item \starKey \textbf{Compact subset of a Hausdorff space is closed}.
+  Proof: fix $y\notin K$, for each $x\in K$ use Hausdorff to get disjoint
+  $U_x\ni x$, $V_x\ni y$; $\{U_x\}$ covers $K$, take finite subcover;
+  $V=\bigcap V_{x_i}$ is an open neighborhood of $y$ disjoint from $K$.
+
+  \item \starKey \textbf{Continuous bijection from compact to Hausdorff is a homeomorphism}
+  (see \S6 --- the single most-used tool in point-set topology).
+
+  \item \textbf{Tube Lemma} (管引理): $Y$ compact, if open $N$ contains the slice
+  $\{x_0\}\times Y$, then $\exists$ open $W\ni x_0$ with $W\times Y\subseteq N$.
+  Proof: for each $y$, pick $U_y\times V_y\subseteq N$; $\{V_y\}$ covers $Y$,
+  take finite subcover; set $W=\bigcap U_{y_i}$.
+
+  \item \textbf{Disjoint compact sets in a Hausdorff space can be separated by
+  disjoint open sets} (HW7 Q1).
+
+  \item \textbf{Compact + Hausdorff $\Rightarrow$ normal ($T_4$)}.
+
+  \item \textbf{Compact + Hausdorff $\Rightarrow$ regular ($T_3$)}.
+
+  \item Finite product of compact spaces is compact (Tychonoff, finite case).
+
+  \item Arbitrary product of compact spaces is compact (Tychonoff theorem, needs AC).
+
+  \item \examKey \textbf{Every subset is compact in the cofinite topology} (HW6 Q5):
+  pick any nonempty $U_0$ from the cover; its complement is finite, so only finitely many
+  more sets are needed.
+
+  \item Countable product of finite discrete spaces is compact
+  (HW8 Q2: metrizable + diagonal argument for sequential compactness).
+
+  \item $\Z_p$ ($p$-adic integers) is compact (HW8 Q3: closed subset of a product
+  of finite discrete spaces).
+
+  \item $\R^\omega$ (product topology) is \textbf{not} locally compact,
+  hence has no (Hausdorff) one-point compactification (HW8 Q5).
+
+  \item $\{0\}\cup\{1/n:n\in\N^+\}\cong$ one-point compactification of $\N^+$ (HW8 Q4).
+
+  \item $\Q$ is not locally compact (HW8 Q1).
+
+  \item Equivalent formulation: \textbf{Finite Intersection Property (FIP)} (有限交性质)
+  --- in a compact space, any family of closed sets with the FIP has nonempty total intersection.
+\end{itemize}
+
+%=====================================================================
+\section{Separation Axioms}
+%=====================================================================
+
+\subsection{The Hierarchy (层级关系)}
+
+\begin{center}
+  $
+  T_4\;(\text{normal})\ \Longrightarrow\ T_{3\frac12}\;(\text{Tychonoff})\ \Longrightarrow\
+  T_3\;(\text{regular})\ \Longrightarrow\ T_2\;(\text{Hausdorff})\ \Longrightarrow\
+  T_1\;(\text{Fr\'echet})\ \Longrightarrow\ T_0\;(\text{Kolmogorov})
+  $
+\end{center}
+
+Under this reference's convention, $T_3$ and $T_4$ include $T_1$;
+none of the reverse implications holds in general.
+
+\subsection{Detailed Breakdown}
+
+\begin{itemize}
+  \item \textbf{$T_0$ (Kolmogorov)} (Kolmogorov 空间):
+  distinct points are topologically distinguishable (some open set contains exactly one of them).
+  Example: Sierpi\'nski space $\{0,1\}$ with topology
+  $\{\varnothing,\{1\},\{0,1\}\}$ is $T_0$ but not $T_1$.
+
+  \item \starKey \textbf{$T_1$ (Fr\'echet)} (Fr\'echet 空间):
+  singletons are closed (equivalently: two distinct points can be separated one-sidedly).
+  Example: cofinite topology on an infinite set is $T_1$ but not $T_2$.
+  Properties: hereditary, preserved by products.
+
+  \item \starKey \textbf{$T_2$ (Hausdorff)} (Hausdorff 空间):
+  distinct points have disjoint open neighborhoods.
+  Consequences: (1) limits are unique; (2) compact subsets are closed;
+  (3) the diagonal $\Delta$ is closed in $X\times X$.
+  Properties: hereditary, preserved by products.
+  Example: any metric space, $\R^n$.
+  Non-example: cofinite topology on an infinite set.
+
+  \item \textbf{$T_3$ (Regular)} (正则空间):
+  $T_1$ + a point and a disjoint closed set can be separated by disjoint open sets.
+  Equivalent: each point has a neighborhood basis of \emph{closed} neighborhoods.
+  Properties: hereditary, preserved by products; compact + Hausdorff $\Rightarrow$ regular.
+
+  \item \textbf{$T_{3\frac12}$ (Tychonoff / Completely regular)} (完全正则空间):
+  $T_1$ + a point and a disjoint closed set can be separated by a continuous function
+  $f:X\to[0,1]$.
+  Strictly between $T_3$ and $T_4$; $T_4\Rightarrow T_{3\frac12}\Rightarrow T_3$.
+
+  \item \starKey \textbf{$T_4$ (Normal)} (正规空间):
+  $T_1$ + disjoint closed sets can be separated by disjoint open sets.
+  \textbf{Crucial:} normality is \textbf{NOT hereditary} (subspaces may fail);
+  \textbf{NOT preserved by products} (Sorgenfrey plane $\R_\ell\times\R_\ell$ is not normal).
+  Sufficient conditions: compact + Hausdorff $\Rightarrow$ normal; metrizable $\Rightarrow$ normal.
+\end{itemize}
+
+\subsection{Core Theorems}
+
+\begin{itemize}
+  \item \starKey \textbf{Urysohn's Lemma} (Urysohn 引理):
+  $X$ is normal $\iff$ for any disjoint closed $A,B$, there exists continuous
+  $f:X\to[0,1]$ with $f(A)=\{0\}$, $f(B)=\{1\}$.
+  Proof sketch: construct open sets $U_r$ indexed by dyadic rationals $r$,
+  with $\overline{U_r}\subseteq U_s$ for $r<s$; define $f(x)=\inf\{r:x\in U_r\}$.
+
+  \item \textbf{Tietze Extension Theorem} (Tietze 扩张定理):
+  $X$ is normal $\iff$ every continuous real-valued function on a closed subset
+  extends continuously to $X$.
+
+  \item \textbf{Jones' Lemma} (Jones 引理):
+  If a normal space contains a dense set $D$ and a closed discrete set $S$
+  with $|S|\ge 2^{|D|}$, then the space is not normal.
+
+  \item \starKey In a $T_3$ space, distinct points can be separated by open sets
+  with disjoint closures (HW9 Q4(i)).
+
+  \item In a $T_4$ space, disjoint closed sets can be separated by open sets
+  with disjoint closures (HW9 Q4(ii)).
+
+  \item \textbf{Locally compact + Hausdorff $\Rightarrow$ $T_3$ (regular)} --- HW9 Q5.
+\end{itemize}
+
+%=====================================================================
+\section{Countability Axioms \& Metrizability}
+%=====================================================================
+
+\subsection{Key Concepts}
+
+\begin{itemize}
+  \item \textbf{Separable} (可分): has a countable dense subset.
+  Second-countable $\Rightarrow$ separable; converse false in general (true if metrizable).
+  \item \textbf{Lindel\"of}: every open cover has a countable subcover.
+  Second-countable $\Rightarrow$ Lindel\"of.
+\end{itemize}
+
+\subsection{Key Theorems}
+
+\begin{itemize}
+  \item \starKey \textbf{In metric spaces, three properties are equivalent} (HW9 Q2):
+  \[
+    \text{second-countable}\ \iff\ \text{Lindel\"of}\ \iff\ \text{separable}.
+  \]
+  Proof outline:
+  \begin{itemize}
+    \item (i)$\Rightarrow$(ii): countable basis + open cover $\to$
+    pick one covering set per basis element.
+    \item (ii)$\Rightarrow$(i): for each $n$, $\{B(x,1/n)\}$ is an open cover;
+    Lindel\"of gives a countable subcover; union over $n$ yields a countable basis.
+    \item (i)$\Rightarrow$(iii): pick one point from each nonempty basis element.
+    \item (iii)$\Rightarrow$(i): $\{B(a,1/n):a\in D,\ n\in\N\}$ is a countable basis.
+  \end{itemize}
+
+  \item \textbf{Urysohn Metrization Theorem} (Urysohn 可度量化定理):
+  $T_3$ + second-countable $\Rightarrow$ metrizable.
+
+  \item For \textbf{compact} spaces: metrizable $\iff$ second-countable $\iff$ separable.
+
+  \item Countable product of separable spaces (product topology) is separable (HW9 Q1).
+\end{itemize}
+
+%=====================================================================
+\section{Baire Category Theorem}
+%=====================================================================
+
+\subsection{Key Concepts}
+
+\begin{itemize}
+  \item \textbf{Nowhere dense} (疏集/无处稠密): $\operatorname{int}(\overline{A})=\varnothing$.
+  Warning: $\Q$ is \textbf{not} nowhere dense in $\R$ (it's the \emph{closure} that matters:
+  $\overline{\Q}=\R$ has nonempty interior).
+  \item \textbf{Meager / First category} (第一纲集): countable union of nowhere dense sets.
+  \item \textbf{Second category} (第二纲集): not meager.
+  \item \textbf{Baire space} (Baire 空间): countable intersection of dense open sets is dense
+  (equivalently: countable union of closed nowhere dense sets has empty interior).
+\end{itemize}
+
+\subsection{Core Theorems}
+
+\begin{itemize}
+  \item \starKey \textbf{Baire Category Theorem} (Baire 纲定理) --- two versions:
+  \begin{enumerate}
+    \item Every \textbf{complete metric space} is a Baire space.
+    \item Every \textbf{locally compact Hausdorff space} is a Baire space.
+  \end{enumerate}
+
+  \item \textbf{Special case in compact Hausdorff spaces} (HW7 Q3):
+  If $\{A_i\}$ are closed sets with empty interior, then
+  $\bigl(\bigcup A_i\bigr)^\circ=\varnothing$.
+  Proof: suppose nonempty open $U\subseteq\bigcup A_i$; inductively construct nested
+  compact sets avoiding each $A_i$; use FIP to get a contradiction.
+
+  \item \textbf{Cantor set} (Cantor 集) (HW7 Q4):
+  compact, totally disconnected, no isolated points, uncountable.
+
+  \item Classical applications of Baire:
+  \begin{itemize}
+    \item $\R$ is uncountable (otherwise $\R$ would be a countable union of
+    nowhere dense singletons, contradicting Baire).
+    \item $\Q$ is not a $G_\delta$ set in $\R$.
+    \item ``Most'' continuous functions on $[0,1]$ are nowhere differentiable.
+  \end{itemize}
+\end{itemize}
+
+%=====================================================================
+\section{Classic Counterexamples (经典反例)}
+%=====================================================================
+
+This section collects the counterexamples that appear repeatedly in the course.
+Each one illustrates a specific failure of one property to imply another, or a
+boundary case where a theorem's hypotheses cannot be weakened.
+
+\subsection{Connectedness vs.\ Path Connectedness}
+
+\begin{itemize}
+  \item \starKey \textbf{Topologist's sine curve} (拓扑学家的正弦曲线):
+  \[
+    X = \underbrace{\{(x,\sin(1/x)) : x\in(0,1]\}}_{A}\ \cup\
+        \underbrace{\{0\}\times[-1,1]}_{B}
+  \]
+  \begin{itemize}
+    \item $A$ is connected (continuous image of $(0,1]$).
+    \item $X=\overline{A}$ is connected (closure of connected).
+    \item \textbf{Not path connected}: no continuous path can go from a point in $B$
+    to a point in $A$, because $\sin(1/x)$ oscillates infinitely as $x\to0^+$.
+    \item \textbf{Illustrates}: connected $\nRightarrow$ path connected.
+    Also: closure and limit points of a graph (HW4 Q1: $A^\circ=\varnothing$,
+    $\overline{A}=A\cup B$, $LP(A)=A\cup B$).
+  \end{itemize}
+\end{itemize}
+
+\subsection{Separation Axioms}
+
+\begin{itemize}
+  \item \textbf{Sierpi\'nski space} ($\{0,1\}$, $\mathcal{T}=\{\varnothing,\{1\},\{0,1\}\}$):
+  \textbf{$T_0$ but not $T_1$} (singleton $\{0\}$ is not closed).
+  The simplest space distinguishing $T_0$ from $T_1$.
+
+  \item \starKey \textbf{Cofinite topology on an infinite set} (无限集上的余有限拓扑):
+  \textbf{$T_1$ but not $T_2$ (Hausdorff)}.
+  \begin{itemize}
+    \item Every singleton is closed (complement is cofinite), so $T_1$.
+    \item Any two nonempty open sets intersect (their complements are finite,
+    so the complements' union is finite, hence not the whole space).
+    Therefore no two points can be separated by disjoint open sets.
+  \end{itemize}
+
+  \item \starKey \textbf{Sorgenfrey line $\R_\ell$} (下限拓扑, basis $\{[a,b)\}$):
+  \begin{itemize}
+    \item \textbf{$T_3$ (regular)}, first-countable, separable.
+    \item \textbf{Not second-countable}: any basis must contain uncountably many sets
+    (for each $x$, any basis element containing $x$ must have $x$ as its left endpoint).
+    \item \textbf{Illustrates}: separable + first-countable $\nRightarrow$ second-countable.
+  \end{itemize}
+
+  \item \starKey \textbf{Sorgenfrey plane $\R_\ell\times\R_\ell$}:
+  \textbf{Not $T_4$ (normal)}.
+  \begin{itemize}
+    \item Each factor $\R_\ell$ is $T_3$ (regular), but the product is not normal.
+    \item \textbf{Illustrates}: $T_4$ (normality) is \textbf{not preserved by products};
+    $T_3\times T_3$ need not be $T_4$.
+  \end{itemize}
+\end{itemize}
+
+\subsection{Countability Axioms \& Metrizability}
+
+\begin{itemize}
+  \item \textbf{Discrete topology on an uncountable set}:
+  \textbf{First-countable} (each $\{x\}$ is a neighborhood basis) but
+  \textbf{not second-countable} (would need uncountably many singletons as basis elements).
+  \textbf{Illustrates}: first-countable $\nRightarrow$ second-countable.
+
+  \item \textbf{Cocountable topology on an uncountable set} (不可数集上的余可数拓扑):
+  $\mathcal{T}=\{\varnothing\}\cup\{X\setminus C:C\text{ countable}\}$.
+  \textbf{Not first-countable} (no point has a countable neighborhood basis).
+  Hence also not second-countable, not metrizable.
+
+  \item \starKey \textbf{Box topology on $\R^\omega$}:
+  \textbf{Not first-countable} (diagonal argument at $\mathbf{0}$), hence
+  \textbf{not metrizable}. Also \textbf{disconnected} (bounded/unbounded separation).
+
+  \item \textbf{$\R^\omega$ in the product topology}:
+  \textbf{Metrizable} and \textbf{path connected}, but \textbf{not locally compact}.
+  \textbf{Illustrates}: metrizable $\nRightarrow$ locally compact.
+
+  \item \textbf{$\R_\ell$ (Sorgenfrey line)}: $T_3$, separable, first-countable, but
+  \textbf{not metrizable} (since not second-countable).
+  \textbf{Illustrates}: $T_3$ + separable $\nRightarrow$ metrizable;
+  the second-countable hypothesis in Urysohn's metrization theorem is essential.
+
+  \item \textbf{Indiscrete (trivial) topology on $|X|\ge2$}:
+  \textbf{Not $T_0$}, hence not $T_1$, not $T_2$, \textbf{not metrizable}.
+
+  \item \textbf{Radially open topology on $\R^2$} (径向开集拓扑, HW3 Q5):
+  $\mathcal{T}_{\mathrm{std}}\subsetneq\mathcal{T}_{\mathrm{ro}}$.
+  \textbf{Strictly finer} than the standard topology; contains sets like a
+  ``cross'' through the origin that is not open in the standard topology.
+\end{itemize}
+
+\subsection{Compactness}
+
+\begin{itemize}
+  \item \starKey \textbf{$(0,1)$, $\R$, $\R^n$}: \textbf{Not compact} (standard topology).
+  $[0,1]$ is compact (Heine--Borel); $(0,1)$ is not
+  (cover by $(1/n,\,1-1/n)$ has no finite subcover).
+
+  \item \starKey \textbf{Cofinite topology on any set}: \textbf{Every subset is compact}
+  (HW6 Q5). In particular, an infinite set with the cofinite topology is compact
+  but not Hausdorff. \textbf{Illustrates}: compact $\nRightarrow$ Hausdorff;
+  the hypothesis ``Hausdorff'' in ``compact $\Rightarrow$ closed'' is essential.
+
+  \item \textbf{$\R^\omega$ (product topology)}: \textbf{Not locally compact}
+  (any basic neighborhood has a free coordinate projecting onto $\R$, which is not compact).
+  Hence has no (Hausdorff) one-point compactification (HW8 Q5).
+
+  \item \textbf{$\Q$ with subspace topology}: \textbf{Not locally compact}.
+  Any compact subset of $\Q$ has empty interior (otherwise it would contain an interval
+  of rationals whose closure in $\R$ contains irrationals).
+
+  \item \textbf{Any infinite set with the discrete topology}:
+  Closed and bounded in the discrete metric ($\operatorname{diam}=1$), but
+  \textbf{not compact} (cover by singletons has no finite subcover).
+  \textbf{Illustrates}: Heine--Borel fails outside $\R^n$; ``closed and bounded''
+  depends on the metric.
+\end{itemize}
+
+\subsection{Homeomorphisms \& Continuous Maps}
+
+\begin{itemize}
+  \item \starKey $f:[0,1)\to S^1$, $f(t)=(\cos2\pi t,\sin2\pi t)$:
+  \textbf{Continuous bijection but NOT a homeomorphism} (HW4 Q3).
+  $S^1$ is compact, $[0,1)$ is not; or: $f([0,1/2))$ is not open in $S^1$.
+  \textbf{Illustrates}: continuous bijection $\nRightarrow$ homeomorphism;
+  the compact-to-Hausdorff shortcut is powerful because it handles exactly this gap.
+
+  \item \textbf{$(0,1)\not\cong(0,1]\not\cong[0,1]$} (HW6 Q2):
+  Different numbers of non-cut points (0, 1, 2).
+  \textbf{Illustrates}: point-removal argument for disproving homeomorphism.
+
+  \item \textbf{$\R\not\cong\R^2$}: $\R\setminus\{p\}$ is disconnected;
+  $\R^2\setminus\{p\}$ is connected.
+  \textbf{Illustrates}: point-removal + connectedness as a topological invariant.
+
+  \item \textbf{$(0,\infty)\not\cong(0,1]$}: removing any point from $(0,\infty)$
+  disconnects it; removing $\{1\}$ from $(0,1]$ leaves $(0,1)$, which is connected.
+\end{itemize}
+
+\subsection{Closure, Density \& Product/Box Topology}
+
+\begin{itemize}
+  \item \starKey \textbf{Eventually-zero sequences $\R^\omega_{\mathrm{ez}}$} (终零序列):
+  \begin{itemize}
+    \item In \textbf{product topology}: $\operatorname{int}=\varnothing$,
+    $\overline{\R^\omega_{\mathrm{ez}}}=\R^\omega$ (dense).
+    \item In \textbf{box topology}: $\operatorname{int}=\varnothing$,
+    $\overline{\R^\omega_{\mathrm{ez}}}=\R^\omega_{\mathrm{ez}}$ (closed).
+  \end{itemize}
+  \textbf{Illustrates}: closure depends on topology; product vs.\ box topology
+  give dramatically different closures for the same set (HW5 Q2).
+
+  \item \textbf{Bounded vs.\ unbounded sequences in box topology} (HW5 Q4):
+  Both sets are \textbf{open} in $\mathcal{T}_b$, forming a nontrivial separation.
+  \textbf{Illustrates}: $(\R^\omega,\mathcal{T}_b)$ is disconnected;
+  box topology is ``too fine'' to be connected.
+
+  \item \textbf{Interior of $\Q$ in $\R$}: $\Q^\circ=\varnothing$,
+  but $\overline{\Q}=\R$ (dense).
+  \textbf{Illustrates}: a set can be dense yet have empty interior;
+  $\Q$ is \textbf{not} nowhere dense (the closure has nonempty interior).
+
+  \item \textbf{Nowhere dense vs.\ meager}:
+  \begin{itemize}
+    \item $\Z$ in $\R$: closed, empty interior $\Rightarrow$ nowhere dense.
+    \item $\{1/n:n\in\N^+\}$ in $\R$: closure adds $\{0\}$, still has empty interior
+    $\Rightarrow$ nowhere dense.
+    \item $\Q$ in $\R$: \textbf{not} nowhere dense ($\overline{\Q}=\R$),
+    but \textbf{is} meager ($\Q=\bigcup_{q\in\Q}\{q\}$, countable union of nowhere dense singletons).
+  \end{itemize}
+  \textbf{Illustrates}: nowhere dense $\neq$ meager;
+  meager sets can be dense (and large in that sense).
+
+  \item \textbf{Cantor set $C$} (Cantor 集, HW7 Q4):
+  Compact, totally disconnected, no isolated points, uncountable, nowhere dense,
+  Lebesgue measure zero.
+  \textbf{Illustrates}: a set can be uncountable yet nowhere dense and measure zero;
+  a compact metric space can be totally disconnected yet have no isolated points.
+\end{itemize}
+
+\subsection{Metrizability --- Necessary Conditions at a Glance}
+
+\begin{center}
+  \begin{tabular}{@{}llll@{}}
+    \hline
+    \textbf{Space} & \textbf{Not metrizable because\ldots} & \textbf{Fails} \\
+    \hline
+    Indiscrete topology ($|X|\ge2$) & not Hausdorff & $T_2$ \\
+    Cofinite topology on infinite set & not Hausdorff & $T_2$ \\
+    $\R^\omega$, box topology & not first-countable & first-countable \\
+    $\R_\ell$ (Sorgenfrey line) & not second-countable\phantom{X} & (Urysohn needs $2$nd-ctble) \\
+    Cocountable topology (uncountable) & not first-countable & first-countable \\
+    Sorgenfrey plane & not normal & $T_4$ \\
+    \hline
+  \end{tabular}
+\end{center}
+
+%=====================================================================
+\section{Proof Techniques Summary}
+%=====================================================================
+
+\begin{enumerate}
+  \item \textbf{Double inclusion} (双向包含): prove $A=B$.
+  E.g.\ $\overline{A}=A\cup LP(A)$, topology equality $\mathcal{T}_1=\mathcal{T}_2$.
+
+  \item \textbf{Contrapositive} (逆否命题): $P\Rightarrow Q$ proved as $\neg Q\Rightarrow\neg P$.
+  E.g.\ continuous image preserves connectedness.
+
+  \item \textbf{Contradiction} (反证法): assume $\neg$ conclusion, derive contradiction.
+  E.g.\ Cantor's theorem.
+
+  \item \textbf{Case analysis} (情形分析): split into exhaustive cases.
+  E.g.\ triangle inequality for $d^*$ ($a\ge1$ or $b\ge1$ vs.\ both $<1$).
+
+  \item \textbf{Sequence construction} (序列构造): build sequences to show
+  $x\in\overline{A}$ or $x\in LP(A)$. E.g.\ closure of topologist's sine curve.
+
+  \item \starKey \textbf{Free coordinates} (自由坐标): in product topology, unrestricted
+  coordinates allow counterexample construction.
+  E.g.\ $\R^\omega_{\mathrm{ez}}$ has empty interior.
+
+  \item \textbf{Box neighborhood trick} (箱邻域技巧):
+  $\prod_i(x_i-\varepsilon_i,x_i+\varepsilon_i)$ controls every coordinate.
+  E.g.\ bounded sequences form an open set in box topology.
+
+  \item \textbf{Continuous function to a discrete space}: prove disconnectedness.
+  E.g.\ $X=\{(x,0)\}\cup\{(x,1/x)\}$, define $f(x,y)=xy$; $f(X)=\{0,1\}$.
+
+  \item \starKey \textbf{Topological invariant argument} (拓扑不变量论证):
+  prove $X\not\cong Y$. E.g.\ $[0,1)\not\cong S^1$ (compactness).
+
+  \item \starKey \textbf{Clopen set argument} (Clopen集论证): in a connected space,
+  define $S=\{x:\text{property holds at }x\}$, show $S$ is clopen and nonempty,
+  then $S=X$. E.g.\ connected + locally path connected $\Rightarrow$ path connected.
+
+  \item \textbf{IVT / fixed point} (介值定理/不动点): define $g(x)=f(x)-x$,
+  check signs at endpoints, apply IVT. E.g.\ 1D Brouwer.
+
+  \item \textbf{Ball comparison} (球比较法): show each $d_1$-ball contains a $d_2$-ball
+  and vice versa to prove $\mathcal{T}_{d_1}=\mathcal{T}_{d_2}$.
+  E.g.\ $d^*$ induces the same topology as $d$.
+
+  \item \textbf{Monotonicity from additivity} (加法推出单调性):
+  $A\subseteq B\Rightarrow f(A)\subseteq f(B)$ from $f(A\cup B)=f(A)\cup f(B)$.
+  E.g.\ Kuratowski closure axioms.
+
+  \item \textbf{Characteristic function} (特征函数): encode subsets as functions
+  $A\to\{0,1\}$; set operations become pointwise arithmetic.
+  E.g.\ $\mathcal{P}(A)\cong 2^A$ (HW1 Q1).
+
+  \item \textbf{Countable union argument} (可数并论证):
+  $S=\bigcup_{n=1}^\infty S_n$ with each $S_n$ countable (or finite) $\Rightarrow$
+  $S$ countable. E.g.\ algebraic numbers, eventually-zero sequences.
+
+  \item \textbf{Well-definedness} (良定义性): when defining a function on equivalence classes,
+  verify independence from the choice of representative.
+  E.g.\ quotient metric from pseudometric (HW2 Q3).
+
+  \item \textbf{Axiom verification checklist} (公理验证清单): systematically verify
+  each axiom --- topology (3), metric (3), equivalence relation (3), group (4).
+
+  \item \textbf{Subbasis method} (子基方法): the smallest topology/equivalence relation
+  containing a family = the intersection of all topologies/relations containing it.
+
+  \item \textbf{Minimal counterexample} (最小反例): ``Can one always\ldots'' questions
+  are often resolved by the smallest nontrivial example.
+  E.g.\ $\mathcal{T}_1\cup\mathcal{T}_2$ not a topology ($|S|=3$; HW3 Q4).
+
+  \item \textbf{Finite subcover + finiteness} (有限子覆盖 + 有限性): after extracting
+  a finite subcover from a compact space, use finiteness (e.g.\ the minimum of finitely
+  many positive numbers is still positive).
+
+  \item \textbf{Preimage arguments} (原像论证): $f^{-1}$ commutes with union, intersection,
+  and complement (no continuity needed!).
+\end{enumerate}
+
+%=====================================================================
+\section{Exam Priority}
+%=====================================================================
+
+\noindent The following priority order is suggested in \texttt{report.tex} (highest to lowest):
+
+\begin{center}
+  \textbf{Compactness $>$ Separation Axioms $>$ Urysohn Lemma / Metrization $>$
+  Subspace \& Product Topologies $>$ Connectedness \& Path Connectedness $>$
+  Closure / Interior / Continuity $>$ Set Theory \& Countability}
+\end{center}
+
+The final exam is described as mainly variations of homework, midterm, handout,
+and in-class problems: typically about 5 questions, mostly familiar types plus
+possibly one transfer problem.
+The target standard is \textbf{being able to write each proof independently},
+not merely recognizing a solution.
+
+\end{document}

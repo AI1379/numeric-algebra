@@ -1,0 +1,1116 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Arg}{Arg}
+
+\newcommand{\sourceHandout}{\texttt{complex\_analysis/handouts/bookComplexAnalysisHandout-2026-06-22.pdf}}
+\newcommand{\keyFile}[1]{\texttt{#1}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{Complex Analysis --- Chapter Summary}
+\rhead{\today}
+
+\begin{center}
+  {\Large\bfseries 复变函数按章复习整理}\\[6pt]
+  {\large 主要内容、重要定理与典型题目分析}
+\end{center}
+\vspace{6pt}
+
+\noindent
+依据最新版整本 handout：\sourceHandout。
+本文档按讲义 5 章结构组织，并补充每章常见题型和解题路线。
+
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section*{说明}
+\addcontentsline{toc}{section}{说明}
+%=====================================================================
+
+依据：\sourceHandout，即目前 \keyFile{handouts} 目录中日期最新的复变函数整本 handout。
+
+已有类似文件：
+
+\begin{itemize}
+\item
+  \texttt{complex\_analysis/handouts/key-points.md}：已有一份中文知识点提纲，但主要按旧的分章
+  handout 整理，缺少典型题目分析，也未完整覆盖最新版整本 handout 中第 4
+  章后半的留数、Mobius 变换和第 5
+  章的辐角原理、Rouche、Hurwitz、拓扑次数。
+\item
+  \texttt{complex\_analysis/review/main.tex} 及同目录若干
+  \texttt{ch*.tex}：已有 LaTeX
+  版定理/定义复习笔记，但覆盖面偏向前半课程，也不是按最新版整本 handout
+  的 5 章结构组织。
+\end{itemize}
+
+%=====================================================================
+\section{第 1 章：复数与基本函数 (Complex Numbers)}
+%=====================================================================
+
+\subsection{主要内容}
+
+本章从数系扩张讲起：自然数、整数、有理数、实数，再到复数域
+$\C$。真正需要掌握的是复数域的代数结构、复数列与级数、幂级数收敛半径，以及指数、三角、对数、幂函数等基本复函数。
+
+重点主线如下：
+
+\begin{itemize}
+\item
+  $\C=\R\times\R$，乘法定义为 \[
+  (x+iy)(u+iv)=(xu-yv)+i(xv+yu).
+  \]
+\item
+  共轭、模、实部虚部的关系： \[
+  \bar z=x-iy,\quad |z|^2=z\bar z,\quad
+  \operatorname{Re} z=\frac{z+\bar z}{2},\quad
+  \operatorname{Im} z=\frac{z-\bar z}{2i}.
+  \]
+\item
+  复数列收敛等价于实部、虚部分别收敛。
+\item
+  函数项级数的正常收敛推出绝对收敛和局部一致收敛。
+\item
+  幂级数有收敛半径，圆内正常收敛，圆外发散。
+\item
+  指数函数由幂级数定义，满足加法公式和 $2\pi i$ 周期性。
+\item
+  复对数是多值的，单值分支必须在割平面上选取。
+\item
+  复数乘法对应平面相似变换：缩放 $|a|$ 加旋转
+  $\arg a$。
+\end{itemize}
+
+\subsection{重要定理和结论}
+
+\begin{itemize}
+\item
+  $\C$ 不是有序域：因为有序域中平方非负，但 $i^2=-1$。
+\item
+  三角不等式与反三角不等式： \[
+  |z+w|\le |z|+|w|,\qquad ||z|-|w||\le |z-w|.
+  \]
+\item
+  Weierstrass M-test：正常收敛推出绝对收敛和局部一致收敛。
+\item
+  Abel 定理：幂级数存在唯一收敛半径。
+\item
+  Cauchy-Hadamard 公式： \[
+  R=\frac{1}{\limsup_{n\to\infty}|a_n|^{1/n}}.
+  \]
+\item
+  指数函数： \[
+  e^{z+w}=e^z e^w,\qquad e^z\ne 0,\qquad e^{z+2\pi i}=e^z.
+  \]
+\item
+  Euler 公式： \[
+  e^{iy}=\cos y+i\sin y.
+  \]
+\item
+  主值对数： \[
+  \Log z=\log|z|+i\Arg z
+  \] 只能在选定割线后的区域中连续解析。
+\item
+  幂函数一般通过对数分支定义： \[
+  z^\alpha=\exp(\alpha \Log z).
+  \]
+\end{itemize}
+
+\subsection{典型题目分析}
+
+题型 1：求幂级数收敛半径。
+
+常见题面：求 \[
+\sum_{n=1}^{\infty}a_n z^n
+\] 的收敛半径，其中 $a_n$ 可能包含
+$n!$、$n^n$、$\log n$ 或组合式。
+
+分析方法：
+
+\begin{itemize}
+\item
+  首先尝试比值法： \[
+  R=\lim_{n\to\infty}\left|\frac{a_n}{a_{n+1}}\right|
+  \] 前提是极限存在。
+\item
+  比值法不好用时，用 Cauchy-Hadamard： \[
+  \frac1R=\limsup |a_n|^{1/n}.
+  \]
+\item
+  遇到阶乘，通常使用 Stirling 公式 \[
+  n!\sim \sqrt{2\pi n}\left(\frac ne\right)^n.
+  \]
+\end{itemize}
+
+典型结论：
+
+\begin{itemize}
+\item
+  $a_n=(\log n)^2$
+  时，$|a_n|^{1/n}\to 1$，所以
+  $R=1$。
+\item
+  $a_n=n!$
+  时，$|a_n|^{1/n}\to\infty$，所以
+  $R=0$。
+\item
+  $a_n=1/n!$ 时，$R=\infty$。
+\end{itemize}
+
+题型 2：解复指数、复对数和复幂方程。
+
+常见题面：求解 $e^z=w$、$z^n=a$、$i^i$
+或判断 $\Log$ 是否可定义。
+
+分析方法：
+
+\begin{itemize}
+\item
+  若 \(w=re^{i\theta}\ne 0\)，则
+  \[
+  e^z=w \Longleftrightarrow z=\log r+i(\theta+2k\pi),\quad k\in Z.
+  \]
+\item
+  若求主值，只取 $\Arg$ 所在区间内的角。
+\item
+  若涉及 \(z^\alpha\)，必须先说明使用哪个对数分支。
+\end{itemize}
+
+易错点：
+
+\begin{itemize}
+\item
+  \(\log z\) 不是全局单值函数。
+\item
+  \(\Log(zw)=\Log z+\Log w\) 不总成立，因为主值辐角可能跳过割线。
+\item
+  在 \(\mathbb C^*\) 上不能定义全局连续单值对数。
+\end{itemize}
+
+题型 3：判断复数列或函数项级数收敛。
+
+分析方法：
+
+\begin{itemize}
+\item
+  复数列 $z_n$ 收敛等价于 $\Re z_n$ 和 $\Im z_n$
+  分别收敛。
+\item
+  函数项级数先找一个与点无关的上界 $M_n$，再验证
+  $\sum M_n$ 收敛。
+\item
+  若能证明正常收敛，就自动得到局部一致收敛，后续可用于逐项求导和逐项积分。
+\end{itemize}
+
+%=====================================================================
+\section{第 2 章：复微分 (Complex Differentiation)}
+%=====================================================================
+
+\subsection{主要内容}
+
+本章的核心是复可微、解析函数、Cauchy-Riemann
+方程、共形映射和调和函数。复可微的强度远高于实可微：差商极限必须与趋近方向无关，这正是
+Cauchy-Riemann 方程出现的原因。
+
+重点主线如下：
+
+\begin{itemize}
+\item
+  复导数定义： \[
+  f'(a)=\lim_{z\to a}\frac{f(z)-f(a)}{z-a}.
+  \]
+\item
+  解析函数：在开集上处处复可微。
+\item
+  若 $f=u+iv$ 实可微，则复可微等价于 Cauchy-Riemann 方程： \[
+  u_x=v_y,\qquad u_y=-v_x.
+  \]
+\item
+  解析且 $f'(z_0)\ne 0$ 意味着局部共形。
+\item
+  解析函数的实部和虚部都是调和函数。
+\item
+  在单连通区域上，调和函数存在全局调和共轭。
+\end{itemize}
+
+\subsection{重要定理和结论}
+
+\begin{itemize}
+\item
+  复可微推出连续。
+\item
+  复导数满足四则运算、链式法则。
+\item
+  常用导数： \[
+  (e^z)'=e^z,\quad (\sin z)'=\cos z,\quad (\cos z)'=-\sin z,\quad (\Log z)'=\frac1z.
+  \]
+\item
+  Cauchy-Riemann 定理：在实可微前提下，复可微等价于 \[
+  u_x=v_y,\qquad u_y=-v_x.
+  \]
+\item
+  Jacobian 的复线性形式： \[
+  J_f=
+  \begin{pmatrix}
+  u_x&u_y\\
+  v_x&v_y
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+  a&-b\\
+  b&a
+  \end{pmatrix}.
+  \]
+\item
+  若 $f$ 解析，则 \[
+  \det J_f=|f'(z)|^2.
+  \]
+\item
+  共形判别：$f$ 在 $z_0$ 解析且 $f'(z_0)\ne 0$，则在
+  $z_0$ 局部保持角度和方向。
+\item
+  若 $f=u+iv$ 解析，则 \[
+  \Delta u=0,\qquad \Delta v=0.
+  \]
+\item
+  区域上若解析函数的实部、虚部或模为常数，则函数为常数。
+\end{itemize}
+
+\subsection{典型题目分析}
+
+题型 1：判断函数是否复可微或解析。
+
+常见题面：判断
+ \(f(z)=\bar z\)、\(f(z)=|z|^2\)、\(f(z)=x^2-y^2+2ixy\)
+是否解析，并求导数。
+
+分析方法：
+
+\begin{itemize}
+\item
+  写成 $f=u+iv$。
+\item
+  检查 $u_x=v_y$ 和 $u_y=-v_x$。
+\item
+  注意 Cauchy-Riemann
+  方程只在一点成立通常只能说明该点可能复可微，还需要实可微或偏导连续等条件。
+\end{itemize}
+
+典型结论：
+
+\begin{itemize}
+\item
+  \(f(z)=\bar z\)：\(u=x,v=-y\)，有
+  \(u_x=1\)、\(v_y=-1\)，不满足 C-R，处处不可复可微。
+\item
+  \(f(z)=|z|^2=x^2+y^2\)：只在
+  \(0\) 处复可微，但不在任何邻域解析。
+\item
+  \(f(z)=z^2=x^2-y^2+2ixy\)：满足 C-R，且
+  \(f'(z)=2z\)。
+\end{itemize}
+
+题型 2：求调和共轭。
+
+常见题面：给定调和函数 $u(x,y)$，求 $v$ 使 $u+iv$
+解析。
+
+分析方法：
+
+\begin{itemize}
+\item
+  使用 Cauchy-Riemann 方程： \[
+  v_y=u_x,\qquad v_x=-u_y.
+  \]
+\item
+  先对一个变量积分，再用另一条方程确定积分中的``常数函数''。
+\item
+  最后写出 $f=u+iv$，调和共轭只差一个实常数。
+\end{itemize}
+
+易错点：
+
+\begin{itemize}
+\item
+  必须先确认定义域的拓扑条件。局部总可以找，共轭要全局存在通常需要单连通。
+\item
+  在 \(\mathbb C^*\)
+  上，\(u=\log|z|\) 的局部共轭是
+  \(\arg z\)，但不存在全局单值连续的 \(\arg z\)。
+\end{itemize}
+
+题型 3：共形映射与临界点。
+
+常见题面：判断 $f(z)=z^n$、$e^z$、Mobius
+型函数在某点是否共形，描述局部映射效果。
+
+分析方法：
+
+\begin{itemize}
+\item
+  先求 $f'(z_0)$。
+\item
+  若 $f'(z_0)\ne 0$，局部就是旋转加缩放：
+  \[
+  f(z)\approx f(z_0)+f'(z_0)(z-z_0).
+  \]
+\item
+  若 $f'(z_0)=0$，该点是临界点，保角性失效，后续第
+  4 章会用零点重数描述局部覆盖行为。
+\end{itemize}
+
+%=====================================================================
+\section{第 3 章：路径积分 (Complex Integration over Paths)}
+%=====================================================================
+
+\subsection{主要内容}
+
+本章从路径积分出发，建立 Cauchy 积分定理、Cauchy
+积分公式及其推论。核心思想是：解析性可以通过积分刻画，而边界积分可以控制区域内部的函数值和导数。
+
+重点主线如下：
+
+\begin{itemize}
+\item
+  复路径积分： \[
+  \int_\gamma f(z)\,dz=\int_a^b f(\gamma(t))\gamma'(t)\,dt.
+  \]
+\item
+  有原函数、闭路积分为零、路径无关三者等价。
+\item
+  单连通域、星形域和多连通域上的 Cauchy 定理。
+\item
+  Cauchy 积分公式和广义 Cauchy 积分公式。
+\item
+  Cauchy 不等式、Morera 定理、Liouville 定理。
+\item
+  解析函数列局部一致收敛时，极限仍解析，导数也局部一致收敛。
+\end{itemize}
+
+\subsection{重要定理和结论}
+
+\begin{itemize}
+\item
+  ML 估计： \[
+  \left|\int_\gamma f(z)\,dz\right|\le M L(\gamma).
+  \]
+\item
+  原函数判别：连续函数 $f$ 在区域 $D$
+  上有原函数，当且仅当任意闭曲线积分为
+  $0$，也等价于路径积分只依赖端点。
+\item
+  基本反例： \[
+  \oint_{|z|=1}\frac{dz}{z}=2\pi i.
+  \]
+\item
+  Cauchy 积分定理：在合适拓扑条件下，解析函数沿闭曲线积分为 $0$。
+\item
+  Cauchy 积分公式： \[
+  f(z)=\frac{1}{2\pi i}\oint_{\partial U_r(a)}
+  \frac{f(\zeta)}{\zeta-z}\,d\zeta.
+  \]
+\item
+  广义 Cauchy 积分公式： \[
+  f^{(n)}(z)=\frac{n!}{2\pi i}\oint_{\partial U_r(a)}
+  \frac{f(\zeta)}{(\zeta-z)^{n+1}}\,d\zeta.
+  \]
+\item
+  Cauchy 不等式： \[
+  |f^{(n)}(a)|\le \frac{n!M}{r^n}.
+  \]
+\item
+  Morera 定理：连续函数若所有三角形或可缩闭路积分为 $0$，则解析。
+\item
+  Liouville 定理：有界整函数必为常数。
+\item
+  代数基本定理可由 Liouville 定理推出。
+\end{itemize}
+
+\subsection{典型题目分析}
+
+题型 1：直接计算路径积分。
+
+常见题面：给定参数曲线 \(\gamma(t)\)，计算
+\(\int_\gamma f(z)\,dz\)。
+
+分析方法：
+
+\begin{itemize}
+\item
+  若存在原函数 $F$，优先用 \[
+  \int_\gamma f(z)\,dz=F(\gamma(b))-F(\gamma(a)).
+  \]
+\item
+  若没有明显原函数，按定义代入参数： \[
+  \int_a^b f(\gamma(t))\gamma'(t)\,dt.
+  \]
+\item
+  若是闭路且函数在内部解析，用 Cauchy 定理直接判零。
+\end{itemize}
+
+易错点：
+
+\begin{itemize}
+\item
+  $1/z$ 在不穿过 $0$ 的局部区域有原函数，但在
+  \(\mathbb C^*\) 上没有全局原函数。
+\item
+  多连通域中，洞内奇点会贡献非零积分。
+\end{itemize}
+
+题型 2：用 Cauchy 积分公式计算围道积分。
+
+常见题面： \[
+\oint_{|z-a|=r}\frac{f(z)}{(z-b)^{n+1}}\,dz.
+\]
+
+分析方法：
+
+\begin{itemize}
+\item
+  先判断 $b$ 是否在曲线内部。
+\item
+  若 $b$ 在内部且 $f$ 在闭圆盘邻域解析，则 \[
+  \oint \frac{f(z)}{(z-b)^{n+1}}\,dz
+  =\frac{2\pi i}{n!}f^{(n)}(b).
+  \]
+\item
+  若 $b$ 在外部，且被积函数在内部解析，则积分为 $0$。
+\end{itemize}
+
+题型 3：用 Cauchy 不等式和 Liouville 定理证明函数形式。
+
+常见题面：证明有界整函数为常数，或证明满足增长条件的整函数是多项式。
+
+分析方法：
+
+\begin{itemize}
+\item
+  对任意 $a$ 和任意大半径 $r$ 用 Cauchy 不等式。
+\item
+  若 \(|f(z)|\le C(1+|z|^m)\)，则对
+  $n>m$ 有 \[
+  |f^{(n)}(a)|\le \frac{n!M_r}{r^n}\to 0.
+  \]
+\item
+  所以高阶导数恒为零，$f$ 是次数不超过 $m$ 的多项式。
+\end{itemize}
+
+题型 4：用 Morera 或局部一致收敛证明解析性。
+
+分析方法：
+
+\begin{itemize}
+\item
+  对极限函数，若 $f_n$ 解析且 $f_n\to f$
+  局部一致，则 $f$ 解析。
+\item
+  对积分定义函数，若能交换极限和路径积分，则可证明三角形积分为
+  $0$，再用 Morera。
+\item
+  题目要求``证明解析''时，不一定要直接算差商，积分刻画常更稳。
+\end{itemize}
+
+%=====================================================================
+\section{第 4 章：解析函数刻画 (Characterizing Analytic Functions)}
+%=====================================================================
+
+\subsection{主要内容}
+
+本章是整门课内容最密集的一章。它把``解析函数''从多个角度刻画：幂级数、零点、局部映射、最大模、Schwarz
+引理、解析延拓、孤立奇点、Laurent 级数、留数、亚纯函数和 Mobius 变换。
+
+重点主线如下：
+
+\begin{itemize}
+\item
+  解析函数局部等于 Taylor 级数。
+\item
+  在开集上，复可微、Cauchy-Riemann、Cauchy 定理、Morera、Cauchy
+  公式、幂级数展开等性质互相等价。
+\item
+  非零解析函数的零点是离散的。
+\item
+  解析函数由任意有内聚点的集合上的值唯一决定。
+\item
+  非常数解析函数是开映射，模不能在内部取最大值。
+\item
+  Schwarz 引理和 Schwarz-Pick 不等式控制单位圆盘自映射。
+\item
+  解析延拓由恒等定理保证唯一。
+\item
+  孤立奇点分为可去奇点、极点、本性奇点。
+\item
+  Laurent 级数的负幂部分决定奇点类型。
+\item
+  留数定理把围道积分化为奇点局部系数。
+\item
+  扩充复平面 \(\widehat{\mathbb C}\)
+  上的亚纯函数就是有理函数。
+\item
+  Mobius 变换是 Riemann 球面的基本自同构。
+\end{itemize}
+
+\subsection{重要定理和结论}
+
+\begin{itemize}
+\item
+  Taylor 展开： \[
+  f(z)=\sum_{n=0}^{\infty}\frac{f^{(n)}(a)}{n!}(z-a)^n.
+  \]
+\item
+  解析函数等价刻画：复可微、C-R、局部原函数、Cauchy
+  积分公式、局部幂级数展开等。
+\item
+  初等域：任意解析函数都有全局原函数。若 $f$
+  在初等域上无零点，则存在解析对数 $h$ 使 $f=e^h$。
+\item
+  零点分解： \[
+  f(z)=(z-a)^m\varphi(z),\qquad \varphi(a)\ne 0.
+  \]
+\item
+  恒等定理：两个解析函数若在有内聚点的集合上一致，则在整个连通区域上一致。
+\item
+  开映射定理：非常数解析函数把开集映为开集。
+\item
+  最大模原理：非常数解析函数的模不能在区域内部取最大值。
+\item
+  最小模原理：若非零且非常数，则模不能在内部取最小值。
+\item
+  Schwarz 引理：若 $f:E\to E$ 解析且
+  $f(0)=0$，则 \[
+  |f(z)|\le |z|,\qquad |f'(0)|\le 1.
+  \]
+\item
+  单位圆盘自同构： \[
+  \operatorname{Aut}(E)=
+  \left\{e^{i\theta}\frac{z-a}{1-\bar a z}:a\in E,\theta\in R\right\}
+  \] 具体符号可能因讲义中 Blaschke 因子取法而有等价变形。
+\item
+  Schwarz-Pick 不等式： \[
+  \frac{|f'(z)|}{1-|f(z)|^2}\le \frac{1}{1-|z|^2}.
+  \]
+\item
+  Schwarz
+  反射原理：关于实轴对称的区域中，边界取实值的解析函数可通过共轭反射延拓。
+\item
+  Riemann 可去奇点定理：孤立奇点附近有界当且仅当可去。
+\item
+  极点判别：$c$ 是 $m$ 阶极点当且仅当 \[
+  f(z)=\frac{h(z)}{(z-c)^m},\qquad h(c)\ne 0.
+  \]
+\item
+  Casorati-Weierstrass 定理：本性奇点任意穿孔邻域的像在 $\C$
+  中稠密。
+\item
+  Laurent 展开： \[
+  f(z)=\sum_{j=-\infty}^{\infty}a_j(z-c)^j.
+  \]
+\item
+  奇点分类：
+
+  \begin{itemize}
+  \item
+    可去：无负幂项。
+  \item
+  \(m\) 阶极点：最低负幂为 \((z-c)^{-m}\)。
+  \item
+    本性：有无限多个非零负幂项。
+  \end{itemize}
+\item
+  留数定义： \[
+  \operatorname{Res}(f;c)=a_{-1}.
+  \]
+\item
+  留数定理： \[
+  \oint_\Gamma f(z)\,dz=2\pi i\sum_c \operatorname{Res}(f;c)
+  \] 其中求和只取曲线内部奇点。
+\item
+  单极点留数： \[
+  \operatorname{Res}(f;c)=\lim_{z\to c}(z-c)f(z).
+  \]
+\item
+  $m$ 阶极点留数： \[
+  \operatorname{Res}(f;c)=
+  \frac{1}{(m-1)!}\lim_{z\to c}
+  \frac{d^{m-1}}{dz^{m-1}}\left[(z-c)^m f(z)\right].
+  \]
+\item
+  无穷远点分类：研究 $f(1/z)$ 在 $0$ 的奇点。
+\item
+  \(\widehat{\mathbb C}\) 上的亚纯函数当且仅当是有理函数。
+\item
+  $\Aut(\C)$ 为仿射映射： \[
+  z\mapsto az+b,\qquad a\ne 0.
+  \]
+\item
+  \(\operatorname{Aut}(\widehat{\mathbb C})\) 为 Mobius 变换： \[
+  z\mapsto \frac{az+b}{cz+d},\qquad ad-bc\ne 0.
+  \]
+\end{itemize}
+
+\subsection{典型题目分析}
+
+题型 1：求 Taylor 展开和收敛半径。
+
+常见题面：在某点展开
+\(1/(1+z^2)\)、\(\Log(1+z)\)、\(1/(z-a)\) 等。
+
+分析方法：
+
+\begin{itemize}
+\item
+  优先化成几何级数： \[
+  \frac{1}{1-w}=\sum_{n=0}^\infty w^n,\qquad |w|<1.
+  \]
+\item
+  收敛半径由展开中心到最近奇点的距离决定。
+\item
+  不要只看实轴。例如 \(1/(1+x^2)\)
+  在实轴无奇点，但作为复函数的奇点是 \(z=\pm i\)。
+\end{itemize}
+
+题型 2：零点、恒等定理和唯一性。
+
+常见题面：若解析函数在一列有内聚点的点上为零或相等，证明函数恒等为零或两函数相等。
+
+分析方法：
+
+\begin{itemize}
+\item
+  先确认内聚点在定义域内部。
+\item
+  对差函数 $h=f-g$ 使用恒等定理。
+\item
+  若只是边界上有内聚点，不能直接用恒等定理，除非能先做解析延拓或反射。
+\end{itemize}
+
+典型反例：
+
+\begin{itemize}
+\item
+  $\sin(\pi/z)$ 的零点 $1/n$ 聚到 $0$，但如果
+  $0$ 不在定义域内，不能推出函数恒为零。
+\end{itemize}
+
+题型 3：最大模、Schwarz 引理和圆盘自同构估计。
+
+常见题面：已知
+$f:E\to E$、$f(0)=0$，证明导数或函数值估计；或已知
+$f(a)=b$，求最优上界。
+
+分析方法：
+
+\begin{itemize}
+\item
+  若固定点在 $0$，直接用 Schwarz 引理。
+\item
+  若固定点不在 $0$，先用圆盘自同构把 $a$ 和 $b$
+  移到 $0$： \[
+  \phi_a(z)=\frac{z-a}{1-\bar a z}.
+  \]
+\item
+  对 \[
+  g=\phi_b\circ f\circ \phi_a^{-1}
+  \] 使用 Schwarz 引理或 Schwarz-Pick。
+\end{itemize}
+
+题型 4：孤立奇点分类。
+
+常见题面：判断
+\(\sin z/z\)、\(1/(z-a)^m\)、\(e^{1/z}\)、\(\sin(1/z)\)
+在某点的奇点类型。
+
+分析方法：
+
+\begin{itemize}
+\item
+  能补值且有界：可去。
+\item
+  趋于无穷或有限阶负幂：极点。
+\item
+  Laurent 展开有无限多个负幂：本性。
+\end{itemize}
+
+典型结论：
+
+\begin{itemize}
+\item
+  \(\sin z/z\) 在 \(0\) 可去。
+\item
+  \(1/z^m\) 在 \(0\) 是 \(m\) 阶极点。
+\item
+  \(e^{1/z}\) 在 \(0\) 是本性奇点。
+\item
+  \(\sin(1/z)\) 在 \(0\) 是本性奇点，且附近零点有内聚到
+  \(0\)。
+\end{itemize}
+
+题型 5：求 Laurent 展开。
+
+常见题面：在不同环域中展开 \[
+\frac{1}{z(z-1)},\qquad \frac{1}{(z-a)(z-b)}.
+\]
+
+分析方法：
+
+\begin{itemize}
+\item
+  先做部分分式分解。
+\item
+  每一项都化成几何级数。
+\item
+  环域不同，展开形式不同。例如 \[
+  \frac{1}{z-1}=-\frac1{1-z}=-\sum_{n=0}^\infty z^n,\quad |z|<1,
+  \] 但 \[
+  \frac{1}{z-1}=\frac1z\frac1{1-1/z}
+  =\sum_{n=0}^{\infty}z^{-n-1},\quad |z|>1.
+  \]
+\end{itemize}
+
+题型 6：用留数定理计算围道积分和实积分。
+
+常见题面：
+
+\begin{itemize}
+\item
+  计算 \(\oint f(z)\,dz\)。
+\item
+  计算三角有理积分 \[
+  \int_0^{2\pi} R(\cos\theta,\sin\theta)\,d\theta.
+  \]
+\item
+  计算实轴有理积分 \[
+  \int_{-\infty}^{\infty}\frac{P(x)}{Q(x)}\,dx.
+  \]
+\item
+  计算含振荡因子的积分 \[
+  \int_{-\infty}^{\infty}e^{imx}\frac{P(x)}{Q(x)}\,dx.
+  \]
+\end{itemize}
+
+分析方法：
+
+\begin{itemize}
+\item
+  围道积分：列出曲线内部奇点，逐个算留数。
+\item
+  三角积分：令 \(z=e^{i\theta}\)， \[
+  \cos\theta=\frac12\left(z+\frac1z\right),\quad
+  \sin\theta=\frac1{2i}\left(z-\frac1z\right),\quad
+  d\theta=\frac{dz}{iz}.
+  \] 然后转为单位圆上的留数问题。
+\item
+  实轴有理积分：取上半圆或下半圆，要求大圆弧积分趋于 $0$。
+\item
+  含 \(e^{imz}\) 的积分：根据 \(m\)
+  的符号选择上半平面或下半平面，并使用 Jordan 引理。
+\end{itemize}
+
+题型 7：无穷远点、亚纯函数和 Mobius 变换。
+
+常见题面：判断整函数在无穷远点的奇点类型，证明
+\(\widehat{\mathbb C}\) 上亚纯函数是有理函数，求 Mobius
+变换或其固定点。
+
+分析方法：
+
+\begin{itemize}
+\item
+  无穷远点一律换元： \[
+  \hat f(z)=f(1/z).
+  \]
+\item
+  若整函数在无穷远点可去，则原函数有界，故为常数。
+\item
+  若整函数在无穷远点为极点，则原函数是多项式。
+\item
+  Mobius 变换由三个点的像唯一决定，求解时可用交比或直接代入线性方程。
+\end{itemize}
+
+%=====================================================================
+\section{第 5 章：辐角原理与拓扑次数}
+%=====================================================================
+
+\subsection{主要内容}
+
+本章把围道积分、零点计数和拓扑次数联系起来。核心观点是：曲线绕点的次数可以用积分表示，而解析函数的零点和极点可以通过边界像曲线的环绕数读出来。
+
+重点主线如下：
+
+\begin{itemize}
+\item
+  环绕数： \[
+  w(\Gamma,a)=\frac{1}{2\pi i}\oint_\Gamma\frac{dz}{z-a}.
+  \]
+\item
+  环绕数是整数，在 \(\mathbb C\setminus\Gamma\)
+  的每个连通分支上常值。
+\item
+  Hopf degree theorem 描述闭曲线同伦类与环绕数的关系。
+\item
+  辐角原理：边界像曲线绕 $0$ 的次数等于内部零点数减极点数。
+\item
+  Rouche 定理用于比较两个函数的零点数。
+\item
+  Hurwitz 定理用于研究解析函数列极限的零点。
+\item
+  拓扑次数是辐角原理在更一般连续映射中的推广。
+\end{itemize}
+
+\subsection{重要定理和结论}
+
+\begin{itemize}
+\item
+  环绕数整数性： \[
+  w(\Gamma,a)\in Z.
+  \]
+\item
+  环绕数的同伦不变性：曲线同伦过程中不穿过 $a$，则环绕数不变。
+\item
+  对正向 Jordan 曲线，内部点环绕数为 $1$，外部点为 $0$。
+\item
+  解析函数辐角原理： \[
+  w(f\circ \Gamma,0)=N(f;\Gamma)
+  \] 在无边界零点且无极点时，右边是内部零点个数，计重数。
+\item
+  亚纯函数辐角原理： \[
+  \frac{1}{2\pi i}\oint_\Gamma \frac{f'(z)}{f(z)}\,dz
+  =N(f;\Gamma)-P(f;\Gamma).
+  \]
+\item
+  Darboux-Picard 定理：在合适条件下，边界上的单射性推出内部单射性。
+\item
+  Rouche 定理：若在边界
+  \(|g|<|f|\)，则
+  \(f\) 与 \(f+g\) 在内部零点数相同。
+\item
+  Hurwitz
+  定理：非零解析函数列局部一致收敛时，零点在极限中稳定；若极限非零，零点不会凭空消失，只能按定理控制迁移。
+\item
+  拓扑次数满足规范性、可加性、同伦不变性和乘积公式。
+\end{itemize}
+
+\subsection{典型题目分析}
+
+题型 1：计算环绕数。
+
+常见题面：给定闭曲线 \(\Gamma\) 和点 \(a\)，求
+\(w(\Gamma,a)\)。
+
+分析方法：
+
+\begin{itemize}
+\item
+  若曲线是简单正向 Jordan 曲线，直接判断 $a$ 在内部还是外部。
+\item
+  若曲线复杂，尝试同伦变形，只要变形中不穿过 $a$，环绕数不变。
+\item
+  也可以计算 \[
+  \frac{1}{2\pi i}\oint_\Gamma\frac{dz}{z-a}.
+  \]
+\end{itemize}
+
+易错点：
+
+\begin{itemize}
+\item
+  曲线方向会改变符号。
+\item
+  点在曲线上时环绕数无定义。
+\item
+  非简单曲线的环绕数可以是任意整数，不一定只有 $0$ 或 $1$。
+\end{itemize}
+
+题型 2：用辐角原理数零点。
+
+常见题面：求解析函数或多项式在某区域内零点个数。
+
+分析方法：
+
+\begin{itemize}
+\item
+  检查边界上 \(f(z)\ne 0\)。
+\item
+  计算 \[
+  \frac{1}{2\pi i}\oint_\Gamma\frac{f'(z)}{f(z)}\,dz.
+  \]
+\item
+  若直接积分困难，观察边界像曲线 \(f(\Gamma)\) 绕 \(0\)
+  的次数。
+\end{itemize}
+
+典型用法：
+
+\begin{itemize}
+\item
+  对多项式，边界足够大时主项控制环绕数，所以可推出代数基本定理。
+\item
+  对解析函数，零点必须计重数。
+\end{itemize}
+
+题型 3：用 Rouche 定理比较零点数。
+
+常见题面：判断多项式在单位圆或某圆盘内有几个根。
+
+分析方法：
+
+\begin{itemize}
+\item
+  把函数拆成主项 $f$ 和扰动 $g$。
+\item
+  在边界上证明
+  \(|g|<|f|\)。
+\item
+  得出 $f$ 和 $f+g$ 内部零点数相同。
+\end{itemize}
+
+例子模式：
+
+\begin{itemize}
+\item
+  在 $|z|=1$
+  上，若多项式某一项严格大于其余项模长之和，则它决定单位圆内零点数。
+\item
+  在大圆上，高次项通常支配；在小圆上，低次项通常支配。
+\end{itemize}
+
+题型 4：用 Hurwitz 定理处理极限函数。
+
+常见题面：$f_n$ 解析且局部一致收敛到 $f$，已知
+$f_n$ 无零点或单射，判断 $f$ 的性质。
+
+分析方法：
+
+\begin{itemize}
+\item
+  若每个 $f_n$ 无零点，则极限 $f$
+  要么无零点，要么恒为零。
+\item
+  若每个 $f_n$ 单射，通常可推出极限 $f$
+  要么单射，要么常数。
+\item
+  关键是局部一致收敛，不是逐点收敛。
+\end{itemize}
+
+题型 5：Darboux-Picard 与边界单射。
+
+常见题面：给定有界域上解析函数，已知其在边界上单射，证明内部也单射。
+
+分析方法：
+
+\begin{itemize}
+\item
+  利用边界像曲线的环绕数或拓扑次数。
+\item
+  对任意目标值 $p$，通过边界像曲线绕 $p$
+  的次数判断原像个数。
+\item
+  若边界单射保证边界像为 Jordan 曲线，则内部映射的重数受控。
+\end{itemize}
+
+题型 6：拓扑次数视角。
+
+常见题面：连续映射下求方程 $h(x)=p$ 的解个数或证明解存在。
+
+分析方法：
+
+\begin{itemize}
+\item
+  若 $p$ 不在边界像上，拓扑次数 $\deg(h,\Omega,p)$
+  定义良好。
+\item
+  同伦不穿过 $p$ 时，次数不变。
+\item
+  若次数非零，则方程在区域内有解。
+\item
+  在复分析中，解析函数的局部次数等于零点重数。
+\end{itemize}
+
+%=====================================================================
+\section{复习优先级建议}
+%=====================================================================
+
+第一优先级：
+
+\begin{itemize}
+\item
+  Cauchy-Riemann 方程和解析判别。
+\item
+  Cauchy 积分定理、Cauchy 积分公式、广义公式。
+\item
+  Taylor/Laurent 展开和奇点分类。
+\item
+  留数定理及三类积分计算。
+\item
+  最大模原理、恒等定理、Schwarz 引理。
+\item
+  辐角原理和 Rouche 定理。
+\end{itemize}
+
+第二优先级：
+
+\begin{itemize}
+\item
+  解析延拓和 Schwarz 反射。
+\item
+  亚纯函数、无穷远点、Mobius 变换。
+\item
+  Hurwitz 定理、Darboux-Picard 定理。
+\item
+  正常收敛、Weierstrass 定理和函数列解析性。
+\end{itemize}
+
+第三优先级：
+
+\begin{itemize}
+\item
+  数系构造背景。
+\item
+  Hopf degree theorem 和一般拓扑次数的抽象形式。
+\item
+  Riemann 球面的球面几何解释。
+\end{itemize}
+
+最常见的考试题链条是：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  先判断函数在哪些区域解析。
+\item
+  找奇点和边界位置。
+\item
+  选择 Cauchy 公式、Laurent 展开、留数定理、最大模原理或 Rouche 定理。
+\item
+  最后用恒等定理、Liouville 定理或辐角原理给出全局结论。
+\end{enumerate}
+
+\end{document}
