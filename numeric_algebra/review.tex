@@ -1,0 +1,1385 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
+
+\input{../common/macros.tex}
+
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\fl}{\operatorname{fl}}
+\newcommand{\tridiag}{\operatorname{tridiag}}
+\newcommand{\off}{\operatorname{off}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\argmax}{\operatorname*{arg\,max}}
+\newcommand{\keypoint}{\textcolor{red!65!black}{\textbf{$\star$}}}
+\newcommand{\impl}{\textcolor{blue!65!black}{\textbf{实现}}}
+\newcommand{\exam}{\textcolor{red!65!black}{\textbf{考点}}}
+\newcommand{\eng}[1]{\texorpdfstring{{\normalfont\rmfamily\itshape\textcolor{blue!65!black}{(#1)}}}{(#1)}}
+
+\DontPrintSemicolon
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{数值代数考前复习}
+\rhead{\today}
+
+\begin{center}
+  {\Large\bfseries 数值代数考前复习参考}\\[6pt]
+  {\large 核心算法、实现模板与重点习题}
+\end{center}
+
+\noindent 本文根据 \texttt{numeric\_algebra/ASR.md} 的总复习内容，以及
+\texttt{hw1}--\texttt{hw15} 中已有作业报告整理。仓库中没有发现 \texttt{hw9}
+目录。ASR 最后一次课给出的主线是：课程分为 ``$Ax=b$ 的数值方法'' 和
+``特征值问题'' 两大块；舍入误差不作为闭卷考试重点，但稳定性、条件数和增长因子仍要会用。
+文末和各节中的“回忆题型”整理自用户补充的历年/回忆题图片，只做分类和复习定位。
+舍入误差的繁复推导按 ASR 口径不是闭卷重点，但 \texttt{hw6} 中的标准浮点模型、
+连乘/求和/矩阵向量乘法误差和后向误差结论仍应会识别和套用。
+
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section{复习主线}
+%=====================================================================
+
+\subsection{数值方法的检查表}
+
+每个算法都按同一套问题复习：
+\begin{enumerate}
+  \item \textbf{目标}：要求解 $Ax=b$、最小二乘、特征值，还是估计误差。
+  \item \textbf{数值格式}：分解公式、迭代矩阵 \eng{iteration matrix}、正交相似变换
+  \eng{orthogonal similarity transformation} 或 Sturm 序列 \eng{Sturm sequence}。
+  \item \textbf{可行性与收敛性}：主元 \eng{pivot} 是否为零，矩阵是否正定
+  \eng{positive definite}，谱半径 \eng{spectral radius} 是否小于 $1$。
+  \item \textbf{误差与稳定性}：条件数 \eng{condition number}、增长因子
+  \eng{growth factor}、残差 \eng{residual} 与误差的关系。
+  \item \textbf{实现}：存储哪些量、是否需要主元、是否需要解三角方程组、何时停止。
+\end{enumerate}
+
+\subsection{考试范围提示}
+
+\begin{itemize}
+  \item \keypoint{} 线性方程组部分：三角方程 \eng{triangular systems}、Gauss 消元
+  \eng{Gaussian elimination}、列主元/全主元 \eng{partial/complete pivoting}、Cholesky
+  \eng{Cholesky decomposition} 与 $LDL^T$ \eng{LDL transpose decomposition}、追赶法
+  \eng{Thomas algorithm}、最小二乘 \eng{least squares} 与 QR \eng{QR decomposition}、
+  Jacobi/Gauss--Seidel/SOR、最速下降 \eng{steepest descent} 与共轭梯度
+  \eng{conjugate gradient}。
+  \item \keypoint{} 分析部分：向量范数 \eng{vector norm}、矩阵范数 \eng{matrix norm}
+  的课程定义、诱导范数 \eng{induced/operator norm}、Frobenius 范数 \eng{Frobenius norm}、
+  浮点数 \eng{floating-point number}、舍入误差 \eng{roundoff error}、条件数
+  \eng{condition number}、增长因子 \eng{growth factor}、残差 \eng{residual}
+  与误差估计 \eng{error estimate}。
+  \item \keypoint{} 特征值部分：幂法 \eng{power method}、反幂法/位移反幂法
+  \eng{inverse iteration/shifted inverse iteration}、QR 方法 \eng{QR algorithm}、
+  Hessenberg/三对角化 \eng{Hessenberg/tridiagonal reduction}、对称 QR
+  \eng{symmetric QR algorithm}、Jacobi 方法 \eng{Jacobi eigenvalue algorithm}、
+  二分法 \eng{bisection method}。
+  \item ASR 明确说闭卷且不能用计算器，因此公式推导、算法步骤和小矩阵手算比大规模数值结果更重要。
+\end{itemize}
+
+\subsection{英文名称速查}
+
+\begin{center}
+\begin{tabular}{@{}p{4.1cm}p{9.5cm}@{}}
+\toprule
+\textbf{中文} & \textbf{English}\\
+\midrule
+前代法 / 回代法 & forward substitution / back substitution\\
+Gauss 消元 & Gaussian elimination\\
+列主元 / 全主元 & partial pivoting / complete pivoting\\
+LU 分解 & LU decomposition or LU factorization\\
+Schur 补 & Schur complement\\
+平方根法 / 改进平方根法 & Cholesky decomposition / LDL transpose decomposition\\
+追赶法 & Thomas algorithm\\
+Gauss--Jordan 消元 & Gauss--Jordan elimination\\
+诱导范数 / 谱范数 / Frobenius 范数 & induced norm or operator norm / spectral norm / Frobenius norm\\
+浮点数 / 机器精度 / 舍入误差 & floating-point number / unit roundoff / roundoff error\\
+前向误差 / 后向误差 & forward error / backward error\\
+条件数 / 增长因子 / 残差 & condition number / growth factor / residual\\
+最小二乘 / 正规方程 & least squares / normal equations\\
+Householder 变换 / Givens 变换 & Householder transformation or reflector / Givens rotation\\
+Jacobi / Gauss--Seidel / SOR & Jacobi method / Gauss--Seidel method / successive over-relaxation\\
+最速下降 / 共轭梯度 & steepest descent / conjugate gradient\\
+Krylov 子空间 & Krylov subspace\\
+幂法 / 反幂法 / 位移反幂法 & power method / inverse iteration / shifted inverse iteration\\
+Rayleigh 商 & Rayleigh quotient\\
+QR 方法 / 位移 QR / 隐式 QR & QR algorithm / shifted QR iteration / implicit QR algorithm\\
+Hessenberg 化 / 三对角化 & Hessenberg reduction / tridiagonal reduction\\
+Jacobi 特征值方法 / 过关 Jacobi & Jacobi eigenvalue algorithm / threshold Jacobi method\\
+Sturm 序列 / Sturm 定理 / 二分法 & Sturm sequence / Sturm theorem / bisection method\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\section{\texorpdfstring{$Ax=b$}{Ax=b} 的直接法}
+%=====================================================================
+
+\subsection{三角方程组 \eng{Triangular Systems}}
+
+若 $L$ 为非奇异下三角阵，前代法 \eng{forward substitution} 为
+\[
+  y_i = \frac{b_i-\sum_{j=1}^{i-1} l_{ij}y_j}{l_{ii}}, \qquad i=1,\dots,n.
+\]
+若 $U$ 为非奇异上三角阵，回代法 \eng{back substitution} 为
+\[
+  x_i = \frac{y_i-\sum_{j=i+1}^{n}u_{ij}x_j}{u_{ii}}, \qquad i=n,\dots,1.
+\]
+两者运算量都是 $O(n^2)$，是 LU、Cholesky、QR 和 CG 中反复调用的基础模块。
+
+\begin{algorithm}[H]
+  \caption{下三角矩阵求逆 \eng{Inverse of a Lower Triangular Matrix}}
+  \KwIn{非奇异下三角矩阵 $L\in\R^{n\times n}$}
+  \KwOut{$X=L^{-1}$}
+  \For{$j=1,\dots,n$}{
+    解 $Lx^{(j)}=e_j$，即对第 $j$ 列做一次前代\;
+    将 $x^{(j)}$ 放入 $X$ 的第 $j$ 列\;
+  }
+  \Return{$X$}
+\end{algorithm}
+
+\exam{} 作业 \texttt{hw1} 的 1.1 和 \texttt{hw2} 的题目 1 要求会证明：上/下三角阵的逆仍是上/下三角阵，单位三角阵的逆仍是单位三角阵。
+
+\subsection{Gauss 消元与 LU 分解 \eng{Gaussian Elimination and LU Decomposition}}
+
+无主元 Gauss 消元 \eng{Gaussian elimination without pivoting} 的核心更新为
+\[
+  l_{ik}=\frac{a_{ik}^{(k)}}{a_{kk}^{(k)}}, \qquad
+  a_{ij}^{(k+1)}=a_{ij}^{(k)}-l_{ik}a_{kj}^{(k)},\quad i,j>k.
+\]
+若每一步主元 $a_{kk}^{(k)}\ne0$，则 $A=LU$，其中 $L$ 为单位下三角阵，$U$ 为上三角阵。
+非奇异矩阵能做无主元 LU 分解的典型判别是前 $n-1$ 个顺序主子式
+\eng{leading principal minors} 均非零。
+
+\begin{algorithm}[H]
+  \caption{原地 LU 分解（无主元）\eng{In-place LU Factorization without Pivoting}}
+  \KwIn{$A\in\R^{n\times n}$}
+  \KwOut{原地存储的 $L$ 与 $U$：下三角严格部分存 $L$，上三角部分存 $U$}
+  \For{$k=1,\dots,n-1$}{
+    \If{$a_{kk}=0$}{算法失败，需换主元}
+    \For{$i=k+1,\dots,n$}{
+      $a_{ik}\leftarrow a_{ik}/a_{kk}$\;
+      \For{$j=k+1,\dots,n$}{
+        $a_{ij}\leftarrow a_{ij}-a_{ik}a_{kj}$\;
+      }
+    }
+  }
+\end{algorithm}
+
+求解流程固定为
+\[
+  A=LU,\qquad Ly=b,\qquad Ux=y.
+\]
+运算量主项约为 $\frac{2}{3}n^3$。
+
+\keypoint{} 三个 Schur 补 \eng{Schur complement} 性质常考：
+\begin{itemize}
+  \item 对称矩阵一步消元后，右下角 Schur 补仍对称。
+  \item 严格对角占优矩阵一步消元后，Schur 补仍严格对角占优。
+  \item 正定矩阵一步消元后，Schur 补仍正定。
+\end{itemize}
+
+\subsection{选主元 \eng{Pivoting}}
+
+列主元消元 \eng{partial pivoting} 在第 $k$ 步选择
+\[
+  p=\argmax_{i\ge k}|a_{ik}^{(k)}|,
+\]
+交换第 $p$ 行与第 $k$ 行后再消元，得到 $PA=LU$。全主元消元
+\eng{complete pivoting} 同时交换行和列，得到
+\[
+  PAQ=LU.
+\]
+
+\impl{} 列主元的关键不是改变公式，而是把小主元换成当前列中较大的主元，使 $|l_{ik}|\le1$。
+全主元更稳定，但每步要搜索剩余子矩阵并记录列置换，手算和实现都更重。
+
+\exam{} \texttt{hw2} 题目 3 要会对同一个 $3\times3$ 矩阵分别写出 $LU$、$PA=LU$、
+$PAQ=LU$；\texttt{hw5}、\texttt{hw6} 中增长因子题说明了选主元与稳定性的关系。
+
+\subsection{Cholesky 与改进平方根法 \eng{Cholesky and LDL Transpose Decomposition}}
+
+若 $A=A^T>0$，则存在唯一分解
+\[
+  A=LL^T,\qquad l_{kk}>0.
+\]
+计算公式为
+\[
+  l_{kk}=\sqrt{a_{kk}-\sum_{s=1}^{k-1}l_{ks}^2},\qquad
+  l_{ik}=\frac{a_{ik}-\sum_{s=1}^{k-1}l_{is}l_{ks}}{l_{kk}},\quad i>k.
+\]
+改进平方根法 \eng{improved square-root method} 写成
+\[
+  A=LDL^T,
+\]
+其中 $L$ 为单位下三角阵，$D=\diag(d_1,\dots,d_n)$，计算公式为
+\[
+  d_j=a_{jj}-\sum_{s=1}^{j-1}l_{js}^2d_s,\qquad
+  l_{ij}=\frac{a_{ij}-\sum_{s=1}^{j-1}l_{is}d_sl_{js}}{d_j},\quad i>j.
+\]
+
+\impl{} $LL^T$ 需要开方；$LDL^T$ 避免开方，也更适合符号计算。两者求解都化为两次三角方程：
+\[
+  Ly=b,\quad L^Tx=y
+\]
+或
+\[
+  Ly=b,\quad Dz=y,\quad L^Tx=z.
+\]
+
+\subsection{追赶法 \eng{Thomas Algorithm}}
+
+三对角线性方程组
+\[
+  a_i x_{i-1}+b_i x_i+c_i x_{i+1}=d_i
+\]
+可写作 $A=LU$，其中 $L$ 为单位下双对角阵，$U$ 为上双对角阵。递推为
+\[
+  u_1=b_1,\qquad
+  l_i=\frac{a_i}{u_{i-1}},\qquad
+  u_i=b_i-l_ic_{i-1}\quad (i=2,\dots,n).
+\]
+前代
+\[
+  y_1=d_1,\qquad y_i=d_i-l_iy_{i-1},
+\]
+回代
+\[
+  x_n=\frac{y_n}{u_n},\qquad
+  x_i=\frac{y_i-c_ix_{i+1}}{u_i}.
+\]
+
+\impl{} 追赶法只存三条对角线，运算量 $O(n)$，是带状矩阵思想的代表。作业 \texttt{hw3}
+题目 3 是手算模板。
+
+\paragraph{三对角矩阵逆的快速公式 \eng{Usmani formula}.}
+设
+\[
+  A=
+  \begin{bmatrix}
+    b_1&c_1\\
+    a_2&b_2&c_2\\
+    &a_3&b_3&\ddots\\
+    &&\ddots&\ddots&c_{n-1}\\
+    &&&a_n&b_n
+  \end{bmatrix}.
+\]
+定义前向递推
+\[
+  \theta_0=1,\qquad \theta_1=b_1,\qquad
+  \theta_i=b_i\theta_{i-1}-a_i c_{i-1}\theta_{i-2}\quad (i=2,\dots,n),
+\]
+以及后向递推
+\[
+  \phi_{n+1}=1,\qquad \phi_n=b_n,\qquad
+  \phi_i=b_i\phi_{i+1}-c_i a_{i+1}\phi_{i+2}\quad (i=n-1,\dots,1).
+\]
+若 $\theta_n=\det A\ne0$，则 $A^{-1}=(\alpha_{ij})$ 的元素为
+\[
+  \alpha_{ij}=
+  \begin{cases}
+    \displaystyle
+    (-1)^{i+j}\,
+    \frac{c_i c_{i+1}\cdots c_{j-1}\,\theta_{i-1}\phi_{j+1}}{\theta_n},
+    & i\le j,\\[10pt]
+    \displaystyle
+    (-1)^{i+j}\,
+    \frac{a_{j+1}a_{j+2}\cdots a_i\,\theta_{j-1}\phi_{i+1}}{\theta_n},
+    & i>j.
+  \end{cases}
+\]
+其中空乘积约定为 $1$。这个公式适合快速写出整个逆矩阵；若只要求解单个
+$Ax=b$，追赶法本身仍是更直接的 $O(n)$ 方法。
+
+\subsection{Gauss--Jordan 求逆 \eng{Gauss--Jordan Elimination}}
+
+Gauss--Jordan 消元 \eng{Gauss--Jordan elimination} 对增广矩阵
+\eng{augmented matrix} $[A\ I]$ 做行变换，目标是
+\[
+  [A\ I]\longrightarrow [I\ A^{-1}].
+\]
+无主元版本要求每步主元非零；列主元版本每步先交换行。手算时最常见错误是只更新 $A$ 的部分而忘记同步更新右侧的 $I$。
+
+\subsection{回忆练习：直接法}
+
+\begin{enumerate}
+  \item 设
+  \[
+    A=\begin{bmatrix}1&4&7\\2&5&8\\3&6&10\end{bmatrix},\qquad
+    b=\begin{bmatrix}1\\1\\1\end{bmatrix}.
+  \]
+  求 $A$ 的 $LU$ 分解和 $PLU$ 分解，分别求解方程 $Ax=b$。
+
+  \item 设
+  \[
+    A=\begin{bmatrix}1&-1&3\\4&-2&1\\-3&-1&-4\end{bmatrix}.
+  \]
+  计算 $A$ 选取列主元的 $LU$ 分解，即 $PA=LU$，求 $P,L,U$。
+
+  \item 设
+  \[
+    A=\begin{bmatrix}-1&2&0\\-3&11&0\\0&10&2\end{bmatrix},\qquad
+    b=\begin{bmatrix}0\\5\\4\end{bmatrix}.
+  \]
+  \begin{enumerate}[(1)]
+    \item 求矩阵 $A$ 的 $LU$ 分解；
+    \item 求矩阵 $A$ 的列主元 $LU$ 分解，写出 $P,L,U$；
+    \item 求解方程 $Ax=b$；
+    \item 说明为什么要在高斯消去法中选主元，并举出没有 $LU$ 分解的非奇异矩阵的例子。
+  \end{enumerate}
+
+  \item 设
+  \[
+    A=\begin{bmatrix}4&-2&0\\-2&2&1\\0&1&10\end{bmatrix}.
+  \]
+  \begin{enumerate}[(1)]
+    \item 证明 $A$ 为对称正定矩阵；
+    \item 计算其 Cholesky 分解。
+  \end{enumerate}
+
+  \item 设
+  \[
+    A=\begin{bmatrix}
+      10&8&4&8\\
+      8&13&10&7\\
+      4&10&9&12\\
+      8&7&12&15
+    \end{bmatrix},\qquad
+    b=\begin{bmatrix}38\\18\\35\\42\end{bmatrix}.
+  \]
+  用平方根法求解 $Ax=b$。
+
+  \item 设
+  \[
+    A=\begin{bmatrix}
+      4&-2&4&2\\
+      -2&10&-2&-7\\
+      4&-2&8&4\\
+      2&-7&4&7
+    \end{bmatrix},\qquad
+    b=\begin{bmatrix}8\\2\\16\\6\end{bmatrix}.
+  \]
+  用改进平方根法求解 $Ax=b$。
+
+  \item 设
+  \[
+    A=\begin{bmatrix}-2&-4&0\\-4&-2&0\\0&0&4\end{bmatrix},\qquad
+    b=\begin{bmatrix}0\\6\\4\end{bmatrix}.
+  \]
+  \begin{enumerate}[(1)]
+    \item 求 $\norm{A}_1,\norm{A}_2,\norm{A}_\infty$；
+    \item 用追赶法求解 $Ax=b$。
+  \end{enumerate}
+
+  \item 设
+  \[
+    A(a)=\begin{bmatrix}1&0&a\\0&1&0\\a&0&1\end{bmatrix}
+  \]
+  是线性方程组 $Ax=b$ 的系数矩阵。问：$a$ 为何值时，$A$ 是正定的？
+\end{enumerate}
+
+%=====================================================================
+\section{范数、条件数与误差}
+%=====================================================================
+
+\subsection{向量范数和矩阵范数 \eng{Vector Norms and Matrix Norms}}
+
+向量范数 \eng{vector norm} 满足正定性 \eng{positive definiteness}、齐次性
+\eng{homogeneity}、三角不等式 \eng{triangle inequality}。常用 $p$ 范数为
+\[
+  \norm{x}_p=\left(\sum_{i=1}^n |x_i|^p\right)^{1/p},\quad p\ge1,\qquad
+  \norm{x}_\infty=\max_i |x_i|.
+\]
+
+课程中矩阵范数 \eng{matrix norm} 按四条性质定义：正定性、齐次性、三角不等式、
+相容性 \eng{submultiplicativity/compatibility}
+\[
+  \norm{AB}\le\norm{A}\norm{B}.
+\]
+由向量范数诱导的矩阵范数 \eng{induced norm/operator norm} 为
+\[
+  \norm{A}=\max_{x\ne0}\frac{\norm{Ax}}{\norm{x}}.
+\]
+常用公式：
+\[
+  \norm{A}_1=\max_j\sum_i |a_{ij}|,\qquad
+  \norm{A}_\infty=\max_i\sum_j |a_{ij}|,\qquad
+  \norm{A}_2=\sqrt{\lambda_{\max}(A^TA)}.
+\]
+Frobenius 范数 \eng{Frobenius norm}
+\[
+  \norm{A}_F=\left(\sum_{i,j}|a_{ij}|^2\right)^{1/2}
+\]
+也是矩阵范数，但不是由向量范数诱导出的常规 $1,2,\infty$ 范数。
+
+\keypoint{} 有限维空间中所有向量范数等价 \eng{equivalence of norms in finite-dimensional spaces}。具体要熟记
+\[
+  \norm{x}_2\le\norm{x}_1\le\sqrt n\norm{x}_2,\quad
+  \norm{x}_\infty\le\norm{x}_2\le\sqrt n\norm{x}_\infty,\quad
+  \norm{x}_\infty\le\norm{x}_1\le n\norm{x}_\infty.
+\]
+
+\subsection{浮点数与舍入误差 \eng{Floating-Point Arithmetic and Roundoff}}
+
+规范化浮点数 \eng{normalized floating-point number} 可写成
+\[
+  x=\pm(d_0.d_1\cdots d_{t-1})_\beta\,\beta^j,\qquad
+  d_0\ne0,\quad L\le j\le U.
+\]
+浮点数集合是有限集，所以实数存入机器时通常要舍入。采用舍入到最近浮点数且不发生上溢/下溢时，
+可写成标准模型
+\[
+  \fl(x)=x(1+\delta),\qquad |\delta|\le \mathbf u,
+\]
+其中 $\mathbf u$ 是机器精度或舍入单位 \eng{unit roundoff}。同样地，对
+$\circ\in\{+,-,\times,/\}$，
+\[
+  \fl(a\circ b)=(a\circ b)(1+\delta),\qquad |\delta|\le\mathbf u.
+\]
+这一模型默认精确结果仍在可表示范围内；上溢 \eng{overflow} 和下溢 \eng{underflow}
+要另外处理。
+
+\keypoint{} 多个舍入因子常合并为一个量。若 $m\mathbf u<1$，记
+\[
+  \gamma_m=\frac{m\mathbf u}{1-m\mathbf u},
+\]
+则
+\[
+  \prod_{i=1}^m(1+\delta_i)=1+\theta_m,\qquad
+  |\theta_m|\le\gamma_m.
+\]
+特别地，若 $m\mathbf u\le0.01$，则 $\gamma_m\le1.01m\mathbf u$。这是
+\texttt{hw6} 题 14--17 反复使用的估计。
+
+\exam{} 常用舍入误差结论：
+\begin{itemize}
+  \item 顺序连乘：
+  \[
+    \fl(x_1\cdots x_n)=x_1\cdots x_n(1+\varepsilon),\qquad
+    |\varepsilon|\le\gamma_{n-1}.
+  \]
+  \item 顺序求和：
+  \[
+    \fl\left(\sum_{i=1}^n x_i\right)=\sum_{i=1}^n x_i(1+\eta_i),
+  \]
+  其中 $|\eta_1|\le\gamma_{n-1}$，$|\eta_i|\le\gamma_{n-i+1}$（$i\ge2$）。
+  \item 点积的绝对误差：
+  \[
+    |\fl(x^Ty)-x^Ty|\le\gamma_n |x|^T|y|.
+  \]
+  特别地，对 $x^Tx$ 没有抵消问题，
+  \[
+    \fl(x^Tx)=x^Tx(1+\alpha),\qquad |\alpha|\le\gamma_n=n\mathbf u+O(\mathbf u^2).
+  \]
+  \item 矩阵向量乘法可看成后向稳定形式：
+  \[
+    \fl(Ax)=(A+E)x,\qquad |E|\lesssim\gamma_n |A|.
+  \]
+  若按 \texttt{hw6} 的顺序逐行计算，则更精细地有
+  $|e_{i1}|\le\gamma_n|a_{i1}|$，$|e_{ij}|\le\gamma_{n-j+2}|a_{ij}|$（$j\ge2$）。
+\end{itemize}
+
+\keypoint{} 舍入误差分析常区分：
+\begin{itemize}
+  \item 前向误差 \eng{forward error}：计算结果 $\hat x$ 与真解 $x$ 相差多大。
+  \item 后向误差 \eng{backward error}：$\hat x$ 是一个多接近原问题的扰动问题的精确解。
+  \item 消去法、QR 等经典算法常用后向误差说明稳定性，再用条件数把后向误差转换为前向误差。
+\end{itemize}
+
+\exam{} 相近数相减会损失有效数字 \eng{loss of significant digits}。考试或上机题中若出现
+“残差很小但解很差”，通常要同时检查条件数、增长因子和舍入误差，而不能只看残差。
+
+\subsection{条件数 \eng{Condition Number}}
+
+非奇异矩阵的条件数 \eng{condition number} 为
+\[
+  \kappa(A)=\norm{A}\norm{A^{-1}}.
+\]
+若 $Ax=b$，扰动只在右端项上，则
+\[
+  \frac{\norm{\delta x}}{\norm{x}}
+  \le
+  \kappa(A)\frac{\norm{\delta b}}{\norm{b}}.
+\]
+若残差 \eng{residual} $r=b-A\tilde x$，误差 \eng{error} $e=x-\tilde x$ 满足
+\[
+  Ae=r,\qquad
+  \frac{\norm{e}}{\norm{x}}
+  \le
+  \kappa(A)\frac{\norm{r}}{\norm{b}}.
+\]
+
+\impl{} Hilbert 矩阵是病态矩阵代表：残差很小不一定意味着解很准。作业 \texttt{hw5}
+的 Hilbert 条件数实验和列主元误差实验是最重要的数值现象题。
+
+\subsection{增长因子 \eng{Growth Factor}}
+
+Gauss 消元的增长因子 \eng{growth factor} 可理解为消元过程中元素最大值相对原矩阵最大值的放大：
+\[
+  \rho=\frac{\max_{i,j,k}|a_{ij}^{(k)}|}{\max_{i,j}|a_{ij}|}.
+\]
+列主元能控制乘子 $|l_{ij}|\le1$，但不能保证一般矩阵增长因子小。三对角矩阵列主元消去的增长因子以 $2$ 为界，这是 \texttt{hw6} 的重要题型。
+
+\keypoint{} 带状矩阵列主元消去的后向误差 \eng{backward error} 常写成
+\[
+  \tilde L\tilde U=P(A+E).
+\]
+\texttt{hw6} 题 20 中半带宽 $m=3$，$\tilde L$ 每行至多 $4$ 个非零元，$\tilde U$ 每行至多
+$7$ 个非零元，因此
+\[
+  \norm{E}_\infty\le 28\gamma_4\rho\norm{A}_\infty,\qquad
+  \gamma_4=\frac{4\mathbf u}{1-4\mathbf u}.
+\]
+这个估计说明：选主元控制乘子，带状结构控制每个内积长度，增长因子 $\rho$ 控制元素放大。
+
+\subsection{回忆练习：误差、范数与条件数}
+
+\begin{enumerate}
+  \item 在标准浮点模型下，证明顺序连乘满足
+  \[
+    \fl(x_1\cdots x_n)=x_1\cdots x_n(1+\varepsilon),\qquad
+    |\varepsilon|\le\gamma_{n-1}.
+  \]
+
+  \item 证明顺序求和可写成
+  \[
+    \fl\left(\sum_{i=1}^n x_i\right)=\sum_{i=1}^n x_i(1+\eta_i),
+  \]
+  并给出 $\eta_i$ 的上界。
+
+  \item 证明矩阵向量乘法具有后向误差形式
+  \[
+    \fl(Ax)=(A+E)x,
+  \]
+  并估计 $E$ 的元素级上界。
+
+  \item 证明
+  \[
+    \fl(x^Tx)=x^Tx(1+\alpha),\qquad |\alpha|\le n\mathbf u+O(\mathbf u^2).
+  \]
+
+  \item 设 $X\in\R^{n\times n}$ 非奇异，对任意 $A\in\R^{n\times n}$ 定义
+  \[
+    \norm{A}_X=\norm{X^{-1}AX}_2.
+  \]
+  证明 $\norm{\cdot}_X$ 是矩阵范数。
+
+  \item 对 $A\in\R^{n\times n}$，定义
+  \[
+    \norm{A}_{\max}=\max_{i,j}|a_{ij}|,
+  \]
+  证明 $\norm{\cdot}_{\max}$ 是一个向量意义下的范数，并举例说明它不满足矩阵范数的相容性。
+
+  \item 设 $A=(a_{ij})\in\R^{n\times n}$，
+  \[
+    \norm{A}_F=\left(\sum_{i,j=1}^n |a_{ij}|^2\right)^{1/2}.
+  \]
+  \begin{enumerate}[(1)]
+    \item 证明 $\norm{\cdot}_F$ 是一个矩阵范数；
+    \item 设 $U,V$ 是正交阵，证明
+    \[
+      \norm{A}_F=\norm{U^TAV}_F.
+    \]
+  \end{enumerate}
+
+  \item 设
+  \[
+    x=(-1,2,-3,4)^T.
+  \]
+  求 $\norm{x}_1,\norm{x}_2,\norm{x}_\infty$。
+
+  \item 设
+  \[
+    A=\begin{bmatrix}
+      2&-1&0&0\\
+      -1&2&-1&0\\
+      0&-1&2&-1\\
+      0&0&-1&2
+    \end{bmatrix}
+  \]
+  求 $\norm{A}_1,\norm{A}_2,\norm{A}_\infty,\kappa_2(A)$。
+
+  \item 设 $A\in\R^{m\times n}$，$m>n$，且 $A$ 列满秩。证明
+  \[
+    \norm{A(A^TA)^{-1}A^T}_2=1.
+  \]
+\end{enumerate}
+
+%=====================================================================
+\section{最小二乘与 QR \eng{Least Squares and QR}}
+%=====================================================================
+
+\subsection{最小二乘问题 \eng{Least Squares Problem}}
+
+对 $A\in\R^{m\times n}$，$m\ge n$，最小二乘问题为
+\[
+  \min_x\norm{Ax-b}_2.
+\]
+正规方程 \eng{normal equations} 为
+\[
+  A^TAx=A^Tb.
+\]
+若 $\rank(A)=n$，则 $A^TA$ 正定，解唯一。正规方程简单但会把条件数平方化；实际计算优先用 QR。
+
+\subsection{Householder 变换 \eng{Householder Transformation}}
+
+Householder 矩阵 \eng{Householder reflector}
+\[
+  H=I-2\frac{vv^T}{v^Tv}
+\]
+正交且对称。它是关于超平面 $v^\perp$ 的反射 \eng{reflection}，有
+\[
+  H^T=H,\qquad H^2=I,\qquad H^{-1}=H,\qquad H^TH=I.
+\]
+因此 Householder 变换具有自反/对合性质 \eng{involutory property}：作用两次回到原向量。
+更具体地，
+\[
+  Hv=-v,\qquad z\perp v\Rightarrow Hz=z.
+\]
+也就是说，它只把 $v$ 方向翻转，在垂直于 $v$ 的子空间上保持不变。
+
+\keypoint{} 从一个向量 $x$ 变换到另一个向量 $y$ 时，必要条件是
+$\norm{x}_2=\norm{y}_2$，因为 Householder 是正交变换。若 $x\ne y$ 且
+$\norm{x}_2=\norm{y}_2$，取
+\[
+  v=x-y,\qquad H=I-2\frac{vv^T}{v^Tv},
+\]
+则
+\[
+  Hx=y.
+\]
+验证只需用
+\[
+  v^Tx=x^T(x-y)=\norm{x}_2^2-x^Ty,\qquad
+  v^Tv=\norm{x-y}_2^2=2(\norm{x}_2^2-x^Ty).
+\]
+若 $x=y$，可取 $H=I$；若题目要求写成真正的反射，也可取任意非零
+$v\perp x$，此时 $Hx=x$。
+
+把 $x$ 化为 $\alpha e_1$ 是上面构造的特例。取
+\[
+  y=\alpha e_1,\qquad |\alpha|=\norm{x}_2,\qquad v=x-\alpha e_1,
+\]
+就有 $Hx=\alpha e_1$。手算时 $\alpha=\pm\norm{x}_2$ 均可；数值实现中通常取
+\[
+  \alpha=-\operatorname{sign}(x_1)\norm{x}_2
+\]
+以避免 $v_1=x_1-\alpha$ 发生严重相消。
+
+\begin{algorithm}[H]
+  \caption{Householder QR 分解 \eng{Householder QR Factorization}}
+  \KwIn{$A\in\R^{m\times n}$，$m\ge n$}
+  \KwOut{$A=QR$}
+  $Q\leftarrow I,\ R\leftarrow A$\;
+  \For{$k=1,\dots,n$}{
+    取 $x=R_{k:m,k}$，构造 Householder $H_k$ 使 $H_kx=\alpha e_1$\;
+    将 $H_k$ 嵌入为 $\widehat H_k=\diag(I_{k-1},H_k)$\;
+    $R\leftarrow \widehat H_kR,\quad Q\leftarrow Q\widehat H_k$\;
+  }
+  \Return{$Q,R$}
+\end{algorithm}
+
+若 $A=QR$，最小二乘问题等价于
+\[
+  \min_x\norm{Rx-Q^Tb}_2,
+\]
+再解上三角方程即可。
+
+\subsection{Givens 变换 \eng{Givens Rotation}}
+
+Givens 旋转 \eng{Givens rotation} 只作用于两行：
+\[
+  G=
+  \begin{bmatrix}
+    c&s\\
+    -s&c
+  \end{bmatrix},\qquad c^2+s^2=1.
+\]
+要把向量 $(a,b)^T$ 的第二个分量消为零，可取
+\[
+  r=\sqrt{a^2+b^2},\qquad c=\frac{a}{r},\qquad s=\frac{b}{r}.
+\]
+Givens 适合稀疏矩阵和三对角/ Hessenberg 矩阵的局部更新。
+
+\exam{} \texttt{hw8} 的 Householder 构造、Givens 正交性、QR 解线性方程组与最小二乘是本章核心。
+
+\subsection{回忆练习：最小二乘、正交变换与补充 SVD}
+
+\begin{enumerate}
+  \item 设
+  \[
+    A=\begin{bmatrix}0&-1\\3&2\\0&-2\end{bmatrix},\qquad
+    b=\begin{bmatrix}-1/3\\5/3\\-2/3\end{bmatrix},
+  \]
+  \begin{enumerate}[(1)]
+    \item 求 $Ax=b$ 的最小二乘解的正规方程；
+    \item 用平方根法解该正规方程。
+  \end{enumerate}
+
+  \item 设 $A\in\R^{m\times n}$，$X\in\R^{n\times m}$。若存在 $X$，使得对任意
+  $b\in\R^m$，$x=Xb$ 都能使 $\norm{b-Ax}_2$ 最小。求证：
+  \[
+    (1)\ AXA=A;\qquad (2)\ (AX)^T=AX.
+  \]
+
+  \item 设
+  \[
+    x=(3,1,6,4,2,2)^T.
+  \]
+  求 Householder 变换 $H$ 和常数 $\alpha$，使得
+  \[
+    Hx=(3,\alpha,4,6,0,0)^T.
+  \]
+
+  \item 设 $x\ne0$ 且 $x$ 与 $e_1$ 不平行。求 Householder 变换 $H$，使
+  \[
+    Hx=\norm{x}_2e_1.
+  \]
+  判断 $He_1$ 是否与 $x$ 平行，并说明理由。
+
+  \item 确定 $c=\cos\theta$、$s=\sin\theta$ 和 $\beta$，使
+  \[
+    \begin{bmatrix}c&s\\-s&c\end{bmatrix}
+    \begin{bmatrix}7\\-1\end{bmatrix}
+    =
+    \begin{bmatrix}\beta\\\beta\end{bmatrix}.
+  \]
+
+  \item 设 $A\in\R^{m\times n}$，$m\ge n$，其奇异值满足
+  \[
+    \sigma_1\ge\sigma_2\ge\cdots\ge\sigma_r>
+    \sigma_{r+1}=\cdots=\sigma_n=0,
+  \]
+  且奇异值分解为
+  \[
+    A=U\Sigma V^T,\qquad
+    U=[u_1,\dots,u_m],\quad V=[v_1,\dots,v_n],
+  \]
+  其中 $U,V$ 均为正交阵。
+  \begin{enumerate}[(1)]
+    \item 用奇异值分解定义 $A$ 的 Moore--Penrose 广义逆；
+    \item 对任意 $v\in\R^n$，证明
+    \[
+      \norm{Av}_2\le\sigma_1\norm{v}_2,\qquad
+      \norm{Av}_2\ge\sigma_n\norm{v}_2,
+    \]
+    并说明 $v$ 满足什么条件时上述等号成立；
+    \item （附加）证明奇异值的极大极小刻画：
+    \[
+      \sigma_k=\min_{\dim V=n-k+1}\max_{0\ne v\in V}\frac{\norm{Av}_2}{\norm{v}_2}
+      =
+      \max_{\dim V=k}\min_{0\ne v\in V}\frac{\norm{Av}_2}{\norm{v}_2}.
+    \]
+  \end{enumerate}
+  其中 Moore--Penrose 逆可写作
+  \[
+    A^+=V\Sigma^+U^T,\qquad
+    \Sigma^+=\diag(1/\sigma_1,\dots,1/\sigma_r,0,\dots,0)^T,
+  \]
+  本题为补充回忆题；ASR 中没有把 SVD 作为主线系统讲。
+\end{enumerate}
+
+%=====================================================================
+\section{\texorpdfstring{$Ax=b$}{Ax=b} 的迭代法}
+%=====================================================================
+
+\subsection{一般迭代格式 \eng{Stationary Iterative Methods}}
+
+把 $A=M-N$，迭代为
+\[
+  x^{(k+1)}=M^{-1}Nx^{(k)}+M^{-1}b = Bx^{(k)}+g.
+\]
+这里 $M$ 要选得容易求解，而 $N=M-A$ 收集剩下的部分。考试中写迭代法时，
+最稳妥的步骤是先写
+\[
+  A=M-N,\qquad B=M^{-1}N,\qquad g=M^{-1}b,
+\]
+再判断 $\rho(B)$ 或估计某个 $\norm{B}$。注意不同教材可能把严格三角部分写成
+$A=D-L-U$；本复习文档统一采用下面的 $A=D+L+U$ 约定，所以 $L,U$ 保留原矩阵的符号。
+
+收敛的充要条件是谱半径判别法 \eng{spectral radius criterion}：
+\[
+  \rho(B)<1.
+\]
+常用充分条件是存在某个矩阵范数使 $\norm{B}<1$。
+
+\subsection{Jacobi、Gauss--Seidel 与 SOR \eng{Classical Stationary Iterations}}
+
+令 $A=D+L+U$，其中 $D$ 为对角部分，$L$ 为严格下三角部分，$U$ 为严格上三角部分。
+三种经典迭代都是一般格式 $A=M-N$ 的特例：
+\[
+\begin{array}{c|c|c|c}
+  \text{方法} & M & N & B=M^{-1}N\\
+  \hline
+  \text{Jacobi} & D & -(L+U) & -D^{-1}(L+U)\\
+  \text{Gauss--Seidel} & D+L & -U & -(D+L)^{-1}U\\
+  \text{SOR} &
+  \dfrac1\omega D+L &
+  \left(\dfrac1\omega-1\right)D-U &
+  (D+\omega L)^{-1}\bigl[(1-\omega)D-\omega U\bigr]
+\end{array}
+\]
+其中 SOR 的拆分满足
+\[
+  A=\left(\frac1\omega D+L\right)
+  -\left[\left(\frac1\omega-1\right)D-U\right].
+\]
+把 $M_\omega^{-1}$ 中的 $\omega$ 提出来，就得到常见的 SOR 迭代式。
+\[
+  \text{Jacobi:}\quad
+  x^{(k+1)}=-D^{-1}(L+U)x^{(k)}+D^{-1}b.
+\]
+\[
+  \text{Gauss--Seidel:}\quad
+  x^{(k+1)}=-(D+L)^{-1}Ux^{(k)}+(D+L)^{-1}b.
+\]
+\[
+  \text{SOR:}\quad
+  x^{(k+1)}=(D+\omega L)^{-1}\bigl[(1-\omega)D-\omega U\bigr]x^{(k)}
+  +\omega(D+\omega L)^{-1}b.
+\]
+
+\keypoint{} 重要收敛结论：
+\begin{itemize}
+  \item 若某个范数下 $\norm{B}<1$，则对应迭代收敛 \eng{convergence criterion}。
+  \item 严格对角占优 \eng{strict diagonal dominance} 可推出 Jacobi/Gauss--Seidel 收敛。
+  \item 弱严格对角占优且不可约 \eng{irreducibly diagonally dominant} 时，Gauss--Seidel 收敛。
+  \item 在 \texttt{hw10} 的条件下，$\omega\in(0,1]$ 的松弛迭代收敛。
+  \item 若 $A$ 为 $2\times2$ 对称正定矩阵，则 Jacobi 迭代收敛。
+\end{itemize}
+
+\subsection{最速下降法 \eng{Steepest Descent Method}}
+
+对 $A=A^T>0$，解 $Ax=b$ 等价于最小化
+\[
+  \phi(x)=\frac12x^TAx-b^Tx.
+\]
+最速下降取残差
+\[
+  r_k=b-Ax_k
+\]
+作为下降方向，步长为
+\[
+  \alpha_k=\frac{r_k^Tr_k}{r_k^TAr_k},
+\qquad
+  x_{k+1}=x_k+\alpha_kr_k.
+\]
+收敛速度受 $\kappa_2(A)$ 控制，条件数越大，锯齿现象越明显。
+
+\subsection{共轭梯度法 \eng{Conjugate Gradient Method}}
+
+CG 专门用于对称正定线性方程组
+\[
+  A=A^T>0,\qquad Ax=b.
+\]
+它把解方程问题改写成严格凸二次函数的极小化问题：
+\[
+  \phi(x)=\frac12x^TAx-b^Tx,\qquad \nabla\phi(x)=Ax-b=-r.
+\]
+因此 $x_*=A^{-1}b$ 是唯一极小点。与最速下降每步只沿当前残差方向走不同，
+CG 选取一组互相 $A$-共轭的搜索方向
+\[
+  p_i^TAp_j=0\qquad(i\ne j),
+\]
+使得已经修正过的方向不再被后续迭代破坏。这里
+\[
+  \langle u,v\rangle_A=u^TAv
+\]
+是由正定矩阵 $A$ 诱导的内积，$A$-共轭就是该内积下的正交。
+
+\begin{algorithm}[H]
+  \caption{共轭梯度法（CG）\eng{Conjugate Gradient Method}}
+  \KwIn{$A=A^T>0$，$b$，初值 $x_0$}
+  \KwOut{$Ax=b$ 的近似解}
+  $r_0\leftarrow b-Ax_0,\quad p_0\leftarrow r_0$\;
+  \For{$k=0,1,\dots$}{
+    $\alpha_k\leftarrow\dfrac{r_k^Tr_k}{p_k^TAp_k}$\;
+    $x_{k+1}\leftarrow x_k+\alpha_kp_k$\;
+    $r_{k+1}\leftarrow r_k-\alpha_kAp_k$\;
+    \If{$r_{k+1}=0$ 或 $\norm{r_{k+1}}$ 足够小}{停止}
+    $\beta_k\leftarrow\dfrac{r_{k+1}^Tr_{k+1}}{r_k^Tr_k}$\;
+    $p_{k+1}\leftarrow r_{k+1}+\beta_kp_k$\;
+  }
+\end{algorithm}
+
+\keypoint{} 步长 $\alpha_k$ 来自沿 $p_k$ 的一维精确搜索：
+\[
+  \alpha_k=\argmin_{\alpha\in\R}\phi(x_k+\alpha p_k).
+\]
+对 $\phi(x_k+\alpha p_k)$ 求导得
+\[
+  0=p_k^T(Ax_k-b)+\alpha_k p_k^TAp_k
+  =-p_k^Tr_k+\alpha_kp_k^TAp_k,
+\]
+故
+\[
+  \alpha_k=\frac{p_k^Tr_k}{p_k^TAp_k}.
+\]
+在 CG 中，$p_k=r_k+$ 前面搜索方向的线性组合，且 $r_k$ 与前面搜索方向正交，
+所以 $p_k^Tr_k=r_k^Tr_k$，得到算法中的常用公式
+\[
+  \alpha_k=\frac{r_k^Tr_k}{p_k^TAp_k}.
+\]
+
+\keypoint{} $\beta_k$ 来自保持新方向与旧方向 $A$-共轭。令
+\[
+  p_{k+1}=r_{k+1}+\beta_kp_k.
+\]
+要求 $p_{k+1}^TAp_k=0$，则
+\[
+  \beta_k=-\frac{r_{k+1}^TAp_k}{p_k^TAp_k}.
+\]
+利用残差更新 $r_{k+1}=r_k-\alpha_kAp_k$ 和残差正交性
+$r_{k+1}^Tr_k=0$，可化为
+\[
+  \beta_k=\frac{r_{k+1}^Tr_{k+1}}{r_k^Tr_k}.
+\]
+这就是 Fletcher--Reeves 形式，也是手算最常用的形式。
+
+\keypoint{} Krylov 子空间 \eng{Krylov subspace} 是 CG 的核心几何对象：
+\[
+  \mathcal K_m(A,r_0)
+  =\mathrm{span}\{r_0,Ar_0,\dots,A^{m-1}r_0\}.
+\]
+精确算术且尚未终止时，
+\[
+  \mathrm{span}\{r_0,\dots,r_{m-1}\}
+  =\mathrm{span}\{p_0,\dots,p_{m-1}\}
+  =\mathcal K_m(A,r_0),
+\]
+其中残差组给出正交基，搜索方向组给出 $A$-共轭正交基。第 $m$ 步迭代满足
+\[
+  x_m\in x_0+\mathcal K_m(A,r_0),\qquad
+  r_m\perp \mathcal K_m(A,r_0).
+\]
+等价地，CG 在仿射 Krylov 子空间中做最优逼近：
+\[
+  x_m=\argmin_{x\in x_0+\mathcal K_m(A,r_0)}\phi(x)
+  =\argmin_{x\in x_0+\mathcal K_m(A,r_0)}\norm{x-x_*}_A,
+\]
+其中
+\[
+  \norm{y}_A=(y^TAy)^{1/2}.
+\]
+这条最优性条件常用于证明题：若 $r_m$ 已经正交于整个
+$\mathcal K_m(A,r_0)$，则 $x_m$ 就是该子空间内的极小点。
+
+\exam{} 若 $A=A^T>0$ 只有 $\ell$ 个互异特征值，则 $\dim \mathcal K_n(A,r_0)\le \ell$。
+理由是实对称矩阵可正交对角化，最小多项式
+\[
+  m_A(t)=\prod_{j=1}^{\ell}(t-\mu_j)
+\]
+满足 $m_A(A)=0$，所以 $A^\ell r_0$ 可由 $r_0,Ar_0,\dots,A^{\ell-1}r_0$
+线性表示，后续 $A^j r_0$ 也不再产生新的方向。结合 $r_m\perp\mathcal K_m(A,r_0)$，
+得到 CG 精确算术下至多 $\ell$ 步收敛；特别地，由 Cayley--Hamilton 定理也可得至多 $n$ 步收敛。
+
+另一种常见证明是误差多项式。设 $e_k=x_k-x_*$，则
+\[
+  e_m=q_m(A)e_0,\qquad q_m\in\mathcal P_m,\quad q_m(0)=1.
+\]
+若互异特征值为 $\mu_1,\dots,\mu_\ell$，取
+\[
+  q_\ell(t)=\prod_{j=1}^{\ell}\left(1-\frac{t}{\mu_j}\right),
+\]
+则 $q_\ell(0)=1$ 且 $q_\ell(\mu_j)=0$，故 $q_\ell(A)e_0=0$，
+于是 $e_\ell=0$。
+
+\keypoint{} 收敛速度由特征值分布控制。若
+\[
+  0<\lambda_{\min}\le\lambda(A)\le\lambda_{\max},\qquad
+  \kappa_2(A)=\frac{\lambda_{\max}}{\lambda_{\min}},
+\]
+则精确算术下有经典估计
+\[
+  \norm{e_m}_A
+  \le
+  2\left(\frac{\sqrt{\kappa_2(A)}-1}{\sqrt{\kappa_2(A)}+1}\right)^m
+  \norm{e_0}_A.
+\]
+所以条件数越小，CG 越快；如果特征值高度聚集，实际收敛通常比这个最坏情形估计更快。
+
+\keypoint{} CG \eng{Conjugate Gradient} 的理论性质：
+\begin{itemize}
+  \item 适用前提是 $A$ 对称正定；否则 $p_k^TAp_k$ 未必为正，算法和最小化解释都会失效。
+  \item 每步只需一次矩阵向量乘 $Ap_k$、若干内积和向量更新；不需要显式形成 $A^{-1}$。
+  \item 残差两两正交：$r_i^Tr_j=0$，$i\ne j$。
+  \item 搜索方向 $A$-共轭：$p_i^TAp_j=0$，$i\ne j$。
+  \item 误差在 $A$-范数下单调改进，$x_m$ 是 $x_0+\mathcal K_m(A,r_0)$ 中的最佳近似。
+  \item 精确算术下至多 $n$ 步收敛 \eng{finite termination}；若 $A$ 只有 $\ell$ 个互异特征值，则至多 $\ell$ 步收敛。
+  \item 共轭向量系给出
+  \[
+    A^{-1}=\sum_{k=1}^n\frac{p_kp_k^T}{p_k^TAp_k}.
+  \]
+\end{itemize}
+
+\exam{} 手算 CG 时建议按固定表格推进：
+\[
+  r_k^Tr_k,\qquad Ap_k,\qquad p_k^TAp_k,\qquad
+  \alpha_k,\qquad x_{k+1},\qquad r_{k+1},\qquad
+  \beta_k,\qquad p_{k+1}.
+\]
+具体步骤为：
+\begin{enumerate}
+  \item 先检查 $A=A^T>0$，通常用顺序主子式或特征值判断。
+  \item 由 $x_0$ 计算 $r_0=b-Ax_0$，令 $p_0=r_0$。
+  \item 每轮先算 $Ap_k$，再算 $p_k^TAp_k$ 和
+  $\alpha_k=(r_k^Tr_k)/(p_k^TAp_k)$。
+  \item 更新 $x_{k+1}=x_k+\alpha_kp_k$ 与
+  $r_{k+1}=r_k-\alpha_kAp_k$。
+  \item 若 $r_{k+1}=0$，立即停止；否则算
+  $\beta_k=(r_{k+1}^Tr_{k+1})/(r_k^Tr_k)$，
+  再更新 $p_{k+1}=r_{k+1}+\beta_kp_k$。
+\end{enumerate}
+考试小矩阵题中，分数最好保留到最后；若 $A$ 是 $n$ 阶 SPD 矩阵，理论上最多做
+$n$ 轮就应得到精确解。
+
+\exam{} 共轭向量展开公式的证明套路：若
+$p_1,\dots,p_n$ 非零且两两 $A$-共轭，则它们线性无关。事实上，若
+$\sum_i c_ip_i=0$，左乘 $p_j^TA$ 得
+\[
+  c_jp_j^TAp_j=0.
+\]
+由于 $A>0$ 且 $p_j\ne0$，$p_j^TAp_j>0$，故 $c_j=0$。于是
+$p_1,\dots,p_n$ 构成一组基。对任意 $v$，令 $w=A^{-1}v=\sum_k c_kp_k$，
+左乘 $p_k^TA$ 得
+\[
+  p_k^Tv=c_kp_k^TAp_k,\qquad
+  c_k=\frac{p_k^Tv}{p_k^TAp_k}.
+\]
+因此
+\[
+  A^{-1}v
+  =\sum_{k=1}^n\frac{p_kp_k^T}{p_k^TAp_k}v,
+\]
+即
+\[
+  A^{-1}=\sum_{k=1}^n\frac{p_kp_k^T}{p_k^TAp_k}.
+\]
+
+\keypoint{} 常见易错点：
+\begin{itemize}
+  \item 残差定义要统一。本文取 $r_k=b-Ax_k$，所以
+  $\nabla\phi(x_k)=-r_k$。
+  \item $\beta_k$ 的简洁公式依赖精确算术下的正交关系；浮点计算中通常只保证近似正交。
+  \item “至多 $n$ 步收敛”是精确算术结论；实际程序仍需用残差阈值作为停机准则。
+  \item CG 与最速下降第一步方向相同，但从第二步开始会加入旧方向修正，使搜索方向保持 $A$-共轭。
+\end{itemize}
+
+\subsection{回忆练习：迭代法与共轭梯度}
+
+\begin{enumerate}
+  \item 设 $Ax=b$ 的系数矩阵如下：
+  \[
+    A_1=\begin{bmatrix}2&1&1\\1&-1&-1\\1&1&-2\end{bmatrix},\qquad
+    A_2=\begin{bmatrix}1&2&-2\\1&1&-1\\2&-2&1\end{bmatrix}.
+  \]
+  分别求两个矩阵的 Jacobi 迭代矩阵，并判断 Jacobi 迭代法的收敛性。
+
+  \item 对方程组
+  \[
+    \begin{bmatrix}2&-1&0\\-1&2&-1\\0&-1&2\end{bmatrix}
+    \begin{bmatrix}x\\y\\z\end{bmatrix}
+    =
+    \begin{bmatrix}1\\1\\0\end{bmatrix},\qquad x^{(0)}=(0,0,0)^T,
+  \]
+  \begin{enumerate}[(1)]
+    \item 计算其 Jacobi 迭代解 $x^{(1)},x^{(2)}$；
+    \item 证明 Jacobi 方法关于该方程组收敛。
+  \end{enumerate}
+
+  \item 考虑线性方程组 $Ax=b$，其中
+  \[
+    A(a)=\begin{bmatrix}1&0&a\\0&1&0\\a&0&1\end{bmatrix}
+  \]
+  \begin{enumerate}[(1)]
+    \item $a$ 为何值时，$A$ 是正定的？
+    \item 写出 Jacobi 迭代法的迭代矩阵；$a$ 为何值时，Jacobi 迭代法收敛？
+    \item 写出 Gauss--Seidel 迭代法的迭代矩阵；$a$ 为何值时，Gauss--Seidel 迭代法收敛？
+  \end{enumerate}
+
+  \item 考虑二阶线性方程组
+  \[
+    A(\rho)=\begin{bmatrix}1&\rho\\ \rho&2\end{bmatrix},
+  \]
+  \begin{enumerate}[(1)]
+    \item 分别写出 Jacobi 迭代法和 Gauss--Seidel 迭代法的迭代格式；
+    \item 分别判断 Jacobi 迭代法与 Gauss--Seidel 迭代法在何时收敛。
+  \end{enumerate}
+
+  \item 设
+  \[
+    A=\begin{bmatrix}a_{11}&a_{12}\\a_{21}&a_{22}\end{bmatrix},\qquad a_{11}a_{22}\ne0,
+  \]
+  证明：求解 $Ax=b$ 的 Jacobi 迭代和 Gauss--Seidel 迭代同时收敛或同时发散。
+
+  \item 设 $A=A^T$ 只有 $k$ 个互不相同的特征值，$r\in\R^n$。证明
+  \[
+    \dim\mathrm{span}\{r,Ar,\dots,A^{n-1}r\}\le k.
+  \]
+  进一步说明为什么当 $A=A^T>0$ 且只有 $\ell$ 个互异特征值时，CG 至多 $\ell$ 步得到精确解。
+
+  \item 设
+  \[
+    A=\begin{bmatrix}2&1&0\\1&2&1\\0&1&1\end{bmatrix},\qquad
+    b=\begin{bmatrix}1\\0\\1\end{bmatrix},\qquad
+    x^{(0)}=\begin{bmatrix}0\\0\\1\end{bmatrix}.
+  \]
+  用共轭梯度法求解 $Ax=b$。
+
+  \item 设 $A$ 为 $n$ 阶对称正定矩阵，$p_1,p_2,\dots,p_n$ 为一列共轭向量，即满足
+  \[
+    p_i^TAp_j=0\qquad(i\ne j).
+  \]
+  试证明：
+  \begin{enumerate}[(1)]
+    \item $p_1,p_2,\dots,p_n$ 线性无关；
+    \item
+    \[
+      A^{-1}=\sum_{k=1}^n\frac{p_kp_k^T}{p_k^TAp_k}.
+    \]
+  \end{enumerate}
+\end{enumerate}
+
+%=====================================================================
+\section{特征值算法 \eng{Eigenvalue Algorithms}}
+%=====================================================================
+
+\subsection{幂法、反幂法与位移反幂法 \eng{Power Method and Inverse Iteration}}
+
+幂法 \eng{power method} 用于求模最大特征值。基本步骤为
+\[
+  y_{k+1}=Ax_k,\qquad x_{k+1}=\frac{y_{k+1}}{\norm{y_{k+1}}}.
+\]
+特征值可用 Rayleigh 商 \eng{Rayleigh quotient} 估计：
+\[
+  \lambda_k=\frac{x_k^TAx_k}{x_k^Tx_k}.
+\]
+若存在唯一占优特征值 $|\lambda_1|>|\lambda_2|\ge\cdots$，且初值在对应特征向量方向上有非零分量，幂法通常收敛。
+
+反幂法 \eng{inverse iteration} 对 $A^{-1}$ 做幂法，实际每步解
+\[
+  Ay_{k+1}=x_k.
+\]
+位移反幂法 \eng{shifted inverse iteration} 每步解
+\[
+  (A-\mu I)y_{k+1}=x_k,
+\]
+用于求靠近 $\mu$ 的特征值。
+
+\impl{} 多项式模最大根可转化为友矩阵 \eng{companion matrix} 特征值问题，这是 \texttt{hw12} 的上机题。
+
+\subsection{QR 方法 \eng{QR Algorithm}}
+
+基本 QR 迭代 \eng{basic QR iteration}：
+\[
+  A_k=Q_kR_k,\qquad A_{k+1}=R_kQ_k.
+\]
+因为
+\[
+  A_{k+1}=Q_k^TA_kQ_k,
+\]
+所以每一步与原矩阵正交相似，特征值不变。若收敛到上三角或准上三角形式，对角块给出特征值。
+
+带位移 QR \eng{shifted QR iteration}：
+\[
+  A_k-\mu_k I=Q_kR_k,\qquad A_{k+1}=R_kQ_k+\mu_k I.
+\]
+位移 $\mu_k$ 越接近目标特征值，通常收敛越快。
+
+\impl{} 一般矩阵先化为上 Hessenberg 矩阵，再做 QR，可把单步 QR 从 $O(n^3)$ 降低到约 $O(n^2)$。
+对称矩阵先正交相似化为三对角矩阵，再用 Givens 做隐式带位移 QR。
+
+\subsection{Hessenberg 与隐式 QR \eng{Hessenberg Reduction and Implicit QR}}
+
+上 Hessenberg 矩阵 \eng{upper Hessenberg matrix} 满足 $h_{ij}=0$ 当 $i>j+1$。
+Householder 变换可把一般矩阵正交相似化为上 Hessenberg 矩阵：
+\[
+  H=Q^TAQ.
+\]
+对称矩阵会进一步化为三对角阵 \eng{tridiagonal matrix}。
+
+\keypoint{} \texttt{hw13} 的 Hessenberg 题应会证明：
+\begin{itemize}
+  \item 若 $X=[x,Ax,\dots,A^{n-1}x]$ 非奇异，则 $X^{-1}AX$ 是上 Hessenberg 矩阵。
+  \item 不可约上 Hessenberg 矩阵可经对角相似变换把次对角元化为 $1$。
+  \item 奇异不可约上 Hessenberg 矩阵做一次基本 QR 后，零特征值会显现。
+\end{itemize}
+
+\subsection{Jacobi 方法 \eng{Jacobi Eigenvalue Algorithm}}
+
+对实对称矩阵，Jacobi 方法 \eng{Jacobi eigenvalue algorithm} 通过一系列 Givens 旋转逐个消去非对角元：
+\[
+  A_{k+1}=G_k^TA_kG_k.
+\]
+每一步保持对称性和特征值不变，同时减少非对角元素平方和
+\[
+  \off(A)^2=\sum_{i\ne j}a_{ij}^2.
+\]
+最终 $A_k$ 趋于对角阵，对角元为特征值，累乘的正交矩阵列向量为特征向量。
+
+\impl{} 过关 Jacobi 方法 \eng{threshold Jacobi method} 按阈值扫描非对角元，\texttt{hw15} 的上机题就是完整实现模板。
+
+\subsection{Sturm 二分法 \eng{Sturm Bisection Method}}
+
+对实对称三对角矩阵
+\[
+  T=
+  \begin{bmatrix}
+    \alpha_1&\beta_1\\
+    \beta_1&\alpha_2&\ddots\\
+    &\ddots&\ddots&\beta_{n-1}\\
+    &&\beta_{n-1}&\alpha_n
+  \end{bmatrix},
+\]
+定义 Sturm 序列 \eng{Sturm sequence}
+\[
+  p_0(\lambda)=1,\quad p_1(\lambda)=\alpha_1-\lambda,
+\]
+\[
+  p_i(\lambda)=(\alpha_i-\lambda)p_{i-1}(\lambda)-\beta_{i-1}^2p_{i-2}(\lambda).
+\]
+设 $V(\lambda)$ 为 $p_0(\lambda),p_1(\lambda),\dots,p_n(\lambda)$ 中符号变化次数，则由 Sturm 定理
+\eng{Sturm theorem} 得
+\[
+  \#\{\text{$T$ 的特征值小于 }\lambda\}=V(\lambda).
+\]
+因此可用二分法 \eng{bisection method} 定位第 $m$ 个特征值。
+
+\impl{} 为避免高次多项式溢出，实际计算比值
+\[
+  q_1=\alpha_1-\lambda,\qquad
+  q_i=\alpha_i-\lambda-\frac{\beta_{i-1}^2}{q_{i-1}},
+\]
+统计 $q_1,\dots,q_n$ 的负号个数即可。
+
+\subsection{回忆练习：特征值、Hessenberg 与 QR}
+
+\begin{enumerate}
+  \item 分别应用幂法于矩阵
+  \[
+    A=\begin{bmatrix}\lambda&1\\0&\lambda\end{bmatrix},\qquad
+    B=\begin{bmatrix}\lambda&1\\0&-\lambda\end{bmatrix},\qquad \lambda>0,
+  \]
+  分析幂法得到的迭代序列、特征值近似和特征向量近似的行为。
+
+  \item 设
+  \[
+    A=\begin{bmatrix}2&-1\\-1&2\end{bmatrix}.
+  \]
+  用 Jacobi 方法求其特征值。
+
+  \item 默写实数域上矩阵 $A$ 的 Schur 分解定理 \eng{real Schur decomposition}。
+
+  \item 设
+  \[
+    A=\begin{bmatrix}8&3&-2\\0&2&4\\0&2&-1\end{bmatrix}.
+  \]
+  通过正交相似变换将 $A$ 变换为一个上 Hessenberg 矩阵。
+
+  \item 设
+  \[
+    A=\begin{bmatrix}3&*&*\\0&*&*\\-1&*&*\end{bmatrix}.
+  \]
+  用 Householder 变换将 $A$ 相似变换为上 Hessenberg 矩阵 $B$。（此题来自回忆图，星号处原图未给出具体数值。）
+
+  \item 对
+  \[
+    A=\begin{bmatrix}
+      1&1&2&2\\
+      1&29&28&25\\
+      2&-2&-1&2\\
+      2&1&-13&-1
+    \end{bmatrix},
+  \]
+  使用 Householder 变换将 $A$ 归约为上 Hessenberg 矩阵。即找出 $u_1,u_2$，使
+  \[
+    P_1=I_3-2u_1u_1^T,\qquad P_2=I_2-2u_2u_2^T.
+  \]
+  并有
+  \[
+    \begin{bmatrix}I_2&0\\0&P_2\end{bmatrix}
+    \begin{bmatrix}1&0\\0&P_1\end{bmatrix}
+    A
+    \begin{bmatrix}1&0\\0&P_1\end{bmatrix}
+    \begin{bmatrix}I_2&0\\0&P_2\end{bmatrix}
+    =H_0,
+  \]
+  其中 $H_0$ 为上 Hessenberg 矩阵。
+
+  \item 写出对 $H_0\in\R^{n\times n}$ 的 QR 迭代算法的伪代码：
+  \[
+    H_k=Q_kR_k,\qquad H_{k+1}=R_kQ_k.
+  \]
+  并证明 QR 迭代保持 Hessenberg 结构，即若 $H_0$ 为上 Hessenberg 矩阵，则
+  $H_1,H_2,\dots$ 均为上 Hessenberg 矩阵。
+\end{enumerate}
+
+%=====================================================================
+\section{重点习题索引}
+%=====================================================================
+
+\begin{longtable}{@{}p{1.4cm}p{4.1cm}p{8.5cm}@{}}
+\toprule
+\textbf{作业} & \textbf{主题} & \textbf{建议优先复习的题型}\\
+\midrule
+\endhead
+\texttt{hw1} & Gauss 消元 \eng{Gaussian elimination} 基础 & 1.1 下三角逆算法；1.7 对称性经一步消元保持；1.8 严格对角占优经一步消元保持；1.10 正定性经一步消元保持。\\
+\texttt{hw2} & LU 与主元 \eng{LU factorization and pivoting} & 三角阵逆的结构；从右往左消元得到 $A=UL$；同一矩阵的 $LU$、$PA=LU$、$PAQ=LU$；无主元/列主元程序。\\
+\texttt{hw3} & 直接分解法 \eng{direct factorization methods} & 平方根法；改进平方根法 $LDL^T$；追赶法；Gauss--Jordan 求逆；Cholesky 与列主元 Gauss 的比较。\\
+\texttt{hw4} & 范数 \eng{norms} & $p$ 范数证明；$1,2,\infty$ 范数等价；Frobenius 矩阵范数；矩阵范数不等式；LU 增长因子估计。\\
+\texttt{hw5} & 条件数 \eng{condition number} & 谱范数性质；二阶/三阶矩阵条件数；Hilbert 矩阵条件数实验；列主元 Gauss 的误差现象。\\
+\texttt{hw6} & 舍入与稳定性 \eng{roundoff and stability} & 标准浮点模型；连乘、顺序求和、矩阵向量乘法、点积的舍入误差；三对角矩阵列主元增长因子 $\rho\le2$；带状矩阵后向误差。\\
+\texttt{hw7} & 最小二乘 \eng{least squares} 基础 & $\mathcal N(A^TA)=\mathcal N(A)$；正规方程与最小二乘唯一性；小矩阵最小二乘手算。\\
+\texttt{hw8} & 正交化与 QR \eng{orthogonalization and QR} & Householder 构造；Givens 正交性；用 Householder 把 $x$ 化到 $e_1$ 方向；Hadamard 行列式不等式；QR 解方程和最小二乘。\\
+\texttt{hw10} & 经典迭代法 \eng{classical stationary iterations} & Jacobi/GS/SOR 收敛性；严格对角占优和弱不可约对角占优；$2\times2$ SPD 的 Jacobi 收敛；边值问题离散后的迭代比较。\\
+\texttt{hw11} & SPD 迭代法 \eng{SPD iterative methods} & 最速下降收敛估计；CG 残差与步长恒等式；Krylov 子空间维数；手算 CG；共轭向量展开 $A^{-1}$；互异特征值个数控制 CG 步数。\\
+\texttt{hw12} & 幂法 \eng{power method} & Jordan 块与正负占优特征值下的幂法行为；友矩阵求多项式模最大根。\\
+\texttt{hw13} & QR 理论 \eng{QR theory} & 基本 QR 迭代的相似性与收敛限制；Hessenberg 化；不可约 Hessenberg 的结构；位移 QR 的乘积恒等式。\\
+\texttt{hw14} & 隐式 QR \eng{implicit QR algorithm} & 一般实矩阵隐式 QR；友矩阵求高次多项式全部根；对称三对角 QR 与 Wilkinson 位移。\\
+\texttt{hw15} & Jacobi 特征值法 \eng{Jacobi eigenvalue algorithm} & 实对称三对角阵的过关 Jacobi；非对角范数下降；特征向量残差检查。\\
+\bottomrule
+\end{longtable}
+
+\subsection{最值得手写一遍的算法}
+
+\begin{enumerate}
+  \item 前代、回代；无主元 LU；列主元 LU。
+  \item Cholesky、$LDL^T$、追赶法。
+  \item Householder QR 与 Givens 消元。
+  \item Jacobi、Gauss--Seidel、SOR 的迭代矩阵。
+  \item 最速下降和共轭梯度。
+  \item 幂法、位移反幂法、基本/位移 QR。
+  \item Jacobi 特征值方法和 Sturm 二分法。
+\end{enumerate}
+
+\subsection{考试中常用的自检方式}
+
+\begin{itemize}
+  \item 解出 $x$ 后代回 $Ax$，至少检查数量级和关键分量。
+  \item 分解题检查 $LU$、$LL^T$、$LDL^T$ 或 $QR$ 是否能乘回原矩阵。
+  \item 正交变换题检查 $Q^TQ=I$，相似变换题检查特征值不应改变。
+  \item 浮点误差题先写标准模型 $\fl(a\circ b)=(a\circ b)(1+\delta)$，再合并误差因子为 $\gamma_m$。
+  \item 迭代法题先写迭代矩阵 $B$，再谈 $\rho(B)$ 或 $\norm{B}$。
+  \item 特征值题用迹、行列式、Gershgorin 圆盘或小矩阵精确特征值做 sanity check。
+\end{itemize}
+
+\end{document}

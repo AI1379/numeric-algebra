@@ -1,0 +1,1706 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1.2cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\headheight}{12.5pt}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+\usepackage[UTF8]{ctex}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
+
+\input{../common/macros.tex}
+
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\fl}{\operatorname{fl}}
+\newcommand{\tridiag}{\operatorname{tridiag}}
+\newcommand{\oldtag}{\textcolor{red!65!black}{\textbf{回忆题}}}
+\newcommand{\simtag}{\textcolor{blue!65!black}{\textbf{同型题}}}
+\newcommand{\answertag}{\textcolor{green!45!black}{\textbf{核对}}}
+\newcommand{\eng}[1]{\texorpdfstring{{\normalfont\rmfamily\itshape\textcolor{blue!65!black}{(#1)}}}{(#1)}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{数值代数历年回忆卷}
+\rhead{\today}
+
+\begin{center}
+  {\Large\bfseries 数值代数历年回忆卷整理}\\[6pt]
+  {\large 按难度梯度重排，并附同型计算题}
+\end{center}
+
+\noindent 本文把 \texttt{review.tex} 中分散在各章的回忆题重新整理成一份单独的刷题文档。
+难度按“手算量、知识耦合度、证明抽象度”排序，不代表真实试卷题号顺序。最后一节给出一组相似计算题，并附简短核对答案。
+
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section{难度梯度说明}
+%=====================================================================
+
+\begin{center}
+\begin{tabular}{@{}p{2.2cm}p{11.5cm}@{}}
+\toprule
+\textbf{梯度} & \textbf{定位}\\
+\midrule
+第一梯度 & 基础识别与一步计算：范数、正定性、一两步迭代、二维正交变换、简单特征值。\\
+第二梯度 & 标准算法手算：LU/PLU、Cholesky、$LDL^T$、追赶法、正规方程。\\
+第三梯度 & 参数与迭代综合：迭代矩阵、谱半径收敛判别、CG 手算。\\
+第四梯度 & 证明分析题：浮点误差、范数性质、最小二乘投影、Krylov 与共轭向量。\\
+第五梯度 & 拓展挑战题：Householder 相似变换、Hessenberg/QR、幂法异常情形、SVD。\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\section{第一梯度：基础识别与一步计算}
+%=====================================================================
+
+\begin{enumerate}
+  \item \oldtag{} 设
+  \[
+    x=(-1,2,-3,4)^T.
+  \]
+  求 $\norm{x}_1,\norm{x}_2,\norm{x}_\infty$。
+
+  \item \oldtag{} 设
+  \[
+    A(a)=\begin{bmatrix}1&0&a\\0&1&0\\a&0&1\end{bmatrix}
+  \]
+  是线性方程组 $Ax=b$ 的系数矩阵。问：$a$ 为何值时，$A$ 是正定的？
+
+  \item \oldtag{} 对方程组
+  \[
+    \begin{bmatrix}2&-1&0\\-1&2&-1\\0&-1&2\end{bmatrix}
+    \begin{bmatrix}x\\y\\z\end{bmatrix}
+    =
+    \begin{bmatrix}1\\1\\0\end{bmatrix},\qquad x^{(0)}=(0,0,0)^T,
+  \]
+  \begin{enumerate}[(1)]
+    \item 计算其 Jacobi 迭代解 $x^{(1)},x^{(2)}$；
+    \item 证明 Jacobi 方法关于该方程组收敛。
+  \end{enumerate}
+
+  \item \oldtag{} 确定 $c=\cos\theta$、$s=\sin\theta$ 和 $\beta$，使
+  \[
+    \begin{bmatrix}c&s\\-s&c\end{bmatrix}
+    \begin{bmatrix}7\\-1\end{bmatrix}
+    =
+    \begin{bmatrix}\beta\\\beta\end{bmatrix}.
+  \]
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}2&-1\\-1&2\end{bmatrix}.
+  \]
+  用 Jacobi 方法求其特征值。
+
+  \item \oldtag{} 默写实数域上矩阵 $A$ 的 Schur 分解定理 \eng{real Schur decomposition}。
+\end{enumerate}
+
+%=====================================================================
+\section{第二梯度：标准算法手算}
+%=====================================================================
+
+\begin{enumerate}
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}1&4&7\\2&5&8\\3&6&10\end{bmatrix},\qquad
+    b=\begin{bmatrix}1\\1\\1\end{bmatrix}.
+  \]
+  求 $A$ 的 $LU$ 分解和 $PLU$ 分解，分别求解方程 $Ax=b$。
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}1&-1&3\\4&-2&1\\-3&-1&-4\end{bmatrix}.
+  \]
+  计算 $A$ 选取列主元的 $LU$ 分解，即 $PA=LU$，求 $P,L,U$。
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}-1&2&0\\-3&11&0\\0&10&2\end{bmatrix},\qquad
+    b=\begin{bmatrix}0\\5\\4\end{bmatrix}.
+  \]
+  \begin{enumerate}[(1)]
+    \item 求矩阵 $A$ 的 $LU$ 分解；
+    \item 求矩阵 $A$ 的列主元 $LU$ 分解，写出 $P,L,U$；
+    \item 求解方程 $Ax=b$；
+    \item 说明为什么要在高斯消去法中选主元，并举出没有 $LU$ 分解的非奇异矩阵的例子。
+  \end{enumerate}
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}4&-2&0\\-2&2&1\\0&1&10\end{bmatrix}.
+  \]
+  \begin{enumerate}[(1)]
+    \item 证明 $A$ 为对称正定矩阵；
+    \item 计算其 Cholesky 分解。
+  \end{enumerate}
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}
+      10&8&4&8\\
+      8&13&10&7\\
+      4&10&9&12\\
+      8&7&12&15
+    \end{bmatrix},\qquad
+    b=\begin{bmatrix}38\\18\\35\\42\end{bmatrix}.
+  \]
+  用平方根法求解 $Ax=b$。
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}
+      4&-2&4&2\\
+      -2&10&-2&-7\\
+      4&-2&8&4\\
+      2&-7&4&7
+    \end{bmatrix},\qquad
+    b=\begin{bmatrix}8\\2\\16\\6\end{bmatrix}.
+  \]
+  用改进平方根法求解 $Ax=b$。
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}-2&-4&0\\-4&-2&0\\0&0&4\end{bmatrix},\qquad
+    b=\begin{bmatrix}0\\6\\4\end{bmatrix}.
+  \]
+  \begin{enumerate}[(1)]
+    \item 求 $\norm{A}_1,\norm{A}_2,\norm{A}_\infty$；
+    \item 用追赶法求解 $Ax=b$。
+  \end{enumerate}
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}0&-1\\3&2\\0&-2\end{bmatrix},\qquad
+    b=\begin{bmatrix}-1/3\\5/3\\-2/3\end{bmatrix},
+  \]
+  \begin{enumerate}[(1)]
+    \item 求 $Ax=b$ 的最小二乘解的正规方程；
+    \item 用平方根法解该正规方程。
+  \end{enumerate}
+\end{enumerate}
+
+%=====================================================================
+\section{第三梯度：参数、收敛与迭代综合}
+%=====================================================================
+
+\begin{enumerate}
+  \item \oldtag{} 设 $Ax=b$ 的系数矩阵如下：
+  \[
+    A_1=\begin{bmatrix}2&1&1\\1&-1&-1\\1&1&-2\end{bmatrix},\qquad
+    A_2=\begin{bmatrix}1&2&-2\\1&1&-1\\2&-2&1\end{bmatrix}.
+  \]
+  分别求两个矩阵的 Jacobi 迭代矩阵，并判断 Jacobi 迭代法的收敛性。
+
+  \item \oldtag{} 考虑线性方程组 $Ax=b$，其中
+  \[
+    A(a)=\begin{bmatrix}1&0&a\\0&1&0\\a&0&1\end{bmatrix}.
+  \]
+  \begin{enumerate}[(1)]
+    \item $a$ 为何值时，$A$ 是正定的？
+    \item 写出 Jacobi 迭代法的迭代矩阵；$a$ 为何值时，Jacobi 迭代法收敛？
+    \item 写出 Gauss--Seidel 迭代法的迭代矩阵；$a$ 为何值时，Gauss--Seidel 迭代法收敛？
+  \end{enumerate}
+
+  \item \oldtag{} 考虑二阶线性方程组
+  \[
+    A(\rho)=\begin{bmatrix}1&\rho\\ \rho&2\end{bmatrix}.
+  \]
+  \begin{enumerate}[(1)]
+    \item 分别写出 Jacobi 迭代法和 Gauss--Seidel 迭代法的迭代格式；
+    \item 分别判断 Jacobi 迭代法与 Gauss--Seidel 迭代法在何时收敛。
+  \end{enumerate}
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}a_{11}&a_{12}\\a_{21}&a_{22}\end{bmatrix},\qquad a_{11}a_{22}\ne0.
+  \]
+  证明：求解 $Ax=b$ 的 Jacobi 迭代和 Gauss--Seidel 迭代同时收敛或同时发散。
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}2&1&0\\1&2&1\\0&1&1\end{bmatrix},\qquad
+    b=\begin{bmatrix}1\\0\\1\end{bmatrix},\qquad
+    x^{(0)}=\begin{bmatrix}0\\0\\1\end{bmatrix}.
+  \]
+  用共轭梯度法求解 $Ax=b$。
+\end{enumerate}
+
+%=====================================================================
+\section{第四梯度：证明分析题}
+%=====================================================================
+
+\begin{enumerate}
+  \item \oldtag{} 在标准浮点模型下，证明顺序连乘满足
+  \[
+    \fl(x_1\cdots x_n)=x_1\cdots x_n(1+\varepsilon),\qquad
+    |\varepsilon|\le\gamma_{n-1}.
+  \]
+
+  \item \oldtag{} 证明顺序求和可写成
+  \[
+    \fl\left(\sum_{i=1}^n x_i\right)=\sum_{i=1}^n x_i(1+\eta_i),
+  \]
+  并给出 $\eta_i$ 的上界。
+
+  \item \oldtag{} 证明矩阵向量乘法具有后向误差形式
+  \[
+    \fl(Ax)=(A+E)x,
+  \]
+  并估计 $E$ 的元素级上界。
+
+  \item \oldtag{} 证明
+  \[
+    \fl(x^Tx)=x^Tx(1+\alpha),\qquad |\alpha|\le n\mathbf u+O(\mathbf u^2).
+  \]
+
+  \item \oldtag{} 设 $X\in\R^{n\times n}$ 非奇异，对任意 $A\in\R^{n\times n}$ 定义
+  \[
+    \norm{A}_X=\norm{X^{-1}AX}_2.
+  \]
+  证明 $\norm{\cdot}_X$ 是矩阵范数。
+
+  \item \oldtag{} 对 $A\in\R^{n\times n}$，定义
+  \[
+    \norm{A}_{\max}=\max_{i,j}|a_{ij}|,
+  \]
+  证明 $\norm{\cdot}_{\max}$ 是一个向量意义下的范数，并举例说明它不满足矩阵范数的相容性。
+
+  \item \oldtag{} 设 $A=(a_{ij})\in\R^{n\times n}$，
+  \[
+    \norm{A}_F=\left(\sum_{i,j=1}^n |a_{ij}|^2\right)^{1/2}.
+  \]
+  \begin{enumerate}[(1)]
+    \item 证明 $\norm{\cdot}_F$ 是一个矩阵范数；
+    \item 设 $U,V$ 是正交阵，证明
+    \[
+      \norm{A}_F=\norm{U^TAV}_F.
+    \]
+  \end{enumerate}
+
+  \item \oldtag{} 设 $A\in\R^{m\times n}$，$m>n$，且 $A$ 列满秩。证明
+  \[
+    \norm{A(A^TA)^{-1}A^T}_2=1.
+  \]
+
+  \item \oldtag{} 设 $A\in\R^{m\times n}$，$X\in\R^{n\times m}$。若存在 $X$，使得对任意
+  $b\in\R^m$，$x=Xb$ 都能使 $\norm{b-Ax}_2$ 最小。求证：
+  \[
+    (1)\ AXA=A;\qquad (2)\ (AX)^T=AX.
+  \]
+
+  \item \oldtag{} 设 $A=A^T$ 只有 $k$ 个互不相同的特征值，$r\in\R^n$。证明
+  \[
+    \dim\mathrm{span}\{r,Ar,\dots,A^{n-1}r\}\le k.
+  \]
+  进一步说明为什么当 $A=A^T>0$ 且只有 $\ell$ 个互异特征值时，CG 至多 $\ell$ 步得到精确解。
+
+  \item \oldtag{} 设 $A$ 为 $n$ 阶对称正定矩阵，$p_1,p_2,\dots,p_n$ 为一列共轭向量，即满足
+  \[
+    p_i^TAp_j=0\qquad(i\ne j).
+  \]
+  试证明：
+  \begin{enumerate}[(1)]
+    \item $p_1,p_2,\dots,p_n$ 线性无关；
+    \item
+    \[
+      A^{-1}=\sum_{k=1}^n\frac{p_kp_k^T}{p_k^TAp_k}.
+    \]
+  \end{enumerate}
+\end{enumerate}
+
+%=====================================================================
+\section{第五梯度：拓展挑战题}
+%=====================================================================
+
+\begin{enumerate}
+  \item \oldtag{} 分别应用幂法于矩阵
+  \[
+    A=\begin{bmatrix}\lambda&1\\0&\lambda\end{bmatrix},\qquad
+    B=\begin{bmatrix}\lambda&1\\0&-\lambda\end{bmatrix},\qquad \lambda>0,
+  \]
+  分析幂法得到的迭代序列、特征值近似和特征向量近似的行为。
+
+  \item \oldtag{} 设
+  \[
+    x=(3,1,6,4,2,2)^T.
+  \]
+  求 Householder 变换 $H$ 和常数 $\alpha$，使得
+  \[
+    Hx=(3,\alpha,4,6,0,0)^T.
+  \]
+
+  \item \oldtag{} 设 $x\ne0$ 且 $x$ 与 $e_1$ 不平行。求 Householder 变换 $H$，使
+  \[
+    Hx=\norm{x}_2e_1.
+  \]
+  判断 $He_1$ 是否与 $x$ 平行，并说明理由。
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}8&3&-2\\0&2&4\\0&2&-1\end{bmatrix}.
+  \]
+  通过正交相似变换将 $A$ 变换为一个上 Hessenberg 矩阵。
+
+  \item \oldtag{} 设
+  \[
+    A=\begin{bmatrix}3&*&*\\0&*&*\\-1&*&*\end{bmatrix}.
+  \]
+  用 Householder 变换将 $A$ 相似变换为上 Hessenberg 矩阵 $B$。（此题来自回忆图，星号处原图未给出具体数值。）
+
+  \item \oldtag{} 对
+  \[
+    A=\begin{bmatrix}
+      1&1&2&2\\
+      1&29&28&25\\
+      2&-2&-1&2\\
+      2&1&-13&-1
+    \end{bmatrix},
+  \]
+  使用 Householder 变换将 $A$ 归约为上 Hessenberg 矩阵。即找出 $u_1,u_2$，使
+  \[
+    P_1=I_3-2u_1u_1^T,\qquad P_2=I_2-2u_2u_2^T.
+  \]
+  并有
+  \[
+    \begin{bmatrix}I_2&0\\0&P_2\end{bmatrix}
+    \begin{bmatrix}1&0\\0&P_1\end{bmatrix}
+    A
+    \begin{bmatrix}1&0\\0&P_1\end{bmatrix}
+    \begin{bmatrix}I_2&0\\0&P_2\end{bmatrix}
+    =H_0,
+  \]
+  其中 $H_0$ 为上 Hessenberg 矩阵。
+
+  \item \oldtag{} 写出对 $H_0\in\R^{n\times n}$ 的 QR 迭代算法的伪代码：
+  \[
+    H_k=Q_kR_k,\qquad H_{k+1}=R_kQ_k.
+  \]
+  并证明 QR 迭代保持 Hessenberg 结构，即若 $H_0$ 为上 Hessenberg 矩阵，则
+  $H_1,H_2,\dots$ 均为上 Hessenberg 矩阵。
+
+  \item \oldtag{} 设 $A\in\R^{m\times n}$，$m\ge n$，其奇异值满足
+  \[
+    \sigma_1\ge\sigma_2\ge\cdots\ge\sigma_r>
+    \sigma_{r+1}=\cdots=\sigma_n=0,
+  \]
+  且奇异值分解为
+  \[
+    A=U\Sigma V^T,\qquad
+    U=[u_1,\dots,u_m],\quad V=[v_1,\dots,v_n],
+  \]
+  其中 $U,V$ 均为正交阵。
+  \begin{enumerate}[(1)]
+    \item 用奇异值分解定义 $A$ 的 Moore--Penrose 广义逆；
+    \item 对任意 $v\in\R^n$，证明
+    \[
+      \norm{Av}_2\le\sigma_1\norm{v}_2,\qquad
+      \norm{Av}_2\ge\sigma_n\norm{v}_2,
+    \]
+    并说明 $v$ 满足什么条件时上述等号成立；
+    \item （附加）证明奇异值的极大极小刻画：
+    \[
+      \sigma_k=\min_{\dim V=n-k+1}\max_{0\ne v\in V}\frac{\norm{Av}_2}{\norm{v}_2}
+      =
+      \max_{\dim V=k}\min_{0\ne v\in V}\frac{\norm{Av}_2}{\norm{v}_2}.
+    \]
+  \end{enumerate}
+\end{enumerate}
+
+\newpage
+
+%=====================================================================
+\section{同型计算题集中训练}
+%=====================================================================
+
+\subsection{直接法}
+
+\begin{enumerate}
+  \item \simtag{} 设
+  \[
+    A=\begin{bmatrix}2&1&1\\4&5&3\\-2&5&4\end{bmatrix},\qquad
+    b=\begin{bmatrix}4\\12\\5\end{bmatrix}.
+  \]
+  求 $A=LU$，并解 $Ax=b$。
+
+  \item \simtag{} 设
+  \[
+    A=\begin{bmatrix}0&2&1\\1&1&0\\2&-1&1\end{bmatrix},\qquad
+    b=\begin{bmatrix}1\\2\\3\end{bmatrix}.
+  \]
+  按列主元消去计算 $PA=LU$，并解 $Ax=b$。
+
+  \item \simtag{} 设
+  \[
+    A=\begin{bmatrix}4&2&-2\\2&10&2\\-2&2&5\end{bmatrix},\qquad
+    b=\begin{bmatrix}2\\8\\-1\end{bmatrix}.
+  \]
+  先判断 $A$ 是否正定，再用 Cholesky 分解求解 $Ax=b$。
+
+  \item \simtag{} 设
+  \[
+    A=\begin{bmatrix}2&-2&0\\-2&5&1\\0&1&3\end{bmatrix},\qquad
+    b=\begin{bmatrix}0\\3\\4\end{bmatrix}.
+  \]
+  用改进平方根法，即 $A=LDL^T$，求解 $Ax=b$。
+
+  \item \simtag{} 用追赶法求解三对角方程组
+  \[
+    \begin{bmatrix}
+      4&-1&0&0\\
+      -2&5&-1&0\\
+      0&-1&4&-1\\
+      0&0&-2&3
+    \end{bmatrix}
+    x=
+    \begin{bmatrix}3\\4\\5\\1\end{bmatrix}.
+  \]
+
+  \item \simtag{} 用 Gauss--Jordan 消元求
+  \[
+    A=\begin{bmatrix}1&2&1\\0&1&1\\2&1&0\end{bmatrix}
+  \]
+  的逆矩阵。
+\end{enumerate}
+
+\subsection{范数、最小二乘与正交变换}
+
+\begin{enumerate}
+  \item \simtag{} 设 $x=(2,-1,2,-2)^T$。求
+  $\norm{x}_1,\norm{x}_2,\norm{x}_\infty$。
+
+  \item \simtag{} 设
+  \[
+    T=\begin{bmatrix}
+      2&-1&0\\
+      -1&2&-1\\
+      0&-1&2
+    \end{bmatrix}.
+  \]
+  求 $\norm{T}_1,\norm{T}_2,\norm{T}_\infty,\kappa_2(T)$。
+
+  \item \simtag{} 对超定方程组 $Ax\approx b$，其中
+  \[
+    A=\begin{bmatrix}1&0\\1&1\\1&2\end{bmatrix},\qquad
+    b=\begin{bmatrix}1\\2\\2\end{bmatrix}.
+  \]
+  写出正规方程，并求最小二乘解。
+
+  \item \simtag{} 构造 Householder 矩阵 $H$，使
+  \[
+    H(1,2,2)^T=3e_1.
+  \]
+
+  \item \simtag{} 确定 $c,s$，使
+  \[
+    \begin{bmatrix}c&s\\-s&c\end{bmatrix}
+    \begin{bmatrix}3\\4\end{bmatrix}
+    =
+    \begin{bmatrix}5\\0\end{bmatrix}.
+  \]
+\end{enumerate}
+
+\subsection{迭代法与特征值}
+
+\begin{enumerate}
+  \item \simtag{} 设
+  \[
+    A(a)=\begin{bmatrix}2&a\\a&3\end{bmatrix}.
+  \]
+  写出 Jacobi 与 Gauss--Seidel 迭代矩阵，并判断两种方法关于参数 $a$ 的收敛范围。
+
+  \item \simtag{} 对
+  \[
+    A=\begin{bmatrix}2&1\\1&2\end{bmatrix},\qquad b=\begin{bmatrix}1\\0\end{bmatrix},\qquad x^{(0)}=0,
+  \]
+  用共轭梯度法计算到精确解。
+
+  \item \simtag{} 对
+  \[
+    A=\begin{bmatrix}3&0\\0&1\end{bmatrix},\qquad x^{(0)}=(1,1)^T,
+  \]
+  采用无穷范数归一化的幂法，写出 $x^{(1)},x^{(2)}$ 和对应主特征值近似。
+
+  \item \simtag{} 对
+  \[
+    A=\begin{bmatrix}2&1\\1&2\end{bmatrix}
+  \]
+  做一步 QR 迭代：$A=QR,\ A_1=RQ$。
+\end{enumerate}
+
+\subsection{同型题核对答案}
+
+\begin{enumerate}
+  \item \answertag{}
+  \[
+    L=\begin{bmatrix}1&0&0\\2&1&0\\-1&2&1\end{bmatrix},\quad
+    U=\begin{bmatrix}2&1&1\\0&3&1\\0&0&3\end{bmatrix},\quad
+    x=\begin{bmatrix}11/9\\11/9\\1/3\end{bmatrix}.
+  \]
+
+  \item \answertag{}
+  \[
+    P=\begin{bmatrix}0&0&1\\1&0&0\\0&1&0\end{bmatrix},\quad
+    L=\begin{bmatrix}1&0&0\\0&1&0\\1/2&3/4&1\end{bmatrix},\quad
+    U=\begin{bmatrix}2&-1&1\\0&2&1\\0&0&-5/4\end{bmatrix},
+  \]
+  \[
+    x=\begin{bmatrix}8/5\\2/5\\1/5\end{bmatrix}.
+  \]
+
+  \item \answertag{} 顺序主子式为 $4,36,108$，故 $A$ 正定；
+  \[
+    L=\begin{bmatrix}2&0&0\\1&3&0\\-1&1&\sqrt3\end{bmatrix},\qquad
+    x=\begin{bmatrix}-11/27\\28/27\\-7/9\end{bmatrix}.
+  \]
+
+  \item \answertag{}
+  \[
+    L=\begin{bmatrix}1&0&0\\-1&1&0\\0&1/3&1\end{bmatrix},\quad
+    D=\diag(2,3,8/3),\quad
+    x=\begin{bmatrix}5/8\\5/8\\9/8\end{bmatrix}.
+  \]
+
+  \item \answertag{}
+  \[
+    x=\begin{bmatrix}197/168\\71/42\\59/28\\73/42\end{bmatrix}.
+  \]
+
+  \item \answertag{}
+  \[
+    A^{-1}=\begin{bmatrix}-1&1&1\\2&-2&-1\\-2&3&1\end{bmatrix}.
+  \]
+
+  \item \answertag{} $\norm{x}_1=7,\ \norm{x}_2=\sqrt{13},\ \norm{x}_\infty=2$。
+
+  \item \answertag{} $\norm{T}_1=4,\ \norm{T}_\infty=4$，
+  特征值为 $2-\sqrt2,2,2+\sqrt2$，所以
+  \[
+    \norm{T}_2=2+\sqrt2,\qquad \kappa_2(T)=3+2\sqrt2.
+  \]
+
+  \item \answertag{}
+  \[
+    A^TA=\begin{bmatrix}3&3\\3&5\end{bmatrix},\qquad
+    A^Tb=\begin{bmatrix}5\\6\end{bmatrix},\qquad
+    x=\begin{bmatrix}7/6\\1/2\end{bmatrix}.
+  \]
+
+  \item \answertag{} 可取
+  \[
+    u=\frac{1}{\sqrt3}(-1,1,1)^T,\qquad
+    H=I-2uu^T=
+    \begin{bmatrix}
+      1/3&2/3&2/3\\
+      2/3&1/3&-2/3\\
+      2/3&-2/3&1/3
+    \end{bmatrix}.
+  \]
+
+  \item \answertag{} $c=3/5,\ s=4/5$。
+
+  \item \answertag{}
+  \[
+    B_J=\begin{bmatrix}0&-a/2\\-a/3&0\end{bmatrix},\qquad
+    B_{GS}=\begin{bmatrix}0&-a/2\\0&a^2/6\end{bmatrix}.
+  \]
+  两者均当且仅当 $|a|<\sqrt6$ 时收敛。
+
+  \item \answertag{} CG 第一步
+  \[
+    \alpha_0=\frac12,\quad x^{(1)}=(1/2,0)^T,\quad r^{(1)}=(0,-1/2)^T,
+  \]
+  \[
+    \beta_0=\frac14,\quad p^{(1)}=(1/4,-1/2)^T,\quad
+    \alpha_1=\frac23,\quad x^{(2)}=(2/3,-1/3)^T.
+  \]
+
+  \item \answertag{} 用无穷范数归一化，
+  \[
+    x^{(1)}=(1,1/3)^T,\qquad x^{(2)}=(1,1/9)^T,
+  \]
+  主特征值近似为 $3$。
+
+  \item \answertag{}
+  \[
+    Q=\begin{bmatrix}2/\sqrt5&-1/\sqrt5\\1/\sqrt5&2/\sqrt5\end{bmatrix},\quad
+    R=\begin{bmatrix}\sqrt5&4/\sqrt5\\0&3/\sqrt5\end{bmatrix},
+  \]
+  \[
+    A_1=RQ=\begin{bmatrix}14/5&3/5\\3/5&6/5\end{bmatrix}.
+  \]
+\end{enumerate}
+
+%=====================================================================
+\section{作业计算题汇编（非浮点）}
+%=====================================================================
+
+\noindent 本节从 \texttt{hw1}--\texttt{hw15} 的作业报告中抽取可作为复习训练的计算题。
+不收录标准浮点模型、舍入误差、后向误差和增长因子推导类题目；上机题只保留算法任务和题面，不整理程序输出。
+
+\subsection{直接法与矩阵分解}
+
+\begin{enumerate}
+  \item \texttt{hw1 习题 1.4} 确定 $3\times3$ Gauss 变换 $L$，使
+  \[
+    L\begin{bmatrix}2\\3\\4\end{bmatrix}
+    =
+    \begin{bmatrix}2\\7\\8\end{bmatrix}.
+  \]
+
+  \item \texttt{hw2 题目 3} 设
+  \[
+    A=\begin{bmatrix}1&4&7\\2&5&8\\3&6&10\end{bmatrix},\qquad
+    b=\begin{bmatrix}1\\1\\1\end{bmatrix}.
+  \]
+  分别计算：
+  \begin{enumerate}[(1)]
+    \item 不选主元的 $A=LU$ 分解，并解 $Ax=b$；
+    \item 列主元分解 $PA=LU$，并解 $Ax=b$；
+    \item 全主元分解 $PAQ=LU$，并解 $Ax=b$。
+  \end{enumerate}
+
+  \item \texttt{hw3 题目 1} 用平方根法求解 $Ax=b$，其中
+  \[
+    A=
+    \begin{bmatrix}
+      4&-2&4&2\\
+      -2&10&-2&-7\\
+      4&-2&8&4\\
+      2&-7&4&7
+    \end{bmatrix},\qquad
+    b=\begin{bmatrix}8\\2\\16\\6\end{bmatrix}.
+  \]
+
+  \item \texttt{hw3 题目 2} 用改进平方根法求解 $Ax=b$，其中
+  \[
+    A=
+    \begin{bmatrix}
+      10&20&30\\
+      20&45&80\\
+      30&80&171
+    \end{bmatrix},\qquad
+    b=\begin{bmatrix}10\\5\\-31\end{bmatrix}.
+  \]
+
+  \item \texttt{hw3 题目 3} 用追赶法求解三对角方程组 $Ax=b$，其中
+  \[
+    A=
+    \begin{bmatrix}
+      -4&4&0\\
+      2&-6&4\\
+      0&2&6
+    \end{bmatrix},\qquad
+    b=\begin{bmatrix}-8\\8\\-2\end{bmatrix}.
+  \]
+
+  \item \texttt{hw3 题目 4} 用 Gauss--Jordan 法求矩阵
+  \[
+    A=
+    \begin{bmatrix}
+      2&1&-3&-1\\
+      3&1&0&7\\
+      -1&2&4&-2\\
+      1&0&-1&5
+    \end{bmatrix}
+  \]
+  的逆矩阵。
+\end{enumerate}
+
+\subsection{范数、条件数与正规方程}
+
+\begin{enumerate}
+  \item \texttt{hw5 题目 2} 设
+  \[
+    A=\begin{bmatrix}1&2\\-1&2\end{bmatrix}.
+  \]
+  分别求 $\norm{A}_1,\norm{A}_2,\norm{A}_\infty$，以及
+  $\kappa_1(A),\kappa_2(A),\kappa_\infty(A)$。
+
+  \item \texttt{hw5 题目 3} 设
+  \[
+    A=
+    \begin{bmatrix}
+      -2&1&0\\
+      1&-2&1\\
+      0&1&-2
+    \end{bmatrix}.
+  \]
+  求 $\norm{A}_1,\norm{A}_2,\norm{A}_\infty$ 和 $\kappa_2(A)$。
+
+  \item \texttt{hw7 题目 2} 设
+  \[
+    A=\begin{bmatrix}0&-1\\3&2\\0&-2\end{bmatrix},\qquad
+    b=\begin{bmatrix}-1/3\\5/3\\-2/3\end{bmatrix}.
+  \]
+  写出最小二乘问题的正规方程，并用平方根法求解该正规方程。
+\end{enumerate}
+
+\subsection{最小二乘与正交变换}
+
+\begin{enumerate}
+  \item \texttt{hw8 题目 1(1)} 设
+  \[
+    x=(3,1,6,4,2,2)^T.
+  \]
+  求一个 Householder 变换 $H$ 和一个整数 $\alpha$，使得
+  \[
+    Hx=(3,\alpha,4,6,0,0)^T.
+  \]
+
+  \item \texttt{hw8 题目 1(2)} 确定 $c=\cos\theta$、$s=\sin\theta$，使
+  \[
+    \begin{bmatrix}c&s\\-s&c\end{bmatrix}
+    \begin{bmatrix}5\\12\end{bmatrix}
+    =
+    \beta\begin{bmatrix}1\\1\end{bmatrix},\qquad \beta\in\R.
+  \]
+\end{enumerate}
+
+\subsection{迭代法与正定方程组}
+
+\begin{enumerate}
+  \item \texttt{hw10 题目 5} 对方程组
+  \[
+    \begin{cases}
+      x_1+\rho x_2=b_1,\\
+      \rho x_1+2x_2=b_2,
+    \end{cases}
+  \]
+  \begin{enumerate}[(1)]
+    \item 讨论 $\rho$ 取何值时，Gauss--Seidel 迭代收敛；
+    \item 讨论松弛因子 $\omega$ 的收敛范围，并求最佳松弛因子。
+  \end{enumerate}
+
+  \item \texttt{hw11 题目 3} 设
+  \[
+    A=
+    \begin{bmatrix}
+      2&1&0\\
+      1&2&1\\
+      0&1&1
+    \end{bmatrix},\qquad
+    b=\begin{bmatrix}1\\0\\1\end{bmatrix}.
+  \]
+  用共轭梯度法求解 $Ax=b$。
+
+  \item \texttt{hw11 上机习题 (3)} 分别用 Jacobi 迭代法、Gauss--Seidel 迭代法和共轭梯度法求解
+  \[
+    \begin{bmatrix}
+      0.3&0.1&0&0&0.2\\
+      0.1&0.3&0.1&0&0\\
+      0&0.1&0.3&0.1&0\\
+      0&0&0.1&0.3&0.1\\
+      0.2&0&0&0.1&0.3
+    \end{bmatrix}
+    x
+    =
+    \begin{bmatrix}0.6\\0.5\\0.5\\0.5\\0.6\end{bmatrix}.
+  \]
+\end{enumerate}
+
+\subsection{特征值算法}
+
+\begin{enumerate}
+  \item \texttt{hw12 题目 1} 分别应用幂法于
+  \[
+    A=\begin{bmatrix}\lambda&1\\0&\lambda\end{bmatrix},\qquad
+    B=\begin{bmatrix}\lambda&1\\0&-\lambda\end{bmatrix},\qquad \lambda>0.
+  \]
+  考察所得序列的特点，并求出特征值和特征向量。
+
+  \item \texttt{hw12 题目 2} 用幂法求多项式方程的模最大根。对首一多项式
+  \[
+    f(x)=x^n+\alpha_{n-1}x^{n-1}+\cdots+\alpha_1x+\alpha_0
+  \]
+  构造友矩阵并求模最大特征值。具体计算：
+  \[
+    x^3+x^2-5x+3=0,
+  \]
+  \[
+    x^3-3x-1=0,
+  \]
+  \[
+    x^8+101x^7+208.01x^6+10891.01x^5+9802.08x^4
+    +79108.9x^3-99902x^2+790x-1000=0.
+  \]
+
+  \item \texttt{hw13 题目 14} 应用基本 QR 迭代格式于
+  \[
+    A=\begin{bmatrix}1&0\\1&-1\end{bmatrix}.
+  \]
+  写出前几步 $A_k$，考察矩阵序列的特点，并判断是否收敛。
+\end{enumerate}
+
+\subsection{上机型计算任务}
+
+\begin{enumerate}
+  \item \texttt{hw2 上机习题 1.1} 编写不选主元和列主元 Gauss 消去法程序，并求解教材第 39 页第一题中的线性方程组。
+
+  \item \texttt{hw3 上机习题 2--3} 编写平方根法和改进平方根法程序，分别处理：
+  \begin{enumerate}[(1)]
+    \item $100$ 阶三对角矩阵，主对角为 $10$，上下副对角为 $1$，右端 $b$ 随机；
+    \item $40$ 阶 Hilbert 矩阵
+    \[
+      a_{ij}=\frac{1}{i+j-1},\qquad
+      b_i=\sum_{j=1}^n\frac{1}{i+j-1}.
+    \]
+  \end{enumerate}
+
+  \item \texttt{hw5 上机习题 1} 编制算法估计 $5$ 到 $20$ 阶 Hilbert 矩阵的
+  $\infty$ 范数条件数，并观察条件数随阶数增长的趋势。
+
+  \item \texttt{hw8 上机习题} 编写 QR 分解求解线性方程组和线性最小二乘问题的通用子程序，并完成：
+  \begin{enumerate}[(1)]
+    \item 求解第一章上机习题中的三个线性方程组；
+    \item 用二次多项式 $y=at^2+bt+c$ 最小二乘拟合教材表 3.2 数据；
+    \item 对教材表 3.3、表 3.4 的房产数据建立线性最小二乘模型并求参数。
+  \end{enumerate}
+
+  \item \texttt{hw10 上机习题} 对两点边值问题
+  \[
+    \varepsilon y''+y'=a,\qquad y(0)=0,\qquad y(1)=1
+  \]
+  作差分离散，并在 $a=1/2$、$n=100$ 下，分别对
+  $\varepsilon=1,0.1,0.01,0.0001$ 用 Jacobi、Gauss--Seidel 和 SOR 迭代求解。
+
+  \item \texttt{hw11 上机习题 (2)} 用共轭梯度法测试 Hilbert 矩阵
+  \[
+    a_{ij}=\frac{1}{i+j+1},\qquad
+    b_i=\frac13\sum_{j=1}^n a_{ij},\qquad 1\le i,j\le n.
+  \]
+
+  \item \texttt{hw14 一般矩阵隐式 QR} 编写隐式 QR 算法，计算：
+  \begin{enumerate}[(1)]
+    \item 方程 $x^{41}+x^3+1=0$ 的全部根；
+    \item 矩阵
+    \[
+      A=
+      \begin{bmatrix}
+        9.1&3.0&2.6&4.0\\
+        4.2&5.3&1.7&1.6\\
+        3.2&1.7&9.4&x\\
+        6.1&4.9&3.5&6.2
+      \end{bmatrix}
+    \]
+    在 $x=0.9,1.0,1.1$ 时的全部特征值。
+  \end{enumerate}
+
+  \item \texttt{hw14 对称矩阵隐式 QR} 编写实对称矩阵隐式 QR 算法，求
+  \[
+    A_1=\tridiag(1,4,1),\qquad n=50,51,\ldots,100,
+  \]
+  以及
+  \[
+    A_2=\tridiag(-1,2,-1),\qquad n=100
+  \]
+  的全部特征值和特征向量。
+
+  \item \texttt{hw15 过关 Jacobi 方法} 编写过关 Jacobi 方法，求
+  \[
+    A=\tridiag(1,4,1),\qquad n=50,51,\ldots,100
+  \]
+  的全部特征值和特征向量，并用三对角 Toeplitz 矩阵解析公式核对结果。
+\end{enumerate}
+
+%=====================================================================
+\section{作业证明题汇编}
+%=====================================================================
+
+\noindent 本节整理 \texttt{hw1}--\texttt{hw15} 中偏证明型的题目。与上一节不同，本节保留浮点误差与稳定性证明题，并单独归入“浮点与稳定性”小节。
+
+\subsection{消元、三角阵与正定性}
+
+\begin{enumerate}
+  \item \texttt{hw1 习题 1.7} 设 $A$ 对称且 $a_{11}\ne0$。若经过一步 Gauss 消去后得到
+  \[
+    \begin{bmatrix}
+      a_{11}&a_1^T\\
+      0&A_2
+    \end{bmatrix},
+  \]
+  证明 $A_2$ 仍是对称矩阵。
+
+  \item \texttt{hw1 习题 1.8} 设 $A$ 严格对角占优。证明经过一步 Gauss 消去后所得子矩阵 $A_2$ 仍严格对角占优。
+
+  \item \texttt{hw1 习题 1.10} 设 $A$ 正定。证明经过一步 Gauss 消去后所得子矩阵 $A_2$ 仍正定。
+
+  \item \texttt{hw2 题目 1} 证明上三角阵的逆仍是上三角阵，下三角阵的逆仍是下三角阵；并证明单位三角阵的逆仍是单位三角阵。
+
+  \item \texttt{hw2 题目 2} 给出一般矩阵的 $LU$ 分解算法，并证明在分解存在且 $L$ 为单位下三角时，分解唯一。
+\end{enumerate}
+
+\subsection{范数与条件数}
+
+\begin{enumerate}
+  \item \texttt{hw4 题目 1} 证明
+  \[
+    \norm{x}_p=\left(\sum_{i=1}^n |x_i|^p\right)^{1/p},\qquad p\ge1
+  \]
+  是向量范数，并证明
+  \[
+    \norm{x}_\infty=\max_i |x_i|.
+  \]
+
+  \item \texttt{hw4 题目 2} 证明 $\norm{\cdot}_1,\norm{\cdot}_2,\norm{\cdot}_\infty$ 的等价性：
+  \[
+    \norm{x}_2\le\norm{x}_1\le\sqrt n\norm{x}_2,
+  \]
+  \[
+    \norm{x}_\infty\le\norm{x}_2\le\sqrt n\norm{x}_\infty,
+  \]
+  \[
+    \norm{x}_\infty\le\norm{x}_1\le n\norm{x}_\infty.
+  \]
+
+  \item \texttt{hw4 题目 3} 证明 Frobenius 范数
+  \[
+    \norm{A}_F=\left(\sum_{i,j=1}^n |a_{ij}|^2\right)^{1/2}
+  \]
+  是矩阵范数。
+
+  \item \texttt{hw4 题目 4} 证明矩阵范数不等式：
+  \[
+    \max_{i,j}|a_{ij}|\le\norm{A}_2\le n\max_{i,j}|a_{ij}|,
+  \]
+  \[
+    \frac1{\sqrt n}\norm{A}_\infty\le\norm{A}_2\le\sqrt n\norm{A}_\infty,
+  \]
+  \[
+    \frac1{\sqrt n}\norm{A}_1\le\norm{A}_2\le\sqrt n\norm{A}_1,
+  \]
+  \[
+    \norm{A}_2\le\norm{A}_F\le\sqrt n\norm{A}_2,
+  \]
+  \[
+    \norm{AB}_F\le\norm{A}_2\norm{B}_F,\qquad
+    \norm{AB}_F\le\norm{A}_F\norm{B}_2.
+  \]
+
+  \item \texttt{hw5 题目 1} 证明谱范数性质：
+  \[
+    \norm{A}_2=\max_{\norm{x}_2=\norm{y}_2=1}|y^TAx|,
+  \]
+  \[
+    \norm{A^T}_2=\norm{A}_2=\sqrt{\norm{A^TA}_2},
+  \]
+  并证明对任意正交阵 $U,V$ 有
+  \[
+    \norm{UA}_2=\norm{AV}_2=\norm{A}_2.
+  \]
+\end{enumerate}
+
+\subsection{浮点误差与稳定性}
+
+\begin{enumerate}
+  \item \texttt{hw4 题目 5} 设 $A=LU$ 且 $|l_{ij}|\le1$。证明
+  \[
+    u_i^T=a_i^T-\sum_{j=1}^{i-1}l_{ij}u_j^T,
+  \]
+  并推出
+  \[
+    \norm{U}_\infty\le 2^{n-1}\norm{A}_\infty.
+  \]
+
+  \item \texttt{hw6 题目 14} 在标准浮点模型下估计连乘误差：
+  \[
+    \fl(x_1\cdots x_n)=x_1\cdots x_n(1+\varepsilon),
+  \]
+  给出 $\varepsilon$ 的上界，特别是用 $\gamma_{n-1}$ 表示。
+
+  \item \texttt{hw6 题目 15} 证明顺序求和可写为
+  \[
+    \fl\left(\sum_{i=1}^n x_i\right)=\sum_{i=1}^n x_i(1+\eta_i),
+  \]
+  并在 $n\mathbf u\le0.01$ 时给出 $\eta_i$ 的上界。
+
+  \item \texttt{hw6 题目 16} 证明矩阵向量乘法具有后向误差形式：
+  \[
+    \fl(Ax)=(A+E)x,
+  \]
+  并给出 $E=[e_{ij}]$ 的元素级上界。
+
+  \item \texttt{hw6 题目 17} 证明点积平方的相对误差估计：
+  \[
+    \fl(x^Tx)=x^Tx(1+\alpha),\qquad
+    |\alpha|\le n\mathbf u+O(\mathbf u^2).
+  \]
+
+  \item \texttt{hw6 题目 18} 证明若 $A$ 是三对角矩阵，则列主元 Gauss 消去法的增长因子 $\rho$ 以 $2$ 为界。
+
+  \item \texttt{hw6 题目 20} 设 $A$ 为带宽 $2m+1$ 的带状矩阵且 $m=3$。若列主元 Gauss 消去得到
+  \[
+    \tilde L\tilde U=P(A+E),
+  \]
+  估计 $\norm{E}_\infty$ 的上界。
+\end{enumerate}
+
+\subsection{最小二乘与正交变换}
+
+\begin{enumerate}
+  \item \texttt{hw7 题目 1} 证明对任意 $A\in\R^{m\times n}$，
+  \[
+    \mathcal N(A^TA)=\mathcal N(A).
+  \]
+
+  \item \texttt{hw8 题目 2} 证明 Givens 变换矩阵 $G(i,k,\theta)$ 是正交阵。
+
+  \item \texttt{hw8 题目 3} 设 $x\ne0$ 且 $x$ 与 $e_1$ 不平行。构造 Householder 变换 $H$ 使
+  \[
+    Hx=\norm{x}_2e_1,
+  \]
+  并判断 $He_1$ 是否平行于 $x$。
+
+  \item \texttt{hw8 题目 4} 设 $a_i$ 为 $A$ 的第 $i$ 列，证明 Hadamard 不等式：
+  \[
+    |\det(A)|\le \norm{a_1}_2\norm{a_2}_2\cdots\norm{a_n}_2.
+  \]
+
+  \item \texttt{hw8 题目 5（附加）} 设
+  \[
+    A=\begin{bmatrix}R&w\\0&v\end{bmatrix},\qquad
+    b=\begin{bmatrix}c\\d\end{bmatrix},
+  \]
+  且 $A$ 列满秩。证明
+  \[
+    \min_x\norm{Ax-b}_2^2=\norm{d}_2^2-\left(\frac{v^Td}{\norm{v}_2}\right)^2.
+  \]
+
+  \item \texttt{hw8 题目 6（附加）} 利用 Householder 矩阵证明矩阵行列式引理的特例：
+  \[
+    \det(I+xy^T)=1+x^Ty.
+  \]
+\end{enumerate}
+
+\subsection{迭代法与共轭梯度}
+
+\begin{enumerate}
+  \item \texttt{hw10 题目 1} 证明若
+  \[
+    \sum_{i\ne j}\left|\frac{a_{ij}}{a_{jj}}\right|<1,\qquad j=1,\ldots,n,
+  \]
+  则 Jacobi 迭代法与 Gauss--Seidel 迭代法均收敛。
+
+  \item \texttt{hw10 题目 2} 证明若 $A$ 是严格对角占优阵，或弱严格对角占优且不可约，则 Gauss--Seidel 迭代法收敛。
+
+  \item \texttt{hw10 题目 3} 证明若 $A$ 满足上一题的条件，且 $\omega\in(0,1]$，则松弛迭代收敛。
+
+  \item \texttt{hw10 题目 4} 证明若 $A\in\R^{2\times2}$ 为对称正定矩阵，则 Jacobi 迭代收敛。
+
+  \item \texttt{hw11 题目 1} 设 $x_k$ 由最速下降法产生。证明其二次函数误差满足由 $\kappa_2(A)$ 控制的收敛估计。
+
+  \item \texttt{hw11 题目 2} 在共轭梯度法中证明残差与步长恒等式：
+  \[
+    (r_k,r_k)=-\alpha_{k-1}(r_k,Ap_{k-1}),
+  \]
+  \[
+    (r_k,r_k)=\alpha_k(p_k,Ap_k).
+  \]
+
+  \item \texttt{hw11 题目 4} 设 $A$ 对称正定，$p_1,\dots,p_n$ 为 $A$-共轭向量系。证明
+  \[
+    A^{-1}=\sum_{k=1}^n\frac{p_kp_k^T}{p_k^TAp_k}.
+  \]
+
+  \item \texttt{hw11 题目 5} 证明：当最速下降法在有限步求得极小值时，最后一步迭代的下降方向必是 $A$ 的一个特征向量。
+
+  \item \texttt{hw11 题目 6} 设实对称矩阵 $A$ 只有 $k$ 个互异特征值。证明
+  \[
+    \dim\operatorname{span}\{r,Ar,\dots,A^{n-1}r\}\le k.
+  \]
+
+  \item \texttt{hw11 题目 7} 证明：若系数矩阵 $A$ 至多有 $\ell$ 个互不相同的特征值，则共轭梯度法至多 $\ell$ 步得到精确解。
+\end{enumerate}
+
+\subsection{特征值与 QR 算法}
+
+\begin{enumerate}
+  \item \texttt{hw13 题目 15} 证明：对任意 $A\in\R^{n\times n}$，存在初等置换矩阵 $P$ 和初等下三角阵 $M$，使
+  \[
+    (MP)A(MP)^{-1}
+  \]
+  的第一列在第 $3$ 行以下元素全为 $0$，即完成 Hessenberg 化的第一步。
+
+  \item \texttt{hw13 题目 17} 设 $A\in\mathbf C^{n\times n}$，$x\in\mathbf C^n$，
+  \[
+    X=[x,Ax,\ldots,A^{n-1}x].
+  \]
+  证明若 $X$ 非奇异，则 $X^{-1}AX$ 是上 Hessenberg 矩阵。
+
+  \item \texttt{hw13 题目 19} 设 $H$ 是不可约上 Hessenberg 矩阵。证明存在对角阵 $D$，使 $D^{-1}HD$ 的次对角元均为 $1$，并求
+  \[
+    \kappa_2(D)=\norm{D}_2\norm{D^{-1}}_2.
+  \]
+
+  \item \texttt{hw13 题目 21} 设 $H$ 是奇异的不可约上 Hessenberg 矩阵。证明进行一次基本 QR 迭代后，$H$ 的零特征值将显现。
+
+  \item \texttt{hw13 题目 22} 证明：若 $H_0=H$，并由
+  \[
+    H_k-\mu_kI=U_kR_k,\qquad H_{k+1}=R_kU_k+\mu_kI
+  \]
+  产生 $H_k$，则
+  \[
+    (U_0\cdots U_j)(R_j\cdots R_0)
+    =(H-\mu_0I)\cdots(H-\mu_jI).
+  \]
+\end{enumerate}
+
+%=====================================================================
+\section{核心证明与构造方法}
+%=====================================================================
+
+\noindent 本节对应上一节的证明题清单，整理可直接默写的证明模板。复习时优先记住每题的“入口”：分块 Schur 补、范数定义、标准浮点模型、正交变换保持范数、迭代矩阵谱半径、Krylov 子空间。
+
+\subsection{Gauss 消去后的 Schur 补模板}
+
+\textbf{统一分块。} 设
+\[
+  A=\begin{bmatrix}
+    a_{11}&a_1^T\\
+    c_1&B
+  \end{bmatrix},\qquad a_{11}\ne0.
+\]
+第一步 Gauss 消去后的右下角子矩阵为 Schur 补
+\[
+  A_2=B-\frac1{a_{11}}c_1a_1^T.
+\]
+这是证明“对称、正定、对角占优被消去保持”的共同入口。
+
+\begin{enumerate}
+  \item \textbf{保持对称。} 若 $A=A^T$，则 $c_1=a_1$，$B=B^T$，于是
+  \[
+    A_2=B-\frac1{a_{11}}a_1a_1^T
+  \]
+  是两个对称矩阵之差，故仍对称。
+
+  \item \textbf{保持正定。} 若 $A>0$，则 $a_{11}>0$。对任意 $y\ne0$，取
+  \[
+    x=\begin{bmatrix}
+      -a_{11}^{-1}a_1^Ty\\y
+    \end{bmatrix}.
+  \]
+  直接代入二次型得
+  \[
+    x^TAx=y^T\left(B-\frac1{a_{11}}a_1a_1^T\right)y
+    =y^TA_2y.
+  \]
+  因为 $x\ne0$ 且 $A>0$，所以 $y^TA_2y>0$，故 $A_2>0$。
+
+  \item \textbf{保持严格对角占优。} 消去后
+  \[
+    (A_2)_{ij}=a_{ij}-\frac{a_{i1}a_{1j}}{a_{11}},\qquad i,j\ge2.
+  \]
+  对第 $i$ 行估计对角项：
+  \[
+    \left|a_{ii}-\frac{a_{i1}a_{1i}}{a_{11}}\right|
+    \ge |a_{ii}|-\frac{|a_{i1}||a_{1i}|}{|a_{11}|}.
+  \]
+  再用原矩阵第 $i$ 行严格占优和第 $1$ 行严格占优
+  \[
+    |a_{ii}|>\sum_{j\ne i}|a_{ij}|,\qquad
+    |a_{11}|>\sum_{j\ge2}|a_{1j}|
+  \]
+  把右端推到
+  \[
+    \sum_{\substack{j\ge2\\j\ne i}}
+    \left(|a_{ij}|+\frac{|a_{i1}||a_{1j}|}{|a_{11}|}\right)
+    \ge
+    \sum_{\substack{j\ge2\\j\ne i}}
+    \left|a_{ij}-\frac{a_{i1}a_{1j}}{a_{11}}\right|.
+  \]
+  故 $A_2$ 仍严格对角占优。
+\end{enumerate}
+
+\textbf{三角阵逆与 LU 唯一性。} 若 $U$ 非奇异上三角，解 $UX=I$ 的第 $j$ 列
+\[
+  Ux^{(j)}=e_j
+\]
+时，由回代可知 $x_i^{(j)}=0$ 对 $i>j$，故 $U^{-1}$ 仍上三角；下三角同理。若 $L$ 是单位三角，则 $L^{-1}$ 对角元仍为 $1$。
+
+若
+\[
+  A=L_1U_1=L_2U_2,
+\]
+其中 $L_1,L_2$ 为单位下三角，$U_1,U_2$ 为上三角，则
+\[
+  L_2^{-1}L_1=U_2U_1^{-1}.
+\]
+左边是单位下三角，右边是上三角，所以它们只能同时等于 $I$。于是
+\[
+  L_1=L_2,\qquad U_1=U_2.
+\]
+
+\subsection{范数证明模板}
+
+\textbf{$p$ 范数。} 正定性和齐次性直接来自绝对值。三角不等式用 Minkowski 不等式：
+\[
+  \norm{x+y}_p
+  =\left(\sum_i |x_i+y_i|^p\right)^{1/p}
+  \le\norm{x}_p+\norm{y}_p.
+\]
+若需要展开证明，则先证明 Holder 不等式
+\[
+  \sum_i |x_iy_i|
+  \le
+  \left(\sum_i |x_i|^p\right)^{1/p}
+  \left(\sum_i |y_i|^q\right)^{1/q},
+  \qquad \frac1p+\frac1q=1,
+\]
+再把 $y_i$ 取为 $|x_i+y_i|^{p-1}$ 型的向量。无穷范数来自夹逼：
+\[
+  \max_i|x_i|\le\norm{x}_p\le n^{1/p}\max_i|x_i|,
+  \qquad p\to\infty.
+\]
+
+\textbf{$1,2,\infty$ 范数等价。} 只用两个事实：
+\[
+  \sum_i |x_i|^2\le \left(\sum_i |x_i|\right)^2,\qquad
+  \sum_i |x_i|\le \sqrt n\left(\sum_i |x_i|^2\right)^{1/2},
+\]
+以及
+\[
+  \max_i|x_i|\le\left(\sum_i |x_i|^2\right)^{1/2}
+  \le \sqrt n\max_i|x_i|.
+\]
+
+\textbf{Frobenius 范数。} 正定性、齐次性、三角不等式视为把矩阵摊平成向量后的 $2$ 范数。相容性用 Cauchy--Schwarz：
+\[
+  (AB)_{ij}=\sum_k a_{ik}b_{kj},
+\]
+\[
+  |(AB)_{ij}|^2
+  \le \left(\sum_k |a_{ik}|^2\right)
+      \left(\sum_k |b_{kj}|^2\right).
+\]
+对 $i,j$ 求和即得
+\[
+  \norm{AB}_F\le\norm{A}_F\norm{B}_F.
+\]
+
+\textbf{谱范数。} 入口是
+\[
+  \norm{A}_2=\max_{\norm{x}_2=1}\norm{Ax}_2.
+\]
+对固定 $x$，由 Cauchy--Schwarz，
+\[
+  \norm{Ax}_2=\max_{\norm{y}_2=1}|y^TAx|.
+\]
+因此
+\[
+  \norm{A}_2=\max_{\norm{x}_2=\norm{y}_2=1}|y^TAx|.
+\]
+又
+\[
+  \norm{A}_2^2=\max_{\norm{x}_2=1}x^TA^TAx=\lambda_{\max}(A^TA),
+\]
+所以
+\[
+  \norm{A}_2=\sqrt{\norm{A^TA}_2}.
+\]
+若 $U,V$ 正交，则 $\norm{Ux}_2=\norm{x}_2$，且 $Vx$ 在 $x$ 取遍单位球时也取遍单位球，故
+\[
+  \norm{UA}_2=\norm{A}_2,\qquad \norm{AV}_2=\norm{A}_2.
+\]
+
+\subsection{浮点误差与增长因子模板}
+
+\textbf{标准浮点模型。} 所有浮点误差证明从
+\[
+  \fl(a\circ b)=(a\circ b)(1+\delta),\qquad |\delta|\le\mathbf u
+\]
+开始。多个因子合并时使用
+\[
+  \prod_{i=1}^m(1+\delta_i)=1+\theta_m,\qquad
+  |\theta_m|\le\gamma_m=\frac{m\mathbf u}{1-m\mathbf u}.
+\]
+若 $m\mathbf u\le0.01$，常用
+\[
+  \gamma_m\le1.01m\mathbf u.
+\]
+
+\textbf{连乘。} 顺序计算 $p_k=\fl(p_{k-1}x_k)$，展开：
+\[
+  \fl(x_1\cdots x_n)=x_1\cdots x_n\prod_{k=2}^n(1+\delta_k)
+  =x_1\cdots x_n(1+\theta_{n-1}).
+\]
+故误差界为 $\gamma_{n-1}$。
+
+\textbf{顺序求和。} 设 $s_k=\fl(s_{k-1}+x_k)$。展开到最后：
+\[
+  s_n=x_1\prod_{k=2}^n(1+\delta_k)
+  +\sum_{i=2}^n x_i\prod_{k=i}^n(1+\delta_k).
+\]
+于是
+\[
+  \fl\left(\sum_{i=1}^n x_i\right)=\sum_i x_i(1+\eta_i),
+\]
+其中 $\eta_1$ 含 $n-1$ 个因子，$\eta_i$ 含 $n-i+1$ 个因子。
+
+\textbf{矩阵向量乘法后向误差。} 第 $i$ 行点积可写为
+\[
+  \fl((Ax)_i)=\sum_{j=1}^n a_{ij}x_j(1+\theta_{ij}).
+\]
+令
+\[
+  e_{ij}=a_{ij}\theta_{ij},
+\]
+则
+\[
+  \fl(Ax)=(A+E)x.
+\]
+剩下只需数每一项经历了几次乘加舍入，由此给出 $|e_{ij}|$ 的元素级上界。
+
+\textbf{三对角列主元增长因子。} 三对角矩阵列主元消去每步只影响下一行局部元素，且乘子满足
+\[
+  |\ell_k|\le1.
+\]
+若原矩阵最大元素模为 $M$，更新形如
+\[
+  a_{k+1,k+1}^{new}=a_{k+1,k+1}^{old}-\ell_k a_{k,k+1}^{old}.
+\]
+故新元素模不超过 $M+M=2M$；归纳得整个消去过程中元素最大模不超过 $2M$，所以
+\[
+  \rho\le2.
+\]
+
+\subsection{最小二乘、Householder 与 Givens 构造}
+
+\textbf{正规方程的零空间。}
+\[
+  x\in\mathcal N(A)\Rightarrow A^TAx=0
+  \Rightarrow x\in\mathcal N(A^TA).
+\]
+反向用二次型：
+\[
+  A^TAx=0
+  \Rightarrow x^TA^TAx=\norm{Ax}_2^2=0
+  \Rightarrow Ax=0.
+\]
+
+\textbf{Householder 构造。} 要把非零向量 $x$ 反射到 $\alpha e_1$，取
+\[
+  \alpha=\pm\norm{x}_2,\qquad
+  v=x-\alpha e_1,\qquad
+  H=I-\frac{2vv^T}{v^Tv}.
+\]
+符号通常取使 $v$ 不发生严重抵消的那一个。验证只需算
+\[
+  Hx=x-\frac{2v^Tx}{v^Tv}v=\alpha e_1.
+\]
+若已知 $Hx=\norm{x}_2e_1$，再利用 $H^2=I$，得到
+\[
+  x=\norm{x}_2He_1,
+\]
+所以 $He_1$ 与 $x$ 平行。
+
+\textbf{Givens 构造。} 对二元向量 $(a,b)^T$，要消去第二分量，取
+\[
+  r=\sqrt{a^2+b^2},\qquad c=\frac{a}{r},\qquad s=\frac{b}{r},
+\]
+则
+\[
+  \begin{bmatrix}c&s\\-s&c\end{bmatrix}
+  \begin{bmatrix}a\\b\end{bmatrix}
+  =
+  \begin{bmatrix}r\\0\end{bmatrix}.
+\]
+若目标是让两个分量相等，例如
+\[
+  \begin{bmatrix}c&s\\-s&c\end{bmatrix}
+  \begin{bmatrix}a\\b\end{bmatrix}
+  =
+  \beta\begin{bmatrix}1\\1\end{bmatrix},
+\]
+就写出
+\[
+  ac+bs=-as+bc,
+\]
+再联立 $c^2+s^2=1$。
+
+\textbf{Hadamard 不等式。} 对 $A$ 做 QR 分解
+\[
+  A=QR.
+\]
+因为 $Q$ 正交，
+\[
+  |\det A|=|\det R|=\prod_i |r_{ii}|.
+\]
+第 $j$ 列满足
+\[
+  a_j=\sum_{i=1}^j r_{ij}q_i,
+\]
+所以
+\[
+  \norm{a_j}_2^2=\sum_{i=1}^j r_{ij}^2\ge r_{jj}^2.
+\]
+连乘即得
+\[
+  |\det A|\le\prod_j\norm{a_j}_2.
+\]
+
+\textbf{分块最小二乘。} 若
+\[
+  A=\begin{bmatrix}R&w\\0&v\end{bmatrix},\qquad
+  b=\begin{bmatrix}c\\d\end{bmatrix},
+\]
+且 $R$ 可逆，则对固定 $x_2$，取
+\[
+  x_1=R^{-1}(c-wx_2)
+\]
+可使上半部分残差为零。问题化为
+\[
+  \min_{x_2}\norm{vx_2-d}_2^2.
+\]
+一元二次函数求极值得
+\[
+  x_2^*=\frac{v^Td}{\norm{v}_2^2},\qquad
+  \min\norm{vx_2-d}_2^2
+  =\norm d_2^2-\frac{(v^Td)^2}{\norm v_2^2}.
+\]
+
+\subsection{迭代法证明模板}
+
+\textbf{固定迭代收敛判据。} 对
+\[
+  x^{(k+1)}=Bx^{(k)}+f,
+\]
+误差满足
+\[
+  e^{(k+1)}=Be^{(k)},\qquad e^{(k)}=B^ke^{(0)}.
+\]
+因此收敛的核心判据是
+\[
+  \rho(B)<1.
+\]
+实际证明常用
+\[
+  \rho(B)\le\norm{B}
+\]
+并构造某个范数使 $\norm{B}<1$。
+
+\textbf{Jacobi 列占优条件。} Jacobi 矩阵
+\[
+  B_J=-D^{-1}(L+U).
+\]
+把它相似变换成
+\[
+  \widetilde B=DB_JD^{-1}=-(L+U)D^{-1}.
+\]
+其第 $j$ 列和为
+\[
+  \sum_{i\ne j}\left|\frac{a_{ij}}{a_{jj}}\right|<1.
+\]
+故
+\[
+  \rho(B_J)=\rho(\widetilde B)\le\norm{\widetilde B}_1<1.
+\]
+
+\textbf{Gauss--Seidel 对角占优证明。} 令
+\[
+  B_{GS}=-(D+L)^{-1}U.
+\]
+若存在特征值 $|\lambda|\ge1$，则
+\[
+  B_{GS}x=\lambda x
+  \Rightarrow
+  (\lambda D+\lambda L+U)x=0.
+\]
+在严格对角占优条件下，上式系数矩阵仍严格对角占优，故非奇异，矛盾。弱严格对角占优且不可约时，用最大分量法推出所有相关不等式都取等，再与“至少一行严格占优且不可约”矛盾。
+
+\textbf{二维 SPD 的 Jacobi 收敛。} 设
+\[
+  A=\begin{bmatrix}a&b\\b&c\end{bmatrix}>0.
+\]
+则
+\[
+  a>0,\quad c>0,\quad ac-b^2>0.
+\]
+Jacobi 迭代矩阵为
+\[
+  B_J=\begin{bmatrix}0&-b/a\\-b/c&0\end{bmatrix},
+\]
+特征值满足
+\[
+  \lambda^2=\frac{b^2}{ac}.
+\]
+由 $b^2<ac$ 得 $|\lambda|<1$。
+
+\subsection{CG 证明模板}
+
+\textbf{残差与步长恒等式。} CG 中
+\[
+  r_k=r_{k-1}-\alpha_{k-1}Ap_{k-1}.
+\]
+左乘 $r_k^T$，利用残差正交 $r_k^Tr_{k-1}=0$，得
+\[
+  r_k^Tr_k=-\alpha_{k-1}r_k^TAp_{k-1}.
+\]
+又由
+\[
+  \alpha_k=\frac{r_k^Tr_k}{p_k^TAp_k},
+\]
+直接得
+\[
+  r_k^Tr_k=\alpha_kp_k^TAp_k.
+\]
+
+\textbf{$A$-共轭向量展开 $A^{-1}$。} 若 $p_i^TAp_j=0$，$i\ne j$，且 $A>0$，先证线性无关：
+\[
+  \sum_i c_ip_i=0.
+\]
+左乘 $p_j^TA$ 得
+\[
+  c_jp_j^TAp_j=0.
+\]
+由于 $p_j^TAp_j>0$，所以 $c_j=0$。于是 $p_i$ 构成基。对任意 $v$，令
+\[
+  A^{-1}v=\sum_k c_kp_k.
+\]
+两边乘 $A$ 后左乘 $p_k^T$：
+\[
+  p_k^Tv=c_kp_k^TAp_k.
+\]
+故
+\[
+  A^{-1}v=\sum_{k=1}^n\frac{p_kp_k^T}{p_k^TAp_k}v.
+\]
+任意 $v$ 成立，故
+\[
+  A^{-1}=\sum_{k=1}^n\frac{p_kp_k^T}{p_k^TAp_k}.
+\]
+
+\textbf{Krylov 维数与有限步收敛。} 若实对称 $A$ 只有 $k$ 个互异特征值 $\mu_1,\ldots,\mu_k$，则最小多项式整除
+\[
+  m(t)=\prod_{j=1}^k(t-\mu_j).
+\]
+所以
+\[
+  m(A)=0,
+\]
+进而 $A^kr$ 可由 $r,Ar,\ldots,A^{k-1}r$ 线性表示。故
+\[
+  \dim\operatorname{span}\{r,Ar,\ldots,A^{n-1}r\}\le k.
+\]
+对 CG，另可用误差多项式
+\[
+  e_m=q_m(A)e_0,\qquad q_m(0)=1.
+\]
+取
+\[
+  q_k(t)=\prod_{j=1}^k\left(1-\frac{t}{\mu_j}\right),
+\]
+则 $q_k(A)e_0=0$，所以 $e_k=0$。因此至多 $k$ 步收敛。
+
+\textbf{最速下降有限步结论。} 若最后一步
+\[
+  x_{k+1}=x_k+\alpha_kp_k=x_*,
+\]
+其中 $p_k=b-Ax_k$，则
+\[
+  A(x_k+\alpha_kp_k)-b=0.
+\]
+于是
+\[
+  \alpha_kAp_k=b-Ax_k=p_k,
+\]
+即
+\[
+  Ap_k=\frac1{\alpha_k}p_k.
+\]
+所以最后一步方向是 $A$ 的特征向量。
+
+\subsection{Hessenberg 与 QR 构造模板}
+
+\textbf{Hessenberg 化第一步。} 若第一列第 $2$ 行以下已有零，则不用做。否则先用置换矩阵 $P$ 把某个非零 $a_{k1}$ 换到 $(2,1)$ 位置。再构造初等下三角阵 $M$，用第二行消去第 $3$ 行到第 $n$ 行的第一列元素。相似变换
+\[
+  (MP)A(MP)^{-1}
+\]
+不会破坏已做好的第一列结构，这就是 Hessenberg 化的基本一步。
+
+\textbf{Krylov 基下的 Hessenberg 形式。} 设
+\[
+  X=[x,Ax,\ldots,A^{n-1}x]
+\]
+非奇异。则
+\[
+  AX=[Ax,A^2x,\ldots,A^nx].
+\]
+对 $j<n$，$AX$ 的第 $j$ 列正好是 $X$ 的第 $j+1$ 列，因此
+\[
+  X^{-1}AXe_j=e_{j+1},\qquad j<n.
+\]
+这说明第 $j$ 列在第 $j+2$ 行以下全为零，所以 $X^{-1}AX$ 为上 Hessenberg 矩阵。
+
+\textbf{不可约 Hessenberg 对角缩放。} 若 $H$ 不可约上 Hessenberg，则
+\[
+  h_{i+1,i}\ne0.
+\]
+取 $D=\diag(d_1,\ldots,d_n)$，令 $d_1=1$，递推
+\[
+  d_{i+1}=d_i h_{i+1,i}.
+\]
+则
+\[
+  (D^{-1}HD)_{i+1,i}=d_{i+1}^{-1}h_{i+1,i}d_i=1.
+\]
+又
+\[
+  \kappa_2(D)=\norm{D}_2\norm{D^{-1}}_2
+  =\frac{\max_i|d_i|}{\min_i|d_i|}.
+\]
+
+\textbf{奇异不可约 Hessenberg 的一次 QR。} 若 $H$ 奇异且不可约上 Hessenberg，则前 $n-1$ 列线性无关，故
+\[
+  \rank(H)=n-1.
+\]
+作 QR 分解 $H=QR$。因为前 $n-1$ 列独立，$R$ 的前 $n-1$ 个对角元非零；又 $\rank(H)=n-1$，所以
+\[
+  r_{nn}=0.
+\]
+于是 $R$ 最后一行全为零，进而
+\[
+  H_1=RQ
+\]
+最后一行全为零，零特征值显现。
+
+\textbf{位移 QR 乘积恒等式。} 若
+\[
+  H_k-\mu_kI=U_kR_k,\qquad H_{k+1}=R_kU_k+\mu_kI,
+\]
+则
+\[
+  H_{k+1}=U_k^TH_kU_k.
+\]
+因此
+\[
+  (U_0\cdots U_k)H_k=H(U_0\cdots U_k).
+\]
+移项得
+\[
+  (U_0\cdots U_k)(H_k-\mu_kI)
+  =(H-\mu_kI)(U_0\cdots U_k).
+\]
+再用归纳法把每一步的
+\[
+  H_k-\mu_kI=U_kR_k
+\]
+代入，即得
+\[
+  (U_0\cdots U_j)(R_j\cdots R_0)
+  =(H-\mu_0I)\cdots(H-\mu_jI).
+\]
+
+\end{document}
